@@ -1,0 +1,2027 @@
+2020-06-26 20:13:06 Error: Fatal Error (4): syntax error, unexpected 'if' (T_IF) in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/SalesController.php, line 195]
+2020-06-26 20:13:06 Error: [FatalErrorException] syntax error, unexpected 'if' (T_IF)
+Request URL: /sales/addProduct/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Error/ErrorHandler.php(212): ErrorHandler::handleFatalError(4, 'syntax error, u...', '/home/pawarpre/...', 195)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', '/home/pawarpre/...', 195, Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Core/App.php(970): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', '/home/pawarpre/...', 195, Array)
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Core/App.php(943): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2020-06-26 20:13:08 Error: Fatal Error (4): syntax error, unexpected 'if' (T_IF) in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/SalesController.php, line 195]
+2020-06-26 20:13:08 Error: [FatalErrorException] syntax error, unexpected 'if' (T_IF)
+Request URL: /sales/addProduct/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Error/ErrorHandler.php(212): ErrorHandler::handleFatalError(4, 'syntax error, u...', '/home/pawarpre/...', 195)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', '/home/pawarpre/...', 195, Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Core/App.php(970): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', '/home/pawarpre/...', 195, Array)
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Core/App.php(943): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2020-06-26 20:46:56 Error: Fatal Error (1): Call to a member function save() on null in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/AppController.php, line 223]
+2020-06-26 20:46:56 Error: [FatalErrorException] Call to a member function save() on null
+Request URL: /sales/removeProduct/89224
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Error/ErrorHandler.php(212): ErrorHandler::handleFatalError(1, 'Call to a membe...', '/home/pawarpre/...', 223)
+#1 [internal function]: ErrorHandler::handleError(1, 'Call to a membe...', '/home/pawarpre/...', 223, Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Core/App.php(970): call_user_func('ErrorHandler::h...', 1, 'Call to a membe...', '/home/pawarpre/...', 223, Array)
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Core/App.php(943): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2020-06-26 22:44:58 Error: [PDOException] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' `Sale`.`franchise_name` =   WHERE `Sale`.`invoice_id` = 1037' at line 1
+Request URL: /invoices/edit/1037
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(472): PDOStatement->execute(Array)
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(438): DboSource->_execute('UPDATE `pawarpr...', Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php(424): DboSource->execute('UPDATE `pawarpr...')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(2670): Mysql->update(Object(Sale), Array, NULL, Array)
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(198): Model->updateAll(Array, Array)
+#5 [internal function]: InvoicesController->edit('1037')
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#8 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#10 {main}
+2020-06-26 22:48:16 Error: [PDOException] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' `Sale`.`franchise_name` =   WHERE `Sale`.`invoice_id` = 1037' at line 1
+Request URL: /invoices/edit/1037
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(472): PDOStatement->execute(Array)
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(438): DboSource->_execute('UPDATE `pawarpr...', Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php(424): DboSource->execute('UPDATE `pawarpr...')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(2670): Mysql->update(Object(Sale), Array, NULL, Array)
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(198): Model->updateAll(Array, Array)
+#5 [internal function]: InvoicesController->edit('1037')
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#8 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#10 {main}
+2020-06-26 22:48:33 Error: [PDOException] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' `Sale`.`franchise_name` =   WHERE `Sale`.`invoice_id` = 1037' at line 1
+Request URL: /invoices/edit/1037
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(472): PDOStatement->execute(Array)
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(438): DboSource->_execute('UPDATE `pawarpr...', Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php(424): DboSource->execute('UPDATE `pawarpr...')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(2670): Mysql->update(Object(Sale), Array, NULL, Array)
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(198): Model->updateAll(Array, Array)
+#5 [internal function]: InvoicesController->edit('1037')
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#8 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#10 {main}
+2020-06-26 22:48:38 Error: [PDOException] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' `Sale`.`franchise_name` =   WHERE `Sale`.`invoice_id` = 1037' at line 1
+Request URL: /invoices/edit/1037
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(472): PDOStatement->execute(Array)
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(438): DboSource->_execute('UPDATE `pawarpr...', Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php(424): DboSource->execute('UPDATE `pawarpr...')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(2670): Mysql->update(Object(Sale), Array, NULL, Array)
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(198): Model->updateAll(Array, Array)
+#5 [internal function]: InvoicesController->edit('1037')
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#8 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#10 {main}
+2020-06-26 22:54:46 Error: [PDOException] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IN-S-11111  WHERE `Sale`.`invoice_id` = 1037' at line 1
+Request URL: /invoices/edit/1037
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(472): PDOStatement->execute(Array)
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(438): DboSource->_execute('UPDATE `pawarpr...', Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php(424): DboSource->execute('UPDATE `pawarpr...')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(2670): Mysql->update(Object(Sale), Array, NULL, Array)
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(192): Model->updateAll(Array, Array)
+#5 [internal function]: InvoicesController->edit('1037')
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#8 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#10 {main}
+2020-06-26 22:57:35 Error: [PDOException] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'G  WHERE `Sale`.`invoice_id` = 1037' at line 1
+Request URL: /invoices/edit/1037
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(472): PDOStatement->execute(Array)
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(438): DboSource->_execute('UPDATE `pawarpr...', Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php(424): DboSource->execute('UPDATE `pawarpr...')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(2670): Mysql->update(Object(Sale), Array, NULL, Array)
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(198): Model->updateAll(Array, Array)
+#5 [internal function]: InvoicesController->edit('1037')
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#8 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#10 {main}
+2020-06-26 23:01:48 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:01:50 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:01:52 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:01:54 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:01:55 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:01:56 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:01:58 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:01:59 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:02:00 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:02:09 Error: [MissingConnectionException] Database connection "Mysql" is missing, or could not be created.
+Exception Attributes: array (
+  'class' => 'Mysql',
+  'message' => 'SQLSTATE[08004] [1040] Too many connections',
+  'enabled' => true,
+)
+Request URL: /invoices/
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/DboSource.php(271): Mysql->connect()
+#1 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/ConnectionManager.php(105): DboSource->__construct(Array)
+#2 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3640): ConnectionManager::getDataSource('default')
+#3 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(1162): Model->setDataSource('default')
+#4 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3667): Model->setSource('invoices')
+#5 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3038): Model->getDataSource()
+#6 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Model.php(3010): Model->_readDataSource('all', Array)
+#7 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/InvoicesController.php(33): Model->find('all', Array)
+#8 [internal function]: InvoicesController->index()
+#9 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(InvoicesController), Array)
+#10 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#11 /home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoicesController), Object(CakeRequest))
+#12 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2020-06-26 23:37:07 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/public_html/pjn.simpleaccounting.in/app/webroot/index.php(97): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-06-28 21:25:31 Error: Fatal Error (4): syntax error, unexpected '>' in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/View/Franchises/edit.ctp, line 15]
+2020-06-29 16:11:19 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:11:23 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:11:29 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:11:35 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:11:39 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:11:41 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:11:43 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:15:28 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:16:58 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:19:14 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:19:16 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:19:17 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-06-29 16:19:18 Error: Fatal Error (1): Class 'PDO' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/lib/Cake/Model/Datasource/Database/Mysql.php, line 217]
+2020-07-02 08:21:45 Error: Fatal Error (1): Call to a member function compact() on null in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Controller/StoresController.php, line 396]
+2020-07-02 13:37:38 Error: Fatal Error (1): Class 'AppModel' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-07-02 13:37:52 Error: Fatal Error (1): Class 'AppModel' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-07-02 13:37:52 Error: Fatal Error (1): Class 'AppModel' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-07-02 13:38:29 Error: Fatal Error (1): Class 'Model' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-07-02 13:38:31 Error: Fatal Error (1): Class 'Model' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-07-02 13:38:55 Error: Fatal Error (1): Class 'AppModel' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-07-02 13:38:56 Error: Fatal Error (1): Class 'AppModel' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-07-02 13:38:56 Error: Fatal Error (1): Class 'AppModel' not found in [/home/pawarpre/public_html/pjn.simpleaccounting.in/app/Model/StoreSetting.php, line 3]
+2020-08-11 08:38:40 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 08:40:19 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 08:40:22 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 08:40:24 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 08:40:25 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:40:31 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 08:41:10 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:45:25 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:45:27 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:45:36 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:45:37 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:45:37 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:45:37 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:45:37 Warning: Warning (2): Invalid argument supplied for foreach() in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/View/Quotations/select_template.ctp, line 18]
+Trace:
+ErrorHandler::handleError() - CORE/Cake/Error/ErrorHandler.php, line 230
+include - APP/View/Quotations/select_template.ctp, line 18
+View::_evaluate() - CORE/Cake/View/View.php, line 971
+View::_render() - CORE/Cake/View/View.php, line 933
+View::render() - CORE/Cake/View/View.php, line 473
+Controller::render() - CORE/Cake/Controller/Controller.php, line 968
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 200
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 167
+[main] - APP/webroot/index.php, line 117
+
+2020-08-11 08:49:55 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 08:50:04 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/quotations/1_template.jpg
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 10:49:54 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:02:40 Error: Fatal Error (64): Cannot declare class Quotation, because the name is already in use in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/Model/InvoiceTemplate.php, line 6]
+2020-08-11 11:02:40 Error: [InternalErrorException] Internal Server Error
+Request URL: /invoice_templates
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Error/ErrorHandler.php(212): ErrorHandler::handleFatalError(64, 'Cannot declare ...', '/home/pawarpre/...', 6)
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Core/App.php(970): ErrorHandler::handleError(64, 'Cannot declare ...', '/home/pawarpre/...', 6, Array)
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Core/App.php(943): App::_checkFatalError()
+#3 [internal function]: App::shutdown()
+#4 {main}
+2020-08-11 11:02:56 Error: Fatal Error (64): Cannot declare class Quotation, because the name is already in use in [/home/pawarpre/projects_cakephp_2_10_22/app_pjn/Model/InvoiceTemplate.php, line 6]
+2020-08-11 11:02:56 Error: [FatalErrorException] Cannot declare class Quotation, because the name is already in use
+Request URL: /invoice_templates
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Error/ErrorHandler.php(212): ErrorHandler::handleFatalError(64, 'Cannot declare ...', '/home/pawarpre/...', 6)
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Core/App.php(970): ErrorHandler::handleError(64, 'Cannot declare ...', '/home/pawarpre/...', 6, Array)
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Core/App.php(943): App::_checkFatalError()
+#3 [internal function]: App::shutdown()
+#4 {main}
+2020-08-11 11:03:29 Error: [MissingTableException] Table invoice_templates for model InvoiceTemplate was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'invoice_templates',
+  'class' => 'InvoiceTemplate',
+  'ds' => 'default',
+)
+Request URL: /invoice_templates
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(3686): Model->setSource('invoice_templat...')
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(1394): Model->getDataSource()
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(1490): Model->schema()
+#3 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Component/PaginatorComponent.php(421): Model->hasField('created')
+#4 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Component/PaginatorComponent.php(158): PaginatorComponent->validateSort(Object(InvoiceTemplate), Array, Array)
+#5 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(1107): PaginatorComponent->paginate(Object(InvoiceTemplate), Array, Array)
+#6 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/Controller/InvoiceTemplatesController.php(21): Controller->paginate()
+#7 [internal function]: InvoiceTemplatesController->index()
+#8 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(InvoiceTemplatesController), Array)
+#9 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#10 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceTemplatesController), Object(CakeRequest))
+#11 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#12 {main}
+2020-08-11 11:07:33 Error: [MissingControllerException] Controller class InvoiceTemplatesController could not be found.
+Exception Attributes: array (
+  'class' => 'InvoiceTemplatesController',
+  'plugin' => NULL,
+)
+Request URL: /invoice_templates
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:07:37 Error: [MissingTableException] Table invoice_quotations for model InvoiceQuotation was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'invoice_quotations',
+  'class' => 'InvoiceQuotation',
+  'ds' => 'default',
+)
+Request URL: /invoice_quotations
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(3686): Model->setSource('invoice_quotati...')
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(1394): Model->getDataSource()
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(1490): Model->schema()
+#3 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Component/PaginatorComponent.php(421): Model->hasField('created')
+#4 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Component/PaginatorComponent.php(158): PaginatorComponent->validateSort(Object(InvoiceQuotation), Array, Array)
+#5 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(1107): PaginatorComponent->paginate(Object(InvoiceQuotation), Array, Array)
+#6 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/Controller/InvoiceQuotationsController.php(21): Controller->paginate()
+#7 [internal function]: InvoiceQuotationsController->index()
+#8 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(InvoiceQuotationsController), Array)
+#9 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#10 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#11 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#12 {main}
+2020-08-11 11:11:20 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:12:02 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:12:03 Error: [MissingActionException] Action InvoiceQuotationsController::createTemplate() could not be found.
+Exception Attributes: array (
+  'controller' => 'InvoiceQuotationsController',
+  'action' => 'createTemplate',
+)
+Request URL: /invoice_quotations/createTemplate
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#2 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2020-08-11 11:29:03 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:32:46 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:32:48 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:32:48 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:32:49 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:32:49 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:33:12 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:33:40 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:33:41 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:34:18 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:36:22 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:36:34 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:36:57 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:36:58 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:37:03 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:37:34 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:37:50 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:39:33 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:39:37 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:39:39 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:40:16 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:40:19 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:40:21 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:40:33 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:40:36 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:40:59 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:41:27 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:42:20 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:45:05 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:45:34 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:46:06 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:47:08 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:47:19 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:47:20 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:47:28 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:47:29 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:47:46 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:47:51 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:48:04 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:48:13 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:52:40 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:53:52 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:54:19 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:54:23 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:55:03 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:55:23 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:56:18 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:56:46 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:56:47 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:57:09 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:57:10 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:57:14 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 11:57:23 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:10:21 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:11:51 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:12:26 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:13:54 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:15:10 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:16:56 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:16:57 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:23:09 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:23:18 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:23:28 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:13 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:28 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:31 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:41 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:43 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:43 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:43 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:44 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:44 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:44 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:49 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:24:50 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:25:00 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:25:08 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:05 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:10 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:11 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:11 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:12 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:14 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:15 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:16 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:33:19 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:21 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:31 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:31 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:32 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:32 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:32 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:45 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:50 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:50 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:53 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:35:54 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:36:01 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:36:02 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:36:04 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:37:30 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:38:25 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:38:33 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:38:41 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:39:44 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:41:25 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:51:26 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:51:38 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:51:51 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:52:25 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:53:07 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:53:08 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:53:13 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:53:15 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:53:16 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:54:14 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:54:20 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:54:22 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:54:24 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:55:07 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:55:26 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:55:32 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:55:34 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 12:55:35 Error: [MissingControllerException] Controller class VendorController could not be found.
+Exception Attributes: array (
+  'class' => 'VendorController',
+  'plugin' => NULL,
+)
+Request URL: /vendor/popper.min.js.map
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 14:11:56 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-11 14:16:19 Error: [MissingActionException] Action InvoiceQuotationsController::template() could not be found.
+Exception Attributes: array (
+  'controller' => 'InvoiceQuotationsController',
+  'action' => 'template',
+)
+Request URL: /invoice_quotations/template
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#2 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2020-08-11 14:28:53 Error: [MissingActionException] Action InvoiceQuotationsController::edit_template() could not be found.
+Exception Attributes: array (
+  'controller' => 'InvoiceQuotationsController',
+  'action' => 'edit_template',
+)
+Request URL: /invoice_quotations/edit_template/1
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#2 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2020-08-11 21:23:48 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /css/style.css
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 08:36:41 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 08:39:54 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 08:41:33 Error: [MissingActionException] Action InvoiceQuotationsController::editQuotation() could not be found.
+Exception Attributes: array (
+  'controller' => 'InvoiceQuotationsController',
+  'action' => 'editQuotation',
+)
+Request URL: /invoice_quotations/editQuotation/6
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#2 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2020-08-14 08:44:40 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 08:46:41 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 08:53:44 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 08:54:27 Error: [MissingActionException] Action InvoiceQuotationsController::editQuotation() could not be found.
+Exception Attributes: array (
+  'controller' => 'InvoiceQuotationsController',
+  'action' => 'editQuotation',
+)
+Request URL: /invoice_quotations/editQuotation/6
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#2 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2020-08-14 08:59:21 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'InvoiceQuotation.user_id' in 'on clause'
+Request URL: /invoice_quotations/details/6
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(502): PDOStatement->execute(Array)
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(468): DboSource->_execute('SELECT `Invoice...', Array)
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(715): DboSource->execute('SELECT `Invoice...', Array, Array)
+#3 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(1226): DboSource->fetchAll('SELECT `Invoice...', Array)
+#4 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(3053): DboSource->read(Object(InvoiceQuotation), Array)
+#5 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(3025): Model->_readDataSource('first', Array)
+#6 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/Controller/InvoiceQuotationsController.php(124): Model->find('first', Array)
+#7 [internal function]: InvoiceQuotationsController->details('6')
+#8 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(InvoiceQuotationsController), Array)
+#9 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#10 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#11 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#12 {main}
+2020-08-14 09:01:59 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'EntityItem.invoice_quotation_id' in 'field list'
+Request URL: /invoice_quotations/details/6
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(502): PDOStatement->execute(Array)
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(468): DboSource->_execute('SELECT `EntityI...', Array)
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(715): DboSource->execute('SELECT `EntityI...', Array, Array)
+#3 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(1564): DboSource->fetchAll('SELECT `EntityI...', Array)
+#4 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(1398): DboSource->_fetchHasMany(Object(InvoiceQuotation), 'SELECT `EntityI...', Array)
+#5 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(1257): DboSource->queryAssociation(Object(InvoiceQuotation), Object(EntityItem), 'hasMany', 'EntityItem', Array, Array, true, Array, 0, Array)
+#6 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(3053): DboSource->read(Object(InvoiceQuotation), Array)
+#7 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(3025): Model->_readDataSource('first', Array)
+#8 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/Controller/InvoiceQuotationsController.php(124): Model->find('first', Array)
+#9 [internal function]: InvoiceQuotationsController->details('6')
+#10 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(InvoiceQuotationsController), Array)
+#11 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#12 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#13 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#14 {main}
+2020-08-14 09:23:23 Error: [ParseError] syntax error, unexpected '}', expecting end of file
+Request URL: /invoice_quotations/details/6
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/View/View.php(933): View->_evaluate('/home/pawarpre/...', Array)
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/View/View.php(473): View->_render('/home/pawarpre/...')
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(968): View->render(NULL, NULL)
+#3 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(200): Controller->render()
+#4 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#5 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#6 {main}
+2020-08-14 11:16:00 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 14:56:03 Error: [MissingActionException] Action InvoiceQuotationsController::editQuotation() could not be found.
+Exception Attributes: array (
+  'controller' => 'InvoiceQuotationsController',
+  'action' => 'editQuotation',
+)
+Request URL: /invoice_quotations/editQuotation/6
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#2 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2020-08-14 15:16:48 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 15:42:43 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'quotation_id' in 'where clause'
+Request URL: /invoice_quotations/edit/7
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(502): PDOStatement->execute(Array)
+#1 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(468): DboSource->_execute('delete from ent...', Array)
+#2 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(715): DboSource->execute('delete from ent...', Array, Array)
+#3 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Datasource/DboSource.php(641): DboSource->fetchAll('delete from ent...', Array)
+#4 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Model/Model.php(3489): DboSource->query('delete from ent...', false)
+#5 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/Controller/InvoiceQuotationsController.php(122): Model->query('delete from ent...')
+#6 [internal function]: InvoiceQuotationsController->edit('7')
+#7 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Controller/Controller.php(499): ReflectionMethod->invokeArgs(Object(InvoiceQuotationsController), Array)
+#8 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#9 /home/pawarpre/projects_cakephp_2_10_22/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(InvoiceQuotationsController), Object(CakeRequest))
+#10 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
+2020-08-14 15:52:53 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 15:53:07 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-14 15:54:42 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-21 08:45:50 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-21 08:46:07 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-21 08:46:10 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-21 10:47:51 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2020-08-21 10:50:42 Error: [MissingControllerException] Controller class ImgController could not be found.
+Exception Attributes: array (
+  'class' => 'ImgController',
+  'plugin' => NULL,
+)
+Request URL: /img/show_details.gif
+Stack Trace:
+#0 /home/pawarpre/projects_cakephp_2_10_22/app_pjn/webroot/index.php(117): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
