@@ -10,15 +10,15 @@
 /app_pjn_mobile/Config/database.php
 /app_wines/Config/database.php
 
-/app/tmp
-/app_myshop/tmp
-/app_closing_stock/tmp
-/app_enursery/tmp
-/app_enursery_base/tmp
-/app_greengrowerslandscapeconsultant/tmp
-/app_pjn/tmp
-/app_pjn_mobile/tmp
-/app_wines/tmp
+/app/tmp/*
+/app_myshop/tmp/*
+/app_closing_stock/tmp/*
+/app_enursery/tmp/*
+/app_enursery_base/tmp/*
+/app_greengrowerslandscapeconsultant/tmp/*
+/app_pjn/tmp/*
+/app_pjn_mobile/tmp/*
+/app_wines/tmp/*
 
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
