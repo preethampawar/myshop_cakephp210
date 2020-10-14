@@ -29,29 +29,32 @@ App::uses('AppController', 'Controller');
  * @package       app.Controller
  * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
-class PagesController extends AppController {
+class PagesController extends AppController
+{
 
-/**
- * Controller name
- *
- * @var string
- */
+	/**
+	 * Controller name
+	 *
+	 * @var string
+	 */
 	public $name = 'Pages';
 
-/**
- * This controller does not use a model
- *
- * @var array
- */
-	public $uses = array();
+	/**
+	 * This controller does not use a model
+	 *
+	 * @var array
+	 */
+	public $uses = [];
 
-/**
- * Displays a view
- *
- * @param mixed What page to display
- * @return void
- */
-	public function display() {
+	/**
+	 * Displays a view
+	 *
+	 * @param mixed What page to display
+	 *
+	 * @return void
+	 */
+	public function display()
+	{
 		$path = func_get_args();
 
 		$count = count($path);

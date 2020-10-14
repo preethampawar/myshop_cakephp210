@@ -1,4 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
-class Invoice extends AppModel {
+
+class Invoice extends AppModel
+{
 }
