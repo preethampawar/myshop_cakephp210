@@ -25,6 +25,7 @@ class ReportsController extends AppController
 	public function dayWiseStockReport()
 	{
 		$error = null;
+		$result = null;
 
 		$fromDate = date('Y-m-d');
 		$toDate = date('Y-m-d');
