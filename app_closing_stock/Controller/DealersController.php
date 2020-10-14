@@ -1,14 +1,18 @@
 <?php
-class DealersController extends AppController {
-    
-	function beforeFilter() {
+
+class DealersController extends AppController
+{
+
+	public function beforeFilter()
+	{
 		parent::beforeFilter();
 		$this->checkStoreInfo();
 	}
 
-    public function index() {		
+	public function index()
+	{
 		$store_id = $this->Session->read('Store.id');
-		
+
 		$query = "
 			select d.id, d.name, d.created
 			from dealers d
@@ -17,11 +21,12 @@ class DealersController extends AppController {
 		";
 		$result = $this->Dealer->query($query);
 		$this->set(compact('result'));
-    }
-	
-    public function showDealerBrandProducts() {		
+	}
+
+	public function showDealerBrandProducts()
+	{
 		$store_id = $this->Session->read('Store.id');
-		
+
 		$query = "
 			select d.id, d.name, d.created, b.id, b.name, p.id, p.name
 			from dealers d
@@ -32,58 +37,57 @@ class DealersController extends AppController {
 		";
 		$result = $this->Dealer->query($query);
 		$this->set(compact('result'));
-    }
+	}
 
-    public function view($dealerID = null) {
+	public function view($dealerID = null)
+	{
 		/*
 		$this->Dealer->bindModel(array('hasMany'=>array('Salary'=>array(
-																'className'=>'Salary', 
+																'className'=>'Salary',
 																'order'=>'payment_date DESC'
 																)
-														)));		
-		*/												
-        if(!($dealerInfo = $this->Dealer->findById($dealerID))) {
+														)));
+		*/
+		if (!($dealerInfo = $this->Dealer->findById($dealerID))) {
 			$this->Session->setFlash('Dealer not found');
-			$this->redirect(array('controller'=>'dealers', 'action'=>'index'));
+			$this->redirect(['controller' => 'dealers', 'action' => 'index']);
 		}
-        $this->set(compact('dealerInfo'));
-    }
+		$this->set(compact('dealerInfo'));
+	}
 
-	public function add() {
+	public function add()
+	{
 		$errorMsg = null;
-		if($this->request->data) {
+		if ($this->request->data) {
 			$data = $this->request->data;
-			if(isset($data['Dealer']['name'])) {					
-					
-				if($data['Dealer']['name']=trim($data['Dealer']['name'])) {
-					$conditions = array('Dealer.name'=>$data['Dealer']['name'], 'Dealer.store_id'=>$this->Session->read('Store.id'));
-					if($this->Dealer->find('first', array('conditions'=>$conditions))) {
-						$errorMsg = "'".$data['Dealer']['name']."'". ' already exists';
-					}
-					else {
+			if (isset($data['Dealer']['name'])) {
+
+				if ($data['Dealer']['name'] = trim($data['Dealer']['name'])) {
+					$conditions = ['Dealer.name' => $data['Dealer']['name'], 'Dealer.store_id' => $this->Session->read('Store.id')];
+					if ($this->Dealer->find('first', ['conditions' => $conditions])) {
+						$errorMsg = "'" . $data['Dealer']['name'] . "'" . ' already exists';
+					} else {
 						$data['Dealer']['store_id'] = $this->Session->read('Store.id');
-						if($this->Dealer->save($data)) {
+						if ($this->Dealer->save($data)) {
 							$dealerInfo = $this->Dealer->read();
 							$msg = 'Dealer added successfully';
-							$this->Session->setFlash($msg, 'default', array('class'=>'success'));
-							$this->redirect(array('controller'=>'dealers', 'action'=>'add'));
-						}
-						else {
+							$this->Session->setFlash($msg, 'default', ['class' => 'success']);
+							$this->redirect(['controller' => 'dealers', 'action' => 'add']);
+						} else {
 							$errorMsg = 'An error occurred while communicating with the server';
 						}
 					}
-				}
-				else {
+				} else {
 					$errorMsg = 'Enter Dealer Name';
 				}
-				
+
 			}
 		}
 		($errorMsg) ? $this->Session->setFlash($errorMsg) : null;
-		
+
 		// get recent dealers
 		$store_id = $this->Session->read('Store.id');
-		
+
 		$query = "
 			select d.id, d.name, d.created, b.id, b.name, p.id, p.name
 			from dealers d
@@ -95,66 +99,62 @@ class DealersController extends AppController {
 		";
 		$result = $this->Dealer->query($query);
 		$this->set(compact('result'));
-		
+
 	}
 
-    public function edit($dealerID=null) {
+	public function edit($dealerID = null)
+	{
 		$errorMsg = null;
-		
-		if(!($dealerInfo = $this->CommonFunctions->getDealerInfo($dealerID))) {
+
+		if (!($dealerInfo = $this->CommonFunctions->getDealerInfo($dealerID))) {
 			$this->Session->setFlash('Dealer not found');
 			$this->redirect('/dealers/');
 		}
-			
-		if($this->request->data) {
+
+		if ($this->request->data) {
 			$data = $this->request->data;
-			if(isset($data['Dealer']['name'])) {
-				if($data['Dealer']['name']=trim($data['Dealer']['name'])) {					
-						
-					$conditions = array('Dealer.name'=>$data['Dealer']['name'], 'Dealer.store_id'=>$this->Session->read('Store.id'), 'Dealer.id <>'=>$dealerID);
-					if($this->Dealer->find('first', array('conditions'=>$conditions))) {
-						$errorMsg = "'".$data['Dealer']['name']."'". ' already exists';
-					}
-					else {
+			if (isset($data['Dealer']['name'])) {
+				if ($data['Dealer']['name'] = trim($data['Dealer']['name'])) {
+
+					$conditions = ['Dealer.name' => $data['Dealer']['name'], 'Dealer.store_id' => $this->Session->read('Store.id'), 'Dealer.id <>' => $dealerID];
+					if ($this->Dealer->find('first', ['conditions' => $conditions])) {
+						$errorMsg = "'" . $data['Dealer']['name'] . "'" . ' already exists';
+					} else {
 						$data['Dealer']['id'] = $dealerID;
 						$data['Dealer']['store_id'] = $this->Session->read('Store.id');
-						if($this->Dealer->save($data)) {
-							$msg = 'Dealer updated successfully';							
-							$this->Session->setFlash($msg, 'default', array('class'=>'success'));
+						if ($this->Dealer->save($data)) {
+							$msg = 'Dealer updated successfully';
+							$this->Session->setFlash($msg, 'default', ['class' => 'success']);
 							$this->redirect('/dealers/');
-						}
-						else {
+						} else {
 							$errorMsg = 'An error occured while communicating with the server';
 						}
 					}
-				}
-				else {
+				} else {
 					$errorMsg = 'Enter Dealer Name';
 				}
 			}
-		}
-		else {
+		} else {
 			$this->data = $dealerInfo;
 		}
 		($errorMsg) ? $this->Session->setFlash($errorMsg) : null;
-		 $this->set(compact('dealerInfo'));
+		$this->set(compact('dealerInfo'));
 	}
 
-    public function remove($dealerID=null) {
-		if($dealerID) {
-			if(!($dealerInfo = $this->CommonFunctions->getDealerInfo($dealerID))) {
+	public function remove($dealerID = null)
+	{
+		if ($dealerID) {
+			if (!($dealerInfo = $this->CommonFunctions->getDealerInfo($dealerID))) {
 				$this->Session->setFlash('Dealer not found');
-			}
-			else {
+			} else {
 				// delete dealer information
-				$this->Dealer->delete($dealerID);				
-				$this->Session->setFlash('Dealer "'.$dealerInfo['Dealer']['name'].'" has been removed', 'default', array('class'=>'success'));
+				$this->Dealer->delete($dealerID);
+				$this->Session->setFlash('Dealer "' . $dealerInfo['Dealer']['name'] . '" has been removed', 'default', ['class' => 'success']);
 			}
-		}
-		else {
+		} else {
 			$this->Session->setFlash('Unauthorized access');
 		}
 		$this->redirect($this->request->referer());
 	}
-	
+
 }

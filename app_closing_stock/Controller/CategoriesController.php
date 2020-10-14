@@ -1,155 +1,154 @@
 <?php
-class CategoriesController extends AppController {
 
-	var $name = 'Categories';
-	
-	function beforeFilter() {
+class CategoriesController extends AppController
+{
+
+	public $name = 'Categories';
+
+	public function beforeFilter()
+	{
 		parent::beforeFilter();
 		$this->checkStoreInfo();
 	}
-	
-	public function getCategoryInfo($categoryID=null) {
-		if(!$categoryID) {
-			return array();
-		}
-		else {
-			$conditions = array('Category.id'=>$categoryID, 'Category.store_id'=>$this->Session->read('Store.id'));
-			if($expenseCategoryInfo = $this->Category->find('first', array('conditions'=>$conditions))) {
-				return $expenseCategoryInfo;
-			}
-		}
-		return array();
-	}
-	
+
 	/**
 	 * Function to show list of categories
 	 */
-	 public function index() {				
+	public function index()
+	{
 		$hideSideBar = true;
-		$conditions = array('Category.store_id'=>$this->Session->read('Store.id'));		
-		$categories = $this->Category->find('all', array(
-				'order' => array('Category.name' => 'ASC'),
-				'conditions' => $conditions,
-				'recursive' => '-1'
- 			));		
+		$conditions = ['Category.store_id' => $this->Session->read('Store.id')];
+		$categories = $this->Category->find('all', [
+			'order' => ['Category.name' => 'ASC'],
+			'conditions' => $conditions,
+			'recursive' => '-1',
+		]);
 		$this->set(compact('categories', 'hideSideBar'));
-    } 
-	
-	function add() {
+	}
+
+	public function add()
+	{
 		$error = null;
-		if(isset($this->request->data) and !empty($this->request->data) )
-		{	
+		if (isset($this->request->data) and !empty($this->request->data)) {
 			App::uses('Validation', 'Utility');
-			
+
 			$data['Category'] = $this->request->data['Category'];
-			$data['Category']['name'] = trim($data['Category']['name']);			
-				
-			if(!empty($data['Category']['name'])) {
-				if(!Validation::between($data['Category']['name'], 2, 55)) {
+			$data['Category']['name'] = trim($data['Category']['name']);
+
+			if (!empty($data['Category']['name'])) {
+				if (!Validation::between($data['Category']['name'], 2, 55)) {
 					$error = 'Category name should be between 2 and 55 characters';
-				}			
-				$data['Category']['name'] = htmlentities($data['Category']['name'], ENT_QUOTES);			
-				
-				//find if a similar category exists for the selected store
-				$conditions = array('Category.name'=>$data['Category']['name'], 'Category.store_id'=>$this->Session->read('Store.id'));
-				if($this->Category->find('first', array('conditions'=>$conditions))) {
-					$error = 'Category "'.$data['Category']['name'].'" already exists';
 				}
-			}
-			else {
+				$data['Category']['name'] = htmlentities($data['Category']['name'], ENT_QUOTES);
+
+				//find if a similar category exists for the selected store
+				$conditions = ['Category.name' => $data['Category']['name'], 'Category.store_id' => $this->Session->read('Store.id')];
+				if ($this->Category->find('first', ['conditions' => $conditions])) {
+					$error = 'Category "' . $data['Category']['name'] . '" already exists';
+				}
+			} else {
 				$error = 'Category name cannot be empty';
 			}
-			
-			if(!$error) {
+
+			if (!$error) {
 				$data['Category']['id'] = null;
-				$data['Category']['store_id'] = $this->Session->read('Store.id');				
-				if($this->Category->save($data))
-				{						
-					$this->Session->setFlash('Category "'.$data['Category']['name'].'" Created Successfully', 'default', array('class'=>'success'));
-				}
-				else
-				{
+				$data['Category']['store_id'] = $this->Session->read('Store.id');
+				if ($this->Category->save($data)) {
+					$this->Session->setFlash('Category "' . $data['Category']['name'] . '" Created Successfully', 'default', ['class' => 'success']);
+				} else {
 					$error = 'An error occurred while creating a new category';
 				}
 			}
 		}
-		if($error) {$this->Session->setFlash($error, 'default', array('class'=>'error'));}
+		if ($error) {
+			$this->Session->setFlash($error, 'default', ['class' => 'error']);
+		}
 		$this->redirect('/categories/');
 	}
-	
-	
-	function edit($categoryID=null) {
+
+	public function edit($categoryID = null)
+	{
 		$hideSideBar = true;
-	
-		if(!$pCatInfo = $this->getCategoryInfo($categoryID)) {
-			$this->Session->setFlash('Category not found.', 'default', array('class'=>'error'));
+
+		if (!$pCatInfo = $this->getCategoryInfo($categoryID)) {
+			$this->Session->setFlash('Category not found.', 'default', ['class' => 'error']);
 			$this->redirect('/categories/');
 		}
-					
+
 		$error = null;
-		if(isset($this->request->data) and !empty($this->request->data) )
-		{	
+		if (isset($this->request->data) and !empty($this->request->data)) {
 			App::uses('Validation', 'Utility');
-			
+
 			$data['Category'] = $this->request->data['Category'];
-			$data['Category']['name'] = trim($data['Category']['name']);			
-				
-			if(!empty($data['Category']['name'])) {
-				if(!Validation::between($data['Category']['name'], 2, 55)) {
+			$data['Category']['name'] = trim($data['Category']['name']);
+
+			if (!empty($data['Category']['name'])) {
+				if (!Validation::between($data['Category']['name'], 2, 55)) {
 					$error = 'Category name should be between 2 and 55 characters';
-				}			
-				$data['Category']['name'] = htmlentities($data['Category']['name'], ENT_QUOTES);			
-				
-				//find if a similar category exists for the selected store
-				$conditions = array('Category.name'=>$data['Category']['name'], 'Category.store_id'=>$this->Session->read('Store.id'), 'Category.id <>'=>$categoryID);
-				if($this->Category->find('first', array('conditions'=>$conditions))) {
-					$error = 'Category "'.$data['Category']['name'].'" already exists';
 				}
-			}
-			else {
+				$data['Category']['name'] = htmlentities($data['Category']['name'], ENT_QUOTES);
+
+				//find if a similar category exists for the selected store
+				$conditions = ['Category.name' => $data['Category']['name'], 'Category.store_id' => $this->Session->read('Store.id'), 'Category.id <>' => $categoryID];
+				if ($this->Category->find('first', ['conditions' => $conditions])) {
+					$error = 'Category "' . $data['Category']['name'] . '" already exists';
+				}
+			} else {
 				$error = 'Category name cannot be empty';
 			}
-			
-			if(!$error) {
+
+			if (!$error) {
 				$data['Category']['id'] = $categoryID;
-				$data['Category']['store_id'] = $this->Session->read('Store.id');				
-				if($this->Category->save($data))
-				{						
-					$this->Session->setFlash('Category Updated Successfully', 'default', array('class'=>'success'));
+				$data['Category']['store_id'] = $this->Session->read('Store.id');
+				if ($this->Category->save($data)) {
+					$this->Session->setFlash('Category Updated Successfully', 'default', ['class' => 'success']);
 					$this->redirect('/cashbook/');
-				}
-				else
-				{
+				} else {
 					$error = 'An error occured while creating a new category';
 				}
 			}
-		}
-		else {
+		} else {
 			$this->data = $pCatInfo;
 		}
-		
+
 		$this->set('pCatInfo', $pCatInfo);
 		$this->set('hideSideBar', $hideSideBar);
-		if($error) {$this->Session->setFlash($error, 'default', array('class'=>'error'));}
-	}
-	
-	function delete($categoryID = null) {
-		if(!$info = $this->getCategoryInfo($categoryID)) {
-			$this->Session->setFlash('Category not found', 'default', array('class'=>'error'));
+		if ($error) {
+			$this->Session->setFlash($error, 'default', ['class' => 'error']);
 		}
-		else {
+	}
+
+	public function getCategoryInfo($categoryID = null)
+	{
+		if (!$categoryID) {
+			return [];
+		} else {
+			$conditions = ['Category.id' => $categoryID, 'Category.store_id' => $this->Session->read('Store.id')];
+			if ($expenseCategoryInfo = $this->Category->find('first', ['conditions' => $conditions])) {
+				return $expenseCategoryInfo;
+			}
+		}
+		return [];
+	}
+
+	public function delete($categoryID = null)
+	{
+		if (!$info = $this->getCategoryInfo($categoryID)) {
+			$this->Session->setFlash('Category not found', 'default', ['class' => 'error']);
+		} else {
 			// delete category records
 			App::uses('Cashbook', 'Model');
-			$this->Cashbook = new Cashbook;
-			$conditions = array('Cashbook.category_id'=>$categoryID, 'Cashbook.store_id'=>$this->Session->read('Store.id'));
+			$this->Cashbook = new Cashbook();
+			$conditions = ['Cashbook.category_id' => $categoryID, 'Cashbook.store_id' => $this->Session->read('Store.id')];
 			$this->Cashbook->deleteAll($conditions);
-			
+
 			// delete category info
 			$this->Category->delete($categoryID);
-			$this->Session->setFlash('"'.$info['Category']['name'].'" Category deleted', 'default', array('class'=>'success'));
-		}		
+			$this->Session->setFlash('"' . $info['Category']['name'] . '" Category deleted', 'default', ['class' => 'success']);
+		}
 		$this->redirect($this->request->referer());
 	}
 
 }
+
 ?>
