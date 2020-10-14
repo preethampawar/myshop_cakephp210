@@ -60,19 +60,16 @@ class AppController extends Controller
 			$unixTimeStoreActualExpiry = strtotime($storeCreatedOn . " +1 year");
 			$unixTimeStoreExpiryNotice = strtotime($storeCreatedOn . " +1 year -1 month");
 			$unixTimeNow = strtotime("now");
+			$unixTimeStoreExpiry = strtotime($storeCreatedOn . " +1 year +1 day");
 
-			$storeExpiryDate = date('d-m-Y', $unixTimeStoreActualExpiry);
-			if ($unixTimeNow > $unixTimeStoreExpiryNotice) {
-				$this->noticeMsg("This Store will expire on '$storeExpiryDate'. Contact service provider to renew this store before expiry date.");
-			} else {
-				$unixTimeStoreExpiry = strtotime($storeCreatedOn . " +1 year +1 day");
-
-				if ($unixTimeNow > $unixTimeStoreExpiry) {
-					$this->errorMsg("This Store is expired. Contact service provider to renew this store. <br> You are only allowed to access 'Reports'.");
-					if (($this->request->params['controller'] != 'reports') and ($this->request->params['controller'] != 'stores') and ($this->request->params['controller'] != 'users')) {
-						$this->redirect(['controller' => 'reports', 'action' => 'home']);
-					}
+			$storeExpiryDate = date('d M Y', $unixTimeStoreActualExpiry);
+			if ($unixTimeNow > $unixTimeStoreExpiry) {
+				$this->errorMsg("This Store is expired. Contact service provider to renew this store. <br> You are only allowed to access 'Reports'.");
+				if (($this->request->params['controller'] != 'reports') and ($this->request->params['controller'] != 'stores') and ($this->request->params['controller'] != 'users')) {
+					$this->redirect(['controller' => 'reports', 'action' => 'home']);
 				}
+			} elseif ($unixTimeNow > $unixTimeStoreExpiryNotice) {
+				$this->noticeMsg("This Store will expire on <u><b>'$storeExpiryDate'</b></u>. Contact service provider to renew this store before expiry date.");
 			}
 		}
 	}
