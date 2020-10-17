@@ -14,34 +14,71 @@ class ProductCategoriesController extends AppController
 	/**
 	 * Function to show list of categories
 	 */
-	public function index($categoryID = null)
+	public function index($categoryID = null, $showAll = false)
 	{
 		$hideSideBar = true;
-		$conditions = ['ProductCategory.store_id' => $this->Session->read('Store.id')];
-		if ($categoryID) {
-			$conditions['ProductCategory.id'] = $categoryID;
-		}
+		$products = [];
+		$conditions = [
+			'ProductCategory.store_id' => $this->Session->read('Store.id'),
+		];
 
 		$fields = ['ProductCategory.id', 'ProductCategory.name', 'ProductCategory.created'];
-		$this->ProductCategory->bindModel(['hasMany' => ['Product' => ['class' => 'Product', 'fields' => ['Product.id', 'Product.name', 'Product.box_qty', 'Product.box_buying_price', 'Product.unit_selling_price', 'Product.special_margin', 'Product.created', 'Product.brand_id']]]]);
-		$products = $this->ProductCategory->find('all', [
-			'fields' => $fields,
-			'order' => ['ProductCategory.name' => 'ASC'],
+		if ($categoryID) {
+			$conditions['ProductCategory.id'] = $categoryID;
+			$this->ProductCategory->bindModel([
+				'hasMany' => [
+					'Product' => [
+						'class' => 'Product',
+						'fields' => [
+							'Product.id',
+							'Product.name',
+							'Product.box_qty',
+							'Product.box_buying_price',
+							'Product.unit_selling_price',
+							'Product.special_margin',
+							'Product.created',
+							'Product.brand_id',
+						],
+					],
+				],
+			]);
+
+			$products = $this->ProductCategory->find('all', [
+				'fields' => $fields,
+				'order' => ['ProductCategory.name' => 'ASC'],
+				'conditions' => $conditions,
+				'recursive' => '1',
+			]);
+		}
+
+
+		$conditions = ['Product.store_id' => $this->Session->read('Store.id')];
+		if ($categoryID) {
+			$conditions['Product.product_category_id'] = $categoryID;
+		}
+
+		App::uses('Product', 'Model');
+		$this->Product = new Product();
+		$productsCount = $this->Product->find('count', [
 			'conditions' => $conditions,
-			'recursive' => '1',
+			'recursive' => '-1',
 		]);
+
+
 		$categories = $this->ProductCategory->find('all', [
 			'fields' => $fields,
 			'order' => ['ProductCategory.name' => 'ASC'],
 			'conditions' => ['ProductCategory.store_id' => $this->Session->read('Store.id')],
 			'recursive' => '0',
 		]);
+
 		$category = $this->ProductCategory->findById($categoryID);
+
 		App::uses('Brand', 'Model');
 		$this->Brand = new Brand();
 		$brands = $this->Brand->find('list', ['conditions' => ['Brand.store_id' => $this->Session->read('Store.id')]]);
 
-		$this->set(compact('products', 'categories', 'hideSideBar', 'brands', 'categoryID', 'category'));
+		$this->set(compact('products', 'categories', 'hideSideBar', 'brands', 'categoryID', 'category', 'productsCount'));
 	}
 
 	public function add()
@@ -202,7 +239,7 @@ class ProductCategoriesController extends AppController
 						$maxSize = 5;
 
 						if (ceil($fileSize / (1024 * 1024)) > $maxSize) {
-							$this->errorMsg('File size exceeds ' . $maxSize. 'Mb limit');
+							$this->errorMsg('File size exceeds ' . $maxSize . 'Mb limit');
 						} else {
 							// valid file
 							$response = $this->checkValidCsvData($data);
@@ -311,7 +348,6 @@ class ProductCategoriesController extends AppController
 	}
 
 
-
 	private function updateCsvData1($fileData)
 	{
 		$updatedRecords = 0;
@@ -320,25 +356,25 @@ class ProductCategoriesController extends AppController
 
 		// get store product categories
 		$pcConditions = ['ProductCategory.store_id' => $this->Session->read('Store.id')];
-		$storeCategories = $this->ProductCategory->find('list', ['conditions' => $pcConditions, 'recursive'=>-1]);
+		$storeCategories = $this->ProductCategory->find('list', ['conditions' => $pcConditions, 'recursive' => -1]);
 
 		// get store brands
 		App::uses('Brand', 'Model');
 		$this->Brand = new Brand();
 		$bConditions = ['Brand.store_id' => $this->Session->read('Store.id')];
-		$storeBrands = $this->Brand->find('list', ['conditions' => $bConditions, 'recursive'=>-1]);
+		$storeBrands = $this->Brand->find('list', ['conditions' => $bConditions, 'recursive' => -1]);
 
 		// get store products
 		App::uses('Product', 'Model');
 		$this->Product = new Product();
 		$conditions = ['Product.store_id' => $this->Session->read('Store.id')];
-		$storeProducts = $this->Product->find('all', ['conditions' => $conditions, 'recursive'=>-1]);
+		$storeProducts = $this->Product->find('all', ['conditions' => $conditions, 'recursive' => -1]);
 
-		if($fileData) {
+		if ($fileData) {
 			$csvCategories = [];
 			$csvBrands = [];
 
-			foreach($fileData as $row) {
+			foreach ($fileData as $row) {
 				// get categories from csv file
 				$csvCategories[$row[0]] = $row[0];
 
@@ -350,14 +386,14 @@ class ProductCategoriesController extends AppController
 			$brandsToBeCreated = [];
 
 			// find new categories to be created
-			foreach($csvCategories as $catName) {
+			foreach ($csvCategories as $catName) {
 				if (!in_array($catName, $storeCategories, true)) {
 					$categoriesToBeCreated[] = $catName;
 				}
 			}
 
 			// find new brands to be created
-			foreach($csvBrands as $brandName) {
+			foreach ($csvBrands as $brandName) {
 				if (!in_array($brandName, $storeBrands, true)) {
 					$brandsToBeCreated[] = $brandName;
 				}
@@ -389,8 +425,8 @@ class ProductCategoriesController extends AppController
 			}
 
 			// get all categories and brands after update
-			$storeCategories = $this->ProductCategory->find('list', ['conditions' => $pcConditions, 'recursive'=>-1]);
-			$storeBrands = $this->Brand->find('list', ['conditions' => $bConditions, 'recursive'=>-1]);
+			$storeCategories = $this->ProductCategory->find('list', ['conditions' => $pcConditions, 'recursive' => -1]);
+			$storeBrands = $this->Brand->find('list', ['conditions' => $bConditions, 'recursive' => -1]);
 
 			foreach ($fileData as $index => $row) {
 				$tmp = [];
@@ -421,12 +457,33 @@ class ProductCategoriesController extends AppController
 					$updatedRecords++;
 				} else {
 					$error = true;
-					$errorMsg .= 'Invalid category "'.$row[0].'" at line no. ' . ($index+1) . '<br>';
+					$errorMsg .= 'Invalid category "' . $row[0] . '" at line no. ' . ($index + 1) . '<br>';
 				}
 			}
 		}
 
-		return ['error'=>$error, 'errorMsg'=>$errorMsg, 'updatedRecords'=>$updatedRecords];
+		return ['error' => $error, 'errorMsg' => $errorMsg, 'updatedRecords' => $updatedRecords];
+	}
+
+	public function downloadCsv()
+	{
+		Configure::write('debug', 0);
+
+		ini_set('max_execution_time', '10000');
+		ini_set('memory_limit', '1024M');
+
+		$fileName = 'ProductList-' . time() . '.csv';
+		$this->layout = 'csv';
+
+		$this->response->compress();
+		$this->response->type('csv');
+		$this->response->download($fileName);
+
+		$conditions = ['ProductCategory.store_id' => $this->Session->read('Store.id')];
+		$this->ProductCategory->bindModel(['hasMany' => ['Product' => ['order' => 'Product.name']]]);
+		$storeProducts = $this->ProductCategory->find('all', ['conditions' => $conditions, 'order' => 'ProductCategory.name', 'recursive' => 2]);
+
+		$this->set(compact('storeProducts'));
 	}
 
 	private function updateCsvData($fileData)
@@ -437,7 +494,7 @@ class ProductCategoriesController extends AppController
 
 			$conditions = ['ProductCategory.store_id' => $this->Session->read('Store.id')];
 			$this->ProductCategory->bindModel(['hasMany' => ['Product']]);
-			$storeCategoryProducts = $this->ProductCategory->find('all', ['conditions' => $conditions, 'recursive'=>2]);
+			$storeCategoryProducts = $this->ProductCategory->find('all', ['conditions' => $conditions, 'recursive' => 2]);
 
 			$fileCategories = [];
 			$fileProducts = [];
@@ -554,27 +611,6 @@ class ProductCategoriesController extends AppController
 		}
 
 		return $response;
-	}
-
-	public function downloadCsv()
-	{
-		Configure::write('debug', 0);
-
-		ini_set('max_execution_time', '10000');
-		ini_set('memory_limit', '1024M');
-
-		$fileName = 'ProductList-' . time() . '.csv';
-		$this->layout = 'csv';
-
-		$this->response->compress();
-		$this->response->type('csv');
-		$this->response->download($fileName);
-
-		$conditions = ['ProductCategory.store_id' => $this->Session->read('Store.id')];
-		$this->ProductCategory->bindModel(['hasMany' => ['Product' => ['order' => 'Product.name']]]);
-		$storeProducts = $this->ProductCategory->find('all', ['conditions' => $conditions, 'order' => 'ProductCategory.name', 'recursive' => 2]);
-
-		$this->set(compact('storeProducts'));
 	}
 
 }
