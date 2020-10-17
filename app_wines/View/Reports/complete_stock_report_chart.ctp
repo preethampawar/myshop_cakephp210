@@ -110,64 +110,91 @@ if (!empty($result)) {
     }
     ?>
     <script>
-        reportPieData = [
-            ['Store Performance', 'Total Amount'],
-            ['Total Purchases', <?php echo $storePurchaseValue;?>],
-            ['Total Sales', <?php echo $storeSaleValue;?>],
-            ['Total Closing Stock Value', <?php echo $storeClosingStockValue;?>],
-            ['Profit On Sales', <?php echo $storeProfitValue;?>],
-        ];
-        reportPieDataPredicted = [
-            ['Store Performance', 'Total Amount'],
-            ['Total Purchases', <?php echo $storePurchaseValue;?>],
-            ['Total Predicted Sales', <?php echo $storePredictedSaleValue;?>],
-            ['Total Predicted Profit On Sales', <?php echo $storePredictedProfitValue;?>],
-        ];
+		let performanceBarDataActual = [
+			[
+				'',
+				'Sales ' + <?php echo $storeSaleValue;?>,
+				'Purchases ' + <?php echo $storePurchaseValue;?>,
+				'Closing ' + <?php echo $storeClosingStockValue;?>,
+				'Profit ' + <?php echo $storeProfitValue;?>
+			],
+			[
+				'Till Now - <?= date('d M Y') ?>',
+				<?php echo $storeSaleValue;?>,
+				<?php echo $storePurchaseValue;?>,
+				<?php echo $storeClosingStockValue;?>,
+				<?php echo $storeProfitValue;?>
+			]
+		];
+
+		let performanceBarDataPredicted = [
+			[
+				'',
+				'Sales ' + <?php echo $storeSaleValue;?>,
+				'Purchases ' + <?php echo $storePurchaseValue;?>,
+				'Profit ' + <?php echo $storePredictedProfitValue;?>
+			],
+			[
+				'Till Now - <?= date('d M Y') ?>',
+				<?php echo $storeSaleValue;?>,
+				<?php echo $storePurchaseValue;?>,
+				<?php echo $storePredictedProfitValue;?>
+			]
+		];
     </script>
 
 
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <!-- pie chart - store performance -->
-    <script type="text/javascript">
-        google.charts.load("current", {packages: ["corechart"]});
-        google.charts.setOnLoadCallback(drawPieChart);
+	<!-- bar chart - store performance -->
+	<script>
+		google.charts.load('current', {'packages':['bar']});
+		google.charts.setOnLoadCallback(drawPerformanceBarChart);
 
-        function drawPieChart() {
-            var pieData = google.visualization.arrayToDataTable(reportPieData);
+		function drawPerformanceBarChart() {
+			var data = google.visualization.arrayToDataTable(performanceBarDataActual);
 
-            var pieOptions = {
-                title: 'My Store Performance - Actual',
-                is3D: true,
-            };
+			var options = {
+				chart: {
+					title: 'Store Performance',
+					subtitle: 'Sales, Purchases, Closing Stock and Profit on sales',
+				},
+				bars: 'vertical',
+			};
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-            chart.draw(pieData, pieOptions);
-        }
+			var chart = new google.charts.Bar(document.getElementById('barchart_performance_actual'));
 
-        google.charts.setOnLoadCallback(drawPieChartPredicted);
+			chart.draw(data, google.charts.Bar.convertOptions(options));
+		}
 
-        function drawPieChartPredicted() {
-            var pieData = google.visualization.arrayToDataTable(reportPieDataPredicted);
+		google.charts.setOnLoadCallback(drawPerformanceBarChartPredicted);
 
-            var pieOptionsPredicted = {
-                title: 'My Store Performance - Predicted',
-                is3D: true,
-            };
+		function drawPerformanceBarChartPredicted() {
+			var data = google.visualization.arrayToDataTable(performanceBarDataPredicted);
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart_predicted_3d'));
-            chart.draw(pieData, pieOptionsPredicted);
-        }
-    </script>
-    <div class="row">
-        <div class="col-md-6">
-            <div id="piechart_3d" style="width: 100%; height: 500px;"></div>
-        </div>
-        <div class="col-md-6">
-            <div id="piechart_predicted_3d" style="width: 100%; height: 500px;"></div>
-        </div>
-    </div>
+			var options = {
+				chart: {
+					title: 'Predicted - Store Performance',
+					subtitle: 'Sales, Purchases and Profit on sales',
+				}
+			};
+
+			var chart = new google.charts.Bar(document.getElementById('barchart_performance_predicted'));
+
+			chart.draw(data, google.charts.Bar.convertOptions(options));
+		}
+	</script>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="barchart_performance_actual" style="width: 100%; height: 500px;"></div>
+			<br><hr><br>
+			<div id="barchart_performance_predicted" style="width: 100%; height: 500px;"></div>
+		</div>
+	</div>
+
+	<br><hr><br>
 
     <!-- pie chart - top performing products -->
     <script type="text/javascript">
@@ -264,3 +291,4 @@ if (!empty($result)) {
     echo 'No products found';
 }
 ?>
+<br><br>

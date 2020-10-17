@@ -112,18 +112,36 @@ if (!empty($result)) {
 	}
 	?>
 	<script>
-		reportPieData = [
-			['Store Performance', 'Total Amount'],
-			['Total Purchases', <?php echo $storePurchaseValue;?>],
-			['Total Sales', <?php echo $storeSaleValue;?>],
-			['Total Closing Stock Value', <?php echo $storeClosingStockValue;?>],
-			['Profit On Sales', <?php echo $storeProfitValue;?>],
+		let performanceBarDataActual = [
+			[
+				'',
+				'Sales ' + <?php echo $storeSaleValue;?>,
+				'Purchases ' + <?php echo $storePurchaseValue;?>,
+				'Closing ' + <?php echo $storeClosingStockValue;?>,
+				'Profit ' + <?php echo $storeProfitValue;?>
+			],
+			[
+				'Till Now - <?= date('d M Y') ?>',
+				<?php echo $storeSaleValue;?>,
+				<?php echo $storePurchaseValue;?>,
+				<?php echo $storeClosingStockValue;?>,
+				<?php echo $storeProfitValue;?>
+			]
 		];
-		reportPieDataPredicted = [
-			['Store Performance', 'Total Amount'],
-			['Total Purchases', <?php echo $storePurchaseValue;?>],
-			['Total Predicted Sales', <?php echo $storePredictedSaleValue;?>],
-			['Total Predicted Profit On Sales', <?php echo $storePredictedProfitValue;?>],
+
+		let performanceBarDataPredicted = [
+			[
+				'',
+				'Sales ' + <?php echo $storeSaleValue;?>,
+				'Purchases ' + <?php echo $storePurchaseValue;?>,
+				'Profit ' + <?php echo $storePredictedProfitValue;?>
+			],
+			[
+				'Till Now - <?= date('d M Y') ?>',
+				<?php echo $storeSaleValue;?>,
+				<?php echo $storePurchaseValue;?>,
+				<?php echo $storePredictedProfitValue;?>
+			]
 		];
 	</script>
 
@@ -133,45 +151,50 @@ if (!empty($result)) {
 	<?php
 	if ($type == 'store_performance') {
 		?>
-		<!-- pie chart - store performance -->
-		<script type="text/javascript">
-			google.charts.load("current", {packages: ["corechart"]});
-			google.charts.setOnLoadCallback(drawPieChart);
+		<!-- bar chart - store performance -->
+		<script>
+			google.charts.load('current', {'packages':['bar']});
+			google.charts.setOnLoadCallback(drawPerformanceBarChart);
 
-			function drawPieChart() {
-				var pieData = google.visualization.arrayToDataTable(reportPieData);
+			function drawPerformanceBarChart() {
+				var data = google.visualization.arrayToDataTable(performanceBarDataActual);
 
-				var pieOptions = {
-					title: 'My Store Performance - Actual',
-					is3D: true,
-					chartArea: {left: 0, top: 20, width: '100%'}
+				var options = {
+					chart: {
+						title: 'Store Performance',
+						subtitle: 'Sales, Purchases, Closing Stock and Profit on sales',
+					},
+					bars: 'vertical',
 				};
 
-				var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-				chart.draw(pieData, pieOptions);
+				var chart = new google.charts.Bar(document.getElementById('barchart_performance_actual'));
+
+				chart.draw(data, google.charts.Bar.convertOptions(options));
 			}
 
-			google.charts.setOnLoadCallback(drawPieChartPredicted);
+			google.charts.setOnLoadCallback(drawPerformanceBarChartPredicted);
 
-			function drawPieChartPredicted() {
-				var pieData = google.visualization.arrayToDataTable(reportPieDataPredicted);
+			function drawPerformanceBarChartPredicted() {
+				var data = google.visualization.arrayToDataTable(performanceBarDataPredicted);
 
-				var pieOptionsPredicted = {
-					title: 'My Store Performance - Predicted',
-					is3D: true,
-					chartArea: {left: 0, top: 20, width: '100%'}
+				var options = {
+					chart: {
+						title: 'Predicted - Store Performance',
+						subtitle: 'Sales, Purchases and Profit on sales',
+					}
 				};
 
-				var chart = new google.visualization.PieChart(document.getElementById('piechart_predicted_3d'));
-				chart.draw(pieData, pieOptionsPredicted);
+				var chart = new google.charts.Bar(document.getElementById('barchart_performance_predicted'));
+
+				chart.draw(data, google.charts.Bar.convertOptions(options));
 			}
 		</script>
+
 		<div class="row">
-			<div class="col-xs-6">
-				<div id="piechart_3d" style="width: 100%; height: 300px;"></div>
-			</div>
-			<div class="col-xs-6">
-				<div id="piechart_predicted_3d" style="width: 100%; height: 300px;"></div>
+			<div class="col-xs-12">
+				<div id="barchart_performance_actual" style="width: 100%; height: 500px;"></div>
+				<br><hr><br>
+				<div id="barchart_performance_predicted" style="width: 100%; height: 500px;"></div>
 			</div>
 		</div>
 		<?php
@@ -299,3 +322,4 @@ if (!empty($result)) {
 	echo 'No products found';
 }
 ?>
+<br><br>
