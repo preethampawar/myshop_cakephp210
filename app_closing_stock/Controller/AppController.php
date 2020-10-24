@@ -92,10 +92,18 @@ class AppController extends Controller
 		return true;
 	}
 
+	public function successMsg($msg)
+	{
+		if ($msg) {
+			$this->Session->setFlash($msg, 'Flash/success');
+		}
+		return true;
+	}
+
 	public function checkStoreInfo()
 	{
 		if (!$storeInfo = $this->getStoreInfo()) {
-			$this->Session->setFlash('Select a Store', 'default', ['class' => 'alert alert-danger']);
+			$this->errorMsg('Select a Store');
 			$this->redirect(['controller' => 'stores', 'action' => 'index']);
 		}
 		return true;
@@ -144,14 +152,6 @@ class AppController extends Controller
 			return true;
 		}
 		return false;
-	}
-
-	public function successMsg($msg)
-	{
-		if ($msg) {
-			$this->Session->setFlash($msg, 'Flash/success');
-		}
-		return true;
 	}
 
 	public function updateInvoice($invoiceID)

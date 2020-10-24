@@ -1,4 +1,6 @@
 <?php
+
 // App::uses('Model', 'Model');
-class StoreLabel extends AppModel { 
+class StoreLabel extends AppModel
+{
 }

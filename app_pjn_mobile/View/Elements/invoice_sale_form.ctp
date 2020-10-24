@@ -2,87 +2,63 @@
 echo $this->Form->create();
 echo $this->Form->input('Invoice.invoice_type', ['type' => 'hidden', 'value' => $invoice_type]);
 ?>
-<br>
-<div class="row">
-    <div class="col-xs-12">
-        <table class="table table-condensed table-striped" style="width: 600px;">
-            <tbody>
-            <tr>
-                <td style="width: 200px;">Invoice Date</td>
-                <td>
-                    <?php
-                    echo $this->Form->input('Invoice.invoice_date', array('label' => false, 'required' => true, 'type' => 'date', 'title' => 'Select date'));
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td>Invoice No.</td>
-                <td>
-                    <?php echo $this->Form->input('Invoice.name', array('label' => false, 'required' => true, 'type' => 'text', 'title' => 'Enter Invoice Name', 'class' => 'form-control input-sm')); ?>
-                </td>
-            </tr>
 
-            <?php
-            if($hasFranchise) {
-                ?>
-                <tr>
-                    <td>Franchise</td>
-                    <td>
-                        <?php echo $this->Form->input('Invoice.franchise_id', array('label' => false, 'empty' => '-', 'title' => 'Select Franchise', 'options' => $franchiseList, 'type' => 'select', 'class' => 'form-control input-sm')); ?>
-                    </td>
-                </tr>
-                <?php
-            }
-            ?>
+<div class="mt-3">
+	<label>Invoice Date</label>
+	<input type="date" name="data[Invoice][invoice_date]" class="form-control form-control-sm" value="<?php echo $this->data['Invoice']['invoice_date'] ?? date('Y-m-d');?>" title="Select Date">
+</div>
 
-            <tr>
-                <td>Discount(%)</td>
-                <td>
-                    <?php echo $this->Form->input('Invoice.discount', array('label' => false, 'empty' => '-', 'title' => 'Discount in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default'=>0, 'min'=>0, 'max'=>100)); ?>
-                </td>
-            </tr>
-            <tr>
-                <td>SGST(%)</td>
-                <td>
-                    <?php echo $this->Form->input('Invoice.sgst', array('label' => false, 'empty' => '-', 'title' => 'SGST in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default'=>0, 'min'=>0, 'max'=>100)); ?>
-                </td>
-            </tr>
-            <tr>
-                <td>CGST(%)</td>
-                <td>
-                    <?php echo $this->Form->input('Invoice.cgst', array('label' => false, 'empty' => '-', 'title' => 'CGST in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default'=>0, 'min'=>0, 'max'=>100)); ?>
-                </td>
-            </tr>
-            <tr>
-                <td>IGST(%)</td>
-                <td>
-                    <?php echo $this->Form->input('Invoice.igst', array('label' => false, 'empty' => '-', 'title' => 'IGST in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default'=>0, 'min'=>0, 'max'=>100)); ?>
-                </td>
-            </tr>
-            <tr>
-                <td>Delivery Charges</td>
-                <td>
-                    <?php echo $this->Form->input('Invoice.delivery_amount', array('label' => false, 'empty' => '-', 'title' => 'Delivery Charges', 'type' => 'number', 'class' => 'form-control input-sm', 'default'=>0, 'min'=>0, 'max'=>100000)); ?>
-                </td>
-            </tr>
-            <tr>
-                <td>Total Invoice Amount</td>
-                <td>
-                    <?php echo $this->Form->input('Invoice.static_invoice_value', array('label' => false, 'empty' => '-', 'title' => 'Total invoice value including transportation', 'type' => 'number', 'class' => 'form-control input-sm', 'default'=>0, 'min'=>0, 'max'=>10000000000)); ?>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button type="submit" class="btn btn-sm btn-primary">Save Invoice</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<div class="mt-3">
+	<label>Invoice No.</label>
+	<?php echo $this->Form->input('Invoice.name', ['label' => false, 'required' => true, 'type' => 'text', 'title' => 'Enter Invoice Name', 'class' => 'form-control input-sm']); ?>
+</div>
 
-    </div>
+<?php
+if ($hasFranchise) {
+	?>
+	<div class="mt-3">
+		<label>Franchise</label>
+		<?php echo $this->Form->input('Invoice.franchise_id', ['label' => false, 'empty' => '-', 'title' => 'Select Franchise', 'options' => $franchiseList, 'type' => 'select', 'class' => 'form-control input-sm']); ?>
+	</div>
+	<?php
+}
+?>
+
+<div class="mt-3">
+	<label>Discount(%)</label>
+	<?php echo $this->Form->input('Invoice.discount', ['label' => false, 'empty' => '-', 'title' => 'Discount in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default' => 0, 'min' => 0, 'max' => 100]); ?>
+</div>
+
+<div class="mt-3">
+	<label>SGST(%)</label>
+	<?php echo $this->Form->input('Invoice.sgst', ['label' => false, 'empty' => '-', 'title' => 'SGST in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default' => 0, 'min' => 0, 'max' => 100]); ?>
+</div>
+
+<div class="mt-3">
+	<label>CGST(%)</label>
+	<?php echo $this->Form->input('Invoice.cgst', ['label' => false, 'empty' => '-', 'title' => 'CGST in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default' => 0, 'min' => 0, 'max' => 100]); ?>
+</div>
+
+<div class="mt-3">
+	<label>IGST(%)</label>
+	<?php echo $this->Form->input('Invoice.igst', ['label' => false, 'empty' => '-', 'title' => 'IGST in percentage', 'type' => 'number', 'class' => 'form-control input-sm', 'default' => 0, 'min' => 0, 'max' => 100]); ?>
+</div>
+
+<div class="mt-3">
+	<label>Delivery Charges</label>
+	<?php echo $this->Form->input('Invoice.delivery_amount', ['label' => false, 'empty' => '-', 'title' => 'Delivery Charges', 'type' => 'number', 'class' => 'form-control input-sm', 'default' => 0, 'min' => 0, 'max' => 100000]); ?>
+</div>
+
+<div class="mt-3">
+	<label>Total Invoice Amount</label>
+	<?php echo $this->Form->input('Invoice.static_invoice_value', ['label' => false, 'empty' => '-', 'title' => 'Total invoice value including transportation', 'type' => 'number', 'class' => 'form-control input-sm', 'default' => 0, 'min' => 0, 'max' => 10000000000]); ?>
+</div>
+
+<div class="mt-4 text-center">
+	<button type="submit" class="btn btn-sm btn-primary">Save & Continue</button>
 </div>
 
 <?php
 echo $this->Form->end();
 ?>
+

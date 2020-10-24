@@ -1,4 +1,6 @@
 <?php
-class Report extends AppModel {
+
+class Report extends AppModel
+{
 	public $useTable = false;
 }

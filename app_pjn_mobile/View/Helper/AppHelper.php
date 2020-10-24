@@ -30,8 +30,10 @@ App::uses('Helper', 'View', 'Session');
  *
  * @package       app.View.Helper
  */
-class AppHelper extends Helper {
-    public function getLabel($key) {
-        return (SessionHelper::check('StoreLabel.'.$key)) ? SessionHelper::read('StoreLabel.'.$key) : ucwords($key);
-    }
+class AppHelper extends Helper
+{
+	public function getLabel($key)
+	{
+		return (SessionHelper::check('StoreLabel.' . $key)) ? SessionHelper::read('StoreLabel.' . $key) : ucwords($key);
+	}
 }
