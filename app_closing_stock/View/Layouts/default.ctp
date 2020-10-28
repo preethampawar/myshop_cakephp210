@@ -26,13 +26,13 @@
 <body>
 
 <?php if ($this->Session->check('Store.name')) { ?>
-	<nav class="navbar navbar-dark bg-purple p-0">
+	<nav class="navbar navbar-dark bg-purple py-0">
 		<div class="container">
 			<a class="navbar-brand text-truncate" href="#"><?php echo $this->Session->read('Store.name'); ?></a>
 		</div>
 	</nav>
 <?php } ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1">
 	<div class="container">
         <div>
             <div class="d-inline navbar-toggler py-0 px-0 border-0 text-white" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -91,7 +91,7 @@
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/reports/completeStockReportChart/sales_purchases_profit">
-                                <i class="fas fa-chart-bar"></i> Sales, Purchases & Profit on sales Report</a>
+                                <i class="fas fa-chart-line"></i> Sales, Purchases & Profit on sales Report</a>
 						</li>
 						<?php
 					}

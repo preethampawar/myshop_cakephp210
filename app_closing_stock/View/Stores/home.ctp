@@ -58,7 +58,7 @@
 								class="fas fa-chart-pie"></i>
 							Top Performing Products</a>
 						<a class="list-group-item" href="/reports/completeStockReportChart/sales_purchases_profit"><i
-								class="fas fa-chart-bar"></i>
+								class="fas fa-chart-line"></i>
 							Sales, Purchases & Profit on sales</a>
 					</div>
 				</div>
