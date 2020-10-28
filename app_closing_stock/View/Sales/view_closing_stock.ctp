@@ -31,7 +31,7 @@ echo $this->Form->create();
 </table>
 <div class="row mb-3 mt-3">
 	<div class="col-xs-12 text-center">
-		<button type="submit" class="btn btn-primary btn-sm">Generate Report</button>
+		<button type="submit" class="btn btn-purple btn-sm">Generate Report</button>
 	</div>
 </div>
 <?php

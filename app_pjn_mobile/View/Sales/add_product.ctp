@@ -1,4 +1,4 @@
-<a href="/sales/selectCategory/<?= $invoiceInfo['Invoice']['id'] ?>" class="btn btn-sm btn-primary"> &laquo; Change
+<a href="/sales/selectCategory/<?= $invoiceInfo['Invoice']['id'] ?>" class="btn btn-sm btn-purple"> &laquo; Change
 	Category</a>
 <a href="/invoices/index/sale" class="btn btn-sm btn-secondary ml-3">Go to Invoice List</a>
 
@@ -162,7 +162,7 @@ if ($productsInfo) {
 		</div>
 
 		<div class="mt-3 text-center">
-			<button id="SubmitForm" title="" type="submit" class="btn btn-sm btn-primary mt-3"
+			<button id="SubmitForm" title="" type="submit" class="btn btn-sm btn-purple mt-3"
 					onclick='return submitButtonMsg()'>
 				Submit
 			</button>

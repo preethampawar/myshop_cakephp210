@@ -256,7 +256,7 @@
 		<hr class="mt-5">
 
 		<div class="text-center font-weight-bold mt-5 mb-5">
-			<button class="btn btn-md btn-primary" type="submit">Save</button>
+			<button class="btn btn-md btn-purple" type="submit">Save</button>
 		</div>
 
 	</div>

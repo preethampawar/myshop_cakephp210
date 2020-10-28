@@ -32,7 +32,7 @@
 			<?php echo $this->Form->input('special_margin', ['placeholder' => 'Special Margin', 'label' => 'Special Margin', 'required' => false, 'pattern' => '[0-9]+(\.[0-9][0-9]?)?', 'title' => 'Should be a whole number or a decimal number. eg: 100, 1000.00, 1000.50 etc']); ?>
 		</div>
 		<div style="clear:both; float:left; margin-right:20px; margin-left:5px;">
-			<button type="submit" class="btn btn-sm btn-primary btn-block">Update Product</button>
+			<button type="submit" class="btn btn-sm btn-purple btn-block">Update Product</button>
 		</div>
 		<div style="clear:none; float:left;">
 			<a href="/product_categories/index/<?php echo $productCategoryInfo['ProductCategory']['id']; ?>"

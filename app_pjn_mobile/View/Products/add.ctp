@@ -36,7 +36,7 @@
 		<div style="clear:none; float:left;">
 			<label>&nbsp;</label>
 			<?php //echo $this->Form->submit('Create Product', array('class'=>'btn btn-md btn-default', 'div'=>false));?>
-			<button type="submit" class="btn btn-sm btn-primary btn-block">Create Product</button>
+			<button type="submit" class="btn btn-sm btn-purple btn-block">Create Product</button>
 		</div>
 	</div>
 	<div style="clear: both; padding:0; margin:0;"></div>

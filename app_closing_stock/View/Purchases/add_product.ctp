@@ -1,4 +1,4 @@
-<a href="/invoices/edit/<?php echo $invoiceInfo['Invoice']['id']; ?>" class="btn btn-sm btn-primary"> &laquo; Back to
+<a href="/invoices/edit/<?php echo $invoiceInfo['Invoice']['id']; ?>" class="btn btn-sm btn-purple"> &laquo; Back to
 	Step-1</a>
 <a href="/invoices/" class="btn btn-sm btn-secondary ml-3">Go to Invoice List</a>
 
@@ -202,7 +202,7 @@ if ($productsInfo) {
 		</table>
 
 		<div class="mb-3">
-			<button id="SubmitForm" title='' type="submit" class="btn btn-primary btn-md form-control"
+			<button id="SubmitForm" title='' type="submit" class="btn btn-purple btn-md form-control"
 					onclick="return submitButtonMsg()">Add Product
 			</button>
 		</div>

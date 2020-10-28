@@ -17,7 +17,7 @@
 			<div class="input-group">
 				<?php echo $this->Form->input('name', ['placeholder' => 'Enter Category Name', 'label' => false, 'required' => true, 'class' => 'form-control']); ?>
 				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary btn-block">Create Category</button>
+					<button type="submit" class="btn btn-purple btn-block">Create Category</button>
 					<?php // echo $this->Form->submit('Create Category', array('div'=>false, 'type'=>'submit', 'class'=>'btn btn-default')); ?>
 				</span>
 			</div>
@@ -68,7 +68,7 @@
 		<!-- <p><?php echo $this->Html->link('Show all categories', ['controller' => 'product_categories', 'action' => 'index'], ['title' => 'Show all categories']); ?></p> -->
 
 		<h1>Product Category: <?php echo $productCategoryInfo['ProductCategory']['name']; ?></h1><br>
-		<p><?php echo $this->Html->link('+ Add Product in ' . $productCategoryInfo['ProductCategory']['name'], ['controller' => 'products', 'action' => 'add', $productCategoryInfo['ProductCategory']['id']], ['title' => 'Add Products in ' . $productCategoryInfo['ProductCategory']['name'] . ' category', 'class' => 'btn btn-primary btn-xs']); ?></p>
+		<p><?php echo $this->Html->link('+ Add Product in ' . $productCategoryInfo['ProductCategory']['name'], ['controller' => 'products', 'action' => 'add', $productCategoryInfo['ProductCategory']['id']], ['title' => 'Add Products in ' . $productCategoryInfo['ProductCategory']['name'] . ' category', 'class' => 'btn btn-purple btn-xs']); ?></p>
 		<br>
 		<h2>Products list</h2>
 		<?php if ($products) { ?>

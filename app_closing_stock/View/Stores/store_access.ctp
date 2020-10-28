@@ -7,7 +7,7 @@
 		echo $this->Form->create('StorePassword');
 		echo $this->Form->input('store_id', ['type' => 'select', 'id' => 'stores', 'class' => 'form-control input-sm', 'empty' => false, 'required' => true, 'options' => $storeKeyValuePair]);
 		echo $this->Form->input('pin', ['type' => 'password', 'id' => 'storePasswordValue', 'class' => 'form-control input-sm', 'minlength' => 4, 'required' => true]);
-		echo '&nbsp;<button type="submit" class="btn btn-primary btn-sm">Add Access Password</button>';
+		echo '&nbsp;<button type="submit" class="btn btn-purple btn-sm">Add Access Password</button>';
 		echo $this->Form->end();
 		?>
 
@@ -57,7 +57,7 @@
 						echo $this->Form->hidden('id', ['value' => $userStorePasswordId, 'id' => 'storePasswordId' . $index]);
 						echo $this->Form->hidden('store_id', ['value' => $storeId, 'id' => 'storeId' . $index]);
 						echo $this->Form->input('pin', ['type' => 'password', 'id' => 'storePasswordValue' . $index, 'value' => $userStorePassword, 'class' => 'input-sm storeAccessPasswords', 'label' => false, 'div' => false, 'minlength' => 4, 'required' => true]);
-						echo '&nbsp;<button type="submit" class="btn btn-primary btn-sm">Update</button>';
+						echo '&nbsp;<button type="submit" class="btn btn-purple btn-sm">Update</button>';
 						echo $this->Form->end();
 						?>
 

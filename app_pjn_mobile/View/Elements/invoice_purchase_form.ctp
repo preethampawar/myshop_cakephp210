@@ -23,7 +23,7 @@ echo $this->Form->input('Invoice.invoice_type', ['type' => 'hidden', 'value' => 
 </div>
 
 <div class="mt-4 text-center">
-	<button type="submit" class="btn btn-sm btn-primary">Save & Continue</button>
+	<button type="submit" class="btn btn-sm btn-purple">Save & Continue</button>
 </div>
 <?php
 echo $this->Form->end();

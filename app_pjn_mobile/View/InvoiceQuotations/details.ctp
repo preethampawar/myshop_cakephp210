@@ -2,7 +2,7 @@
 	<?php
 	echo $this->Form->button('&laquo; back', ['onclick' => 'history.back()', 'escape' => false, 'class' => 'btn btn-default btn-sm']);
 	?>
-	<button class="btn btn-primary btn-sm ml-5" onclick="printDiv()">Print</button>
+	<button class="btn btn-purple btn-sm ml-5" onclick="printDiv()">Print</button>
 </div>
 
 <div class="mx-auto" id="printableTable">

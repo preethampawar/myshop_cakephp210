@@ -1,9 +1,9 @@
 <a href="/invoices/" class="btn btn-sm btn-secondary small">&laquo; Back to invoice list</a>
 <div class="mb-3 mt-3">
-	<a href="/invoices/edit/<?php echo $invoiceInfo['Invoice']['id']; ?>" class="btn btn-sm btn-primary small">Edit
+	<a href="/invoices/edit/<?php echo $invoiceInfo['Invoice']['id']; ?>" class="btn btn-sm btn-purple small">Edit
 		Ivoice Details</a>
 	<a href="/invoices/selectInvoice/<?php echo $invoiceInfo['Invoice']['id']; ?>"
-	   class="btn btn-sm btn-primary ml-3 small">Add/Remove Products</a>
+	   class="btn btn-sm btn-purple ml-3 small">Add/Remove Products</a>
 </div>
 
 <h1>

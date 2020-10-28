@@ -18,11 +18,11 @@
 	if (!empty($stores)) {
 		?>
 		<div id="selectStoreDiv">
-			<table class='table table-striped table-lg'>
+			<table class='table table-striped table-lg small'>
 				<thead>
 				<tr>
 					<th>
-						Store
+						Store Name
 					</th>
 					<th>Status</th>
 				</tr>

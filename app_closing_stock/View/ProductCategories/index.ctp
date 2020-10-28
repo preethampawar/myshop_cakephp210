@@ -22,7 +22,7 @@
 			<div class="input-group">
 				<?php echo $this->Form->input('name', ['placeholder' => 'Enter Category Name', 'label' => false, 'required' => true, 'class' => 'form-control']); ?>
 				<span class="input-group-btn">
-				    <button type="submit" class="btn btn-primary btn-block">Create Category</button>
+				    <button type="submit" class="btn btn-purple btn-block">Create Category</button>
 					<?php // echo $this->Form->submit('Create Category', array('div'=>false, 'type'=>'submit', 'class'=>'btn btn-default')); ?>
 				</span>
 			</div>
@@ -51,7 +51,7 @@
 
 						</td>
 						<td style="text-align:center;">
-							<?php echo $this->Html->link('+ Add Product', ['controller' => 'products', 'action' => 'add', $row['ProductCategory']['id']], ['title' => $row['ProductCategory']['name'] . ' - Add Product', 'escape' => false, 'class' => 'btn btn-primary btn-xs']); ?>
+							<?php echo $this->Html->link('+ Add Product', ['controller' => 'products', 'action' => 'add', $row['ProductCategory']['id']], ['title' => $row['ProductCategory']['name'] . ' - Add Product', 'escape' => false, 'class' => 'btn btn-purple btn-xs']); ?>
 							&nbsp;|&nbsp;
 							<?php echo $this->Html->link('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['controller' => 'product_categories', 'action' => 'edit', $row['ProductCategory']['id']], ['title' => 'Edit Category - ' . $row['ProductCategory']['name'], 'escape' => false, 'class' => 'btn btn-warning btn-xs']); ?>
 
@@ -78,7 +78,7 @@
 			<?php
 			echo $categoryID ? 'Products in ' . $category['ProductCategory']['name'] : 'All Products';
 
-			echo $categoryID ? ' - ' . $this->Html->link('+ Add Product', ['controller' => 'products', 'action' => 'add', $category['ProductCategory']['id']], ['title' => $category['ProductCategory']['name'] . ' - Add Product', 'escape' => false, 'class' => 'btn btn-primary btn-xs']) : '';
+			echo $categoryID ? ' - ' . $this->Html->link('+ Add Product', ['controller' => 'products', 'action' => 'add', $category['ProductCategory']['id']], ['title' => $category['ProductCategory']['name'] . ' - Add Product', 'escape' => false, 'class' => 'btn btn-purple btn-xs']) : '';
 			?>
 		</h2>
 

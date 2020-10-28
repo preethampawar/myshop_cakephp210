@@ -63,6 +63,6 @@ echo $this->Form->create();
 	?>
 	</tbody>
 </table>
-<button type="submit" class="btn btn-primary btn-sm">Save Settings</button>
+<button type="submit" class="btn btn-purple btn-sm">Save Settings</button>
 <?php echo $this->Form->end(); ?>
 <br><br>

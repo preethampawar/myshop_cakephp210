@@ -95,7 +95,7 @@
 					<?php echo $this->Form->input('description', ['label' => 'Description', 'type' => 'text', 'style' => 'width:250px;']); ?>
 				</div>
 				<div style="float:left; clear:none; margin-left:10px; margin-top: 20px;">
-					<button type="submit" class="btn btn-primary btn-sm">Add Record</button>
+					<button type="submit" class="btn btn-purple btn-sm">Add Record</button>
 				</div>
 				<div style="clear:both; padding:0px;"></div>
 				<?php echo $this->Form->end(); ?>

@@ -9,46 +9,33 @@ if (!empty($msg)) {
 }
 ?>
 
-	<h1>Login</h1><br>
+	<h1>Login</h1>
 <?php
 echo $this->Form->create('User');
 ?>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="form-group input-group-lg">
-				<label for="UserEmail">Email Address:</label>
-				<?php echo $this->Form->input('email', [
-					'type' => 'email',
-					'label' => false,
-					'required' => true,
-					'maxlength' => '55',
-					'placeholder' => 'Email Address',
-					'autofocus' => true,
-					'class' => 'form-control']); ?>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="form-group input-group-lg">
-				<label for="UserPassword">Password:</label>
-				<?php echo $this->Form->input('password', [
-					'type' => 'password',
-					'label' => false,
-					'required' => true,
-					'maxlength' => '55',
-					'placeholder' => 'Password',
-					'autofocus' => true,
-					'class' => 'form-control']); ?>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xl-12 text-center">
-			<br>
-			<button type="submit" id='SubmitForm' title='' class="form-control btn btn-primary btn-lg">Login</button>
-		</div>
-	</div>
+<div class="form-group input-group-lg mt-3">
+    <label for="UserEmail">Email Address:</label>
+    <?php echo $this->Form->input('email', [
+        'type' => 'email',
+        'label' => false,
+        'required' => true,
+        'maxlength' => '55',
+        'placeholder' => 'Email Address',
+        'autofocus' => true,
+        'class' => 'form-control']); ?>
+</div>
+<div class="form-group input-group-lg mt-3">
+    <label for="UserPassword">Password:</label>
+    <?php echo $this->Form->input('password', [
+        'type' => 'password',
+        'label' => false,
+        'required' => true,
+        'maxlength' => '55',
+        'placeholder' => 'Password',
+        'autofocus' => true,
+        'class' => 'form-control']); ?>
+</div>
+<button type="submit" id='SubmitForm' title='' class="form-control btn btn-purple btn-md mt-3">Login</button>
 <?php
 echo $this->Form->end();
 ?>

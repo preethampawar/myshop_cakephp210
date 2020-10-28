@@ -31,7 +31,7 @@ echo $this->Form->create();
 	<div class="mb-3">
 		<?php echo $this->Form->input('Invoice.supplier_id', ['label' => 'Supplier', 'empty' => '-', 'type' => 'text', 'title' => 'Select Supplier', 'options' => $suppliersList, 'type' => 'select', 'class' => "form-control"]); ?>
 	</div>
-	<button type="submit" class="btn btn-primary btn-md form-control mt-3">Save & Continue</button>
+	<button type="submit" class="btn btn-purple btn-md form-control mt-3">Save & Continue</button>
 
 	<div class="text-center mt-4">
 		<a href="/invoices/" class="btn btn-sm btn-outline-danger">Cancel</a>

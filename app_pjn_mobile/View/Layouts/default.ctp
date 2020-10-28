@@ -14,6 +14,9 @@
 
 	<!-- Bootstrap core CSS -->
 	<link href="/vendor/bootstrap-5.0.0-alpha1-dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/site.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 	<!-- Bootstrap core JavaScript -->
 	<script src="/vendor/jquery/jquery.slim.min.js"></script>
@@ -21,24 +24,34 @@
 
 <body>
 
-<?php if ($this->Session->check('Store.name')) { ?>
-	<nav class="navbar navbar-dark bg-primary">
-		<div class="container">
-			<a class="navbar-brand text-truncate" href="#"><?php echo $this->Session->read('Store.name'); ?></a>
-		</div>
-	</nav>
-<?php } ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	<div class="container">
-		<a class="navbar-brand" href="#">
-			SimpleAccounting
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-purple p-0 font-normal">
+	<div class="container py-1">
+        <div>
+            <div class="d-inline navbar-toggler py-0 px-0 border-0 text-white" type="button" data-toggle="collapse" data-target="#navbarNav"
+                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fa fa-bars"></span>
+            </div>
+            <div class="d-inline pl-2" data-toggle="collapse" data-target="#navbarNav"
+                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <?php
+                if ($this->Session->check('Store.name')) {
+                    ?>
+                    <a class="navbar-brand text-truncate" href="#"><?php echo $this->Session->read('Store.name'); ?></a>
+                    <?php
+                } else {
+                    ?>
+                    <a class="navbar-brand" href="#">
+                        SimpleAccounting
+                    </a>
+                    <?php
+                }
+                ?>
+            </div>
+        </div>
+
 		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ml-auto">
+			<ul class="navbar-nav ml-auto mt-1">
 				<?php
 				if ($this->Session->check('Auth.User')) {
 					?>
@@ -49,7 +62,7 @@
 							<a class="nav-link" href="/stores/home"><i class="fa fa-home"></i> Home</span></a>
 						</li>
 						<li class="nav-item border-top">
-							<a class="nav-link" href="/invoices/add/purchase"><i class="fa fa-plus-circle"></i> + Add Purchase
+							<a class="nav-link" href="/invoices/add/purchase"><i class="fa fa-plus-circle"></i> Add Purchase
 								Invoice</a>
 						</li>
 						<li class="nav-item">
@@ -57,7 +70,7 @@
 						</li>
 
 						<li class="nav-item border-top">
-							<a class="nav-link" href="/invoices/add/sale"><i class="fa fa-plus-circle"></i> + Add Sale Invoice</a>
+							<a class="nav-link" href="/invoices/add/sale"><i class="fa fa-plus-circle"></i> Add Sale Invoice</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/invoices/index/sale"><i class="fa fa-list-alt"></i> Show Sale Invoices</a>

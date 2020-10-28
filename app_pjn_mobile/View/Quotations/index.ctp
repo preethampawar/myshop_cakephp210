@@ -36,7 +36,7 @@ if (!empty($quotations)) {
 					<?php echo $this->Html->link('Download Quotation', ['controller' => 'quotations', 'action' => 'download', $row['Quotation']['id']], ['class' => 'btn btn-xs btn-default download', 'escape' => false]); ?>
 					<span class="clear"></span>
 					&nbsp;&nbsp;
-					<?php echo $this->Html->link('Download Invoice', ['controller' => 'quotations', 'action' => 'download', $row['Quotation']['id'], 'invoice'], ['class' => 'btn btn-xs btn-primary download', 'escape' => false]); ?>
+					<?php echo $this->Html->link('Download Invoice', ['controller' => 'quotations', 'action' => 'download', $row['Quotation']['id'], 'invoice'], ['class' => 'btn btn-xs btn-purple download', 'escape' => false]); ?>
 					<span class="clear"></span>
 					&nbsp;&nbsp;
 					<?php

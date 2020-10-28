@@ -30,7 +30,7 @@ echo $this->Form->create();
 		<td></td>
 		<td style="text-align: center;">
 			<br>
-			<button type="submit" class="btn btn-primary">Update Store</button>
+			<button type="submit" class="btn btn-purple">Update Store</button>
 			<br><br>
 			<a href="/stores/" class="btn btn-warning btn-sm">Cancel</a>
 		</td>

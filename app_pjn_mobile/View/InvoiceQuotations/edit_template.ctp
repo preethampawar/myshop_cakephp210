@@ -68,7 +68,7 @@
 
 	<?php echo $this->Form->input('for_label', ['label' => 'To Company Details Label', 'class' => 'form-control input-sm mb-3', 'default' => 'Quotation / Invoice For:', 'required' => true]); ?>
 
-	<button type="submit" class="btn btn-primary btn-sm">Update Template</button>
+	<button type="submit" class="btn btn-purple btn-sm">Update Template</button>
 
 </div>
 

@@ -14,7 +14,7 @@
 	<?php echo $this->Form->input('expense', ['type' => 'checkbox', 'label' => 'Expense']); ?>
 	<?php echo $this->Form->input('income', ['type' => 'checkbox', 'label' => 'Income']); ?>
 
-	<button class="btn btn-primary btn-sm" type="submit">Update Category</button>
+	<button class="btn btn-purple btn-sm" type="submit">Update Category</button>
 	<br><br><br>
 	<?php echo $this->Html->link("Cancel", ['controller' => 'categories', 'action' => 'index'], ['escape' => false, 'class' => 'btn btn-warning btn-sm']); ?>
 	<?php echo $this->Form->end(); ?>

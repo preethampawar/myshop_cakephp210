@@ -8,7 +8,7 @@
 	</div>
 	<div style="float:left; clear:none;">
 		<label>&nbsp;</label>
-		<button type="submit" class="btn btn-sm btn-primary">Update Category</button>
+		<button type="submit" class="btn btn-sm btn-purple">Update Category</button>
 	</div>
 	<div style="clear: both;"></div>
 	<?php

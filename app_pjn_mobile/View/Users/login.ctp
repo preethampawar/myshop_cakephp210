@@ -46,7 +46,7 @@ echo $this->Form->create('User');
 <div class="row">
 	<div class="col-xl-12 text-center">
 		<br>
-		<button type="submit" id='SubmitForm' title='' class="form-control btn btn-primary btn-lg">Login</button>
+		<button type="submit" id='SubmitForm' title='' class="form-control btn btn-purple btn-lg">Login</button>
 	</div>
 </div>
 <?php

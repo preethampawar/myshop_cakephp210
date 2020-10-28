@@ -188,7 +188,7 @@ if ($productsInfo) {
 
 		<div class="row">
 			<div class="col-xl-12 text-center">
-				<button type="submit" id='SubmitForm' title='' class="btn btn-primary btn-md form-control"
+				<button type="submit" id='SubmitForm' title='' class="btn btn-purple btn-md form-control"
 						onclick="return submitButtonMsg()">Add Closing Stock
 				</button>
 			</div>

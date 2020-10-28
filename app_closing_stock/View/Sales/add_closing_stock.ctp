@@ -119,7 +119,7 @@ if ($productsInfo) {
 
 				<div style="float:left; clear:none; margin-top:5px;">
 					<br>
-					<button type="submit" id='SubmitForm' title='' class="btn btn-primary btn-sm"
+					<button type="submit" id='SubmitForm' title='' class="btn btn-purple btn-sm"
 							onclick="return submitButtonMsg()">Add Product
 					</button>
 					&nbsp;&nbsp;<?php //echo $this->Form->submit('Add Product', array('div'=>false, 'id'=>'SubmitForm', 'title'=>'', 'type'=>'submit', 'onclick'=>'return submitButtonMsg()'));?>

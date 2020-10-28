@@ -1,5 +1,5 @@
 
-<a href="/invoices/edit/<?php echo $invoiceInfo['Invoice']['id']; ?>" class="btn btn-sm btn-primary"> &laquo; Edit Invoice</a>
+<a href="/invoices/edit/<?php echo $invoiceInfo['Invoice']['id']; ?>" class="btn btn-sm btn-purple"> &laquo; Edit Invoice</a>
 <a href="/invoices/" class="btn btn-sm btn-secondary ml-3">Go to Invoice List</a>
 
 <div class="mt-3">
@@ -39,7 +39,7 @@
 
 
 	<div class="text-center mt-3">
-		<button class="btn btn-primary btn-sm mt-3" onclick="getCategoryProducts()">Next</button>
+		<button class="btn btn-purple btn-sm mt-3" onclick="getCategoryProducts()">Next</button>
 
 		<a href="/invoices/" class="btn btn-sm btn-danger ml-3 mt-3" role="button">Cancel</a>
 	</div>

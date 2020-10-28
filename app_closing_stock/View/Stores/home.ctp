@@ -12,7 +12,7 @@
 					<div class="list-group">
 						<a href="/sales/addClosingStockMobile" class="list-group-item"><i class="fa fa-plus-circle"></i>
 							Add Closing Stock</a>
-						<a href="/sales/viewClosingStock" class="list-group-item"><i class="fa fa-list-alt"></i> Show
+						<a href="/sales/viewClosingStock" class="list-group-item"><i class="fas fa-clipboard-list"></i> Show
 							Closing Stock Report</a>
 					</div>
 				</div>
@@ -37,9 +37,9 @@
 				</div>
 				<div class="panel-body">
 					<div class="list-group">
-						<a class="list-group-item" href="/reports/dayWiseStockReport"><i class="fa fa-list-alt"></i>
+						<a class="list-group-item" href="/reports/dayWiseStockReport"><i class="fas fa-clipboard-list"></i>
 							Show Custom Stock Report</a>
-						<a class="list-group-item" href="/reports/completeStockReport"><i class="fa fa-list-alt"></i>
+						<a class="list-group-item" href="/reports/completeStockReport"><i class="fas  fa-clipboard-list"></i>
 							Show Complete Stock Report</a>
 					</div>
 				</div>
@@ -52,13 +52,13 @@
 				<div class="panel-body">
 					<div class="list-group">
 						<a class="list-group-item" href="/reports/completeStockReportChart/store_performance"><i
-								class="fa fa-list-alt"></i>
+								class="fas fa-chart-bar"></i>
 							My Store Performance</a>
 						<a class="list-group-item" href="/reports/completeStockReportChart/top_performing_products"><i
-								class="fa fa-list-alt"></i>
+								class="fas fa-chart-pie"></i>
 							Top Performing Products</a>
 						<a class="list-group-item" href="/reports/completeStockReportChart/sales_purchases_profit"><i
-								class="fa fa-list-alt"></i>
+								class="fas fa-chart-bar"></i>
 							Sales, Purchases & Profit on sales</a>
 					</div>
 				</div>

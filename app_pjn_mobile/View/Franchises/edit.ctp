@@ -54,7 +54,7 @@
 		<tr>
 			<td colspan="2" style="text-align: center">
 				<br>
-				<button class="btn btn-primary" type="submit">Update Franchise</button>
+				<button class="btn btn-purple" type="submit">Update Franchise</button>
 				<br><br>
 				<a href="/franchises/" class="btn btn-sm btn-warning">Cancel</a>
 			</td>

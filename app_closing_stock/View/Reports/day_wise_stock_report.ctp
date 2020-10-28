@@ -26,7 +26,7 @@ if ($viewType != 'download') { ?>
 		</div>
 
 
-		<button type="submit" class="btn btn-primary btn-md form-control mb-3">Generate Report</button>
+		<button type="submit" class="btn btn-purple btn-md form-control mb-3">Generate Report</button>
 
 	</div>
 	<?php echo $this->Form->end(); ?>

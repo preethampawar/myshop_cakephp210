@@ -25,7 +25,7 @@
 			   class="form-control input-sm" minlength="4" required>
 		<br>
 
-		<button type="submit" class="form-control btn btn-primary btn-md">Submit</button>
+		<button type="submit" class="form-control btn btn-purple btn-md">Submit</button>
 
 
 		<?php echo $this->Form->end(); ?>

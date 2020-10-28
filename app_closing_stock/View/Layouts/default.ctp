@@ -15,14 +15,18 @@
 	<!-- Bootstrap core CSS -->
 	<link href="/vendor/bootstrap-5.0.0-alpha1-dist/css/bootstrap.min.css" rel="stylesheet">
 
-	<!-- Bootstrap core JavaScript -->
+    <link href="/css/site.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+
+    <!-- Bootstrap core JavaScript -->
 	<script src="/vendor/jquery/jquery.slim.min.js"></script>
 </head>
 
 <body>
 
 <?php if ($this->Session->check('Store.name')) { ?>
-	<nav class="navbar navbar-dark bg-primary">
+	<nav class="navbar navbar-dark bg-purple p-0">
 		<div class="container">
 			<a class="navbar-brand text-truncate" href="#"><?php echo $this->Session->read('Store.name'); ?></a>
 		</div>
@@ -30,14 +34,20 @@
 <?php } ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container">
-		<a class="navbar-brand" href="#">
-			SimpleAccounting
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
+        <div>
+            <div class="d-inline navbar-toggler py-0 px-0 border-0 text-white" type="button" data-toggle="collapse" data-target="#navbarNav"
+                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fa fa-bars"></span>
+            </div>
+            <div class="d-inline pl-2" data-toggle="collapse" data-target="#navbarNav"
+                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="#">
+                    SimpleAccounting
+                </a>
+            </div>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ml-auto">
 				<?php
 				if ($this->Session->check('Auth.User')) {
@@ -53,7 +63,7 @@
 								Add Closing Stock</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/sales/viewClosingStock"><i class="fa fa-list-alt"></i> Show
+							<a class="nav-link" href="/sales/viewClosingStock"><i class="fas fa-clipboard-list"></i> Show
 								Closing Stock Report</a>
 						</li>
 						<li class="nav-item border-top">
@@ -64,24 +74,24 @@
 							<a class="nav-link" href="/invoices/"><i class="fa fa-list-alt"></i> Show Invoice List</a>
 						</li>
 						<li class="nav-item border-top">
-							<a class="nav-link" href="/reports/dayWiseStockReport"><i class="fa fa-list-alt"></i> Show
+							<a class="nav-link" href="/reports/dayWiseStockReport"><i class="fas fa-clipboard-list"></i> Show
 								Custom Stock Report</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/reports/completeStockReport"><i class="fa fa-list-alt"></i> Show
+							<a class="nav-link" href="/reports/completeStockReport"><i class="fas fa-clipboard-list"></i> Show
 								Complete Stock Report</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/reports/completeStockReportChart/store_performance">
-								My Store Performance Report</a>
+                                <i class="fas fa-chart-bar"></i> My Store Performance Report</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/reports/completeStockReportChart/top_performing_products">
-								Top Performing Products Report</a>
+                                <i class="fas fa-chart-pie"></i> Top Performing Products Report</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/reports/completeStockReportChart/sales_purchases_profit">
-								Sales, Purchases & Profit on sales Report</a>
+                                <i class="fas fa-chart-bar"></i> Sales, Purchases & Profit on sales Report</a>
 						</li>
 						<?php
 					}
