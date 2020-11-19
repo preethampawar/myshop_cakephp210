@@ -139,7 +139,7 @@
 						<a class="nav-link" href="/sites/contact">Contact Information</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/sites/payment_info">Payment Information</a>
+						<a class="nav-link" href="/sites/paymentInfo">Payment Information</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/users/login">Login</a>
