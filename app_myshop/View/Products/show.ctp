@@ -2,13 +2,16 @@
 	<article>
 		<header>
 			<h2><?php echo ucwords($categoryInfo['Category']['name']); ?></h2>
+			<h6>Showing all products in this category</h6>
+			<br>
 		</header>
 		<?php
 		$categoryProducts = $categoryInfo['CategoryProducts'];
 
 		if (!empty($categoryProducts)) {
 			?>
-			<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3">
+
+			<div class="row row-cols-2 row-cols-sm-3 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-0">
 
 				<?php
 				$categoryID = $categoryInfo['Category']['id'];
@@ -35,6 +38,8 @@
 					$mrp = $row2['Product']['mrp'];
 					$discount = $row2['Product']['discount'];
 					$salePrice = $mrp - $discount;
+					$noStock = $row2['Product']['no_stock'];
+					$cartEnabled = $this->Session->read('Site.shopping_cart');
 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
@@ -48,6 +53,8 @@
 							'mrp' => $mrp,
 							'discount' => $discount,
 							'salePrice' => $salePrice,
+							'cartEnabled' => $cartEnabled,
+							'noStock' => $noStock,
 						]
 					);
 				}

@@ -8,7 +8,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 	<article>
 		<header class="featuredLabel">
 			<b>
-			<?php echo $this->Html->link('Featured Products', '/', ['class' => 'active text-decoration-none']); ?> |
+			<?php echo $this->Html->link('Best Deals', '/', ['class' => 'active text-decoration-none']); ?> |
 			</b>
 			<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'text-decoration-none']); ?>
 
@@ -20,7 +20,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 			$categoriesCount = count($allCategories);
 			$assetDomainUrl = Configure::read('AssetDomainUrl');
 			?>
-			<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-2">
+			<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-0">
 				<?php
 				foreach ($allCategories as $row) {
 					$categoryID = $row['Category']['id'];
@@ -47,6 +47,8 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					$mrp = $row['Product']['mrp'];
 					$discount = $row['Product']['discount'];
 					$salePrice = $mrp - $discount;
+					$noStock = $row['Product']['no_stock'];
+					$cartEnabled = $this->Session->read('Site.shopping_cart');
 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
@@ -60,6 +62,8 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 							'mrp' => $mrp,
 							'discount' => $discount,
 							'salePrice' => $salePrice,
+							'cartEnabled' => $cartEnabled,
+							'noStock' => $noStock,
 						]
 					);
 

@@ -23,6 +23,8 @@ $mrp = $productInfo['Product']['mrp'];
 $discount = $productInfo['Product']['discount'];
 $salePrice = $mrp - $discount;
 $showDiscount = $mrp !== $salePrice;
+$noStock = $productInfo['Product']['no_stock'];
+$cartEnabled = $this->Session->read('Site.shopping_cart');
 ?>
 
 <div itemscope itemtype="http://schema.org/Product">
@@ -93,7 +95,7 @@ $showDiscount = $mrp !== $salePrice;
 						</div>
 					<?php endif; ?>
 
-
+					<?php if($cartEnabled && !$noStock): ?>
 					<form id="AddToCart<?php echo $productID; ?>"
 						  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
 						  method="post" class="flex">
@@ -116,6 +118,13 @@ $showDiscount = $mrp !== $salePrice;
 							</div>
 						</div>
 					</form>
+					<?php elseif ($cartEnabled && $noStock): ?>
+						<div class="row mt-3">
+							<div class="col">
+								<button type="button" class="btn btn-sm btn-outline-secondary disabled">Out of stock</button>
+							</div>
+						</div>
+					<?php endif; ?>
 				</div>
 
 

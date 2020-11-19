@@ -37,7 +37,7 @@ $this->set('enableTextEditor', true);
 				class="form-check-input"
 				<?php echo $this->data['Product']['active'] ? 'checked' : null; ?>
 			>
-			<label class="form-check-label" for="ProductActive">Active</label>
+			<label class="form-check-label" for="ProductActive">Active (Published)</label>
 		</div>
 		<div class="form-check form-switch">
 			<input type="hidden" name="data[Product][featured]" value="0">
@@ -49,7 +49,19 @@ $this->set('enableTextEditor', true);
 				class="form-check-input"
 				<?php echo $this->data['Product']['featured'] ? 'checked' : null; ?>
 			>
-			<label class="form-check-label" for="ProductFeatured">Featured</label>
+			<label class="form-check-label" for="ProductFeatured">Best Deal</label>
+		</div>
+		<div class="form-check form-switch">
+			<input type="hidden" name="data[Product][no_stock]" value="0">
+			<input
+				type="checkbox"
+				id="ProductNoStock"
+				name="data[Product][no_stock]"
+				value="1"
+				class="form-check-input"
+				<?php echo $this->data['Product']['no_stock'] ? 'checked' : null; ?>
+			>
+			<label class="form-check-label" for="ProductNoStock">Out of stock</label>
 		</div>
 	</div>
 

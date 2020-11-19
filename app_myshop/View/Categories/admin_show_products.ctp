@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="/admin/categories/">Products</a></li>
+		<li class="breadcrumb-item"><a href="/admin/categories/">Categories</a></li>
 		<li class="breadcrumb-item active" aria-current="page"><?php echo $categoryInfo['Category']['name']; ?></li>
 	</ol>
 </nav>
@@ -25,7 +25,7 @@ if (!empty($categoryProducts)) {
 		$productActive = $categoryProducts[$productID]['Product']['active'];
 		$productFeatured = $categoryProducts[$productID]['Product']['featured'];
 		?>
-		<li class="list-group-item d-flex justify-content-between align-items-center">
+		<li class="list-group-item d-flex justify-content-between align-items-center px-1">
 			<div>
 				<?php
 				if ($productActive) {
@@ -33,9 +33,10 @@ if (!empty($categoryProducts)) {
 					$url = '/admin/products/setInactive/' . $productID;
 					$confirmMessage = 'Are you sure you want to deactivate this product? Deactivating will hide this product from public.';
 					?>
-					<span
-						class="fa fa-toggle-on ml-2 text-success"
-						onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
+					<span class="small fa fa-circle text-success"></span>
+					<!-- <span
+						class="small fa fa-circle text-success"
+						onclick="showConfirmPopup('<?php echo $url;?>//', '<?php echo $title;?>//', '<?php echo $confirmMessage;?>//')"></span> -->
 					<?php
 					// echo $this->Html->link("<span class='fa fa-toggle-on'></span>", '/admin/products/setInactive/' . $productID, ['escape' => false], 'Are you sure you want to deactivate this product? Deactivating will hide this product from public.');
 				} else {
@@ -43,9 +44,10 @@ if (!empty($categoryProducts)) {
 					$url = '/admin/products/setActive/' . $productID;
 					$confirmMessage = 'Are you sure you want to activate this product? Activating will make this product available to public.';
 					?>
-					<span
-						class="fa fa-toggle-off ml-2 text-danger"
-						onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
+					<span class="small fa fa-circle text-danger"></span>
+					<!-- <span
+						class="small fa fa-circle text-danger"
+						onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span> -->
 					<?php
 					// echo $this->Html->link($this->Html->image('red_button.png', ['alt' => 'active', 'title' => 'Click to activate', 'height' => '12', 'width' => '12']), '/admin/products/setActive/' . $productID, ['escape' => false, 'style' => 'color:red; margin:2px;'], 'Are you sure you want to activate this product? Activating will make this product available to public.');
 				}

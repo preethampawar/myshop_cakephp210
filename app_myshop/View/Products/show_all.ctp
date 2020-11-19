@@ -1,4 +1,12 @@
 <section id="ProductsInfo">
+	<header class="featuredLabel">
+		<?php echo $this->Html->link('Best Deals', '/', ['class' => 'active text-decoration-none']); ?> |
+		<b>
+		<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'text-decoration-none']); ?>
+		</b>
+	</header>
+	<hr>
+	<h6 class="mb-3">Showing all products by category</h6>
 	<?php
 	if (!empty($allProducts)) {
 		$k = 1;
@@ -17,7 +25,7 @@
 				<?php
 				if (!empty($row['CategoryProducts'])) {
 					?>
-					<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-2">
+					<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-0">
 						<?php
 						$z = 0;
 						foreach ($row['CategoryProducts'] as $row2) {
@@ -39,6 +47,8 @@
 							$mrp = $row2['Product']['mrp'];
 							$discount = $row2['Product']['discount'];
 							$salePrice = $mrp - $discount;
+							$noStock = $row2['Product']['no_stock'];
+							$cartEnabled = $this->Session->read('Site.shopping_cart');
 
 							echo $this->element('product_card', [
 									'productImageUrl' => $productImageUrl,
@@ -52,6 +62,8 @@
 									'mrp' => $mrp,
 									'discount' => $discount,
 									'salePrice' => $salePrice,
+									'cartEnabled' => $cartEnabled,
+									'noStock' => $noStock,
 								]
 							);
 						}

@@ -89,7 +89,7 @@ class CategoriesController extends AppController
 					$data['Category']['site_id'] = $this->Session->read('Site.id');
 					$data['Category']['id'] = $categoryID;
 					if ($this->Category->save($data)) {
-						$this->Session->setFlash('Category successfully added', 'default', ['class' => 'success']);
+						$this->successMsg('Category successfully updated');
 						$this->redirect('/admin/categories/add');
 					} else {
 						$errorMsg[] = 'An error occured while communicating with the server';
@@ -101,6 +101,9 @@ class CategoriesController extends AppController
 		}
 
 		$errorMsg = implode('<br>', $errorMsg);
+
+		$errorMsg ? $this->errorMsg($errorMsg) : '';
+
 		$this->set(compact('errorMsg', 'categoryInfo', 'categoryInfoLinkActive'));
 	}
 

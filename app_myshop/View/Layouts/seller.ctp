@@ -44,7 +44,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 	<div class="container">
 		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-toggle="collapse" data-target="#navbarNav"
 			 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="fa fa-bars"></span>
+			<span class="fa fa-bars"></span> Admin
 		</div>
 		<a class="navbar-brand" href="/admin/sites/home">
 			Home
@@ -76,15 +76,19 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 	</div>
 </nav>
 
-<ul class="nav justify-content-center bg-light">
-	<li class="nav-item productSideBar">
-		<a class="nav-link" href="/admin/categories/">Products</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="#">Orders</a>
-	</li>
-</ul>
-
+<div class="bg-light border-bottom">
+	<ul class="nav container justify-content-start">
+		<li class="nav-item productSideBar">
+			<a class="nav-link font-weight-bold" href="/admin/categories/">Manage Products</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link font-weight-bold" href="#">Manage Orders</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link font-weight-bold" href="/admin/sites/settings">Store Settings</a>
+		</li>
+	</ul>
+</div>
 <!-- Navigation -->
 <?php
 //debug($this->Session->read());
@@ -94,9 +98,6 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 </div>
 
 <div class="container mt-3">
-
-	<?php echo $this->element('myshoppinglist_topnav'); ?>
-
 	<?php echo $this->fetch('content'); ?>
 </div>
 

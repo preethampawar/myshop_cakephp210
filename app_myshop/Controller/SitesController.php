@@ -84,12 +84,12 @@ class SitesController extends AppController
 		$email->send($mailContent);
 	}
 
-	function getSiteList()
+	public function getSiteList()
 	{
 		return $this->Site->find('list');
 	}
 
-	function sitemap()
+	public function sitemap()
 	{
 		$this->layout = null;
 		$this->response->type('xml');
@@ -97,7 +97,7 @@ class SitesController extends AppController
 		$this->set(compact('categoryProducts'));
 	}
 
-	function routemap()
+	public function routemap()
 	{
 		$this->layout = 'default';
 
@@ -105,17 +105,17 @@ class SitesController extends AppController
 		$this->set(compact('hideLeftMenu'));
 	}
 
-	function suspended()
+	public function suspended()
 	{
 		$this->layout = 'suspended';
 	}
 
-	function under_maintenance()
+	public function under_maintenance()
 	{
 		$this->layout = 'undermaintenance';
 	}
 
-	function admin_edit()
+	public function admin_edit()
 	{
 		$siteID = $this->Session->read('Site.id');
 		$siteInfo = $this->Site->findById($siteID);
@@ -185,7 +185,7 @@ class SitesController extends AppController
 		$this->set(compact('siteInfo', 'errorMsg', 'serviceTypes'));
 	}
 
-	function admin_addDomain($siteID)
+	public function admin_addDomain($siteID)
 	{
 		if ($this->request->isPost()) {
 			App::uses('Domain', 'Model');
@@ -215,7 +215,7 @@ class SitesController extends AppController
 		$this->redirect('/admin/sites/edit/' . $siteID);
 	}
 
-	function admin_deleteDomain($domainID, $siteID)
+	public function admin_deleteDomain($domainID, $siteID)
 	{
 		if ($this->request->isGet()) {
 			App::uses('Domain', 'Model');
@@ -240,7 +240,7 @@ class SitesController extends AppController
 		$this->redirect('/admin/sites/edit/' . $siteID);
 	}
 
-	function admin_setDefaultDomain($domainID, $siteID)
+	public function admin_setDefaultDomain($domainID, $siteID)
 	{
 		if ($this->request->isGet()) {
 			App::uses('Domain', 'Model');
@@ -280,7 +280,7 @@ class SitesController extends AppController
 		$this->redirect('/admin/sites/edit/' . $siteID);
 	}
 
-	function admin_index()
+	public function admin_index()
 	{
 		if ($siteInfo = $this->Site->findByUserId($this->Session->read('User.id'))) {
 			$this->data = $siteInfo;
@@ -291,7 +291,7 @@ class SitesController extends AppController
 		}
 	}
 
-	function robot()
+	public function robot()
 	{
 		error_reporting(0);
 		$this->layout = false;
@@ -309,6 +309,54 @@ User-agent: *
 Disallow:
 		";
 		exit;
+	}
+
+	public function admin_settings()
+	{
+		$siteID = $this->Session->read('Site.id');
+		$siteInfo = $this->Site->findById($siteID);
+
+		$errorMsg = [];
+		if ($this->request->isPut() or $this->request->isPost()) {
+			$data['Site'] = $this->data['Site'];
+
+			// validate Site Title
+			if (Validation::blank($data['Site']['title'])) {
+				$errorMsg[] = 'Enter Site Title';
+			} else if (!Validation::between($data['Site']['title'], 3, 50)) {
+				$errorMsg[] = 'Site title should be 3 to 50 chars long';
+			}
+
+			if (empty($errorMsg)) {
+				// Sanitize data
+				$data['Site']['id'] = $siteID;
+				$data['Site']['title'] = htmlentities($this->data['Site']['title']);
+
+				if ($this->Site->save($data)) {
+					$this->successMsg('Store details updated successfully');
+					$this->redirect('/admin/sites/settings');
+				} else {
+					$errorMsg[] = 'Failed to save data';
+				}
+			}
+		} else {
+			$this->data = $siteInfo;
+		}
+		$errorMsg = implode('<br/>', $errorMsg);
+
+		$this->errorMsg($errorMsg);
+
+		$this->set(compact('siteInfo'));
+	}
+
+	public function contact()
+	{
+
+	}
+
+	public function paymentInfo()
+	{
+
 	}
 }
 

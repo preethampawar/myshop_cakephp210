@@ -22,6 +22,12 @@ class AppController extends Controller
 	{
 		parent::beforeFilter();
 
+		if (isset($this->request->params['admin']) && $this->request->params['admin'] === true) {
+			if (!$this->Session->check('userLoggedIn') || $this->Session->read('userLoggedIn') === false) {
+				$this->redirect('/');
+			}
+		}
+
 		// set layout
 		$this->layout = 'buyer';
 		if ($this->Session->read('inSellerView')) {

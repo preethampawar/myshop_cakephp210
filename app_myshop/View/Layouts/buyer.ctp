@@ -77,6 +77,7 @@
 			opacity: 0.6;
 			z-index: 990;
 		}
+
 		.x-small {
 			font-size: 0.75rem;
 		}
@@ -103,8 +104,9 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark navbar-static bg-dark ">
 	<div class="container">
-		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-toggle="collapse" data-target="#navbarNav"
-				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-toggle="collapse"
+			 data-target="#navbarNav"
+			 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="fa fa-bars"></span> Menu
 		</div>
 		<a class="navbar-brand" href="/">
@@ -123,10 +125,22 @@
 						<a class="nav-link" href="/users/myaccount">My Account</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" href="/sites/contact">Contact Information</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/sites/paymentInfo">Payment Information</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="/users/logout">Logout</a>
 					</li>
 					<?php
 				} else { ?>
+					<li class="nav-item">
+						<a class="nav-link" href="/sites/contact">Contact Information</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/sites/payment_info">Payment Information</a>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/users/login">Login</a>
 					</li>
@@ -136,14 +150,18 @@
 	</div>
 </nav>
 
-<ul class="nav justify-content-center bg-light border-bottom">
-	<li class="nav-item productSideBar">
-		<a class="nav-link" href="#">Products</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="#">Orders</a>
-	</li>
-</ul>
+<div class="bg-light border-bottom">
+	<ul class="nav container justify-content-start">
+		<li class="nav-item productSideBar">
+			<a class="nav-link font-weight-normal" href="#"><i class="fa fa-chevron-circle-right"></i> Shop By Category</a>
+		</li>
+		<?php if ($this->Session->read('Site.shopping_cart')): ?>
+			<li class="nav-item">
+				<a class="nav-link font-weight-normal" href="#"><i class="fa fa-shopping-basket"></i> My Orders</a>
+			</li>
+		<?php endif; ?>
+	</ul>
+</div>
 
 <!-- Navigation -->
 <?php
@@ -154,8 +172,48 @@
 </div>
 
 <div class="container mt-3">
-	<?php echo $this->element('myshoppinglist_topnav'); ?>
+	<?php
+	if ($this->Session->read('Site.shopping_cart')) {
+		echo $this->element('myshoppinglist_topnav');
+	}
+	?>
 	<?php echo $this->fetch('content'); ?>
+
+	<?php
+	$showPaymentContactInfo = false;
+
+	if ($this->request->params['action'] != 'paymentInfo'
+		&& $this->request->params['action'] != 'login'
+		&& $this->request->params['action'] != 'verifyLoginOtp'
+		&& !empty($this->Session->read('Site.payment_info'))) {
+		$showPaymentContactInfo = true;
+	}
+
+	if ($showPaymentContactInfo):
+		?>
+		<hr>
+		<div class="text-center small">
+			<h5 class="mb-3">Contact Information</h5>
+
+			<?= $this->Session->read('Site.contact_info') ?>
+		</div>
+	<?php
+	endif;
+	?>
+
+	<?php
+	if ($showPaymentContactInfo):
+		?>
+		<hr>
+		<div class="text-center small">
+			<h5 class="mb-3">Payment Information</h5>
+			<?= $this->Session->read('Site.payment_info') ?>
+			<br>
+		</div>
+	<?php
+	endif;
+	?>
+	<br>
 </div>
 
 <div class="container">
@@ -173,8 +231,12 @@
 
 <!-- Optional JavaScript -->
 <!-- Popper.js first, then Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+		crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js"
+		integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d"
+		crossorigin="anonymous"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>

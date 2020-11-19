@@ -45,9 +45,9 @@ $loadingImageUrl = '/loading2.gif';
 			</h6>
 
 			<div class="mt-3 d-flex justify-content-between">
-				<h4>
-					<span class="text-danger font-weight-bold"><?php echo $this->App->price($salePrice);?></span>
-				</h4>
+				<h5>
+					<span class="text-danger"><?php echo $this->App->price($salePrice);?></span>
+				</h5>
 				<?php if($showDiscount): ?>
 				<div class="pl-2">
 					<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp);?></span>
@@ -57,12 +57,15 @@ $loadingImageUrl = '/loading2.gif';
 
 			<?php if($showDiscount): ?>
 			<div class="small text-center">
-				Save - <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?>
+				<span class="text-success">Save <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?></span>
 			</div>
 			<?php endif; ?>
 		</div>
-		<div class="card-footer text-center bg-white border-top-0">
+
+		<?php if($cartEnabled): ?>
+		<div class="card-footer text-center bg-white border-top-0 pt-0 pb-3">
 			<div class="card-text">
+				<?php if (! $noStock): ?>
 				<form id="AddToCart<?php echo $productID; ?>"
 					  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
 					  method="post" class="flex">
@@ -77,22 +80,26 @@ $loadingImageUrl = '/loading2.gif';
 						</select>
 
 						<div class="mt-1 text-center p-0 d-flex justify-content-evenly">
-							<button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 mt-1"
+							<button type="button" class="btn btn-sm btn-outline-secondary mt-1"
 									v-on:click="showUpdateCartDiv = false">Cancel
 							</button>
-							<button type="submit" class="btn btn-sm btn-primary active py-0 px-2 mt-1 ml-1">Update
+							<button type="submit" class="btn btn-sm btn-primary active mt-1">+ Add
 							</button>
 						</div>
 					</div>
 					<div v-else class="text-center p-0">
-						<button type="button" class="btn btn-sm btn-primary active py-0 px-2 mt-1"
+						<button type="button" class="btn btn-sm btn-primary active  mt-1"
 								v-on:click="showUpdateCart('ShoppingCartProductQuantity<?php echo $categoryID .'-'. $productID; ?>')">
 							Add to cart
 						</button>
 					</div>
 				</form>
+				<?php else: ?>
+				<button type="button" class="btn btn-sm btn-outline-secondary disabled">Out of stock</button>
+				<?php endif; ?>
 			</div>
 		</div>
+		<?php endif; ?>
 	</div>
 
 	<div id="productModal<?php echo $productID; ?>" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel"
