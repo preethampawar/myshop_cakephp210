@@ -183,6 +183,7 @@
 	$showPaymentContactInfo = false;
 
 	if ($this->request->params['action'] != 'paymentInfo'
+		&& $this->request->params['action'] != 'contact'
 		&& $this->request->params['action'] != 'login'
 		&& $this->request->params['action'] != 'verifyLoginOtp'
 		&& !empty($this->Session->read('Site.payment_info'))) {
