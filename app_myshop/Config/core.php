@@ -423,22 +423,22 @@ Configure::write('MaxPages', '');
 Configure::write('MaxPageImages', '20');
 
 /* Domain Information */
-Configure::write('BaseDomain', 'www.letsgreenify.com');
-Configure::write('BaseDomainName', 'LetsGreenify');
-Configure::write('BaseDomainUrl', 'http://www.letsgreenify.com');
+Configure::write('BaseDomain', 'www.apnastores.com');
+Configure::write('BaseDomainName', 'ApnaStores');
+Configure::write('BaseDomainUrl', 'http://www.apnastores.com');
 
 /* Domain Information */
-Configure::write('Domain', 'letsgreenify.com');
-Configure::write('DomainName', 'LetsGreenify');
-Configure::write('DomainUrl', 'http://www.letsgreenify.com');
+Configure::write('Domain', 'apnastores.com');
+Configure::write('DomainName', 'ApnaStores');
+Configure::write('DomainUrl', 'http://www.apnastores.com');
 
 /* Base site email configuration */
 Configure::write('SupportEmail', 'support@letsgreenify.com');
-Configure::write('NoReply', ['name' => 'LetsGreenify', 'email' => 'no-reply@letsgreenify.com']);
+Configure::write('NoReply', ['name' => 'ApnaStores', 'email' => 'no-reply@letsgreenify.com']);
 
 /* Site email configuration */
 Configure::write('SupportEmail', 'support@letsgreenify.com');
-Configure::write('NoReply', ['name' => 'LetsGreenify', 'email' => 'no-reply@letsgreenify.com']);
+Configure::write('NoReply', ['name' => 'ApnaStores', 'email' => 'no-reply@letsgreenify.com']);
 
 /* Product settings */
 Configure::write('Product.size', ['0.5 ft' => '0.5 ft', '1 ft' => '1 ft', '1.5 ft' => '1.5 ft', '2 ft' => '2 ft', '2.5 ft' => '2.5 ft', '3 ft' => '3 ft', '4 ft' => '4 ft', '5 ft' => '5 ft', '6 ft' => '6 ft', '7 ft' => '7 ft', '8 ft' => '8 ft', '9 ft' => '9 ft', '10 ft' => '10 ft']);
