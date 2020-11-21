@@ -29,9 +29,10 @@ $customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $th
 ?>
 
 <?php
-if ($this->Session->read('Site.featured_products')) {
-	echo $this->element('featured_products');
-}
+//if ($this->Session->read('Site.featured_products')) {
+//	echo $this->element('featured_products');
+//}
+echo $this->element('featured_products');
 
 $this->set('customMeta', $customMeta);
 ?>
