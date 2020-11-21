@@ -34,8 +34,9 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 		?>
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="/products/show/<?php echo $categoryID; ?>"><?= $categoryName; ?></a></li>
-				<li class="breadcrumb-item active" aria-current="page"><?= $productName?></li>
+				<li class="breadcrumb-item"><a
+						href="/products/show/<?php echo $categoryID; ?>"><?= $categoryName; ?></a></li>
+				<li class="breadcrumb-item active" aria-current="page"><?= $productName ?></li>
 			</ol>
 		</nav>
 
@@ -56,8 +57,8 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 				$k++;
 				$imageID = random_int(1, 10000);
 				$imageCaption = ($row['ori']->caption) ? $row['ori']->caption : $productName;
-				$imageUrl = $assetDomainUrl.$row['ori']->imagePath;
-				$imageThumbUrl = $assetDomainUrl.$row['thumb']->imagePath;
+				$imageUrl = $assetDomainUrl . $row['ori']->imagePath;
+				$imageThumbUrl = $assetDomainUrl . $row['thumb']->imagePath;
 				?>
 				<div style="float:left; border:0px solid #fff; width:auto; padding:2px;">
 					<a href="<?php echo $imageUrl; ?>" title='<?php echo $imageCaption; ?>'
@@ -79,55 +80,59 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 		<section>
 			<article>
 				<?php if (!$hideProductPrice): ?>
-				<div class="mt-2 bg-light p-2 rounded">
-					<div class="d-flex">
-						<h4>
-							<span class="text-danger font-weight-bold"><?php echo $this->App->price($salePrice);?></span>
-						</h4>
-						<?php if($showDiscount): ?>
-							<div class="ml-3">
-								<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp);?></span>
+					<div class="mt-2 bg-light p-2 rounded">
+						<div class="d-flex">
+							<h4>
+								<span
+									class="text-danger font-weight-bold"><?php echo $this->App->price($salePrice); ?></span>
+							</h4>
+							<?php if ($showDiscount): ?>
+								<div class="ml-3">
+									<span
+										class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
+								</div>
+							<?php endif; ?>
+						</div>
+
+						<?php if ($showDiscount): ?>
+							<div class="small text-left">
+								Save - <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if ($cartEnabled && !$noStock): ?>
+							<form id="AddToCart<?php echo $productID; ?>"
+								  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
+								  method="post" class="flex">
+								<div class="row mt-3">
+									<div class="col">
+										<label for="ShoppingCartProductQuantity<?php echo $productID; ?>"
+											   class="small">Select Quantity</label>
+										<select
+											name="data[ShoppingCartProduct][quantity]"
+											id="ShoppingCartProductQuantity<?php echo $productID; ?>"
+											class="form-control form-control-sm"
+											style="margin-top: 1px;"
+										>
+											<?php echo $selectBoxQuantityOptions; ?>
+										</select>
+									</div>
+									<div class="col">
+										<button type="submit" class="btn btn-sm btn-primary active mt-4">Add To Cart
+										</button>
+									</div>
+								</div>
+							</form>
+						<?php elseif ($cartEnabled && $noStock): ?>
+							<div class="row mt-3">
+								<div class="col">
+									<button type="button" class="btn btn-sm btn-outline-secondary disabled">Out of
+										stock
+									</button>
+								</div>
 							</div>
 						<?php endif; ?>
 					</div>
-
-					<?php if($showDiscount): ?>
-						<div class="small text-left">
-							Save - <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?>
-						</div>
-					<?php endif; ?>
-
-					<?php if($cartEnabled && !$noStock): ?>
-					<form id="AddToCart<?php echo $productID; ?>"
-						  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
-						  method="post" class="flex">
-						<div class="row mt-3">
-							<div class="col">
-								<label for="ShoppingCartProductQuantity<?php echo $productID; ?>"
-									   class="small">Select Quantity</label>
-								<select
-									name="data[ShoppingCartProduct][quantity]"
-									id="ShoppingCartProductQuantity<?php echo $productID; ?>"
-									class="form-control form-control-sm"
-									style="margin-top: 1px;"
-								>
-									<?php echo $selectBoxQuantityOptions; ?>
-								</select>
-							</div>
-							<div class="col">
-								<button type="submit" class="btn btn-sm btn-primary active mt-4">Add To Cart
-								</button>
-							</div>
-						</div>
-					</form>
-					<?php elseif ($cartEnabled && $noStock): ?>
-						<div class="row mt-3">
-							<div class="col">
-								<button type="button" class="btn btn-sm btn-outline-secondary disabled">Out of stock</button>
-							</div>
-						</div>
-					<?php endif; ?>
-				</div>
 				<?php endif; ?>
 
 				<?php
@@ -141,6 +146,41 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 				?>
 			</article>
 		</section>
+	</div>
+
+	<div class="mt-4">
+		<?php
+		if (!empty($this->Session->read('Site.contact_info'))):
+			?>
+			<div class="text-center small alert alert-info">
+				<h4 class="mb-3 text-decoration-underline">Contact</h4>
+				<?= $this->Session->read('Site.contact_info') ?>
+			</div>
+		<?php
+		endif;
+		?>
+
+		<?php
+		if (!empty($this->Session->read('Site.payment_info'))):
+			?>
+
+			<div class="text-center small alert alert-info">
+				<h4 class="mb-3 text-decoration-underline">Payment Details</h4>
+				<?= $this->Session->read('Site.payment_info') ?>
+			</div>
+		<?php
+		endif;
+		?>
+
+		<?php
+		if (!empty($this->Session->read('Site.tos'))):
+			?>
+			<div class="text-center small alert alert-warning">
+				Please read our <a href="/sites/tos">Terms of Service</a> before you place an order with us.
+			</div>
+		<?php
+		endif;
+		?>
 	</div>
 
 
