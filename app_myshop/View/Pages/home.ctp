@@ -36,4 +36,4 @@ echo $this->element('featured_products');
 
 $this->set('customMeta', $customMeta);
 ?>
-<br><br>
+<br>
