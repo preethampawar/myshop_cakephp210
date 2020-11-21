@@ -25,6 +25,7 @@ $salePrice = $mrp - $discount;
 $showDiscount = $mrp !== $salePrice;
 $noStock = $productInfo['Product']['no_stock'];
 $cartEnabled = $this->Session->read('Site.shopping_cart');
+$hideProductPrice = $productInfo['Product']['hide_price'];
 ?>
 
 <div itemscope itemtype="http://schema.org/Product">
@@ -77,6 +78,7 @@ $cartEnabled = $this->Session->read('Site.shopping_cart');
 	<div id="productDetails">
 		<section>
 			<article>
+				<?php if (!$hideProductPrice): ?>
 				<div class="mt-2 bg-light p-2 rounded">
 					<div class="d-flex">
 						<h4>
@@ -126,7 +128,7 @@ $cartEnabled = $this->Session->read('Site.shopping_cart');
 						</div>
 					<?php endif; ?>
 				</div>
-
+				<?php endif; ?>
 
 				<?php
 				if (!empty($productDesc)) {

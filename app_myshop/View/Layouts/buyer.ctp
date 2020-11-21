@@ -182,20 +182,15 @@
 	<?php
 	$showPaymentContactInfo = false;
 
-	if ($this->request->params['action'] != 'paymentInfo'
-		&& $this->request->params['action'] != 'contact'
-		&& $this->request->params['action'] != 'login'
-		&& $this->request->params['action'] != 'verifyLoginOtp'
-		&& !empty($this->Session->read('Site.payment_info'))) {
+	if ($this->request->params['controller'] != 'users'
+		&& $this->request->params['controller'] != 'sites') {
 		$showPaymentContactInfo = true;
 	}
 
-	if ($showPaymentContactInfo):
+	if ($showPaymentContactInfo && !empty($this->Session->read('Site.contact_info'))):
 		?>
-		<hr>
-		<div class="text-center small">
-			<h5 class="mb-3">Contact Information</h5>
-
+		<div class="text-center small alert alert-info">
+			<h4 class="mb-3 text-decoration-underline">Contact</h4>
 			<?= $this->Session->read('Site.contact_info') ?>
 		</div>
 	<?php
@@ -203,17 +198,27 @@
 	?>
 
 	<?php
-	if ($showPaymentContactInfo):
+	if ($showPaymentContactInfo && !empty($this->Session->read('Site.payment_info'))):
 		?>
-		<hr>
-		<div class="text-center small">
-			<h5 class="mb-3">Payment Information</h5>
+
+		<div class="text-center small alert alert-info">
+			<h4 class="mb-3 text-decoration-underline">Payment Details</h4>
 			<?= $this->Session->read('Site.payment_info') ?>
-			<br>
 		</div>
 	<?php
 	endif;
 	?>
+
+	<?php
+	if ($showPaymentContactInfo && !empty($this->Session->read('Site.tos'))):
+		?>
+		<div class="text-center small alert alert-warning">
+			Please read our <a href="/sites/tos">Terms of Service</a> before you place an order with us.
+		</div>
+	<?php
+	endif;
+	?>
+
 	<br>
 </div>
 

@@ -40,6 +40,7 @@
 					$salePrice = $mrp - $discount;
 					$noStock = $row2['Product']['no_stock'];
 					$cartEnabled = $this->Session->read('Site.shopping_cart');
+					$hideProductPrice = $row2['Product']['hide_price'];
 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
@@ -55,6 +56,7 @@
 							'salePrice' => $salePrice,
 							'cartEnabled' => $cartEnabled,
 							'noStock' => $noStock,
+							'hideProductPrice' => $hideProductPrice,
 						]
 					);
 				}

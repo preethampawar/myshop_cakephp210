@@ -11,7 +11,7 @@ $loadingImageUrl = '/loading2.gif';
 // http://www.apnastores.com/assets/images/loading/loading.gif
 ?>
 
-<div class="col mb-3" id="vueProductCard<?php echo $categoryID .'-'. $productID; ?>">
+<div class="col mb-3" id="vueProductCard<?php echo $categoryID . '-' . $productID; ?>">
 	<div class=" card h-100 shadow p-0 mb-1 bg-white text-dark border-0" id="productCard<?php echo $productID; ?>">
 
 		<img
@@ -23,82 +23,85 @@ $loadingImageUrl = '/loading2.gif';
 			v-on:click="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>', '<?php echo $categoryNameSlug; ?>', '<?php echo $productNameSlug; ?>');"
 		/>
 
-<!--		<img-->
-<!--			id="--><?php //echo $imageTagId; ?><!--"-->
-<!--			src="--><?php //echo $productImageUrl; ?><!--"-->
-<!--			alt="--><?php //echo $productTitle;?><!--"-->
-<!--			loading="lazy"-->
-<!--			class="w-100">-->
-
-
+		<!--		<img-->
+		<!--			id="--><?php //echo $imageTagId; ?><!--"-->
+		<!--			src="--><?php //echo $productImageUrl; ?><!--"-->
+		<!--			alt="--><?php //echo $productTitle;?><!--"-->
+		<!--			loading="lazy"-->
+		<!--			class="w-100">-->
 
 
 		<div class="card-body p-2 pt-0 text-center">
 			<h6 class="mt-3">
-					<span
-						class=""
-						role="button"
-						v-on:click="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>', '<?php echo $categoryNameSlug; ?>', '<?php echo $productNameSlug; ?>');"
-					>
-						<?php echo $productTitle; ?>
-					</span>
+				<span
+					class=""
+					role="button"
+					v-on:click="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>', '<?php echo $categoryNameSlug; ?>', '<?php echo $productNameSlug; ?>');"
+				>
+					<?php echo $productTitle; ?>
+				</span>
 			</h6>
 
-			<div class="mt-3 d-flex justify-content-between">
-				<h5>
-					<span class="text-danger"><?php echo $this->App->price($salePrice);?></span>
-				</h5>
-				<?php if($showDiscount): ?>
-				<div class="pl-2">
-					<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp);?></span>
+			<?php if (!$hideProductPrice): ?>
+				<div class="mt-3 d-flex justify-content-between">
+					<h5>
+						<span class="text-danger"><?php echo $this->App->price($salePrice); ?></span>
+					</h5>
+					<?php if ($showDiscount): ?>
+						<div class="pl-2">
+							<span
+								class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
+						</div>
+					<?php endif; ?>
 				</div>
-				<?php endif; ?>
-			</div>
 
-			<?php if($showDiscount): ?>
-			<div class="small text-center">
-				<span class="text-success">Save <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?></span>
-			</div>
+				<?php if ($showDiscount): ?>
+					<div class="small text-center">
+						<span
+							class="text-success">Save <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?></span>
+					</div>
+				<?php endif; ?>
 			<?php endif; ?>
 		</div>
 
-		<?php if($cartEnabled): ?>
-		<div class="card-footer text-center bg-white border-top-0 pt-0 pb-3">
-			<div class="card-text">
-				<?php if (! $noStock): ?>
-				<form id="AddToCart<?php echo $productID; ?>"
-					  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
-					  method="post" class="flex">
 
-					<div v-if="showUpdateCartDiv" id="saveCartDiv<?php echo $productID; ?>">
-						<select
-							name="data[ShoppingCartProduct][quantity]"
-							id="ShoppingCartProductQuantity<?php echo $categoryID .'-'. $productID; ?>"
-							class="form-control form-control-sm"
-						>
-							<?php echo $selectBoxQuantityOptions; ?>
-						</select>
+		<?php if (!$hideProductPrice && $cartEnabled): ?>
+			<div class="card-footer text-center bg-white border-top-0 pt-0 pb-3">
+				<div class="card-text">
+					<?php if (!$noStock): ?>
+						<form id="AddToCart<?php echo $productID; ?>"
+							  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
+							  method="post" class="flex">
 
-						<div class="mt-1 text-center p-0 d-flex justify-content-evenly">
-							<button type="button" class="btn btn-sm btn-outline-secondary mt-1"
-									v-on:click="showUpdateCartDiv = false">Cancel
-							</button>
-							<button type="submit" class="btn btn-sm btn-primary active mt-1">+ Add
-							</button>
-						</div>
-					</div>
-					<div v-else class="text-center p-0">
-						<button type="button" class="btn btn-sm btn-primary active  mt-1"
-								v-on:click="showUpdateCart('ShoppingCartProductQuantity<?php echo $categoryID .'-'. $productID; ?>')">
-							Add to cart
-						</button>
-					</div>
-				</form>
-				<?php else: ?>
-				<button type="button" class="btn btn-sm btn-outline-secondary disabled">Out of stock</button>
-				<?php endif; ?>
+							<div v-if="showUpdateCartDiv" id="saveCartDiv<?php echo $productID; ?>">
+								<select
+									name="data[ShoppingCartProduct][quantity]"
+									id="ShoppingCartProductQuantity<?php echo $categoryID . '-' . $productID; ?>"
+									class="form-control form-control-sm"
+								>
+									<?php echo $selectBoxQuantityOptions; ?>
+								</select>
+
+								<div class="mt-1 text-center p-0 d-flex justify-content-evenly">
+									<button type="button" class="btn btn-sm btn-outline-secondary mt-1"
+											v-on:click="showUpdateCartDiv = false">Cancel
+									</button>
+									<button type="submit" class="btn btn-sm btn-primary active mt-1">+ Add
+									</button>
+								</div>
+							</div>
+							<div v-else class="text-center p-0">
+								<button type="button" class="btn btn-sm btn-primary active  mt-1"
+										v-on:click="showUpdateCart('ShoppingCartProductQuantity<?php echo $categoryID . '-' . $productID; ?>')">
+									Add to cart
+								</button>
+							</div>
+						</form>
+					<?php else: ?>
+						<button type="button" class="btn btn-sm btn-outline-secondary disabled">Out of stock</button>
+					<?php endif; ?>
+				</div>
 			</div>
-		</div>
 		<?php endif; ?>
 	</div>
 
@@ -129,7 +132,7 @@ $loadingImageUrl = '/loading2.gif';
 
 <script>
 	var app = new Vue({
-		el: '#vueProductCard<?php echo $categoryID .'-'. $productID; ?>',
+		el: '#vueProductCard<?php echo $categoryID . '-' . $productID; ?>',
 		data: {
 			showUpdateCartDiv: false,
 		},

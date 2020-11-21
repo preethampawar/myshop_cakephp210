@@ -8,12 +8,15 @@ $this->set('enableTextEditor', true);
 </style>
 
 <div>
-	<div class="mt-3 d-flex justify-content-between align-items-center">
+	<div class="mt-3">
 		<h5>Store Settings</h5>
-		<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ml-3">Cancel</a>
 	</div>
 
 	<form action="/admin/sites/settings" id="SiteAdminEditForm" method="post" accept-charset="utf-8" ref="form">
+		<div class="mt-0 d-flex justify-content-end align-items-center">
+			<button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ml-3">Cancel</a>
+		</div>
 
 		<div class="mt-4">
 			<div class="form-check form-switch">
@@ -84,6 +87,15 @@ $this->set('enableTextEditor', true);
 						class="form-control form-control-sm tinymce"
 						placeholder="Enter Payment Related Information"
 					><?php echo $this->data['Site']['payment_info']; ?></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="SiteTos" class="form-label">Terms of Service</label>
+					<textarea
+						id="SiteTos"
+						name="data[Site][tos]"
+						class="form-control form-control-sm tinymce"
+						placeholder="Enter Terms of Service"
+					><?php echo $this->data['Site']['tos']; ?></textarea>
 				</div>
 			</div>
 			<br>

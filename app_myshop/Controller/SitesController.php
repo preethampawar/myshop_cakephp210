@@ -358,6 +358,11 @@ Disallow:
 	{
 
 	}
+
+	public function tos()
+	{
+
+	}
 }
 
 ?>

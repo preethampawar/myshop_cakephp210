@@ -63,6 +63,18 @@ $this->set('enableTextEditor', true);
 			>
 			<label class="form-check-label" for="ProductNoStock">Out of stock</label>
 		</div>
+		<div class="form-check form-switch">
+			<input type="hidden" name="data[Product][hide_price]" value="0">
+			<input
+				type="checkbox"
+				id="ProductHidePrice"
+				name="data[Product][hide_price]"
+				value="1"
+				class="form-check-input"
+				<?php echo $this->data['Product']['hide_price'] ? 'checked' : null; ?>
+			>
+			<label class="form-check-label" for="ProductHidePrice">Hide Price Information</label>
+		</div>
 	</div>
 
 	<div class="py-3">

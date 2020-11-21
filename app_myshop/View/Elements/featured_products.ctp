@@ -49,6 +49,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					$salePrice = $mrp - $discount;
 					$noStock = $row['Product']['no_stock'];
 					$cartEnabled = $this->Session->read('Site.shopping_cart');
+					$hideProductPrice = $row['Product']['hide_price'];
 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
@@ -64,6 +65,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 							'salePrice' => $salePrice,
 							'cartEnabled' => $cartEnabled,
 							'noStock' => $noStock,
+							'hideProductPrice' => $hideProductPrice,
 						]
 					);
 
