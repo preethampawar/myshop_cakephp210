@@ -6,7 +6,7 @@
 		</b>
 	</header>
 	<hr>
-	<h6 class="mb-3">Showing all products by category</h6>
+	<h6 class="mb-4">Showing all products by category</h6>
 	<?php
 	if (!empty($allProducts)) {
 		$k = 1;
@@ -17,7 +17,7 @@
 			$categoryName = ucwords($row['Category']['name']);
 			$categoryNameSlug = Inflector::slug($categoryName, '-');
 			?>
-			<article class="mb-3">
+			<article class="mb-4">
 				<header>
 					<h2><?php echo $categoryName; ?></h2>
 					<hr>
@@ -90,4 +90,4 @@
 	}
 	?>
 </section>
-<br><br>
+<br>

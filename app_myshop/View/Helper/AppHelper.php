@@ -56,6 +56,26 @@ class AppHelper extends Helper
 	/**
 	 * @return bool
 	 */
+	public function isSellerForThisSite()
+	{
+		if ($this->Session->read('User.superadmin') == 1) {
+			return true;
+		}
+
+		if (!$this->isSeller()) {
+			return false;
+		}
+
+		if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @return bool
+	 */
 	public function isSellerView()
 	{
 		if ($this->Session->check('inSellerView') && $this->Session->read('inSellerView') == true) {

@@ -18,9 +18,14 @@ class SitesController extends AppController
 
 	}
 
-	public function register()
+	public function register($userId)
 	{
-		if (!$this->Session->check('User')) {
+		App::uses('User', 'Model');
+		$user = new User();
+		$user->recursive = -1;
+		$userInfo = $user->findById($userId);
+
+		if (empty($userInfo)) {
 			$this->redirect('/users/enroll');
 		}
 
@@ -44,11 +49,11 @@ class SitesController extends AppController
 				$domainData['Domain']['default'] = true;
 
 				App::uses('Domain', 'Model');
-				$this->Domain = new Domain;
-				if ($this->Domain->save($domainData)) {
-					$domainInfo = $this->Domain->read();
+				$domainModel = new Domain;
+				if ($domainModel->save($domainData)) {
+					$domainInfo = $domainModel->read();
 					$this->sendSiteRegistrationMessage($siteInfo, $userInfo);
-					$this->successMsg('Congratulations! Your store <a href="http://' . $siteInfo['Site']['domain_name'] . '">' . $siteInfo['Site']['domain_name'] . '</a> is online now.');
+					// $this->successMsg('Congratulations! Your store <a href="http://' . $siteInfo['Site']['domain_name'] . '">' . $siteInfo['Site']['domain_name'] . '</a> is online now.');
 					$this->redirect('http://' . $siteInfo['Site']['domain_name'] . '/pages/registered');
 				} else {
 					$this->Site->delete($siteInfo['Site']['id']);
@@ -189,13 +194,13 @@ class SitesController extends AppController
 	{
 		if ($this->request->isPost()) {
 			App::uses('Domain', 'Model');
-			$this->Domain = new Domain;
+			$domainModel = new Domain;
 			$error = false;
 			$data['Domain'] = $this->request->data['Domain'];
 			if (empty($data['Domain']['name'])) {
 				$error = true;
 				$this->Session->setFlash('Enter Domain Name', 'default', ['class' => 'error']);
-			} else if ($this->Domain->findByName($data['Domain']['name'])) {
+			} else if ($domainModel->findByName($data['Domain']['name'])) {
 				$error = true;
 				$this->Session->setFlash('Domain "' . $data['Domain']['name'] . '" is already registered', 'default', ['class' => 'error']);
 			}
@@ -203,7 +208,7 @@ class SitesController extends AppController
 			if (!$error) {
 				$data['Domain']['id'] = null;
 				$data['Domain']['site_id'] = $siteID;
-				if ($this->Domain->save($data)) {
+				if ($domainModel->save($data)) {
 					$this->Session->setFlash('Domain name added successfully', 'default', ['class' => 'success']);
 				} else {
 					$this->Session->setFlash('Failed to create domain name', 'default', ['class' => 'error']);
@@ -219,13 +224,13 @@ class SitesController extends AppController
 	{
 		if ($this->request->isGet()) {
 			App::uses('Domain', 'Model');
-			$this->Domain = new Domain;
-			$domainInfo = $this->Domain->findById($domainID);
+			$domainModel = new Domain;
+			$domainInfo = $domainModel->findById($domainID);
 			if ($domainInfo) {
 				if ($domainInfo['Domain']['default']) {
 					$this->Session->setFlash('You cannot delete a default domain', 'default', ['class' => 'error']);
 				} else {
-					if ($this->Domain->delete($domainID)) {
+					if ($domainModel->delete($domainID)) {
 						$this->Session->setFlash('Domain name deleted successfully', 'default', ['class' => 'success']);
 					} else {
 						$this->Session->setFlash('Failed to delete domain name', 'default', ['class' => 'error']);
@@ -244,28 +249,28 @@ class SitesController extends AppController
 	{
 		if ($this->request->isGet()) {
 			App::uses('Domain', 'Model');
-			$this->Domain = new Domain;
-			$domainInfo = $this->Domain->findById($domainID);
+			$domainModel = new Domain;
+			$domainInfo = $domainModel->findById($domainID);
 			if ($domainInfo) {
 				if ($domainInfo['Domain']['default']) {
 					$this->Session->setFlash('You cannot delete a default domain', 'default', ['class' => 'error']);
 				} else {
 					// reset all domains
 					$conditions = ['Domain.site_id' => $siteID];
-					$domains = $this->Domain->findAllBySiteId($siteID);
+					$domains = $domainModel->findAllBySiteId($siteID);
 					foreach ($domains as $row) {
 						$data = [];
 						$data['Domain']['id'] = $row['Domain']['id'];
 						$data['Domain']['site_id'] = $siteID;
 						$data['Domain']['default'] = '0';
-						$this->Domain->save($data);
+						$domainModel->save($data);
 					}
 
 					// make the selected domain default
 					$data = [];
 					$data['Domain']['id'] = $domainID;
 					$data['Domain']['default'] = true;
-					if ($this->Domain->save($data)) {
+					if ($domainModel->save($data)) {
 						$this->Session->setFlash('Domain successfully set to default', 'default', ['class' => 'success']);
 					} else {
 						$this->Session->setFlash('Failed to set domain as default', 'default', ['class' => 'error']);

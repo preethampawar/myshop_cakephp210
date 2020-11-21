@@ -103,8 +103,8 @@ class ProductsController extends AppController
 
 		// find product images
 		App::uses('Image', 'Model');
-		$this->Image = new Image;
-		$productImages = $this->Image->findAllByProductId($productID);
+		$imageModel = new Image;
+		$productImages = $imageModel->findAllByProductId($productID);
 
 		$this->set(compact('productInfo', 'categoryInfo', 'productImages', 'visits'));
 	}
@@ -200,14 +200,14 @@ class ProductsController extends AppController
 
 						// Save product categories
 						App::uses('CategoryProduct', 'Model');
-						$this->CategoryProduct = new CategoryProduct;
+						$categoryProductModel = new CategoryProduct;
 						foreach ($data['Category']['id'] as $categoryID) {
 							$tmp = [];
 							$tmp['CategoryProduct']['id'] = null;
 							$tmp['CategoryProduct']['product_id'] = $productID;
 							$tmp['CategoryProduct']['category_id'] = $categoryID;
 							$tmp['CategoryProduct']['site_id'] = $this->Session->read('Site.id');
-							$this->CategoryProduct->save($tmp);
+							$categoryProductModel->save($tmp);
 						}
 
 						$this->successMsg('Product successfully added');
@@ -233,9 +233,9 @@ class ProductsController extends AppController
 		}
 
 		App::uses('CategoryProduct', 'Model');
-		$this->CategoryProduct = new CategoryProduct;
-		$this->CategoryProduct->recursive = -1;
-		$productCategories = $this->CategoryProduct->findAllByProductId($productID);
+		$categoryProductModel = new CategoryProduct;
+		$categoryProductModel->recursive = -1;
+		$productCategories = $categoryProductModel->findAllByProductId($productID);
 
 		$selectedCategories = [];
 		if (!empty($productCategories)) {
@@ -269,7 +269,7 @@ class ProductsController extends AppController
 						// Delete product categories
 						$conditions = ['CategoryProduct.product_id' => $productID];
 
-						$this->CategoryProduct->deleteAll($conditions);
+						$categoryProductModel->deleteAll($conditions);
 
 						if ($categoryID && $data['Category']['id']) {
 							if (!in_array($categoryID, $data['Category']['id'])) {
@@ -285,7 +285,7 @@ class ProductsController extends AppController
 								$tmp['CategoryProduct']['product_id'] = $productID;
 								$tmp['CategoryProduct']['category_id'] = $catId;
 								$tmp['CategoryProduct']['site_id'] = $this->Session->read('Site.id');
-								$this->CategoryProduct->save($tmp);
+								$categoryProductModel->save($tmp);
 							}
 						}
 
@@ -317,9 +317,9 @@ class ProductsController extends AppController
 		}
 
 		App::uses('Category', 'Model');
-		$this->Category = new Category;
-		$this->Category->recursive = -1;
-		$categoryInfo = $this->Category->findById($categoryID);
+		$categoryModel = new Category;
+		$categoryModel->recursive = -1;
+		$categoryInfo = $categoryModel->findById($categoryID);
 
 		$this->set(compact('errorMsg', 'productInfo', 'categoryID', 'productInfoLinkActive', 'selectedCategories', 'categoryInfo'));
 	}

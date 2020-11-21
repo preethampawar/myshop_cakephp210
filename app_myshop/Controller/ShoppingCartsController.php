@@ -50,8 +50,8 @@ class ShoppingCartsController extends AppController
 				}
 
 				App::uses('ShoppingCartProduct', 'Model');
-				$this->ShoppingCartProduct = new ShoppingCartProduct;
-				if ($this->ShoppingCartProduct->save($tmp)) {
+				$shoppingCartProductModel = new ShoppingCartProduct;
+				if ($shoppingCartProductModel->save($tmp)) {
 					$this->successMsg('Product successfully added to shopping list');
 				} else {
 					$this->successMsg('An error occurred while communicating with the server');
@@ -70,14 +70,14 @@ class ShoppingCartsController extends AppController
 	function getShoppingCartProductDetails($data)
 	{
 		App::uses('ShoppingCartProduct', 'Model');
-		$this->ShoppingCartProduct = new ShoppingCartProduct;
+		$shoppingCartProductModel = new ShoppingCartProduct;
 
 		$conditions = [
 			'ShoppingCartProduct.shopping_cart_id' => $data['ShoppingCartProduct']['shopping_cart_id'],
 			'ShoppingCartProduct.product_id' => $data['ShoppingCartProduct']['product_id'],
 			'ShoppingCartProduct.category_id' => $data['ShoppingCartProduct']['category_id'],
 		];
-		$productInfo = $this->ShoppingCartProduct->find('first', ['conditions' => $conditions]);
+		$productInfo = $shoppingCartProductModel->find('first', ['conditions' => $conditions]);
 
 		return $productInfo;
 	}
@@ -100,14 +100,14 @@ class ShoppingCartsController extends AppController
 	function deleteShoppingCartProduct($shoppingCartProductID)
 	{
 		App::uses('ShoppingCartProduct', 'Model');
-		$this->ShoppingCartProduct = new ShoppingCartProduct;
+		$shoppingCartProductModel = new ShoppingCartProduct;
 
 		$conditions = [
 			'ShoppingCartProduct.id' => $shoppingCartProductID,
 			'ShoppingCartProduct.shopping_cart_id' => $this->Session->read('ShoppingCart.id'),
 		];
-		if ($productInfo = $this->ShoppingCartProduct->find('first', ['conditions' => $conditions])) {
-			$this->ShoppingCartProduct->delete($shoppingCartProductID);
+		if ($productInfo = $shoppingCartProductModel->find('first', ['conditions' => $conditions])) {
+			$shoppingCartProductModel->delete($shoppingCartProductID);
 			$this->successMsg('Product successfully deleted from shopping list');
 		} else {
 			$this->successMsg('Product not found in shopping list');
@@ -150,8 +150,8 @@ class ShoppingCartsController extends AppController
 				}
 
 				App::uses('ShoppingCartProduct', 'Model');
-				$this->ShoppingCartProduct = new ShoppingCartProduct;
-				if ($this->ShoppingCartProduct->save($tmp)) {
+				$shoppingCartProductModel = new ShoppingCartProduct;
+				if ($shoppingCartProductModel->save($tmp)) {
 					$this->Session->setFlash('Product successfully added to shopping list', 'default', ['class' => 'success']);
 				} else {
 					$this->Session->setFlash('An error occured while communicating with the server.', 'default', ['class' => 'error']);

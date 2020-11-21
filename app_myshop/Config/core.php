@@ -432,11 +432,8 @@ Configure::write('Domain', 'apnastores.com');
 Configure::write('DomainName', 'ApnaStores');
 Configure::write('DomainUrl', 'http://www.apnastores.com');
 
-/* Base site email configuration */
-Configure::write('SupportEmail', 'support@letsgreenify.com');
-Configure::write('NoReply', ['name' => 'ApnaStores', 'email' => 'no-reply@letsgreenify.com']);
-
 /* Site email configuration */
+Configure::write('AdminEmail', 'preetham.pawar+apnastores@gmail.com');
 Configure::write('SupportEmail', 'support@letsgreenify.com');
 Configure::write('NoReply', ['name' => 'ApnaStores', 'email' => 'no-reply@letsgreenify.com']);
 

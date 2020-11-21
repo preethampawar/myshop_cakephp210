@@ -5,14 +5,11 @@
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title><?= $this->Session->read('Site.title') ?></title>
 
 	<!-- Bootstrap CSS -->
-	<link
-		rel="stylesheet"
-		href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css"
-		crossorigin="anonymous">
-
-	<title>My Shop!</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -115,7 +112,7 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ml-auto">
 				<?php
-				if ($this->App->isSeller()) {
+				if ($this->App->isSellerForThisSite()) {
 					?>
 					<li class="nav-item">
 						<a class="nav-link" href="/users/setView/seller">Manage
@@ -125,10 +122,10 @@
 						<a class="nav-link" href="/users/myaccount">My Account</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/sites/contact">Contact Information</a>
+						<a class="nav-link" href="/sites/contact">Contact</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/sites/paymentInfo">Payment Information</a>
+						<a class="nav-link" href="/sites/paymentInfo">Payment Details</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/users/logout">Logout</a>
@@ -136,13 +133,17 @@
 					<?php
 				} else { ?>
 					<li class="nav-item">
-						<a class="nav-link" href="/sites/contact">Contact Information</a>
+						<a class="nav-link" href="/sites/contact">Contact</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/sites/paymentInfo">Payment Information</a>
+						<a class="nav-link" href="/sites/paymentInfo">Payment Details</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/users/login">Login</a>
+						<?php if ($this->Session->check('User.id')): ?>
+							<a class="nav-link" href="/users/logout">Logout</a>
+						<?php else: ?>
+							<a class="nav-link" href="/users/login">Login</a>
+						<?php endif; ?>
 					</li>
 				<?php } ?>
 			</ul>
@@ -240,12 +241,13 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
 		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
 		crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js"
-		integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.min.js"
+		integrity="sha384-t6I8D5dJmMXjCsRLhSzCltuhNZg6P10kE0m0nAncLUjH6GeYLhRU1zfLoW3QNQDF"
 		crossorigin="anonymous"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
 
 <script>
 	// lazy load images
@@ -275,8 +277,14 @@
 			$('#navbarSide').removeClass('reveal');
 			$('.overlay').hide();
 		});
-
 	});
+
+	// show toast messages
+	var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+	var toastList = toastElList.map(function (toastEl) {
+		return new bootstrap.Toast(toastEl)
+	});
+	toastList.forEach(toast => toast.show());
 
 	// POST method implementation:
 	async function postData(url = '', data = {}) {

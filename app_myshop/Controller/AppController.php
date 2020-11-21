@@ -24,7 +24,12 @@ class AppController extends Controller
 
 		if (isset($this->request->params['admin']) && $this->request->params['admin'] === true) {
 			if (!$this->Session->check('userLoggedIn') || $this->Session->read('userLoggedIn') === false) {
-				$this->redirect('/');
+				$this->redirect('/users/logout');
+			}
+
+			if (!$this->isSellerForThisSite()) {
+				$this->errorMsg('You don\'t have permissions to access this location');
+				$this->redirect('/users/setView/buyer');
 			}
 		}
 
@@ -47,12 +52,6 @@ class AppController extends Controller
 		Configure::write('SupportEmail', $supportEmail);
 		Configure::write('NoReply', ['name' => $this->request->domain(), 'email' => 'noreply@' . $this->request->domain()]);
 		Configure::write('Security.salt', '');
-
-		if ($this->request->isMobile()) {
-			$this->Session->write('isMobile', true);
-		} else {
-			$this->Session->write('isMobile', false);
-		}
 	}
 
 	public function setBuyerCategories()
@@ -69,22 +68,23 @@ class AppController extends Controller
 		$dName = $this->request->host();
 
 		App::import('Model', 'Domain');
-		$this->Domain = new Domain;
-		$this->Domain->unbindModel(['belongsTo'=>['Site']]);
-		$sitedomain = $this->Domain->findByName($dName, ['Domain.id', 'Domain.site_id']);
+		$domainModel = new Domain;
+		$domainModel->unbindModel(['belongsTo'=>['Site']]);
+		$sitedomain = $domainModel->findByName($dName, ['Domain.id', 'Domain.site_id']);
 
 		if (!empty($sitedomain)) {
 
 			// find all domains related to the selected site and get the default domain
-			$sitedomains = $this->Domain->findAllBySiteId($sitedomain['Domain']['site_id']);
+			$sitedomains = $domainModel->findAllBySiteId($sitedomain['Domain']['site_id']);
+
+			App::uses('User', 'Model');
+			$userModel = new User;
+			$userModel->recursive = '-1';
+			$userModel->unbindModel(['hasOne'=>['Site']]);
 
 			foreach ($sitedomains as $row) {
 				if ($row['Domain']['default']) {
-					App::uses('User', 'Model');
-					$this->User = new User;
-					$this->User->recursive = '-1';
-					$this->User->unbindModel(['hasOne'=>['Site']]);
-					$siteUser = $this->User->findById($row['Site']['user_id']);
+					$siteUser = $userModel->findById($row['Site']['user_id']);
 
 					$siteInfo['Domain'] = $row['Domain'];
 					$siteInfo['Site'] = $row['Site'];
@@ -166,13 +166,13 @@ class AppController extends Controller
 	public function updateSiteVisits()
 	{
 		App::uses('Site', 'Model');
-		$this->Site = new Site;
-		$this->Site->recursive = -1;
-		$siteInfo = $this->Site->findById($this->Session->read('Site.id'));
+		$siteModel = new Site;
+		$siteModel->recursive = -1;
+		$siteInfo = $siteModel->findById($this->Session->read('Site.id'));
 		$visitCount = $siteInfo['Site']['views'];
 		$tmp['Site']['id'] = $this->Session->read('Site.id');
 		$tmp['Site']['views'] = $visitCount + 1;
-		$this->Site->save($tmp);
+		$siteModel->save($tmp);
 		$this->Session->write('SiteVisits', $visitCount);
 		return $visitCount;
 	}
@@ -240,6 +240,23 @@ class AppController extends Controller
 		return false;
 	}
 
+	public function isSellerForThisSite()
+	{
+		if ($this->Session->read('User.superadmin') == 1) {
+			return true;
+		}
+
+		if (!$this->isSeller()) {
+			return false;
+		}
+
+		if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {
+			return true;
+		}
+
+		return false;
+	}
+
 	function checkLandingPage()
 	{
 		$contentInfo = $this->getLandingPageInfo();
@@ -255,10 +272,10 @@ class AppController extends Controller
 	function getLandingPageInfo()
 	{
 		App::uses('Content', 'Model');
-		$this->Content = new Content;
+		$contentModel = new Content;
 
 		$conditions = ['Content.site_id' => $this->Session->read('Site.id'), 'Content.landing_page' => '1'];
-		$contentInfo = $this->Content->find('first', ['conditions' => $conditions]);
+		$contentInfo = $contentModel->find('first', ['conditions' => $conditions]);
 
 		if (empty($contentInfo)) {
 			$data = [];
@@ -266,8 +283,8 @@ class AppController extends Controller
 			$data['Content']['landing_page'] = '1';
 			$data['Content']['site_id'] = $this->Session->read('Site.id');
 			$data['Content']['title'] = 'Landing Page';
-			if ($this->Content->save($data)) {
-				$contentInfo = $this->Content->read();
+			if ($contentModel->save($data)) {
+				$contentInfo = $contentModel->read();
 			}
 		}
 
@@ -280,9 +297,9 @@ class AppController extends Controller
 	function isSiteProduct($productID)
 	{
 		App::uses('Product', 'Model');
-		$this->Product = new Product;
+		$productModel = new Product;
 		$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.id' => $productID];
-		return $this->Product->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		return $productModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 	}
 
 	public function getRearrangedImages($data)
@@ -330,9 +347,9 @@ class AppController extends Controller
 	function isSiteImage($imageID)
 	{
 		App::uses('Image', 'Model');
-		$this->Image = new Image;
+		$imageModel = new Image;
 		$conditions = ['Image.site_id' => $this->Session->read('Site.id'), 'Image.id' => $imageID];
-		return $this->Image->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		return $imageModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 	}
 
 	/**
@@ -341,9 +358,9 @@ class AppController extends Controller
 	function isSiteCategory($categoryID)
 	{
 		App::uses('Category', 'Model');
-		$this->Category = new Category;
+		$categoryModel = new Category;
 		$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.id' => $categoryID];
-		return $this->Category->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		return $categoryModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 	}
 
 	/**
@@ -352,9 +369,9 @@ class AppController extends Controller
 	function isSiteContent($contentID)
 	{
 		App::uses('Content', 'Model');
-		$this->Content = new Content;
+		$contentModel = new Content;
 		$conditions = ['Content.site_id' => $this->Session->read('Site.id'), 'Content.id' => $contentID];
-		$content = $this->Content->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		$content = $contentModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 		return $content;
 	}
 
@@ -364,9 +381,9 @@ class AppController extends Controller
 	function isSiteBlog($blogID)
 	{
 		App::uses('Blog', 'Model');
-		$this->Blog = new Blog;
+		$blogModel = new Blog;
 		$conditions = ['Blog.site_id' => $this->Session->read('Site.id'), 'Blog.id' => $blogID];
-		$content = $this->Blog->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		$content = $blogModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 		return $content;
 	}
 
@@ -421,13 +438,13 @@ class AppController extends Controller
 	function deleteCategory($categoryID)
 	{
 		App::uses('Category', 'Model');
-		$this->Category = new Category;
+		$categoryModel = new Category;
 
-		$this->Category->recursive = -1;
-		$categoryInfo = $this->Category->findById($categoryID);
+		$categoryModel->recursive = -1;
+		$categoryInfo = $categoryModel->findById($categoryID);
 
 		// find all subcategories
-		$allChildren = $this->Category->children($categoryID, false);
+		$allChildren = $categoryModel->children($categoryID, false);
 
 		// merge main category with subcategories
 		$allCategories = $allChildren;
@@ -435,14 +452,14 @@ class AppController extends Controller
 
 		if (!empty($allCategories)) {
 			App::uses('Image', 'Model');
-			$this->Image = new Image;
+			$imageModel = new Image;
 
 			foreach ($allCategories as $row) {
 				$catId = $row['Category']['id'];
 
 				// delete category image
-				$this->Image->recursive = -1;
-				$image = $this->Image->findByCategoryId($catId);
+				$imageModel->recursive = -1;
+				$image = $imageModel->findByCategoryId($catId);
 
 				if (!empty($image)) {
 					try {
@@ -453,9 +470,9 @@ class AppController extends Controller
 
 				// delete category products
 				App::uses('CategoryProduct', 'Model');
-				$this->CategoryProduct = new CategoryProduct;
-				$this->CategoryProduct->recursive = '-1';
-				$categoryProducts = $this->CategoryProduct->findAllByCategoryId($catId);
+				$categoryProductModel = new CategoryProduct;
+				$categoryProductModel->recursive = '-1';
+				$categoryProducts = $categoryProductModel->findAllByCategoryId($catId);
 				if (!empty($categoryProducts)) {
 					foreach ($categoryProducts as $row2) {
 						$productID = $row2['CategoryProduct']['product_id'];
@@ -468,7 +485,7 @@ class AppController extends Controller
 
 				// delete category from database
 				try {
-					$this->Category->delete($catId);
+					$categoryModel->delete($catId);
 				} catch (Exception $e) {
 				}
 			}
@@ -504,8 +521,8 @@ class AppController extends Controller
 
 		// remove from images table
 		App::uses('Image', 'Model');
-		$this->Image = new Image;
-		$this->Image->delete($imageID);
+		$imageModel = new Image;
+		$imageModel->delete($imageID);
 		return true;
 	}
 
@@ -515,34 +532,34 @@ class AppController extends Controller
 	function deleteProduct($productID, $categoryID = null)
 	{
 		App::uses('CategoryProduct', 'Model');
-		$this->CategoryProduct = new CategoryProduct;
-		$this->CategoryProduct->recursive = -1;
+		$categoryProductModel = new CategoryProduct;
+		$categoryProductModel->recursive = -1;
 
 		App::uses('ProductVisit', 'Model');
-		$this->ProductVisit = new ProductVisit;
+		$productVisitModel = new ProductVisit;
 
 		// remove this product from categories
 		if (!empty($categoryID)) {
 			// remove this product from the selected category
 			$conditions = ['CategoryProduct.product_id' => $productID, 'CategoryProduct.category_id' => $categoryID];
-			$this->CategoryProduct->deleteAll($conditions);
+			$categoryProductModel->deleteAll($conditions);
 
 			// remove this product from product_visits table
 			$conditions = ['ProductVisit.product_id' => $productID, 'ProductVisit.category_id' => $categoryID];
-			$this->ProductVisit->deleteAll($conditions);
+			$productVisitModel->deleteAll($conditions);
 		} else {
 			// remove this product from all categories
 			$conditions = ['CategoryProduct.product_id' => $productID];
-			$this->CategoryProduct->deleteAll($conditions);
+			$categoryProductModel->deleteAll($conditions);
 
 			// remove this product from product_visits table
 			$conditions = ['ProductVisit.product_id' => $productID];
-			$this->ProductVisit->deleteAll($conditions);
+			$productVisitModel->deleteAll($conditions);
 
 			// delete product images
 			App::uses('Image', 'Model');
-			$this->Image = new Image;
-			$productImages = $this->Image->findAllByProductId($productID);
+			$imageModel = new Image;
+			$productImages = $imageModel->findAllByProductId($productID);
 			if (!empty($productImages)) {
 				foreach ($productImages as $row) {
 					$this->deleteImage($row['Image']['id']);
@@ -551,8 +568,8 @@ class AppController extends Controller
 
 			// delete product from database
 			App::uses('Product', 'Model');
-			$this->Product = new Product;
-			$this->Product->delete($productID);
+			$productModel = new Product;
+			$productModel->delete($productID);
 		}
 		return true;
 	}
@@ -567,11 +584,11 @@ class AppController extends Controller
 			$shoppingCartID = $this->Session->read('ShoppingCart.id');
 		} else {
 			App::uses('ShoppingCart', 'Model');
-			$this->ShoppingCart = new ShoppingCart;
+			$shoppingCartModel = new ShoppingCart;
 			$tmp['ShoppingCart']['id'] = null;
 			$tmp['ShoppingCart']['site_id'] = $this->Session->read('Site.id');
-			if ($this->ShoppingCart->save($tmp)) {
-				$shoppingCartInfo = $this->ShoppingCart->read();
+			if ($shoppingCartModel->save($tmp)) {
+				$shoppingCartInfo = $shoppingCartModel->read();
 				$shoppingCartID = $shoppingCartInfo['ShoppingCart']['id'];
 				$this->Session->write('ShoppingCart', $shoppingCartInfo['ShoppingCart']);
 			}
@@ -587,11 +604,11 @@ class AppController extends Controller
 		$shoppingCart = null;
 		if ($this->Session->check('ShoppingCart.id')) {
 			App::uses('ShoppingCart', 'Model');
-			$this->ShoppingCart = new ShoppingCart;
+			$shoppingCartModel = new ShoppingCart;
 
 			$shoppingCartID = $this->Session->read('ShoppingCart.id');
-			$this->ShoppingCart->bindModel(['hasMany' => ['ShoppingCartProduct' => ['order' => 'ShoppingCartProduct.product_name']]]);
-			$shoppingCart = $this->ShoppingCart->find('first', ['conditions' => ['ShoppingCart.id' => $shoppingCartID]]);
+			$shoppingCartModel->bindModel(['hasMany' => ['ShoppingCartProduct' => ['order' => 'ShoppingCartProduct.product_name']]]);
+			$shoppingCart = $shoppingCartModel->find('first', ['conditions' => ['ShoppingCart.id' => $shoppingCartID]]);
 		}
 		return $shoppingCart;
 	}
@@ -602,16 +619,16 @@ class AppController extends Controller
 	function addProductVisit($categoryID, $productID, $categoryName, $productName)
 	{
 		App::uses('ProductVisit', 'Model');
-		$this->ProductVisit = new ProductVisit;
+		$productVisitModel = new ProductVisit;
 
 		$conditions = ['ProductVisit.category_id' => $categoryID, 'ProductVisit.product_id' => $productID, 'ProductVisit.site_id' => $this->Session->read('Site.id')];
 
 		$visitInfo = [];
 		try {
-			if ($visitInfo = $this->ProductVisit->find('first', ['conditions' => $conditions, 'recursive' => '-1'])) {
+			if ($visitInfo = $productVisitModel->find('first', ['conditions' => $conditions, 'recursive' => '-1'])) {
 				$data['ProductVisit']['id'] = $visitInfo['ProductVisit']['id'];
 				$data['ProductVisit']['visit_count'] = $visitInfo['ProductVisit']['visit_count'] + 1;
-				$this->ProductVisit->save($data);
+				$productVisitModel->save($data);
 			} else {
 				$data['ProductVisit']['id'] = null;
 				$data['ProductVisit']['visit_count'] = 1;
@@ -620,9 +637,9 @@ class AppController extends Controller
 				$data['ProductVisit']['category_name'] = $categoryName;
 				$data['ProductVisit']['product_name'] = $productName;
 				$data['ProductVisit']['site_id'] = $this->Session->read('Site.id');
-				$this->ProductVisit->save($data);
-				$this->ProductVisit->recursive = -1;
-				$visitInfo = $this->ProductVisit->read();
+				$productVisitModel->save($data);
+				$productVisitModel->recursive = -1;
+				$visitInfo = $productVisitModel->read();
 			}
 		} catch (Exception $e) {
 
@@ -637,11 +654,11 @@ class AppController extends Controller
 	function getProductVisits($categoryID, $productID)
 	{
 		App::uses('ProductVisit', 'Model');
-		$this->ProductVisit = new ProductVisit;
+		$productVisitModel = new ProductVisit;
 
 		$visits = 0;
 		$conditions = ['ProductVisit.category_id' => $categoryID, 'ProductVisit.product_id' => $productID, 'ProductVisit.site_id' => $this->Session->read('Site.id')];
-		$visitInfo = $this->ProductVisit->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		$visitInfo = $productVisitModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 		if (!empty($visitInfo)) {
 			$visits = $visitInfo['ProductVisit']['visit_count'];
 		}
@@ -654,18 +671,18 @@ class AppController extends Controller
 	function getRecentProductViewsByUser()
 	{
 		App::uses('ProductVisit', 'Model');
-		$this->ProductVisit = new ProductVisit;
+		$productVisitModel = new ProductVisit;
 
 		$conditions = ['ProductVisit.site_id' => $this->Session->read('Site.id')];
 		$fields = ['ProductVisit.id', 'ProductVisit.visit_count', 'Product.id', 'Product.name', 'Category.id', 'Category.name'];
 
-		$products = $this->ProductVisit->find('all', ['conditions' => $conditions, 'order' => ['ProductVisit.modified DESC'], 'fields' => $fields, 'limit' => '12']);
+		$products = $productVisitModel->find('all', ['conditions' => $conditions, 'order' => ['ProductVisit.modified DESC'], 'fields' => $fields, 'limit' => '12']);
 		if (!empty($products)) {
 			App::uses('Image', 'Model');
-			$this->Image = new Image;
+			$imageModel = new Image;
 
 			foreach ($products as $index => $row) {
-				$image = $this->Image->find('first', ['conditions' => ['Image.product_id' => $row['Product']['id']], 'order' => ['Image.highlight DESC'], 'recursive' => '-1', 'fields' => ['Image.id', 'Image.caption'], 'limit' => '1']);
+				$image = $imageModel->find('first', ['conditions' => ['Image.product_id' => $row['Product']['id']], 'order' => ['Image.highlight DESC'], 'recursive' => '-1', 'fields' => ['Image.id', 'Image.caption'], 'limit' => '1']);
 				$products[$index]['Image'] = $image['Image'];
 			}
 		}
@@ -678,18 +695,18 @@ class AppController extends Controller
 	function getMostViewedProductsList()
 	{
 		App::uses('ProductVisit', 'Model');
-		$this->ProductVisit = new ProductVisit;
+		$productVisitModel = new ProductVisit;
 
 		$conditions = ['ProductVisit.site_id' => $this->Session->read('Site.id')];
 		$fields = ['ProductVisit.id', 'ProductVisit.visit_count', 'Product.id', 'Product.name', 'Category.id', 'Category.name'];
 
-		$products = $this->ProductVisit->find('all', ['conditions' => $conditions, 'order' => ['ProductVisit.visit_count DESC'], 'fields' => $fields, 'limit' => '14']);
+		$products = $productVisitModel->find('all', ['conditions' => $conditions, 'order' => ['ProductVisit.visit_count DESC'], 'fields' => $fields, 'limit' => '14']);
 		if (!empty($products)) {
 			App::uses('Image', 'Model');
-			$this->Image = new Image;
+			$imageModel = new Image;
 
 			foreach ($products as $index => $row) {
-				$image = $this->Image->find('first', ['conditions' => ['Image.product_id' => $row['Product']['id']], 'order' => ['Image.highlight DESC'], 'recursive' => '-1', 'fields' => ['Image.id', 'Image.caption'], 'limit' => '1']);
+				$image = $imageModel->find('first', ['conditions' => ['Image.product_id' => $row['Product']['id']], 'order' => ['Image.highlight DESC'], 'recursive' => '-1', 'fields' => ['Image.id', 'Image.caption'], 'limit' => '1']);
 				$products[$index]['Image'] = $image['Image'];
 			}
 		}
@@ -702,9 +719,9 @@ class AppController extends Controller
 	function getSiteCategoriesProductsImages($options = [])
 	{
 		App::uses('Product', 'Model');
-		$this->Product = new Product;
+		$productModel = new Product;
 
-		$data = $this->Product->getSiteCategoriesProducts($options = [], $this->Session->read('Site.id'));
+		$data = $productModel->getSiteCategoriesProducts($options = [], $this->Session->read('Site.id'));
 		return $data;
 	}
 
@@ -748,6 +765,19 @@ class AppController extends Controller
 		}
 
 		return false;
+	}
+
+	public function clearSession()
+	{
+		$this->Session->delete('loginOtp');
+		$this->Session->delete('loginUser');
+		$this->Session->delete('userLoggedIn');
+		$this->Session->delete('enrollOtp');
+		$this->Session->delete('enrollUser');
+		$this->Session->delete('User');
+		$this->Session->delete('Site');
+
+		$this->Session->destroy();
 	}
 
 }

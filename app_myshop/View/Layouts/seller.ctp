@@ -52,7 +52,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ml-auto">
 				<?php
-				if ($this->App->isSeller()) {
+				if ($this->App->isSellerForThisSite()) {
 					?>
 
 					<li class="nav-item">

@@ -32,7 +32,7 @@ class UsersController extends AppController
 				$this->Session->write('loginOtp', $rand);
 				$this->Session->write('loginUser', $userInfo['User']);
 				$this->Session->write('userLoggedIn', false);
-				$this->sendLoginOtp($rand, $email, $email);
+				$this->sendLoginOtp($rand, $email, $mobile);
 
 				$this->redirect('/users/verifyLoginOtp');
 			} else {
@@ -44,11 +44,15 @@ class UsersController extends AppController
 
 	private function sendLoginOtp($otp, $toEmail, $toName)
 	{
-		$subject = 'Login OTP';
-		$mailContent = 'Your login OTP - ' . $otp;
+		$subject = 'Login OTP for ' . $toName;
+		$bccEmail = Configure::read('AdminEmail');
+
+		$mailContent = $otp . '<br><br>-<br>' . Configure::read('DomainName');
 		$email = new CakeEmail('smtpNoReply');
+		$email->emailFormat('html');
 		$email->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']]);
 		$email->to([$toEmail => $toName]);
+		$email->bcc($bccEmail, $bccEmail);
 		$email->subject($subject);
 		$email->send($mailContent);
 	}
@@ -85,8 +89,20 @@ class UsersController extends AppController
 
 	public function enroll()
 	{
+		$this->clearSession();
+
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
+			$mobile = $data['User']['mobile'];
+			$userInfo = $this->User->findByMobile($mobile);
+
+			if ($userInfo) {
+				$this->noticeMsg("Mobile no. '$mobile' is already registered on this platform. You can directly register your store using the same mobile number.");
+
+				// $this->Session->write('User', $userInfo['User']);
+				$this->redirect('/sites/register/' . $userInfo['User']['id']);
+			}
+
 			$rand = random_int(1000, 9999);
 			$this->Session->write('enrollOtp', $rand);
 			$this->Session->write('enrollUser', $data['User']);
@@ -134,15 +150,15 @@ class UsersController extends AppController
 		$data['User']['mobile'] = $mobile;
 		$data['User']['password'] = md5($mobile);
 		$data['User']['email'] = $email;
-		$data['User']['type'] = self::TEXT_SELLER;
+		$data['User']['type'] = null;
 
 		if ($this->User->save($data)) {
 			$user = $this->User->read();
-			$this->Session->write('User', $user['User']);
+			// $this->Session->write('User', $user['User']);
 			$this->successMsg('Registration successful');
 			$this->sendSuccessfulEnrollmentMessage($mobile, $email);
 
-			$this->redirect('/sites/register');
+			$this->redirect('/sites/register/' . $data['User']['id']);
 		} else {
 			$this->errorMsg('Could not register the user. Please try again.');
 		}
@@ -308,13 +324,8 @@ This message is for notification purpose only.
 
 	public function logout()
 	{
-		$this->Session->delete('loginOtp');
-		$this->Session->delete('loginUser');
-		$this->Session->delete('userLoggedIn');
-		$this->Session->delete('User');
-		$this->Session->delete('Site');
+		$this->clearSession();
 
-		$this->Session->destroy();
 		$this->redirect('/');
 	}
 
@@ -654,9 +665,10 @@ Message: ' . htmlentities($data['User']['message']) . '
 				$this->redirect('/admin/users/userInfo');
 			}
 		}
+
 		App::uses('Site', 'Model');
-		$this->Site = new Site;
-		$sites = $this->Site->find('list');
+		$siteModel = new Site();
+		$sites = $siteModel->find('list');
 		$this->set('sites', $sites);
 
 		$errorMsg = [];

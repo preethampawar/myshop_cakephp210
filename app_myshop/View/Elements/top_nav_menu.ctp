@@ -102,7 +102,7 @@ if (!$this->Session->read('Site.under_maintenance') && false) {
 ?>
 
 <?php
-if ($this->App->isSeller()) {
+if ($this->App->isSellerForThisSite()) {
 	?>
 	<nav class="clear" id="subnav" style="">
 		<ul>

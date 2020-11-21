@@ -57,7 +57,7 @@ $this->set('enableTextEditor', true);
 					class="form-check-input"
 					<?php echo $this->data['Product']['featured'] ? 'checked' : null; ?>
 				>
-				<label class="form-check-label" for="ProductFeatured">Best Deal</label>
+				<label class="form-check-label" for="ProductFeatured">Show in Best Deals</label>
 			</div>
 			<div class="form-check form-switch">
 				<input type="hidden" name="data[Product][no_stock]" value="0">
