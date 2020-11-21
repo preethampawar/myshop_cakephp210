@@ -9,7 +9,7 @@ class AppController extends Controller
 	public $helpers = ['Html', 'Form', 'Session', 'Number', 'Text', 'Img', 'Js' => ['Jquery'], 'App'];
 
 	public $noReplyEmail = [
-		'fromName' => 'LetsGreenify',
+		'fromName' => 'ApnaStores',
 		'fromEmail' => 'no-reply@letsgreenify.com',
 
 	];
