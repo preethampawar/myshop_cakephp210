@@ -49,7 +49,7 @@ class SitesController extends AppController
 					$domainInfo = $this->Domain->read();
 					$this->sendSiteRegistrationMessage($siteInfo, $userInfo);
 					$this->successMsg('Congratulations! Your store <a href="http://' . $siteInfo['Site']['domain_name'] . '">' . $siteInfo['Site']['domain_name'] . '</a> is online now.');
-					$this->redirect('/users/login');
+					$this->redirect('http://' . $siteInfo['Site']['domain_name'] . '/pages/registered');
 				} else {
 					$this->Site->delete($siteInfo['Site']['id']);
 					$this->errorMsg('Store URL could not be created. Please try again.');
