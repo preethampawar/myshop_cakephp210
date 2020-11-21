@@ -88,6 +88,7 @@ class AppController extends Controller
 
 					$siteInfo['Domain'] = $row['Domain'];
 					$siteInfo['Site'] = $row['Site'];
+					debug($siteUser);
 					$siteInfo['Site']['Account'] = $siteUser['User'];
 
 					break;
