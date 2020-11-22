@@ -14,13 +14,13 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<?php
-	if (isset($loadVueJs) && $loadVueJs == true) {
+	if ((isset($loadVueJs) && $loadVueJs == true) || $this->Session->read('Site.shopping_cart') == true) {
 		?>
 		<!-- development version, includes helpful console warnings -->
-		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
 
 		<!-- production version, optimized for size and speed -->
-		<!--		<script src="https://cdn.jsdelivr.net/npm/vue"></script>	-->
+				<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 		<?php
 	}
 	?>
@@ -173,11 +173,10 @@
 </div>
 
 <div class="container mt-3">
-	<?php
-	if ($this->Session->read('Site.shopping_cart')) {
-		echo $this->element('myshoppinglist_topnav');
-	}
-	?>
+	<?php if ($this->Session->read('Site.shopping_cart')): ?>
+		<div id="topNavShoppingCart"></div>
+	<?php endif; ?>
+
 	<?php echo $this->fetch('content'); ?>
 
 	<?php
@@ -221,6 +220,15 @@
 	?>
 
 	<br>
+
+	<div id="ToastMessage" class="fixed-top d-none" style="width:16rem; left: auto; margin-top: 8rem; margin-right: 0.5rem;">
+		<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex align-items-center">
+				<div class="toast-body"></div>
+				<button type="button" class="btn-close btn-close-white ml-auto mr-2" data-dismiss="toast" aria-label="Close"></button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="container">
@@ -280,11 +288,17 @@
 	});
 
 	// show toast messages
-	var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-	var toastList = toastElList.map(function (toastEl) {
-		return new bootstrap.Toast(toastEl)
-	});
-	toastList.forEach(toast => toast.show());
+	function showToastMessages() {
+		var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+		var toastList = toastElList.map(function (toastEl) {
+			return new bootstrap.Toast(toastEl)
+		});
+
+		toastList.forEach(toast => toast.show());
+	}
+
+	showToastMessages();
+
 
 	// POST method implementation:
 	async function postData(url = '', data = {}) {
@@ -319,6 +333,20 @@
 		return response.json(); // parses JSON response into native JavaScript objects
 	}
 </script>
+
+<?php if ($this->Session->read('Site.shopping_cart')): ?>
+	<script>
+		function loadShoppingCart() {
+			let topNavCartUrl = '/shopping_carts/loadTopNavCart';
+			const data = getPage(topNavCartUrl);
+			data.then(function (response) {
+				$("#topNavShoppingCart").html(response);
+			});
+		}
+
+		loadShoppingCart();
+	</script>
+<?php endif; ?>
 
 <!-- images zoom in - lightbox -->
 <?php

@@ -86,7 +86,12 @@ $loadingImageUrl = '/loading2.gif';
 									<button type="button" class="btn btn-sm btn-outline-secondary mt-1"
 											v-on:click="showUpdateCartDiv = false">Cancel
 									</button>
-									<button type="submit" class="btn btn-sm btn-primary active mt-1">+ Add
+									<button
+										type="button"
+										class="btn btn-sm btn-primary active mt-1"
+										v-on:click="addToCart('<?php echo $categoryID; ?>', '<?php echo $productID; ?>')"
+									>
+										+ Add
 									</button>
 								</div>
 							</div>
@@ -151,6 +156,37 @@ $loadingImageUrl = '/loading2.gif';
 				const data = getPage(productDetailsUrl);
 				data.then(function (response) {
 					$("#productModal" + productId + " .modal-body").html(response);
+				});
+			},
+			addToCart: function (categoryId, productId) {
+				const addToCartUrl = '/shopping_carts/addToCart';
+				const quantity = $('#ShoppingCartProductQuantity' + categoryId + '-' + productId).val();
+				let data = {
+					'ShoppingCartProduct': {
+						'quantity': quantity,
+						'categoryId': categoryId,
+						'productId': productId,
+					}
+				}
+				const response = postData(addToCartUrl, data);
+
+				let that = this;
+				response.then(function (data) {
+					$('#ToastMessage').removeClass('d-none');
+					$('#toastDiv').removeClass('bg-primary');
+					$('#toastDiv').removeClass('bg-danger');
+					$('#toastDiv').removeClass('bg-notice');
+
+					if (data.success == 1) {
+						$('#toastDiv').addClass('bg-primary');
+						$("#toastDiv .toast-body").html("<i class='fa fa-check-circle'></i> Product successfully added to cart.");
+						that.showUpdateCartDiv = false;
+						loadShoppingCart();
+					} else {
+						$('#toastDiv').addClass('bg-danger');
+						$("#toastDiv .toast-body").html("<i class='fa fa-exclamation-circle'></i> " + data.errorMessage);
+					}
+					showToastMessages();
 				});
 			}
 		}

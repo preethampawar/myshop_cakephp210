@@ -17,7 +17,12 @@ class ShoppingCartsController extends AppController
 		//$this->Auth->allow('index', 'add', 'edit', 'delete', 'getCartProducts', 'deleteShoppingCartProduct', 'requestQuoteForProduct');
 	}
 
-	function add($categoryID, $productID)
+	public function loadTopNavCart()
+	{
+		$this->layout = false;
+	}
+
+	public function add($categoryID, $productID)
 	{
 		$errorMsg = null;
 
@@ -64,10 +69,67 @@ class ShoppingCartsController extends AppController
 		$this->redirect($this->request->referer());
 	}
 
+	public function addToCart()
+	{
+		$errorMsg = null;
+		$this->layout = false;
+
+		$data = $this->request->input('json_decode', true);
+
+		$productID = $data['ShoppingCartProduct']['productId'] ?? 0;
+		$categoryID = $data['ShoppingCartProduct']['categoryId'] ?? 0;
+		$quantity = $data['ShoppingCartProduct']['quantity'] ?? 0;
+
+		if (!$categoryInfo = $this->isSiteCategory($categoryID)) {
+			$errorMsg = 'Category Not Found.';
+		} elseif (!$productInfo = $this->isSiteProduct($productID)) {
+			$errorMsg = 'Product Not Found.';
+		} elseif ($this->request->isPost()) {
+			$shoppingCartID = $this->getShoppingCartID();
+
+			if ($shoppingCartID) {
+				$tmp['ShoppingCartProduct']['shopping_cart_id'] = $shoppingCartID;
+				$tmp['ShoppingCartProduct']['site_id'] = $this->Session->read('Site.id');
+				$tmp['ShoppingCartProduct']['product_id'] = $productID;
+				$tmp['ShoppingCartProduct']['category_id'] = $categoryID;
+				$tmp['ShoppingCartProduct']['category_name'] = $categoryInfo['Category']['name'];
+				$tmp['ShoppingCartProduct']['product_name'] = $productInfo['Product']['name'];
+				$tmp['ShoppingCartProduct']['mrp'] = $productInfo['Product']['mrp'];
+				$tmp['ShoppingCartProduct']['discount'] = $productInfo['Product']['discount'];
+
+				// get shopping cart product details
+				$shoppingCartProductInfo = $this->getShoppingCartProductDetails($tmp);
+
+				if (!empty($shoppingCartProductInfo)) {
+					$tmp['ShoppingCartProduct']['quantity'] = $quantity + $shoppingCartProductInfo['ShoppingCartProduct']['quantity'];
+					$tmp['ShoppingCartProduct']['id'] = $shoppingCartProductInfo['ShoppingCartProduct']['id'];
+				} else {
+					$tmp['ShoppingCartProduct']['quantity'] = $quantity;
+					$tmp['ShoppingCartProduct']['id'] = null;
+				}
+
+				App::uses('ShoppingCartProduct', 'Model');
+				$shoppingCartProductModel = new ShoppingCartProduct;
+
+				if (!$shoppingCartProductModel->save($tmp)) {
+					$errorMsg = 'An error occurred while communicating with the server.';
+				}
+			} else {
+				$errorMsg = 'An error occurred while communicating with the server.';
+			}
+		}
+
+		$success = empty($errorMsg);
+
+		$this->response->body('{"success": "' . $success . '", "errorMessage": "' . $errorMsg . '"}');
+		$this->response->type('application/json');
+		$this->response->send();
+	}
+
 	/**
 	 * Get shopping cart product details based on data
 	 */
-	function getShoppingCartProductDetails($data)
+	public function getShoppingCartProductDetails($data)
 	{
 		App::uses('ShoppingCartProduct', 'Model');
 		$shoppingCartProductModel = new ShoppingCartProduct;
@@ -85,7 +147,7 @@ class ShoppingCartsController extends AppController
 	/**
 	 * Function to get shopping cart products
 	 */
-	function getCartProducts()
+	public function getCartProducts()
 	{
 		$shoppingCart = null;
 		if ($this->Session->check('ShoppingCart.id')) {
@@ -97,7 +159,7 @@ class ShoppingCartsController extends AppController
 	/**
 	 * Function to delete shopping cart product
 	 */
-	function deleteShoppingCartProduct($shoppingCartProductID)
+	public function deleteShoppingCartProduct($shoppingCartProductID)
 	{
 		App::uses('ShoppingCartProduct', 'Model');
 		$shoppingCartProductModel = new ShoppingCartProduct;
@@ -118,7 +180,7 @@ class ShoppingCartsController extends AppController
 	/**
 	 * Function to add product to shopping list by request quote form
 	 */
-	function requestQuoteForProduct($categoryID, $productID)
+	public function requestQuoteForProduct($categoryID, $productID)
 	{
 		$errorMsg = null;
 
