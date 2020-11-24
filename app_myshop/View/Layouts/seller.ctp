@@ -1,6 +1,7 @@
 <?php
-$enableLightbox = true;
 $assetDomainUrl = Configure::read('AssetDomainUrl');
+$enableImageCropper = $enableImageCropper ?? false;
+$enableTextEditor = $enableTextEditor ?? false;
 ?>
 <!doctype html>
 <html lang="en">
@@ -10,10 +11,12 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- Bootstrap CSS -->
-	<link
-		rel="stylesheet"
-		href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css"
-		crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"
+		  integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA=="
+		  crossorigin="anonymous"/>
 
 	<title>Seller</title>
 
@@ -42,7 +45,8 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 
 <nav class="navbar navbar-expand-lg navbar-dark navbar-static bg-dark ">
 	<div class="container">
-		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-toggle="collapse" data-target="#navbarNav"
+		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-toggle="collapse"
+			 data-target="#navbarNav"
 			 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="fa fa-bars"></span> Admin
 		</div>
@@ -113,7 +117,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 			<div class="modal-header">
 				<h5 class="modal-title" id="deleteModal"></h5>
 				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
+					<span aria-hidden="true"></span>
 				</button>
 			</div>
 			<div class="modal-body">
@@ -139,7 +143,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 			<div class="modal-header">
 				<h5 class="modal-title" id="deleteModal">Delete</h5>
 				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
+					<span aria-hidden="true"></span>
 				</button>
 			</div>
 			<div class="modal-body">
@@ -153,6 +157,17 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 	</div>
 </div>
 
+<div id="ToastMessage" class="fixed-top d-none"
+	 style="width:16rem; left: auto; margin-top: 8rem; margin-right: 0.5rem;">
+	<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="d-flex align-items-center">
+			<div class="toast-body"></div>
+			<button type="button" class="btn-close btn-close-white ml-auto mr-2" data-dismiss="toast"
+					aria-label="Close"></button>
+		</div>
+	</div>
+</div>
+
 <!-- Optional JavaScript -->
 <!-- Popper.js first, then Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
@@ -160,372 +175,42 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 		crossorigin="anonymous"></script>
 
 <?php
-if (isset($enableTextEditor) && $enableTextEditor) {
+if ($enableTextEditor) {
+	// use bootstrap 4.x.x to fix texteditor issue
 	?>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-			integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-			crossorigin="anonymous"></script>
+		integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+		crossorigin="anonymous"></script>
 <?php
 } else {
 ?>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js"
-		integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.min.js"
+			integrity="sha384-t6I8D5dJmMXjCsRLhSzCltuhNZg6P10kE0m0nAncLUjH6GeYLhRU1zfLoW3QNQDF"
+			crossorigin="anonymous"></script>
+
 	<?php
 }
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 
-<script>
-	// lazy load images
-	if ($("img.lazy").length) {
-		$("img.lazy").lazyload({
-			effect: "fadeIn"
-		});
-	}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"
+		integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ=="
+		crossorigin="anonymous"></script>
 
-	// bootstrap tooltip
-	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
-	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-		return new bootstrap.Tooltip(tooltipTriggerEl)
-	})
+<?php if ($enableTextEditor): ?>
+	<?= $this->element('text_editor') ?>
+<?php endif; ?>
 
-	// custom js
-	$(document).ready(function () {
+<?= $this->element('customjs') ?>
 
-		// Open navbarSide when button is clicked
-		$('.productSideBar').on('click', function () {
-			$('#navbarSide').addClass('reveal');
-			$('.overlay').show();
-		});
+<?php if ($enableImageCropper): ?>
+	<?= $this->element('imagecropper') ?>
+<?php endif; ?>
 
-		// Close navbarSide when the outside of menu is clicked
-		$('.overlay').on('click', function () {
-			$('#navbarSide').removeClass('reveal');
-			$('.overlay').hide();
-		});
-
-	});
-
-	function formatPrice($value) {
-		return '&#8377;'.$value;
-	}
-
-	// generate random number
-	function getRndInteger(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-	// show delete popup
-	function showConfirmPopup(url, title = '', content = '', okText = '') {
-
-		var confirmPopup;
-		title = title ? title : '';
-		content = content ? content : 'Are you sure?';
-		okText = okText ? okText : 'Ok';
-
-		$("#confirmPopup .modal-content .modal-header .modal-title").html(title);
-		$("#confirmPopup .modal-content .modal-body .content").html(content);
-		$("#confirmPopup .modal-footer .ok").html(okText);
-
-		$("#confirmPopup .modal-content .modal-header").show();
-		if (title == '') {
-			$("#confirmPopup .modal-content .modal-header").hide();
-		}
-
-		if ('#' !== url) {
-			$("#confirmPopup .modal-content .actionLink").attr('href', url);
-			$("#confirmPopup .modal-content .actionLink").removeClass('d-none');
-			$("#confirmPopup .modal-content .cancelButton").removeClass('d-none');
-			$("#confirmPopup .modal-content .actionLinkButton").addClass('d-none');
-		} else {
-			$("#confirmPopup .modal-content .actionLink").addClass('d-none');
-			$("#confirmPopup .modal-content .cancelButton").addClass('d-none');
-			$("#confirmPopup .modal-content .actionLinkButton").removeClass('d-none');
-		}
-
-		confirmPopup = new bootstrap.Modal(document.getElementById('confirmPopup'));
-		confirmPopup.show();
-	}
-
-	// show delete popup
-	function showDeleteImagePopup(deleteImageUrl, deleteImageActionUrl, title = '', content = '', okText = '') {
-		var deletePopup;
-		title = title ? title : '';
-		content = content ? content : 'Are you sure you want to delete it?';
-		okText = okText ? okText : 'Ok';
-
-		$("#deleteImagePopup .modal-content .modal-header .modal-title").html(title);
-		$("#deleteImagePopup .modal-content .modal-body .content").html(content);
-		$("#deleteImagePopup .modal-footer .ok").html(okText);
-
-		if (title == '') {
-			$("#deleteImagePopup .modal-content .modal-header").hide();
-		}
-
-		// $("#deleteImagePopup .modal-content .deleteLink").attr('href', deleteUrl);
-
-		$('#deleteImagePopup .modal-footer .deleteLink').on('click', function (event) {
-			getData(deleteImageUrl).then(
-				function (response) {
-					if (response.error) {
-						alert('error');
-						return;
-					}
-
-					// $("#deleteImagePopup .modal-content .deleteLink").attr('href', deleteUrl);
-					window.location.href = deleteImageActionUrl;
-
-
-					console.log(response);
-				})
-		})
-
-		deletePopup = new bootstrap.Modal(document.getElementById('deleteImagePopup'));
-		deletePopup.show();
-	}
-
-	// POST method implementation:
-	async function postData(url = '', data = {}) {
-		// Default options are marked with *
-		const response = await fetch(url, {
-			method: 'POST', // *GET, POST, PUT, DELETE, etc.
-			mode: 'cors', // no-cors, *cors, same-origin
-			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-			credentials: 'same-origin', // include, *same-origin, omit
-			headers: {
-				'Content-Type': 'application/json'
-				// 'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			redirect: 'follow', // manual, *follow, error
-			referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-			body: JSON.stringify(data) // body data type must match "Content-Type" header
-		});
-		return response.json(); // parses JSON response into native JavaScript objects
-	}
-
-	// GET page implementation:
-	async function getPage(url = '', data = {}) {
-		const response = await fetch(url + '?isAjax=1');
-
-		return response.text(); // parses into html
-	}
-
-	// GET data implementation:
-	async function getData(url = '', data = {}) {
-		const response = await fetch(url);
-
-		return response.json(); // parses JSON response into native JavaScript objects
-	}
-</script>
-
-<!-- images zoom in - lightbox -->
-<?php
-if (isset($enableLightbox) && $enableLightbox) {
-	?>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"
-		  integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA=="
-		  crossorigin="anonymous"/>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"
-			integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ=="
-			crossorigin="anonymous"></script>
-
-	<script>
-		$(document).ready(function () {
-			if ($('#productImages a').length) {
-				//$('#productImages a').lightBox();
-			}
-			if ($('#photogallery').length) {
-				$('#photogallery').attr('class', 'active');
-			}
-			if ($('#contentImages a').length) {
-				//$('#contentImages a').lightBox();
-			}
-		});
-	</script>
-	<?php
-}
-?>
-
-<?php
-// enable text editor
-if (isset($enableTextEditor) && $enableTextEditor) {
-	echo $this->element('text_editor');
-}
-?>
-
-<?php
-if (isset($enableImageCropper) && $enableImageCropper == true) {
-	?>
-	<script src="/croppie/croppie.js"></script>
-	<link rel="stylesheet" href="/croppie/croppie.css"/>
-
-	<script>
-		$(document).ready(function () {
-			let updateProductImage;
-			const productImageUpdateUrl = '/admin/products/updateImage';
-			const imageUploadUrl = "<?php echo $assetDomainUrl; ?>upload.php";
-			const imageUploadRelPathDefault = '/<?php echo $this->Session->read('Site.id');?>/unknown';
-			let imageUploadProductId = "";
-
-
-			updateProductImage = function (productId, imagePath, type, commonId, reload = false) {
-				if (!commonId) {
-					commonId = getRndInteger(1, 10000);
-				}
-
-				$.ajax({
-					url: productImageUpdateUrl + '/' + productId,
-					type: "PUT",
-					data: {
-						"imagePath": imagePath,
-						"imageType": type,
-						"commonId": commonId
-					},
-					success: function (data) {
-						console.log('image uploaded - ' + imagePath);
-
-						if (reload) {
-							location.reload();
-						}
-					}
-				});
-			};
-
-
-			$image_crop = $('#image_preview').croppie({
-				enableExif: true,
-				enableResize: false,
-				viewport: {
-					width: 200,
-					height: 200,
-					type: 'square' //circle
-				},
-				boundary: {
-					width: 300,
-					height: 300
-				},
-			});
-
-			$('#upload_image').on('change', function () {
-				var reader = new FileReader();
-				reader.onload = function (event) {
-					$image_crop.croppie('bind', {
-						url: event.target.result
-					}).then(function () {
-						console.log('jQuery bind complete');
-					});
-				}
-				reader.readAsDataURL(this.files[0]);
-				$('#uploadimageModal').modal('show');
-			});
-
-
-			$('.crop_image').click(function (event) {
-				let imageUploadRelPath = imageUploadRelPathDefault;
-				let commonId = getRndInteger(1, 10000);
-
-
-				if ($('#upload_image').data('imageRelPath')) {
-					imageUploadRelPath = $('#upload_image').data('imageRelPath');
-				}
-
-				if ($('#upload_image').data('productId')) {
-					imageUploadProductId = $('#upload_image').data('productId');
-				}
-
-				$("#imageUploadProcessingDiv").removeClass("d-none");
-				$("#imageUploadProcessingDiv span").text("1. Uploading large image");
-
-				$(".imageUploadError").addClass("d-none");
-				$(".imageUploadError").text("");
-
-				$image_crop.croppie('result', {
-					type: 'canvas',
-					size: 'original', // can be "viewport" or {"width":800, "height":500},
-					format: 'webp',
-				}).then(function (response) {
-					$.ajax({
-						url: imageUploadUrl,
-						type: "POST",
-						data: {
-							"image": response,
-							"type": "ori",
-							"image_name": imageUploadProductId,
-							"relative_path": imageUploadRelPath
-						},
-						success: function (data) {
-							let responseImagePath = data.imagePath;
-
-							updateProductImage(imageUploadProductId, responseImagePath, "ori", commonId);
-
-							$("#imageUploadProcessingDiv span").text("2. Uploading thumbnail image");
-
-							$image_crop.croppie('result', {
-								type: 'canvas',
-								size: {"width": 200, "height": 200},
-								format: 'webp',
-							}).then(function (response) {
-								$.ajax({
-									url: imageUploadUrl,
-									type: "POST",
-									data: {
-										"image": response,
-										"type": "thumb",
-										"image_name": imageUploadProductId,
-										"relative_path": imageUploadRelPath
-									},
-									success: function (data) {
-										responseImagePath = data.imagePath;
-										updateProductImage(imageUploadProductId, responseImagePath, "thumb", commonId, true);
-
-										$("#imageUploadProcessingDiv").addClass("d-none");
-										$("#imageUploadProcessingDiv span").text("");
-
-
-										$('#uploadimageModal').modal('hide');
-										$('#uploaded_image').html(data);
-									}
-								});
-							})
-						},
-						error: function (jqXHR, exception) {
-							var msg = '';
-							if (jqXHR.status === 0) {
-								msg = 'Not connect.\n Verify Network.';
-							} else if (jqXHR.status == 404) {
-								msg = 'Requested page not found. [404]';
-							} else if (jqXHR.status == 500) {
-								msg = 'Internal Server Error [500].';
-							} else if (exception === 'parsererror') {
-								msg = 'Requested JSON parse failed.';
-							} else if (exception === 'timeout') {
-								msg = 'Time out error.';
-							} else if (exception === 'abort') {
-								msg = 'Request aborted.';
-							} else {
-								msg = 'Uncaught Error.\n' + jqXHR.responseText;
-							}
-
-							$("#imageUploadProcessingDiv").addClass("d-none");
-							$("#imageUploadProcessingDiv span").text("");
-
-							$("#imageUploadError").removeClass("d-none");
-							$("#imageUploadError").text(msg);
-						}
-
-					});
-				})
-			});
-
-		});
-	</script>
-	<?php
-	echo $this->element('sql_dump');
-}
-?>
 <script src="https://kit.fontawesome.com/231b614f56.js" crossorigin="anonymous" async></script>
+
+<?= $this->element('sql_dump'); ?>
+
 </body>
 </html>

@@ -49,11 +49,13 @@
 		tabsize: 2,
 		height: 150,
 		toolbar: [
-			// ['style', ['style']],
-			['font', ['bold', 'underline', 'clear']],
-			['color', ['color']],
+			['style', ['style']],
+			['font', ['bold', 'italic', 'underline', 'clear']],
+			// ['fontsize', ['fontsize']],
+			// ['color', ['color']],
 			['para', ['ul', 'ol', 'paragraph']],
 			// ['table', ['table']],
+			['insert', ['link', 'video']],
 			// ['insert', ['link', 'picture', 'video']],
 			// ['view', ['fullscreen', 'codeview', 'help']]
 		]

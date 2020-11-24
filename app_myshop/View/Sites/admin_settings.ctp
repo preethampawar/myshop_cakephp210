@@ -18,6 +18,27 @@ $this->set('enableTextEditor', true);
 			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ml-3">Cancel</a>
 		</div>
 
+		<div class="mt-4 alert alert-info">
+			<h6>Super Admin Settings</h6>
+
+			<div class="mt-3">
+				<label class="form-check-label" for="SiteShoppingCart">Maximum Products Allowed</label>
+				<?php
+				$products_limit = [5, 10, 25, 50, 100, 500, 1000, 5000, 10000, 20000, 50000];
+				echo $this->Form->input(
+					'Site.products_limit',
+					[
+						'type' => 'select',
+						'label' => false,
+						'multiple' => false,
+						'options' => $products_limit,
+						'class' => 'form-control form-control-sm',
+					]
+				);
+				?>
+			</div>
+		</div>
+
 		<div class="mt-4">
 			<div class="form-check form-switch">
 				<input type="hidden" name="data[Site][shopping_cart]" value="0">

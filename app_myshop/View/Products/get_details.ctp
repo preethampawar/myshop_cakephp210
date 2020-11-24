@@ -80,8 +80,10 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 		<section>
 			<article>
 				<?php if (!$hideProductPrice): ?>
+
 					<div class="mt-2 bg-light p-2 rounded">
-						<div class="d-flex">
+						<h5><?= $productName; ?></h5>
+						<div class="d-flex mt-3">
 							<h4>
 								<span
 									class="text-danger font-weight-bold"><?php echo $this->App->price($salePrice); ?></span>
@@ -139,7 +141,9 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 				if (!empty($productDesc)) {
 					?>
 					<div class="mt-3">
-						<span itemprop="description"><?php echo $productDesc; ?></span>
+						<div itemprop="description" class="overflow-auto mt-2">
+							<?php echo $productDesc; ?>
+						</div>
 					</div>
 					<?php
 				}
