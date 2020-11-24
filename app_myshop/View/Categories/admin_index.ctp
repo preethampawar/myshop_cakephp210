@@ -34,6 +34,10 @@
 </div>
 
 <div class="mt-4">
+	<?= $this->element('products_quota_widget') ?>
+</div>
+
+<div class="mt-4">
 
 	<h6>Select Category</h6>
 	<?php

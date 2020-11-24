@@ -5,9 +5,16 @@
 	</ol>
 </nav>
 
-<div class="my-3 d-flex justify-content-between align-items-center">
+<div class="mt-4">
+	<?= $this->element('products_quota_widget') ?>
+</div>
+
+<div class="mt-4 mb-3 d-flex justify-content-between align-items-center">
 	<h5><?php echo $categoryInfo['Category']['name']; ?></h5>
+
+	<?php if (!$productsLimitExceeded): ?>
 	<a href='/admin/products/add/<?php echo $categoryInfo['Category']['id'];?>' class="btn btn-info btn-sm">+ Add Product</a>
+	<?php endif; ?>
 </div>
 
 <p>Below is the list of products in this category. </p>

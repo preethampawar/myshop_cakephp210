@@ -780,5 +780,28 @@ class AppController extends Controller
 		$this->Session->destroy();
 	}
 
+	public function productsLimitExceeded()
+	{
+		App::uses('Product', 'Model');
+		$productModel = new Product();
+
+		$productsLimitForThisSite = (int)$this->Session->read('Site.products_limit');
+
+		$productsCount = $this->getSiteProductsCount();
+
+		if($productsCount <= $productsLimitForThisSite) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function getSiteProductsCount() {
+		App::uses('Product', 'Model');
+		$productModel = new Product();
+
+		return $productModel->find('count', ['conditions' => ['Product.site_id' => $this->Session->read('Site.id')]]);
+	}
+
 }
 ?>

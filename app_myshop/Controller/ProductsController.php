@@ -170,6 +170,11 @@ class ProductsController extends AppController
 
 	public function admin_add($categoryId = null)
 	{
+		if ($this->productsLimitExceeded()) {
+			$this->errorMsg('You cannot add new products. You have reached your quota (max '.$this->Session->read('Site.products_limit').') of adding products in your store.');
+			$this->redirect($this->request->referer());
+		}
+
 		$productInfoLinkActive = true;
 		$errorMsg = [];
 		if ($this->request->isPost()) {

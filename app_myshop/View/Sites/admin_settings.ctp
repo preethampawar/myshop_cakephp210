@@ -24,13 +24,12 @@ $this->set('enableTextEditor', true);
 			<div class="mt-3">
 				<label class="form-check-label" for="SiteShoppingCart">Maximum Products Allowed</label>
 				<?php
-				$products_limit = [5, 10, 25, 50, 100, 500, 1000, 5000, 10000, 20000, 50000];
+				$products_limit = [5 => 5, 10 => 10, 25 => 25, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, 5000 => 5000, 10000 => 10000];
 				echo $this->Form->input(
 					'Site.products_limit',
 					[
 						'type' => 'select',
 						'label' => false,
-						'multiple' => false,
 						'options' => $products_limit,
 						'class' => 'form-control form-control-sm',
 					]

@@ -145,7 +145,9 @@ class CategoriesController extends AppController
 			$categoryProducts = $tmp;
 		}
 
-		$this->set(compact('errorMsg', 'categoryInfo', 'categoryProducts', 'productsList'));
+		$productsLimitExceeded  = $this->productsLimitExceeded();
+
+		$this->set(compact('errorMsg', 'categoryInfo', 'categoryProducts', 'productsList', 'productsLimitExceeded'));
 	}
 
 }
