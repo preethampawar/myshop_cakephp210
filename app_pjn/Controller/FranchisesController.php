@@ -19,7 +19,7 @@ class FranchisesController extends AppController
 		$this->Franchise->recursive = 0;
 
 		$conditions = ['Franchise.store_id' => $this->Session->read('Store.id'), 'Franchise.is_deleted' => 0];
-		$franchises = $this->Franchise->find('all', $conditions);
+		$franchises = $this->Franchise->find('all', ['conditions' => $conditions]);
 
 		$this->set(compact('franchises'));
 	}

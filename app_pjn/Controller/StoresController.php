@@ -275,7 +275,9 @@ class StoresController extends AppController
 
 	public function home()
 	{
-
+        if (!$this->Session->check('Store.id')) {
+            $this->redirect('/stores');
+        }
 	}
 
 	public function createbackup()
