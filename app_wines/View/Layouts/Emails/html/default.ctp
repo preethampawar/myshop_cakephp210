@@ -15,15 +15,16 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
-	<title><?php echo $title_for_layout;?></title>
+    <title><?php echo $title_for_layout; ?></title>
 </head>
 <body>
-	<?php echo $this->fetch('content');?>
+<?php echo $this->fetch('content'); ?>
 
-	<p>This email was sent using the <a href="http://cakephp.org">CakePHP Framework</a></p>
+<p>This email was sent using the <a href="http://cakephp.org">CakePHP Framework</a></p>
 </body>
 </html>

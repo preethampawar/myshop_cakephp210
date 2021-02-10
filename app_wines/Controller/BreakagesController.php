@@ -67,8 +67,7 @@ class BreakagesController extends AppController {
 		
 		if($this->request->isPost() or $this->request->isPut()) {
 			$data = $this->request->data;			
-			$breakageDate = $data['Breakage']['breakage_date']['year'].'-'.$data['Breakage']['breakage_date']['month'].'-'.$data['Breakage']['breakage_date']['day'];
-			$data['Breakage']['breakage_date'] = $breakageDate;
+			$breakageDate = $data['Breakage']['breakage_date'];
 			$this->Session->delete('selectedProductID');
 			
 			$error = $this->addBreakageStockFormValidation($data);

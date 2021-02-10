@@ -122,29 +122,29 @@ class AppController extends Controller
 		// $this->Store->query("delete from stores where id='$storeID'");	// remove records from stores table
 	}
 
-	public function errorMsg($msg)
-	{
-		if ($msg) {
-			$this->Session->setFlash($msg, 'default', array('class' => 'error'));
-		}
-		return true;
-	}
+    public function noticeMsg($msg)
+    {
+        if ($msg) {
+            $this->Session->setFlash($msg, 'Flash/notice');
+        }
+        return true;
+    }
 
-	public function noticeMsg($msg)
-	{
-		if ($msg) {
-			$this->Session->setFlash($msg, 'default', array('class' => 'notice'));
-		}
-		return true;
-	}
+    public function errorMsg($msg)
+    {
+        if ($msg) {
+            $this->Session->setFlash($msg, 'Flash/error');
+        }
+        return true;
+    }
 
-	public function successMsg($msg)
-	{
-		if ($msg) {
-			$this->Session->setFlash($msg, 'default', array('class' => 'success'));
-		}
-		return true;
-	}
+    public function successMsg($msg)
+    {
+        if ($msg) {
+            $this->Session->setFlash($msg, 'Flash/success');
+        }
+        return true;
+    }
 
 	public function updateInvoice($invoiceID)
 	{

@@ -1,21 +1,30 @@
-<h1>Edit Product Category - <?php echo $pCatInfo['ProductCategory']['name'];?></h1>
-<br>
-<div id="AddCategoryDiv" class="well">
-	<?php echo $this->Form->create('ProductCategory');?>
-	
-	<div style="float:left; clear:none;">
-		<?php echo $this->Form->input('name', array('placeholder'=>'Enter Category Name', 'label'=>'Category Name', 'value'=>html_entity_decode($this->data['ProductCategory']['name']), 'required'=>true));?>
-	</div>
-	<div style="float:left; clear:none;">
-		<label>&nbsp;</label>
-		<button type="submit" class="btn btn-sm btn-primary">Update Category</button>	
-	</div>
-	<div style="clear: both;"></div>
-	<?php
-	echo $this->Form->end();
-	?>
-	
-	<?php
-	echo '&nbsp;'.$this->Html->link('Cancel', array('controller'=>'product_categories', 'action'=>'index'), array('class'=>'btn btn-sm btn-warning'));
-	?>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/product_categories">Categories</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><?= $pCatInfo['ProductCategory']['name'] ?></li>
+    </ol>
+</nav>
+
+<h1>Edit Category</h1>
+
+
+<div class="mt-3 col-md-8 col-lg-6">
+    <?= $this->Form->create('ProductCategory') ?>
+    <label for="ProductCategoryName">Category Name</label>
+    <?=
+    $this->Form->input(
+        'name',
+        [
+            'placeholder' => 'Enter Category Name',
+            'label' => false,
+            'value' => html_entity_decode($this->data['ProductCategory']['name']),
+            'required' => true,
+            'class' => 'form-control form-control-sm',
+        ]
+    );
+    ?>
+    <button type="submit" class="mt-3 btn btn-sm btn-primary">Update</button>
+    <a href="/product_categories" class="mt-3 ml-2 btn btn-sm btn-warning">Cancel</a>
+
+    <?= $this->Form->end() ?>
 </div>

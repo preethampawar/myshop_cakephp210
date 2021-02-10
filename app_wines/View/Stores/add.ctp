@@ -7,19 +7,19 @@ echo $this->Form->create();
     <tbody>
     <tr>
         <td>Status</td>
-        <td><?php echo $this->Form->input('Store.active', array('label'=>'Is Active', 'title'=>'Enable / Disable this store temporarily'));?></td>
+        <td><?php echo $this->Form->input('Store.active', ['label' => 'Is Active', 'title' => 'Enable / Disable this store temporarily']); ?></td>
     </tr>
     <tr>
         <td>Store Name</td>
-        <td><?php echo $this->Form->input('Store.name', array('label'=>false, 'required'=>true, 'type'=>'text', 'title'=>'Enter Store Name', 'class'=>'form-control input-sm')); ?></td>
+        <td><?php echo $this->Form->input('Store.name', ['label' => false, 'required' => true, 'type' => 'text', 'title' => 'Enter Store Name', 'class' => 'form-control input-sm']); ?></td>
     </tr>
     <tr>
         <td>User</td>
-        <td><?php echo $this->Form->input('Store.user_id', array('label'=>false, 'required'=>true, 'type'=>'select', 'options'=>$userInfo, 'class'=>'form-control input-sm')); ?></td>
+        <td><?php echo $this->Form->input('Store.user_id', ['label' => false, 'required' => true, 'type' => 'select', 'options' => $userInfo, 'class' => 'form-control input-sm']); ?></td>
     </tr>
     <tr>
         <td>Expiry Date</td>
-        <td><?php echo $this->Form->input('Store.expiry_date', array('label'=>false, 'required'=>true, 'type'=>'date')); ?></td>
+        <td><?php echo $this->Form->input('Store.expiry_date', ['label' => false, 'required' => true, 'type' => 'date']); ?></td>
     </tr>
     <tr>
         <td></td>

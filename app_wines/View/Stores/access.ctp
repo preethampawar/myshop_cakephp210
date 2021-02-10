@@ -6,7 +6,7 @@
 
         <?php
         $selectedUserType = '';
-        if(isset($this->data['Store']['user_type'])) {
+        if (isset($this->data['Store']['user_type'])) {
             $selectedUserType = $this->data['Store']['user_type'];
         }
         ?>

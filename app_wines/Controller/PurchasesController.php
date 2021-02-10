@@ -175,8 +175,7 @@ class PurchasesController extends AppController {
 		
 		if($this->request->isPost() or $this->request->isPut()) {
 			$data = $this->request->data;
-			$purchaseDate = $data['Purchase']['purchase_date']['year'].'-'.$data['Purchase']['purchase_date']['month'].'-'.$data['Purchase']['purchase_date']['day'];
-			$data['Purchase']['purchase_date'] = $purchaseDate;
+			$purchaseDate = $data['Purchase']['purchase_date'];
 			$this->Session->delete('selectedProductID');
 			
 			$error = $this->addPurchaseFormValidation($data);
@@ -213,7 +212,6 @@ class PurchasesController extends AppController {
 		else {
 			if($this->Session->check('selectedProductID')) {
 				$data['Purchase']['product_id'] = $this->Session->read('selectedProductID');
-				$data['Purchase']['purchase_date'] = $this->Session->read('purchaseDate');
 				$this->data = $data;
 			}
 		}
@@ -252,7 +250,8 @@ class PurchasesController extends AppController {
 	
 	function uploadCsv() {
 		$hideSideBar = true;				
-		$updateResponse = array();				
+		$response = null;
+		$updateResponse = null;
 		
 		ini_set('max_execution_time', '10000');
 		ini_set('memory_limit', '256M');	
@@ -302,11 +301,15 @@ class PurchasesController extends AppController {
 				$this->Session->setFlash('Unknown File Type', 'default', array('class'=>'error'));
 			}
 		}
-		
+
 		unset($updateResponse);
+
+
 		if($this->Session->check('updateResponse')) { 
 			$updateResponse = $this->Session->read('updateResponse');
 			$this->Session->delete('updateResponse');
+		} else {
+			$updateResponse = null;
 		}
 				
 		$this->set(compact('hideSideBar', 'response', 'updateResponse'));

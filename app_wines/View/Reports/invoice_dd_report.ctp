@@ -1,4 +1,5 @@
 <?php
+
 // consider previous credit balance
 $previous_credit_value = 0;
 if ($prevInvoices) {
@@ -36,22 +37,22 @@ if ($viewType != 'download') {
         <div id="paramsDiv">
             <div style="clear:none;">
                 <?php
-                $options = array('print' => 'Print View', 'download' => 'Download');
-                echo $this->Form->input('view_type', array('empty' => 'Normal View', 'label' => 'Download/Select View', 'type' => 'select', 'options' => $options, 'escape' => false));
+                $options = ['print' => 'Print View', 'download' => 'Download'];
+                echo $this->Form->input('view_type', ['empty' => 'Normal View', 'label' => 'Download/Select View', 'type' => 'select', 'options' => $options, 'escape' => false]);
                 ?>
             </div>
             <div style="clear:none;">
-                <?php echo $this->Form->input('show_prev_balance', array('label' => 'Consider Previous DD Balance', 'type' => 'checkbox', 'value' => '1', 'default' => '1')); ?>
+                <?php echo $this->Form->input('show_prev_balance', ['label' => 'Consider Previous DD Balance', 'type' => 'checkbox', 'value' => '1', 'default' => '1']); ?>
             </div>
             <div style="float:left; clear:none;">
                 <?php
-                echo $this->Form->input('from_date', array('label' => 'From Date', 'required' => true, 'type' => 'date', 'default' => date('Y-m-d', strtotime('-1 months')))); ?>
+                echo $this->Form->input('from_date', ['label' => 'From Date', 'required' => true, 'type' => 'date', 'default' => date('Y-m-d', strtotime('-1 months'))]); ?>
             </div>
             <div style="float:left; clear:none; margin-left:10px; ">
-                <?php echo $this->Form->input('to_date', array('label' => 'To Date', 'required' => true, 'type' => 'date')); ?>
+                <?php echo $this->Form->input('to_date', ['label' => 'To Date', 'required' => true, 'type' => 'date']); ?>
             </div>
             <div style="float:left; clear:none; padding-top:15px;margin-left:10px; ">
-                <?php echo $this->Form->submit('Search', array('id' => 'SubmitForm', 'title' => '', 'type' => 'submit', 'onclick' => 'return submitButtonMsg()')); ?>
+                <?php echo $this->Form->submit('Search', ['id' => 'SubmitForm', 'title' => '', 'type' => 'submit', 'onclick' => 'return submitButtonMsg()']); ?>
             </div>
             <div style="clear:both;"></div>
         </div>
@@ -115,7 +116,7 @@ if ($viewType != 'download') {
                     <td><?php echo $k; ?></td>
                     <td>
                         <?php
-                        echo $this->Html->link($row['Invoice']['name'], array('controller' => 'invoices', 'action' => 'details', $row['Invoice']['id']), array('title' => 'Invoice Details - ' . $row['Invoice']['name']));
+                        echo $this->Html->link($row['Invoice']['name'], ['controller' => 'invoices', 'action' => 'details', $row['Invoice']['id']], ['title' => 'Invoice Details - ' . $row['Invoice']['name']]);
                         ?>
                     </td>
                     <td><?php echo date('d-m-Y', strtotime($row['Invoice']['invoice_date'])); ?></td>
@@ -214,8 +215,7 @@ if ($viewType != 'download') {
     $csv = 'Invoice DD Report: From ' . date('d M Y', strtotime($fromDate)) . ' to ' . date('d M Y', strtotime($toDate)) . "\r\n";
     $csv .= "\r\n";
     if (!empty($invoices)) {
-
-        $csv .= implode(array('Sl.No.', 'Invoice No.', 'Invoice Date', 'Invoice Value', 'MRP Rounding Up', 'Net Invoice Value', 'Total Retail Shop Excise Turnover Tax', 'Total Special Excise Cess', 'TCS', 'DD Amount', 'Prev Credit', 'Credit Balance'), ",") . "\r\n";
+        $csv .= implode(['Sl.No.', 'Invoice No.', 'Invoice Date', 'Invoice Value', 'MRP Rounding Up', 'Net Invoice Value', 'Total Retail Shop Excise Turnover Tax', 'Total Special Excise Cess', 'TCS', 'DD Amount', 'Prev Credit', 'Credit Balance'], ",") . "\r\n";
         $k = 0;
 
         $total_invoice_value = 0;
@@ -243,7 +243,7 @@ if ($viewType != 'download') {
             $total_mrp_rounding_off += $row['Invoice']['mrp_rounding_off'];
 
             $invoice_date = date('d-m-Y', strtotime($row['Invoice']['invoice_date']));
-            $tmp = array();
+            $tmp = [];
             $tmp[] = $k;
             $tmp[] = $row['Invoice']['name'];
             $tmp[] = " " . $invoice_date . " ";

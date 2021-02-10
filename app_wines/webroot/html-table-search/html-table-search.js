@@ -38,7 +38,7 @@
 
 // customized
 $(document).ready(function(){
-	searchBox = '<div class="input-group input-group-sm"><input type="text" id="search" class="form-control input-xs" placeholder="Search for..." /><span class="input-group-btn"><button class="btn btn-default" type="button">Search &nbsp;<span class="glyphicon glyphicon-search"></span></button></span></div>';
+	searchBox = '<div class="input-group input-group-sm"><input type="text" id="search" class="border border-warning form-control form-control-sm" placeholder="Search for..." /><span class="input-group-btn"><button class="btn btn-sm btn-warning" type="button">Search <span class="fa fa-search"></span></button></span></div>';
 	
 	$('.search-table').before(searchBox);
 	var $rows = $('.table tbody tr');

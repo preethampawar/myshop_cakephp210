@@ -1,23 +1,125 @@
-<?php $this->start('invoices_report_menu');?>
-<?php echo $this->element('invoices_menu');?>
-<?php echo $this->element('sales_purchases_report_menu');?>
-<?php $this->end();?>
-<h1>Create New Invoice</h1><br>
-<div class="well">
-	<?php 
-	echo $this->Form->create();
-	echo $this->Form->input('Invoice.invoice_date', array('label'=>'Invoice Date', 'required'=>true, 'type'=>'date', 'title'=>'Select date'));
-	echo $this->Form->input('Invoice.name', array('label'=>'Invoice No.', 'required'=>true, 'type'=>'text', 'title'=>'Enter Invoice Name'));
-	//echo $this->Form->input('Invoice.dd_no', array('label'=>'DD No.', 'title'=>'Enter DD No.'));
-	echo $this->Form->input('Invoice.dd_amount', array('label'=>'DD Amount', 'title'=>'Enter DD Amount', 'required'=>true));
-    echo $this->Form->input('Invoice.retail_shop_excise_turnover_tax', array('label'=>'Retail Shop Excise Turnover Tax', 'title'=>'Retail Shop Excise Turnover Tax'));
-    echo $this->Form->input('Invoice.special_excise_cess', array('label'=>'Special Excise Cess', 'title'=>'Special Excise Cess'));
-	echo $this->Form->input('Invoice.tcs_value', array('label'=>'TCS Value', 'title'=>'Enter TCS Value', 'default'=>0));
-	//echo $this->Form->input('Invoice.dd_purchase', array('label'=>'DD Purchase Amount', 'title'=>'Enter DD Purchase Amount'));
-	echo $this->Form->input('Invoice.mrp_rounding_off', array('label'=>'MRP Rounding Off', 'title'=>'Enter MRP Rounding Off Value', 'default'=>0));
-	//echo $this->Form->input('Invoice.tax', array('label'=>'Tax', 'title'=>'Enter Tax Amount'));
-	echo $this->Form->input('Invoice.supplier_id', array('label'=>'Supplier', 'empty'=>'-', 'type'=>'text', 'title'=>'Select Supplier', 'options'=>$suppliersList, 'type'=>'select'));
-	echo $this->Form->submit('Create Invoice');
-	echo $this->Form->end();
-	?>
+<?php $this->start('invoices_report_menu'); ?>
+<?php echo $this->element('invoices_menu'); ?>
+<?php echo $this->element('sales_purchases_report_menu'); ?>
+<?php $this->end(); ?>
+<h1>Create New Invoice</h1>
+<?= $this->Form->create() ?>
+<div class="mt-3">
+    <label for="InvoiceInvoiceDate">Invoice Date</label>
+    <input
+            id="InvoiceInvoiceDate"
+            name="data[Invoice][invoice_date]"
+            type="date"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['invoice_date'] ?? date('Y-m-d') ?>"
+            required
+    >
 </div>
+
+<div class="mt-3">
+    <label for="InvoiceName">Invoice name</label>
+    <input
+            id="InvoiceName"
+            name="data[Invoice][name]"
+            type="text"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['name'] ?? '' ?>"
+            required
+    >
+</div>
+
+<div class="mt-3">
+    <label for="InvoiceDdAmount">DD Amount</label>
+    <input
+            id="InvoiceDdAmount"
+            name="data[Invoice][dd_amount]"
+            type="number"
+            step="0.01"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['dd_amount'] ?? '' ?>"
+    >
+</div>
+
+<div class="mt-3">
+    <label for="InvoiceRetailShopExciseTurnoverTax">Retail Shop Excise Turnover Tax</label>
+    <input
+            id="InvoiceRetailShopExciseTurnoverTax"
+            name="data[Invoice][retail_shop_excise_turnover_tax]"
+            type="number"
+            step="0.01"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['retail_shop_excise_turnover_tax'] ?? '' ?>"
+    >
+</div>
+
+<div class="mt-3">
+    <label for="InvoiceSpecialExciseCess">Special Excise Cess</label>
+    <input
+            id="InvoiceSpecialExciseCess"
+            name="data[Invoice][special_excise_cess]"
+            type="number"
+            step="0.01"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['special_excise_cess'] ?? '' ?>"
+    >
+</div>
+
+<div class="mt-3">
+    <label for="InvoiceTcsValue">Tcs Value</label>
+    <input
+            id="InvoiceTcsValue"
+            name="data[Invoice][tcs_value]"
+            type="number"
+            step="0.01"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['tcs_value'] ?? '' ?>"
+    >
+</div>
+
+<div class="mt-3">
+    <label for="InvoiceMrpRoundingOff">MRP Rounding Off</label>
+    <input
+            id="InvoiceMrpRoundingOff"
+            name="data[Invoice][mrp_rounding_off]"
+            type="number"
+            step="0.01"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['mrp_rounding_off'] ?? '' ?>"
+    >
+</div>
+
+<div class="mt-3">
+    <label for="InvoicePrevCredit">Previous Credit</label>
+    <input
+            id="InvoicePrevCredit"
+            name="data[Invoice][prev_credit]"
+            type="number"
+            step="0.01"
+            class="form-control form-control-sm"
+            value="<?= $this->data['Invoice']['prev_credit'] ?? '' ?>"
+    >
+</div>
+
+<div class="mt-3">
+    <label for="InvoiceSupplierId">Supplier</label>
+    <?=
+    $this->Form->input(
+        'Invoice.supplier_id',
+        [
+            'type' => 'select',
+            'label' => false,
+            'empty' => '-',
+            'title' => 'Select Supplier',
+            'options' => $suppliersList,
+            'class'=>'form-control form-control-sm'
+        ]
+    )
+    ?>
+</div>
+
+<div class="mt-3">
+    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+    <a href="/invoices" class="btn btn-sm btn-warning ml-2">Cancel</a>
+</div>
+<?= $this->Form->end() ?>
+<br><br>
