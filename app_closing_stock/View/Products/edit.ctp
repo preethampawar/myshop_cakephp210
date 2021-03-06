@@ -109,8 +109,4 @@
 	<?php
 	echo $this->Form->end();
 	?>
-	<br>
-	<div class="" aria-label="Add Brand">
-		&nbsp;&nbsp;&nbsp;<?php echo $this->Html->link('+ Add New Brand', ['controller' => 'brands', 'action' => 'add'], ['class' => 'btn btn-default btn-sm']); ?>
-	</div>
 </div>
