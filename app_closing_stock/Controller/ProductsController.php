@@ -15,11 +15,30 @@ class ProductsController extends AppController
 	/**
 	 * Function to show list of category products
 	 */
-	public function index($productCategoryID = null)
+	public function index()
+	{
+		App::uses('ProductCategory', 'Model');
+		$productCategory = new ProductCategory();
+		$fields = ['ProductCategory.id', 'ProductCategory.name', 'ProductCategory.created'];
+		$conditions = ['ProductCategory.store_id' => $this->Session->read('Store.id')];
+		$categories = $productCategory->find('all', [
+			'fields' => $fields,
+			'order' => ['ProductCategory.name' => 'ASC'],
+			'conditions' => $conditions,
+			'recursive' => '1',
+		]);
+
+		$this->set(compact('categories'));
+	}
+
+	/**
+	 * Function to show list of category products
+	 */
+	public function index_old($productCategoryID = null)
 	{
 		$hideSideBar = true;
 		if (!$productCategoryInfo = $this->CommonFunctions->getProductCategoryInfo($productCategoryID)) {
-			$this->redirect(['controller' => 'product_categories', 'action' => 'index']);
+			//$this->redirect(['controller' => 'product_categories', 'action' => 'index']);
 		}
 
 		$conditions = ['Product.store_id' => $this->Session->read('Store.id'), 'Product.product_category_id' => $productCategoryID];
@@ -32,10 +51,10 @@ class ProductsController extends AppController
 		]);
 
 		App::uses('ProductCategory', 'Model');
-		$this->ProductCategory = new ProductCategory();
+		$productCategory = new ProductCategory();
 		$fields = ['ProductCategory.id', 'ProductCategory.name', 'ProductCategory.created'];
 		$conditions = ['ProductCategory.store_id' => $this->Session->read('Store.id')];
-		$categories = $this->ProductCategory->find('all', [
+		$categories = $productCategory->find('all', [
 			'fields' => $fields,
 			'order' => ['ProductCategory.name' => 'ASC'],
 			'conditions' => $conditions,

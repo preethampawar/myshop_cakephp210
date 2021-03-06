@@ -24,7 +24,7 @@
 					<th>
 						Store
 					</th>
-					<th>Status</th>
+					<th>Expiry</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -36,32 +36,33 @@
 					<tr>
 						<td>
 							<?php
-							echo $this->Html->link(strtoupper($row['Store']['name']), ['controller' => 'stores', 'action' => 'selectStore', $row['Store']['id']], ['title' => 'Select this store']);
-							?>
-						</td>
-						<td>
-							<?php
+							$status = 'active';
 							if ($row['Store']['active']) {
-
-								if ($row['Store']['name'] == 'test') {
-									echo 'Active';
-								} else {
+								if ($row['Store']['name'] != 'test') {
 									// check for expiry
-									$storeCreatedOn = $row['Store']['created'];
-									$storeCreatedOn = date('Y-m-d', strtotime($storeCreatedOn));
-									$unixTimeStoreExpiry = strtotime($storeCreatedOn . " +1 year +1 day");
+									$storeExpiredOn = $row['Store']['expiry_date'];
+									$unixTimeStoreExpiry = strtotime($storeExpiredOn);
 									$unixTimeNow = strtotime("now");
 									if ($unixTimeNow > $unixTimeStoreExpiry) {
-										echo 'Expired';
-									} else {
-										echo 'Active';
+										$status = 'expired';
 									}
 								}
 
 							} else {
-								echo 'Disabled';
+								$status = 'inactive';
 							}
+
+							if($status == 'active') echo '<span class="text-success" title="Active"><b><i class="fa fa-circle"></i></b></span>';
+							if($status == 'inactive') echo '<span class="text-info" title="Inactive"><b><i class="fa fa-circle"></i></b></span>';
+							if($status == 'expired') echo '<span class="text-danger" title="Expired"><b><i class="fa fa-circle"></i></b></span>';
 							?>
+							&nbsp;
+							<?php
+							echo $this->Html->link(strtoupper($row['Store']['name']), ['controller' => 'stores', 'action' => 'selectStore', $row['Store']['id']], ['title' => 'Select this store']);
+							?>
+						</td>
+						<td>
+							<?php echo $row['Store']['expiry_date'] ? date('d-m-Y', strtotime($row['Store']['expiry_date'])) : '-'; ?>
 						</td>
 					</tr>
 					<?php

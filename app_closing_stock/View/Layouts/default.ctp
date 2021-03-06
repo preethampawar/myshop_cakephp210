@@ -58,6 +58,9 @@
 						<li class="nav-item active">
 							<a class="nav-link" href="/stores/home"><i class="fa fa-home"></i> Home</span></a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/products/"><i class="fa fa-object-group"></i> Products</span></a>
+						</li>
 						<li class="nav-item border-top">
 							<a class="nav-link" href="/sales/addClosingStockMobile"><i class="fa fa-plus-circle"></i>
 								Add Closing Stock</a>
