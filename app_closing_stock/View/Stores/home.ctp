@@ -18,7 +18,7 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default hidden mt-3">
+			<div class="panel panel-default hidden mt-4">
 				<div class="panel-heading">
 					<h4>Invoices</h4>
 				</div>
@@ -31,7 +31,18 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default hidden mt-3">
+			<div class="panel panel-default hidden mt-4">
+				<div class="panel-heading">
+					<h4>Products</h4>
+				</div>
+				<div class="panel-body">
+					<div class="list-group">
+						<a href="/products/" class="list-group-item"><i class="fa fa-object-group"></i> Products List</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default hidden mt-4">
 				<div class="panel-heading">
 					<h4>Stock Reports</h4>
 				</div>
@@ -45,7 +56,7 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default hidden mt-3">
+			<div class="panel panel-default hidden mt-4">
 				<div class="panel-heading">
 					<h4>Visual Reports</h4>
 				</div>
