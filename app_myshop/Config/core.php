@@ -34,7 +34,7 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-Configure::write('debug', 0);
+Configure::write('debug', 1);
 
 /**
  * Configure the Error handler used to handle errors for your application. By default
@@ -452,3 +452,4 @@ Configure::write('Product.quantity', $productQty);
 /* Asset domain url */
 //Configure::write('AssetDomainUrl', 'http://assets.apnaaccounts.com/');
 Configure::write('AssetDomainUrl', 'http://www.apnastores.com/');
+Configure::write('AssetDomainUrl', '/');
