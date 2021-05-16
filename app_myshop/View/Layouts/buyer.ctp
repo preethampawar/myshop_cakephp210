@@ -70,9 +70,11 @@
 						<a class="nav-link" href="/users/setView/seller">Manage
 							Store</a>
 					</li>
+					<!--
 					<li class="nav-item">
 						<a class="nav-link" href="/users/myaccount">My Account</a>
 					</li>
+					-->
 					<li class="nav-item">
 						<a class="nav-link" href="/sites/contact">Contact</a>
 					</li>

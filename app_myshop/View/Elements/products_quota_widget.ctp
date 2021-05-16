@@ -20,7 +20,7 @@ if($percentage > 85) {
 	<div class="progress-bar <?= $bg ?>" role="progressbar" style="width: <?= $percentage ?>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><?= $percentage ?>%</div>
 </div>
 <?php if($percentage >= 70): ?>
-	<div class="alert alert-warning p-1 mt-1"><i class="fa fa-exclamation-circle"></i> You cannot add only <?= ($productsLimitForThisSite - $productsCount) ?> products to your store.</div>
+	<div class="alert alert-warning p-1 mt-1"><i class="fa fa-exclamation-circle"></i> You can add only <?= ($productsLimitForThisSite - $productsCount) ?> products to your store.</div>
 <?php endif; ?>
 
 <?php if($percentage >= 100): ?>

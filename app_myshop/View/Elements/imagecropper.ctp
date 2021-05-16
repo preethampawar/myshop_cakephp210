@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="/croppie/croppie.css"/>
 <script src="/croppie/croppie.js"></script>
-
+<?php
+$assetDomainUrl = Configure::read('AssetDomainUrl');
+?>
 <script>
+
 	$(document).ready(function () {
 		let updateProductImage;
 		const productImageUpdateUrl = '/admin/products/updateImage';

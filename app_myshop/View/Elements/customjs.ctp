@@ -30,7 +30,7 @@
 
 	// GET data implementation:
 	async function getData(url = '', data = {}) {
-		const response = await fetch('http://example.com/movies.json');
+		const response = await fetch(url);
 
 		return response.json(); // parses JSON response into native JavaScript objects
 	}
@@ -145,6 +145,7 @@
 
 	// show delete popup
 	function showDeleteImagePopup(deleteImageUrl, deleteImageActionUrl, title = '', content = '', okText = '') {
+		debugger
 		var deletePopup;
 		title = title ? title : '';
 		content = content ? content : 'Are you sure you want to delete it?';
