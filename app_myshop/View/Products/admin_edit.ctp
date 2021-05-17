@@ -29,7 +29,7 @@ $this->set('enableTextEditor', true);
 			<button v-if="submitDisabled" type="button" class="btn btn-secondary btn-sm disabled">Save Changes
 			</button>
 			<button v-else type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ml-3">Cancel</a>
+			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ms-3">Cancel</a>
 		</div>
 
 		<div class="mt-4">
@@ -120,7 +120,7 @@ $this->set('enableTextEditor', true);
 							$deleteImagesUrl = $assetDomainUrl . 'deleteImage.php?images=' . $deleteImages . '&i=' . time();
 							?>
 							<div
-								class="mr-2 mb-2 shadow-sm rounded float-left clear <?php echo $imageHighlight ? 'border border-warning' : ''; ?>">
+								class="me-2 mb-2 shadow-sm rounded float-start clear <?php echo $imageHighlight ? 'border border-warning' : ''; ?>">
 								<img src="<?= $imageUrl ?> " loading="lazy" width="100" height="100" class="">
 								<div
 									class="text-center "
@@ -242,12 +242,26 @@ $this->set('enableTextEditor', true);
 					>
 					<div v-if="showDiscountError" class="text-danger">Discount value cannot be greater than MRP</div>
 				</div>
-				<div v-show="!submitDisabled" class="my-3">
-					<div class="small">
+				<div v-show="!submitDisabled" class="mb-3">
+					<div class="small text-danger">
 						After discount: <span><?= $this->App->price('') ?>{{ sellingPrice }}</span> <span>({{ discountPercentage }}%)</span>
 					</div>
 				</div>
 
+				<div class="my-3">
+					<label for="ProductMrp" class="form-label">Minimum Order Quantity</label>
+					<input
+							type="number"
+							id="ProductMinOrderQty"
+							name="data[Product][min_order_qty]"
+							value="<?php echo $this->data['Product']['min_order_qty']; ?>"
+							class="form-control form-control-sm"
+							placeholder="Minimum order quantity"
+							min="1"
+							max="1000"
+							required
+					>
+				</div>
 			</div>
 			<br>
 			<div class="my-3 py-3 d-inline">
@@ -255,7 +269,7 @@ $this->set('enableTextEditor', true);
 				</button>
 				<button v-else type="submit" class="btn btn-primary btn-sm">Save Changes</button>
 				<a href="/admin/categories/showProducts/<?php echo $categoryID; ?>"
-				   class="btn btn-outline-secondary btn-sm ml-3">Cancel</a>
+				   class="btn btn-outline-secondary btn-sm ms-3">Cancel</a>
 			</div>
 		</div>
 

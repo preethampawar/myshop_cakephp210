@@ -6,7 +6,7 @@
 				<span class="fa fa-check-circle"></span>
 				<?= $message ?>
 			</div>
-			<button type="button" class="btn-close btn-close-white ml-auto mr-2" data-dismiss="toast"
+			<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
 					aria-label="Close"></button>
 		</div>
 	</div>

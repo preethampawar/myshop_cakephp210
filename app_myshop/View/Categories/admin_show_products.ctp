@@ -72,7 +72,7 @@ if (!empty($categoryProducts)) {
 				$title = 'Delete - '. $productName;
 				?>
 				<span
-					class="far fa-trash-alt ml-2 text-danger"
+					class="far fa-trash-alt ms-2 text-danger"
 					onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 			</div>
 		</li>

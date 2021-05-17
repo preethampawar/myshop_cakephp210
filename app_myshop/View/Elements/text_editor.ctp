@@ -41,8 +41,12 @@
 <!--	});-->
 <!--</script>-->
 
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+<link rel="stylesheet" href="/vendor/summernote-0.8.18-dist/summernote-lite.min.css">
+<script src="/vendor/summernote-0.8.18-dist/summernote-lite.min.js"></script>
+
+<!--<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">-->
+<!--<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>-->
 <script>
 	$('textarea.tinymce').summernote({
 		placeholder: 'Enter text here',

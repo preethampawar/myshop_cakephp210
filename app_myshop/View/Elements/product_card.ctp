@@ -18,9 +18,10 @@ $loadingImageUrl = '/loading2.gif';
 			src="<?php echo $loadingImageUrl; ?>"
 			data-original="<?php echo $productImageUrl; ?>"
 			class="lazy w-100"
+			role="button"
 			alt="<?php echo $productName; ?>"
 			id="<?php echo $imageTagId; ?>"
-			v-on:click="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>', '<?php echo $categoryNameSlug; ?>', '<?php echo $productNameSlug; ?>');"
+			onclick="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
 		/>
 
 		<!--		<img-->
@@ -36,7 +37,7 @@ $loadingImageUrl = '/loading2.gif';
 				<span
 					class=""
 					role="button"
-					v-on:click="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>', '<?php echo $categoryNameSlug; ?>', '<?php echo $productNameSlug; ?>');"
+					onclick="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
 				>
 					<?php echo $productTitle; ?>
 				</span>
@@ -48,7 +49,7 @@ $loadingImageUrl = '/loading2.gif';
 						<span class="text-danger"><?php echo $this->App->price($salePrice); ?></span>
 					</h5>
 					<?php if ($showDiscount): ?>
-						<div class="pl-2">
+						<div class="ps-2">
 							<span
 								class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
 						</div>
@@ -116,19 +117,18 @@ $loadingImageUrl = '/loading2.gif';
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title"><?php echo $productTitle; ?></h5>
-					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-					</button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="d-flex">
 						<div role="status" class="spinner-border text-primary small">
 							<span class="visually-hidden">Loading..</span>
 						</div>
-						<span class="ml-2">Loading product details...</span>
+						<span class="ms-2">Loading product details...</span>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" aria-label="Close">Close</button>
 				</div>
 			</div>
 		</div>

@@ -29,7 +29,7 @@ class SitesController extends AppController
 			$this->redirect('/users/enroll');
 		}
 
-		$userInfo['User'] = $this->Session->read('User');
+//		$userInfo['User'] = $this->Session->read('User');
 
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
@@ -52,6 +52,12 @@ class SitesController extends AppController
 				$domainModel = new Domain;
 				if ($domainModel->save($domainData)) {
 					$domainInfo = $domainModel->read();
+
+					$uData['id'] = $userInfo['User']['id'];
+					$uData['admin'] = 1;
+					$uData['type'] = 'seller';
+					$user->save($uData);
+
 					$this->sendSiteRegistrationMessage($siteInfo, $userInfo);
 					// $this->successMsg('Congratulations! Your store <a href="http://' . $siteInfo['Site']['domain_name'] . '">' . $siteInfo['Site']['domain_name'] . '</a> is online now.');
 					$this->redirect('http://' . $siteInfo['Site']['domain_name'] . '/pages/registered');
