@@ -89,7 +89,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 									class="text-danger font-weight-bold"><?php echo $this->App->price($salePrice); ?></span>
 							</h4>
 							<?php if ($showDiscount): ?>
-								<div class="ml-3">
+								<div class="ms-3">
 									<span
 										class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
 								</div>

@@ -4,7 +4,7 @@ $categoryModel = new Category;
 $categories = $categoryModel->getCategories($this->Session->read('Site.id'));
 ?>
 <li class="nav-item navbar-side-border-bottom px-0">
-	<h5 class="pr-2 mt-3">Select Category</h5>
+	<h5 class="pe-2 mt-3">Select Category</h5>
 </li>
 
 <?php

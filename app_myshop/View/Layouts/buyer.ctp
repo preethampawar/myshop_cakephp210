@@ -7,37 +7,57 @@
 	<title><?= $this->Session->read('Site.title') ?></title>
 
 	<!-- Bootstrap CSS -->
+	<!-- todo: delete it
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
 		  integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
+		  -->
 
 	<!-- light box css -->
+	<!-- todo: delete it
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"
 		  integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA=="
 		  crossorigin="anonymous"/>
+		  -->
 
-	<!-- custom css -->
+
+	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
+	<link rel="stylesheet" href="/css/site.css">
 	<?= $this->element('customcss') ?>
 
+	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
+	<!-- todo: delete it
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	-->
 
 	<?php
 	if ((isset($loadVueJs) && $loadVueJs == true) || $this->Session->read('Site.shopping_cart') == true) {
 		?>
+		<script src="/vendor/vue/vue.min.js"></script>
+
+
 		<!-- development version, includes helpful console warnings -->
 		<!--		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
 
 		<!-- production version, optimized for size and speed -->
+<!--		<script src="/vendor/vue/vuejs2.6.12.js"></script> dev version-->
+
+		<!-- todo: delete it
 		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		-->
 		<?php
 	}
 	?>
 
+	<!-- todo: delete it
 	<script src="https://kit.fontawesome.com/231b614f56.js" crossorigin="anonymous" async></script>
+	-->
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark bg-primary active bg-gradient">
+<nav class="navbar navbar-dark bg-dark bg-gradient">
 	<div class="container">
 		<a class="navbar-brand text-truncate" href="#"><?= $this->Session->read('Site.title') ?></a>
 	</div>
@@ -51,22 +71,22 @@
 	<div class="overlay"></div>
 </nav>
 
-<nav class="navbar navbar-expand-lg navbar-dark navbar-static bg-dark ">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-static bg-purple bg-gradient">
 	<div class="container">
-		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-toggle="collapse"
-			 data-target="#navbarNav"
+		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-bs-toggle="collapse"
+			 data-bs-target="#navbarNav"
 			 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="fa fa-bars"></span> Menu
+			<i class="fa fa-bars"></i> Menu
 		</div>
 		<a class="navbar-brand" href="/">
-			Home
+			<i class="fa fa-home"></i>
 		</a>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ml-auto">
 				<?php
 				if ($this->App->isSellerForThisSite()) {
 					?>
-					<li class="nav-item">
+					<li class="nav-item px-1">
 						<a class="nav-link" href="/users/setView/seller">Manage
 							Store</a>
 					</li>
@@ -75,28 +95,28 @@
 						<a class="nav-link" href="/users/myaccount">My Account</a>
 					</li>
 					-->
-					<li class="nav-item">
+					<li class="nav-item px-1">
 						<a class="nav-link" href="/sites/contact">Contact</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item px-1">
 						<a class="nav-link" href="/sites/paymentInfo">Payment Details</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item px-1">
 						<a class="nav-link" href="/users/logout">Logout</a>
 					</li>
 					<?php
 				} else { ?>
-					<li class="nav-item">
+					<li class="nav-item px-1">
 						<a class="nav-link" href="/sites/contact">Contact</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item px-1">
 						<a class="nav-link" href="/sites/paymentInfo">Payment Details</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item px-1">
 						<?php if ($this->Session->check('User.id')): ?>
 							<a class="nav-link" href="/users/logout">Logout</a>
 						<?php else: ?>
-							<a class="nav-link" href="/users/login">Login</a>
+							<a class="nav-link px-1" href="/users/login">Login</a>
 						<?php endif; ?>
 					</li>
 				<?php } ?>
@@ -105,14 +125,14 @@
 	</div>
 </nav>
 
-<div class="bg-light border-bottom">
-	<ul class="nav container justify-content-start">
+<div class="shadow-sm border-bottom">
+	<ul class="nav container justify-content-start py-2">
 		<li class="nav-item productSideBar">
-			<a class="nav-link font-weight-normal" href="#"><i class="fa fa-chevron-circle-right"></i> Shop By Category</a>
+			<a class="nav-link fw-normal" href="#"><i class="fa fa-chevron-circle-right"></i> Shop By Category</a>
 		</li>
 		<?php if ($this->Session->read('Site.shopping_cart')): ?>
 			<li class="nav-item">
-				<a class="nav-link font-weight-normal" href="#"><i class="fa fa-shopping-basket"></i> My Orders</a>
+				<a class="nav-link  fw-normal" href="#"><i class="fa fa-shopping-basket"></i> My Orders</a>
 			</li>
 		<?php endif; ?>
 	</ul>
@@ -180,7 +200,7 @@
 		<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="d-flex align-items-center">
 				<div class="toast-body"></div>
-				<button type="button" class="btn-close btn-close-white ml-auto mr-2" data-dismiss="toast"
+				<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
 						aria-label="Close"></button>
 			</div>
 		</div>
@@ -191,7 +211,15 @@
 	<?php echo $this->element('sql_dump'); ?>
 </div>
 
-<!-- Popper.js first, then Bootstrap JS -->
+
+<script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js"></script>
+<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js"></script>
+
+
+
+
+<!--
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
 		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
 		crossorigin="anonymous"></script>
@@ -202,11 +230,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 
-<!-- images zoom in - lightbox -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"
 		integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ=="
 		crossorigin="anonymous" async></script>
-
+-->
 <?= $this->element('customjs') ?>
 
 </body>

@@ -158,7 +158,7 @@ class UsersController extends AppController
 			$this->successMsg('Registration successful');
 			$this->sendSuccessfulEnrollmentMessage($mobile, $email);
 
-			$this->redirect('/sites/register/' . $data['User']['id']);
+			$this->redirect('/sites/register/' . $user['User']['id']);
 		} else {
 			$this->errorMsg('Could not register the user. Please try again.');
 		}

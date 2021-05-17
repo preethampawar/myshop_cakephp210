@@ -53,7 +53,7 @@
 
 	// init bootstrap tooltips
 	function initTooltips() {
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 			return new bootstrap.Tooltip(tooltipTriggerEl)
 		});
@@ -179,6 +179,19 @@
 
 		deletePopup = new bootstrap.Modal(document.getElementById('deleteImagePopup'));
 		deletePopup.show();
+	}
+
+	function showProductDetails(categoryId, productId) {
+		let myModal = new bootstrap.Modal(document.getElementById('productModal' + productId), {
+			keyboard: false
+		});
+		myModal.show();
+
+		let productDetailsUrl = '/products/getDetails/' + categoryId + '/' + productId;
+		const data = getPage(productDetailsUrl);
+		data.then(function (response) {
+			$("#productModal" + productId + " .modal-body").html(response);
+		});
 	}
 </script>
 

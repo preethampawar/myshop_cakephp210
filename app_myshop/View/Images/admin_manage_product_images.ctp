@@ -40,9 +40,7 @@ $productUploadedImages = $this->App->getRearrangedImages($productUploadedImages)
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Upload & Crop Image</h5>
-						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body text-center">
 						<div id="image_preview" class="w-100"></div>
@@ -54,7 +52,7 @@ $productUploadedImages = $this->App->getRearrangedImages($productUploadedImages)
 						<button class="btn btn-success crop_image">Crop & Upload Image</button>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" aria-label="Close">Close</button>
 					</div>
 				</div>
 			</div>
@@ -91,16 +89,16 @@ $productUploadedImages = $this->App->getRearrangedImages($productUploadedImages)
 						<?php
 						if (!$imageHighlight) {
 							?>
-							<a href="<?php echo $highlightImagePath;?>" class="btn btn-sm btn-primary ml-2">Highlight</a>
+							<a href="<?php echo $highlightImagePath;?>" class="btn btn-sm btn-primary ms-2">Highlight</a>
 							<?php
 						} else {
 							?>
-							<span class="btn btn-sm btn-warning ml-2 disabled "><span class="fa fa-check-circle"></span> Highlighted</span>
+							<span class="btn btn-sm btn-warning ms-2 disabled "><span class="fa fa-check-circle"></span> Highlighted</span>
 							<?php
 						}
 						?>
 						<button
-							class="btn btn-sm btn-outline-danger ml-2"
+							class="btn btn-sm btn-outline-danger ms-2"
 							onclick="showDeleteImagePopup('<?= $deleteImagesUrl; ?>', '<?= $deleteImagePath; ?>', 'Delete Image', 'Are you sure you want to delete this image?')"
 						>
 							Delete

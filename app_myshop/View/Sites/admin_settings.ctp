@@ -15,9 +15,10 @@ $this->set('enableTextEditor', true);
 	<form action="/admin/sites/settings" id="SiteAdminEditForm" method="post" accept-charset="utf-8" ref="form">
 		<div class="mt-0 d-flex justify-content-end align-items-center">
 			<button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ml-3">Cancel</a>
+			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ms-3">Cancel</a>
 		</div>
 
+		<?php if ($this->Session->read('User.superadmin') == true) { ?>
 		<div class="mt-4 alert alert-info">
 			<h6>Super Admin Settings</h6>
 
@@ -37,6 +38,7 @@ $this->set('enableTextEditor', true);
 				?>
 			</div>
 		</div>
+		<?php } ?>
 
 		<div class="mt-4">
 			<div class="form-check form-switch">
@@ -122,7 +124,7 @@ $this->set('enableTextEditor', true);
 			<div class="my-3 py-3 d-inline">
 
 				<button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-				<a href="/admin/sites/home" class="btn btn-outline-secondary btn-sm ml-3">Cancel</a>
+				<a href="/admin/sites/home" class="btn btn-outline-secondary btn-sm ms-3">Cancel</a>
 			</div>
 		</div>
 

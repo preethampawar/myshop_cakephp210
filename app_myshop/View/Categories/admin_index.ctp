@@ -23,7 +23,7 @@
 
 			<div class="d-inline-block mt-3">
 				<button type="submit" class="btn btn-primary btn-sm">Submit</button>
-				<a href="#" class="ml-3" onclick="$('#categoryForm').toggleClass('d-none'); $('#addCategoryButton').toggleClass('d-none')">Cancel</a>
+				<a href="#" class="ms-3" onclick="$('#categoryForm').toggleClass('d-none'); $('#addCategoryButton').toggleClass('d-none')">Cancel</a>
 
 			</div>
 
@@ -78,7 +78,7 @@
 							$title = 'Delete - '. $categoryName;
 							?>
 							<span
-								class="far fa-trash-alt ml-2 text-danger"
+								class="far fa-trash-alt ms-2 text-danger"
 							 	onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 						</div>
 					</li>

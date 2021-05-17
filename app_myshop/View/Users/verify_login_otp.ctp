@@ -9,7 +9,7 @@
 
 	<div class="mb-3">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">Enter your OTP
-			<span class="badge bg-info" data-toggle="tooltip" data-placement="top"
+			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
 				  title="Enter the OTP which you have received in the email or on mobile">?</span>
 		</label>
 		<input

@@ -15,25 +15,25 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 	}
 	?>
 
-	<div class="shadow pb-0 pt-0 mb-4 border bg-info text-dark">
-		<nav class="navbar navbar-light bg-light text-dark py-1">
+	<div class="mb-4 shadow py-1 px-2 border-4 border-top border-warning">
+		<nav class="navbar">
 			<div class="container-fluid py-1 text-small">
-				<div class="px-0 py-0 text-dark border-0" role="button" data-toggle="collapse"
-						data-target="#topNavCart" aria-controls="topNavCart" aria-expanded="false"
+				<div class="px-0 py-0 text-dark border-0" role="button" data-bs-toggle="collapse"
+						data-bs-target="#topNavCart" aria-controls="topNavCart" aria-expanded="false"
 						aria-label="Toggle navigation">
 					<span class="fa fa-cart-arrow-down"></span>
-					<span class="font-weight-bold small">My Cart</span>
+					<span class="fw-bold small">My Cart</span>
 					<span class="fa fa-caret-down"></span>
 				</div>
-				<div><b><?php echo $totalItems; ?></b> item(s) in <a href="#topNavCart" data-toggle="collapse"
-																	 data-target="#topNavCart"
+				<div><b><?php echo $totalItems; ?></b> item(s) in <a href="#topNavCart" data-bs-toggle="collapse"
+																	 data-bs-target="#topNavCart"
 																	 aria-controls="topNavCart" aria-expanded="false"
 																	 aria-label="Toggle navigation">cart</a>.
 				</div>
 			</div>
 		</nav>
 		<div class="collapse" id="topNavCart">
-			<div class="bg-white p-2 x-small">
+			<div class="bg-white p-2">
 
 					<?php
 					$i = 0;
@@ -69,125 +69,93 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 						}
 						?>
 
-						<div class="p-0 ml-2">
+						<div class="mt-2 mb-4">
 							<div id="vueTopNavCartRow<?php echo $categoryID .'-'. $productID; ?>" >
-								<div class="card border-0" style="max-width: 25rem;">
-									<div class="card-body p-0">
-										<!-- product title -->
-										<div class="d-none">
-											<div class="d-flex justify-content-between">
-												<?php echo $this->Html->link(
-													$productName,
-													'/products/details/' . $categoryID . '/' . $productID . '/' . $categoryNameSlug . '/' . $productNameSlug,
-													['title' => $categoryNameSlug . ' &raquo; ' . $productNameSlug, 'escape' => false, 'class'=>'text-decoration-none']
-												); ?>
+								<div class="p-2 pb-3 shadow border rounded">
+									<div class="bg-light rounded p-2">
+										<div class="d-flex justify-content-between">
 
-												<div>
-													<?php
-													echo $this->Html->link(
-														'Delete',
-														'/ShoppingCarts/deleteShoppingCartProduct/' . $shoppingCartProductID,
-														[
-															'title' => 'Delete: ' . $categoryNameSlug . ' &raquo; ' . $productNameSlug,
-															'escape' => false,
-															'class' => 'btn btn-sm px-1 py-0 btn-outline-secondary ml-2'
-														],
-														'Are you sure you want to delete this product. ' . $categoryName . ' &raquo; ' . $productName . ', quantity: ' . $qty
-													);
-													?>
-												</div>
+											<?php echo $this->Html->link(
+												$productName,
+												'/products/details/' . $categoryID . '/' . $productID,
+												[
+													'title' => $categoryNameSlug . ' &raquo; ' . $productNameSlug,
+													'escape' => false,
+													'class'=>'text-decoration-none'
+												]
+											); ?>
+
+											<div>
+												<?php
+												echo $this->Html->link(
+													'<i class="fa fa-times"></i>',
+													'/ShoppingCarts/deleteShoppingCartProduct/' . $shoppingCartProductID,
+													[
+														'title' => 'Remove from cart: ' . $categoryNameSlug . ' &raquo; ' . $productNameSlug,
+														'escape' => false,
+														'class' => 'text-danger p-2'
+													],
+													'Are you sure you want to delete this product. ' . $categoryName . ' &raquo; ' . $productName . ', quantity: ' . $qty
+												);
+												?>
 											</div>
 										</div>
 
-
-										<div class="card-text p-1">
-
-											<div class="d-flex justify-content-between">
-												<div class="d-flex">
-													<img
-														src="<?php echo $thumbUrl; ?>"
-														loading="lazy"
-														class=""
-														alt="<?php echo $productName; ?>"
-														id="<?php echo $imageTagId; ?>"
-														style="width: 75px; height: 75px"
-														v-on:click="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
-													/>
-													<div class="ml-2">
-														<?php echo $this->Html->link(
-															$productName,
-															'/products/details/' . $categoryID . '/' . $productID . '/' . $categoryNameSlug . '/' . $productNameSlug,
-															['title' => $categoryNameSlug . ' &raquo; ' . $productNameSlug, 'escape' => false, 'class'=>'text-decoration-none']
-														); ?>
-														<div class="mt-1 d-flex">
-															<span class="text-danger font-weight-bold"><?php echo $this->App->price($productCartValue);?></span>
-															<?php if($showDiscount): ?>
-															<div class="ml-2">
-																<span class="small text-decoration-line-through"> <?php echo $this->App->price($productCartMRPValue);?></span>
-															</div>
-															<?php endif; ?>
-														</div>
-														<?php if($showDiscount): ?>
-
-															<div class="text-success x-small">
-																Save <?php echo $this->App->priceOfferInfo($productCartValue, $productCartMRPValue); ?>
-															</div>
-														<?php endif; ?>
-
-														<div class="d-flex mt-2 d-none">
-															<input
-																type="number"
-																id="ProductQuantity<?= $shoppingCartProductID ?>"
-																name="data[Product][quantity]"
-																class="form-control form-control-sm"
-																min="1"
-																max="100"
-																data-shopping-cart-product-id="<?= $shoppingCartProductID ?>"
-																data-actual-qty="<?= $qty ?>"
-																value="<?= $qty ?>"
-																required
-															>
-															<div>
-																<button class="btn btn-sm btn-outline-primary ml-2">Update</button>
-															</div>
-
-														</div>
-
-													</div>
-												</div>
-												<div class="ml-1">
-													<div class="d-flex flex-column" style="width: 25px;">
-														<div>
-															<button v-on:click="increaseProductQty" class="btn btn-sm btn-primary w-100 rounded-none mb-1 p-0"><span class="fa fa-plus"></span></button>
-														</div>
-														<div>
-															<div id="productQty<?= $shoppingCartProductID ?>" class="text-center font-weight-bold">{{productQty}}</div>
-															<input v-model="productQty" type="hidden" class="form-control form-control-sm p-0 w-100 border-0 text-center" value="<?= $qty ?>">
-														</div>
-														<div>
-															<div v-if="showDeleteButton === false">
-
-																<button v-on:click="reduceProductQty" class="btn btn-sm btn-primary w-100 mt-1 p-0"><span class="fa fa-minus"></span></button>
-															</div>
-
-															<div v-if="showDeleteButton === true">
-																<?php
-																echo $this->Html->link(
-																	'<span class="far fa-trash-alt"></span>',
-																	'/ShoppingCarts/deleteShoppingCartProduct/' . $shoppingCartProductID,
-																	[
-																		'title' => 'Delete Item',
-																		'escape' => false,
-																		'class' => 'btn btn-sm btn-danger w-100 mt-1 p-0'
-																	],
-																	'Are you sure you want to delete this product. ' . $categoryName . ' &raquo; ' . $productName . ', quantity: ' . $qty
-																);
-																?>
-															</div>
-														</div>
-													</div>
-												</div>
+									</div>
+									<div class="d-flex mt-2">
+										<img
+												src="<?php echo $thumbUrl; ?>"
+												loading="lazy"
+												class=""
+												role="button"
+												alt="<?php echo $productName; ?>"
+												id="<?php echo $imageTagId; ?>"
+												style="width: 75px; height: 75px"
+												onclick="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
+										/>
+										<div class="ms-2">
+											<div class="small text-muted">
+												Quantity: <?= $qty ?><br>
+												Price: <?php echo $this->App->price($salePrice);?>/unit,
+												<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp);?></span>
 											</div>
+											<div class="d-flex mt-2">
+												<div>
+													<span class="text-danger fw-bold fs-5"><?php echo $this->App->price($productCartValue);?></span>
+												</div>
+												<?php if($showDiscount): ?>
+													<div class="ms-2 mt-1">
+														<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($productCartMRPValue);?></span>
+													</div>
+												<?php endif; ?>
+											</div>
+											<?php if($showDiscount): ?>
+												<div class="text-success fw-bold small">
+													Save <?php echo $this->App->priceOfferInfo($productCartValue, $productCartMRPValue); ?>
+												</div>
+											<?php endif; ?>
+										</div>
+									</div>
+									<div class="mt-2">
+										<div class="small">Quantity: </div>
+										<div class="d-flex d-block col-sm-12 col-md-5 col-lg-4">
+
+											<input
+													type="number"
+													id="ProductQuantity<?= $shoppingCartProductID ?>"
+													name="data[Product][quantity]"
+													class="form-control form-control-sm"
+													min="1"
+													max="100"
+													data-shopping-cart-product-id="<?= $shoppingCartProductID ?>"
+													data-actual-qty="<?= $qty ?>"
+													value="<?= $qty ?>"
+													required
+											>
+											<div>
+												<button class="btn btn-sm btn-primary ms-2">Update</button>
+											</div>
+
 										</div>
 									</div>
 								</div>
@@ -199,7 +167,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 									data: {
 										showUpdateCartDiv: false,
 										productQty: <?= $qty ?>,
-										showDeleteButton: false,
+										showDeleteButton: parseInt('<?= $qty ?>') > 1 ? false : true,
 									},
 									watch: {
 										productQty: function () {
@@ -240,27 +208,27 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 								})
 							</script>
 						</div>
-						<hr>
 						<?php
 					}
 					?>
 
-				<div style="text-align:center;">
+				<div class="mt-5 text-center">
 					<?php
 					echo $this->Form->create(null, ['url' => '/RequestPriceQuote', 'method' => 'get', 'encoding' => false]);
 					?>
-					<button class="btn btn-primary">Book Order</button>
+					<button class="btn btn-orange">Book Order</button>
 					<?php
 					//echo $this->Form->submit('Book Order', ['escape' => false, 'div' => false]);
 					echo $this->Form->end();
 					?>
 					<br>
 					<a href="#topNavCart"
-					   data-toggle="collapse"
-					   data-target="#topNavCart"
+					   data-bs-toggle="collapse"
+					   data-bs-target="#topNavCart"
 					   aria-controls="topNavCart"
 					   aria-expanded="false"
 					   aria-label="Toggle navigation"
+					   class="small"
 					>
 						Hide Cart
 					</a>
