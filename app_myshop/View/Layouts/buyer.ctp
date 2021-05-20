@@ -76,7 +76,7 @@
 		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-bs-toggle="collapse"
 			 data-bs-target="#navbarNav"
 			 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<i class="fa fa-bars"></i> Menu
+			<i class="fa fa-ellipsis-v"></i> Menu
 		</div>
 		<a class="navbar-brand" href="/">
 			<i class="fa fa-home"></i>
@@ -87,7 +87,7 @@
 				if ($this->App->isSellerForThisSite()) {
 					?>
 					<li class="nav-item px-1">
-						<a class="nav-link" href="/users/setView/seller">Manage
+						<a class="nav-link px-1" href="/users/setView/seller">Manage
 							Store</a>
 					</li>
 					<!--
@@ -96,25 +96,32 @@
 					</li>
 					-->
 					<li class="nav-item px-1">
-						<a class="nav-link" href="/sites/contact">Contact</a>
+						<a class="nav-link px-1" href="/sites/contact">Contact</a>
 					</li>
 					<li class="nav-item px-1">
-						<a class="nav-link" href="/sites/paymentInfo">Payment Details</a>
+						<a class="nav-link px-1" href="/sites/paymentInfo">Payment Details</a>
 					</li>
 					<li class="nav-item px-1">
-						<a class="nav-link" href="/users/logout">Logout</a>
+						<a class="nav-link px-1" href="/users/logout">Logout</a>
 					</li>
 					<?php
 				} else { ?>
+
+					<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item px-1">
-						<a class="nav-link" href="/sites/contact">Contact</a>
+						<a class="nav-link fw-normal px-1" href="#">Orders</a>
+					</li>
+					<?php endif; ?>
+
+					<li class="nav-item px-1">
+						<a class="nav-link px-1" href="/sites/contact">Contact</a>
 					</li>
 					<li class="nav-item px-1">
-						<a class="nav-link" href="/sites/paymentInfo">Payment Details</a>
+						<a class="nav-link px-1" href="/sites/paymentInfo">Payment Details</a>
 					</li>
 					<li class="nav-item px-1">
 						<?php if ($this->Session->check('User.id')): ?>
-							<a class="nav-link" href="/users/logout">Logout</a>
+							<a class="nav-link px-1" href="/users/logout">Logout</a>
 						<?php else: ?>
 							<a class="nav-link px-1" href="/users/login">Login</a>
 						<?php endif; ?>
@@ -125,14 +132,22 @@
 	</div>
 </nav>
 
-<div class="shadow-sm border-bottom">
-	<ul class="nav container justify-content-start py-2">
-		<li class="nav-item productSideBar">
-			<a class="nav-link fw-normal" href="#"><i class="fa fa-chevron-circle-right"></i> Shop By Category</a>
+<div class="shadow-sm border-bottom bg-white">
+	<ul class="nav container justify-content-between py-2">
+		<li class="nav-item">
+			<div id="topCategoriesMenu">
+				<a href="#" class="nav-link  fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
+					<i class="fa fa-bars"></i> Shop By Category
+				</a>
+			</div>
 		</li>
 		<?php if ($this->Session->read('Site.shopping_cart')): ?>
 			<li class="nav-item">
-				<a class="nav-link  fw-normal" href="#"><i class="fa fa-shopping-basket"></i> My Orders</a>
+				<div id="topNavShoppingCart">
+					<a href="#" class="nav-link  fw-normal" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
+						<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill bg-orange">0</span>
+					</a>
+				</div>
 			</li>
 		<?php endif; ?>
 	</ul>
@@ -148,7 +163,7 @@
 
 <div class="container mt-3">
 	<?php if ($this->Session->read('Site.shopping_cart')): ?>
-		<div id="topNavShoppingCart"></div>
+<!--		<div id="topNavShoppingCart"></div>-->
 	<?php endif; ?>
 
 	<?php echo $this->fetch('content'); ?>
@@ -195,13 +210,48 @@
 
 	<br>
 
-	<div id="ToastMessage" class="fixed-top d-none"
-		 style="width:16rem; left: auto; margin-top: 8rem; margin-right: 0.5rem;">
-		<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true">
+	<div id="ToastMessage" class="fixed-top d-none" style="width:16rem; left: auto; margin-top: 0.5rem; margin-right: 0.5rem;">
+		<div id="toastDiv" class="toast text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="d-flex align-items-center">
 				<div class="toast-body"></div>
 				<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
 						aria-label="Close"></button>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
+		<div class="offcanvas-header border-bottom border-4 border-warning">
+			<h5 id="offcanvasTopLabel">My Shopping Cart</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body" id="myShoppingCartBody"></div>
+	</div>
+
+
+	<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
+		<div class="offcanvas-header border-bottom border-4 border-warning">
+			<h5 id="offcanvasTopLabel">Shop By Category</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body" id="categoriesMenuBody">
+			<?php echo $this->element('categories_menu'); ?>
+		</div>
+	</div>
+
+
+	<div id="fullLoader">
+		<div class="modal" id="fullLoaderBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center text-purple">
+						<div class="d-flex justify-content-center">
+							<div class="spinner-border text-purple" role="status" aria-hidden="true"></div>
+							<span class="ms-3 fs-5">Loading...</span>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
