@@ -17,6 +17,11 @@ class ShoppingCartsController extends AppController
 		//$this->Auth->allow('index', 'add', 'edit', 'delete', 'getCartProducts', 'deleteShoppingCartProduct', 'requestQuoteForProduct');
 	}
 
+	public function loadTopNavCartHeader()
+	{
+		$this->layout = false;
+	}
+
 	public function loadTopNavCart()
 	{
 		$this->layout = false;
@@ -79,6 +84,7 @@ class ShoppingCartsController extends AppController
 		$productID = $data['ShoppingCartProduct']['productId'] ?? 0;
 		$categoryID = $data['ShoppingCartProduct']['categoryId'] ?? 0;
 		$quantity = $data['ShoppingCartProduct']['quantity'] ?? 0;
+		$updateQty = $data['ShoppingCartProduct']['shoppingCartId'] ?? null;
 
 		if (!$categoryInfo = $this->isSiteCategory($categoryID)) {
 			$errorMsg = 'Category Not Found.';
@@ -101,7 +107,13 @@ class ShoppingCartsController extends AppController
 				$shoppingCartProductInfo = $this->getShoppingCartProductDetails($tmp);
 
 				if (!empty($shoppingCartProductInfo)) {
-					$tmp['ShoppingCartProduct']['quantity'] = $quantity + $shoppingCartProductInfo['ShoppingCartProduct']['quantity'];
+					if (!$updateQty) {
+						// new qty + old qty
+						$tmp['ShoppingCartProduct']['quantity'] = $quantity + $shoppingCartProductInfo['ShoppingCartProduct']['quantity'];
+					} else {
+						// update new qty only
+						$tmp['ShoppingCartProduct']['quantity'] = $quantity;
+					}
 					$tmp['ShoppingCartProduct']['id'] = $shoppingCartProductInfo['ShoppingCartProduct']['id'];
 				} else {
 					$tmp['ShoppingCartProduct']['quantity'] = $quantity;

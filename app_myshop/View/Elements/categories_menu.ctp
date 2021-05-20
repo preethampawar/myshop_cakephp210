@@ -3,10 +3,7 @@ App::uses('Category', 'Model');
 $categoryModel = new Category;
 $categories = $categoryModel->getCategories($this->Session->read('Site.id'));
 ?>
-<li class="nav-item navbar-side-border-bottom px-0">
-	<h5 class="pe-2 mt-3">Select Category</h5>
-</li>
-
+<ul class="list-group list-group-flush">
 <?php
 if (!empty($categories)) {
 	foreach ($categories as $row) {
@@ -14,25 +11,34 @@ if (!empty($categories)) {
 		$categoryName = Inflector::humanize($row['Category']['name']);
 		$categoryNameSlug = Inflector::slug($row['Category']['name'], '-');
 		?>
-		<li class="nav-item">
+		<li class="list-group-item px-0 py-1">
 			<a
-				class="nav-link"
+				class="nav-link d-flex justify-content-between"
 				href="/products/show/<?php echo $categoryID; ?>/<?php echo $categoryNameSlug; ?>"
-				title="<?php echo $categoryName; ?>">
-				<?php echo $categoryName; ?>
+				title="<?php echo $categoryName; ?>"
+			>
+				<span><?php echo $categoryName; ?></span>
+				<span class="text-primary">
+					<i class="fa fa-chevron-right"></i>
+				</span>
 			</a>
+
 		</li>
 		<?php
 	}
 	?>
-	<li class="nav-item navbar-side-border-top"><a class="nav-link" href="/products/showAll" title="Show all products">
-			Show All Products</a></li>
+	<li class="list-group-item px-0 pt-2">
+		<a class="nav-link" href="/products/showAll" title="Show all products">
+			<i class="fa fa-chevron-circle-right"></i> Show All Products
+		</a>
+	</li>
 	<?php
 } else {
 	?>
-	<li class="nav-item navbar-side-border-top">
+	<li class="list-group-item px-0 pt-2">
 		No categories found
 	</li>
 	<?php
 }
 ?>
+</ul>

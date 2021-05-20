@@ -1,4 +1,12 @@
 <script>
+	var handleError = function (err) {
+		alert('Network error. Please check the internet connection and try again.')
+		return new Response(JSON.stringify({
+			code: 400,
+			message: 'Network Error'
+		}));
+	};
+
 	// Implementation of JS async calls to consume APIs
 
 	// POST method implementation:
@@ -16,23 +24,42 @@
 			redirect: 'follow', // manual, *follow, error
 			referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
 			body: JSON.stringify(data) // body data type must match "Content-Type" header
-		});
+		}).catch(handleError);
 
-		return response.json(); // parses JSON response into native JavaScript objects
+		if (response.ok) {
+			return response.json();
+		} else {
+			return Promise.reject(response);
+		}
 	}
 
 	// GET page implementation:
 	async function getPage(url = '', data = {}) {
-		const response = await fetch(url + '?isAjax=1');
+		const response = await fetch(url + '?isAjax=1').catch(handleError);
 
-		return response.text(); // parses into html
+		if (response.ok) {
+			return response.text(); // parses into html
+		} else {
+			return Promise.reject(response);
+		}
 	}
 
 	// GET data implementation:
 	async function getData(url = '', data = {}) {
-		const response = await fetch(url);
+		const response = await fetch(url).catch(handleError);
 
-		return response.json(); // parses JSON response into native JavaScript objects
+		if (response.ok) {
+			return response.json();
+		} else {
+			return Promise.reject(response);
+		}
+	}
+
+	function handleErrors(response) {
+		if (!response.ok) {
+			throw Error(response.statusText);
+		}
+		return response;
 	}
 </script>
 
@@ -59,21 +86,6 @@
 		});
 	}
 
-	// side bar menu to show categories
-	function initSideBarMenu() {
-		// Open navbarSide when button is clicked
-		$('.productSideBar').on('click', function () {
-			$('#navbarSide').addClass('reveal');
-			$('.overlay').show();
-		});
-
-		// Close navbarSide when the outside of menu is clicked
-		$('.overlay').on('click', function () {
-			$('#navbarSide').removeClass('reveal');
-			$('.overlay').hide();
-		});
-	}
-
 	// show toast messages
 	function showToastMessages() {
 		var toastElList = [].slice.call(document.querySelectorAll('.toast'))
@@ -85,12 +97,76 @@
 	}
 
 	// load shopping cart in top nav
-	function loadShoppingCart() {
-		let topNavCartUrl = '/shopping_carts/loadTopNavCart';
-		const data = getPage(topNavCartUrl);
+	function loadShoppingCartHeader() {
+		let topNavCartHeaderUrl = '/shopping_carts/loadTopNavCartHeader';
+		const data = getPage(topNavCartHeaderUrl);
 		data.then(function (response) {
 			$("#topNavShoppingCart").html(response);
 		});
+
+		return data;
+	}
+
+	// load shopping cart in top nav
+	var cartInfo = null;
+
+	function loadShoppingCart() {
+		let topNavCartUrl = '/shopping_carts/loadTopNavCart';
+		const data = getPage(topNavCartUrl);
+
+		data.then(function (response) {
+			$("#myShoppingCartBody").html(response);
+		})
+
+		return data;
+	}
+
+	// load shopping cart in top nav
+	var cartInfo = null;
+
+	function loadShoppingCart_toberemoved(showCart) {
+		showCart = showCart ?? true;
+
+		if (!cartInfo) {
+			showFullLoader()
+		} else if (showCart) {
+			bsMyShoppingCart.show()
+		}
+
+		let topNavCartUrl = '/shopping_carts/loadTopNavCart';
+		const data = getPage(topNavCartUrl);
+
+		data.then(function (response) {
+			$("#myShoppingCartBody").html(response);
+
+			if (!cartInfo) {
+				hideFullLoader()
+
+				if (showCart) {
+					bsMyShoppingCart.show()
+				}
+			}
+
+			cartInfo = response;
+		})
+	}
+
+	var fullLoaderBackdrop = new bootstrap.Modal(document.getElementById('fullLoaderBackdrop'), {
+		keyboard: false
+	})
+
+	function showFullLoader() {
+		fullLoaderBackdrop.show()
+	}
+
+	function hideFullLoader() {
+		if (!fullLoaderBackdrop) {
+			fullLoaderBackdrop = new bootstrap.Modal(document.getElementById('fullLoaderBackdrop'), {
+				keyboard: false
+			})
+		}
+
+		fullLoaderBackdrop.hide()
 	}
 
 	// enable light box for images
@@ -145,7 +221,6 @@
 
 	// show delete popup
 	function showDeleteImagePopup(deleteImageUrl, deleteImageActionUrl, title = '', content = '', okText = '') {
-		debugger
 		var deletePopup;
 		title = title ? title : '';
 		content = content ? content : 'Are you sure you want to delete it?';
@@ -163,18 +238,18 @@
 
 		$('#deleteImagePopup .modal-footer .deleteLink').on('click', function (event) {
 			getData(deleteImageUrl).then(
-				function (response) {
-					if (response.error) {
-						alert('error');
-						return;
-					}
+					function (response) {
+						if (response.error) {
+							alert('error');
+							return;
+						}
 
-					// $("#deleteImagePopup .modal-content .deleteLink").attr('href', deleteUrl);
-					window.location.href = deleteImageActionUrl;
+						// $("#deleteImagePopup .modal-content .deleteLink").attr('href', deleteUrl);
+						window.location.href = deleteImageActionUrl;
 
 
-					console.log(response);
-				})
+						console.log(response);
+					})
 		})
 
 		deletePopup = new bootstrap.Modal(document.getElementById('deleteImagePopup'));
@@ -193,22 +268,144 @@
 			$("#productModal" + productId + " .modal-body").html(response);
 		});
 	}
+
+	// show ShoppingCart content
+	var myShoppingCart = document.getElementById('myShoppingCart')
+	var bsMyShoppingCart = new bootstrap.Offcanvas(myShoppingCart)
+
+	function showMyShoppingCart()
+	{
+		bsMyShoppingCart.show()
+
+		loadShoppingCart();
+	}
+
+	// add product to cart
+	function addToCart(categoryId, productId, quantity, shoppingCartId)
+	{
+		const addToCartUrl = '/shopping_carts/addToCart';
+
+		if (!shoppingCartId) {
+			shoppingCartId = null
+		}
+
+		let data = {
+			'ShoppingCartProduct': {
+				'quantity': quantity,
+				'categoryId': categoryId,
+				'productId': productId,
+				'shoppingCartId': shoppingCartId,
+			}
+		}
+
+		const response = postData(addToCartUrl, data);
+
+		//
+		// response.then(function (data) {
+		// 	if (data.success == 1) {
+		// 		loadShoppingCart();
+		// 		loadShoppingCartHeader();
+		// 	}
+		// })
+
+		return response
+	}
+
+	function updateProductQtyFromShoppingCart(categoryId, productId, quantity, shoppingCartId)
+	{
+		$('#updatingCartSpinner' + shoppingCartId).removeClass('d-none');
+		const response = addToCart(categoryId, productId, quantity, shoppingCartId);
+
+		response.then(function (data) {
+			if (data.success == 1) {
+				let cartData = loadShoppingCart();
+
+				cartData.finally(function() {
+					$('#updatingCartSpinner' + shoppingCartId).addClass('d-none');
+				})
+
+				loadShoppingCartHeader();
+			} else {
+				$('#updatingCartSpinner' + shoppingCartId).addClass('d-none');
+			}
+		})
+
+		return response;
+	}
+
+
+	function addProductToCart(categoryId, productId, quantity, shoppingCartId)
+	{
+		$('#updatingCartSpinner' + shoppingCartId).removeClass('d-none');
+		const response = addToCart(categoryId, productId, quantity, shoppingCartId);
+
+		response.then(function (data) {
+			if (data.success == 1) {
+				let cartData = loadShoppingCart();
+
+				cartData.finally(function() {
+					$('#updatingCartSpinner' + shoppingCartId).addClass('d-none');
+				})
+
+				loadShoppingCartHeader();
+			} else {
+				$('#updatingCartSpinner' + shoppingCartId).addClass('d-none');
+			}
+		})
+
+		return response;
+	}
+
+	// add product to cart
+	function addToCart_toberemoved(categoryId, productId, quantity, shoppingCartId, showCart) {
+
+		showCart = showCart ?? true;
+
+		if (!shoppingCartId) {
+			shoppingCartId = null
+		}
+
+		const addToCartUrl = '/shopping_carts/addToCart';
+		let data = {
+			'ShoppingCartProduct': {
+				'quantity': quantity,
+				'categoryId': categoryId,
+				'productId': productId,
+				'shoppingCartId': shoppingCartId,
+			}
+		}
+
+		if (shoppingCartId) {
+			$('#updatingCartSpinner' + shoppingCartId).removeClass('d-none');
+		}
+
+		const response = postData(addToCartUrl, data);
+
+		response.then(function (data) {
+			if (data.success == 1) {
+				loadShoppingCart(showCart);
+				loadShoppingCartHeader();
+			}
+		}).finally(function () {
+			if (shoppingCartId) {
+				$('#updatingCartSpinner' + shoppingCartId).addClass('d-none');
+			}
+		})
+
+		return response
+	}
 </script>
 
 <script>
 	// scripts executed after the page load
 	$(document).ready(function () {
-		try {
-			initSideBarMenu();
-		} catch (err) {
-			console.log('Error - Sidebar categories menu', err.message);
-		}
 
 		<?php if ($this->Session->read('Site.shopping_cart')): ?>
 		try {
-			loadShoppingCart();
+			loadShoppingCartHeader();
+			loadShoppingCart()
 		} catch (err) {
-			console.log('Error - Shopping cart top nav: ', err.message);
+			console.log('Error - Shopping cart top nav header: ', err.message);
 		}
 		<?php endif; ?>
 

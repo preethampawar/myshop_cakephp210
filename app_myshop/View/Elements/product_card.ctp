@@ -146,31 +146,14 @@ $loadingImageUrl = '/loading2.gif';
 				this.showUpdateCartDiv = true;
 				this.$nextTick(() => $('#' + elementToBeFocused).focus());
 			},
-			showProductDetails: function (categoryId, productId, categoryNameSlug, productNameSlug) {
-				let myModal = new bootstrap.Modal(document.getElementById('productModal' + productId), {
-					keyboard: false
-				});
-				myModal.show();
-
-				let productDetailsUrl = '/products/getDetails/' + categoryId + '/' + productId + '/' + categoryNameSlug + '/' + productNameSlug;
-				const data = getPage(productDetailsUrl);
-				data.then(function (response) {
-					$("#productModal" + productId + " .modal-body").html(response);
-				});
-			},
 			addToCart: function (categoryId, productId) {
 				const addToCartUrl = '/shopping_carts/addToCart';
 				const quantity = $('#ShoppingCartProductQuantity' + categoryId + '-' + productId).val();
-				let data = {
-					'ShoppingCartProduct': {
-						'quantity': quantity,
-						'categoryId': categoryId,
-						'productId': productId,
-					}
-				}
-				const response = postData(addToCartUrl, data);
+				const showCart = false
+				const response = addProductToCart(categoryId, productId, quantity, null, showCart);
 
 				let that = this;
+
 				response.then(function (data) {
 					$('#ToastMessage').removeClass('d-none');
 					$('#toastDiv').removeClass('bg-primary');
@@ -181,11 +164,11 @@ $loadingImageUrl = '/loading2.gif';
 						$('#toastDiv').addClass('bg-primary');
 						$("#toastDiv .toast-body").html("<i class='fa fa-check-circle'></i> Product successfully added to cart.");
 						that.showUpdateCartDiv = false;
-						loadShoppingCart();
 					} else {
 						$('#toastDiv').addClass('bg-danger');
 						$("#toastDiv .toast-body").html("<i class='fa fa-exclamation-circle'></i> " + data.errorMessage);
 					}
+
 					showToastMessages();
 				});
 			}
