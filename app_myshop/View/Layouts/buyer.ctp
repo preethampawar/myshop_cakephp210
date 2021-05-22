@@ -210,16 +210,23 @@
 
 	<br>
 
-	<div id="ToastMessage" class="fixed-top d-none" style="width:16rem; left: auto; margin-top: 0.5rem; margin-right: 0.5rem;">
-		<div id="toastDiv" class="toast text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="d-flex align-items-center">
-				<div class="toast-body"></div>
-				<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
-						aria-label="Close"></button>
+	<div aria-live="polite" aria-atomic="true" class="position-relative">
+		<!-- Position it: -->
+		<!-- - `.toast-container` for spacing between toasts -->
+		<!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
+		<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+		<div class="toast-container fixed-top end-0 p-3" style="left: auto">
+			<div id="ToastMessage" class="d-none">
+				<div id="toastDiv" class="toast text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
+					<div class="d-flex align-items-center justify-content-between">
+						<div class="toast-body"></div>
+						<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
+								aria-label="Close"></button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
 
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
 		<div class="offcanvas-header border-bottom border-4 border-warning">
@@ -228,7 +235,6 @@
 		</div>
 		<div class="offcanvas-body" id="myShoppingCartBody"></div>
 	</div>
-
 
 	<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
 		<div class="offcanvas-header border-bottom border-4 border-warning">
@@ -240,6 +246,68 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="productDetails" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="productDetailsLabel">Product Details</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="productDetailsBody">
+					<div class="text-center">
+						<div class="spinner-border text-primary" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="addProductQty" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProductQtyLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+			<div class="modal-content">
+
+				<div class="modal-body" id="addProductQtyBody">
+					<div class="d-flex justify-content-between">
+						<h5 class="modal-title" id="addProductQtyLabel">Select Quantity</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<hr>
+					<div class="mt-4 mb-3">
+						<div class="d-flex justify-content-between">
+							<select id="addProductQtyModal-quantity"
+									name="addProductQtyModal-quantity"
+									class="form-control form-control-sm"
+							>
+								<?php foreach(range(1,100) as $qty): ?>
+									<option value="<?= $qty ?>"><?= $qty ?></option>
+								<?php endforeach; ?>
+							</select>
+							<div>
+								<button
+										id="addProductQtyModal-saveButton"
+										class="btn btn-primary btn-sm ms-2"
+										onclick="saveProductQtyToCart()">
+									Add
+								</button>
+							</div>
+							<div class="ms-2" style="width:45px">
+								<div id="addProductQtyModal-spinner" class="d-none">
+									<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">
+										<span class="visually-hidden">Loading...</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div id="fullLoader">
 		<div class="modal" id="fullLoaderBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -261,13 +329,9 @@
 	<?php echo $this->element('sql_dump'); ?>
 </div>
 
-
 <script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js"></script>
 <script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js"></script>
-
-
-
 
 <!--
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"

@@ -52,7 +52,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			?>
 
 			<div class="mt-2 mb-4">
-				<div id="vueTopNavCartRow<?php echo $categoryID . '-' . $productID; ?>">
+				<div id="topNavCartRow<?php echo $categoryID . '-' . $productID; ?>">
 					<div class="p-1 pb-3 border rounded">
 						<div class="bg-light rounded p-2">
 							<div class="d-flex justify-content-between">
@@ -136,35 +136,13 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 									</button>
 								</div>
 								<div id="updatingCartSpinner<?= $shoppingCartProductID ?>"
-									 class="spinner-border text-primary ms-3 small d-none" role="status">
+									 class="spinner-border spinner-border-sm text-primary ms-3 mt-2 small d-none" role="status">
 									<span class="visually-hidden">updating...</span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
-				<script>
-					var app = new Vue({
-						el: '#vueTopNavCartRow<?php echo $categoryID . '-' . $productID; ?>',
-						data: {
-							showUpdateCartDiv: false,
-							productQty: <?= $qty ?>,
-							showDeleteButton: parseInt('<?= $qty ?>') > 1 ? false : true,
-						},
-						watch: {
-							productQty: function () {
-								console.log(this.productQty);
-								if (1 < parseInt(this.productQty)) {
-									this.showDeleteButton = false;
-								} else {
-									this.showDeleteButton = true;
-								}
-							}
-						},
-						methods: {}
-					})
-				</script>
 			</div>
 			<?php
 		}
@@ -180,16 +158,8 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			echo $this->Form->end();
 			?>
 			<br>
-			<a href="#topNavCart"
-			   data-bs-toggle="collapse"
-			   data-bs-target="#topNavCart"
-			   aria-controls="topNavCart"
-			   aria-expanded="false"
-			   aria-label="Toggle navigation"
-			   class="small"
-			>
-				Hide Cart
-			</a>
+
+			<a href="#" type="button" class="small" data-bs-dismiss="offcanvas" aria-label="Close">Hide Cart</a>
 		</div>
 	</div>
 
