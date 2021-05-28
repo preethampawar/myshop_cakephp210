@@ -140,7 +140,7 @@
 		if (!cartInfo) {
 			showFullLoader()
 		} else if (showCart) {
-			bsMyShoppingCart.show()
+			myShoppingCart.show()
 		}
 
 		let topNavCartUrl = '/shopping_carts/loadTopNavCart';
@@ -153,7 +153,7 @@
 				hideFullLoader()
 
 				if (showCart) {
-					bsMyShoppingCart.show()
+					myShoppingCart.show()
 				}
 			}
 
@@ -266,6 +266,45 @@
 		deletePopup.show();
 	}
 
+	// show delete product from cart popup
+	var deleteProductFromCartPopup = null;
+	function showDeleteProductFromCartPopup(shoppingCartProductId, productName) {
+		if (!deleteProductFromCartPopup) {
+			deleteProductFromCartPopup = new bootstrap.Modal(document.getElementById('deleteProductFromCartPopup'), {
+				keyboard: false
+			});
+		}
+		myShoppingCart.hide()
+
+		deleteProductFromCartPopup.show();
+
+		$('#deleteProductFromCartPopupProductName').html(productName);
+		$('#deleteProductFromCartPopupProductName').data('delete-shopping-cart-product-id', shoppingCartProductId);
+	}
+
+	function deleteProductFromCart() {
+		const shoppingCartProductId = $('#deleteProductFromCartPopupProductName').data('delete-shopping-cart-product-id')
+		const url = '/ShoppingCarts/deleteShoppingCartProduct/'+shoppingCartProductId+'/1'
+
+		const result = getData(url)
+
+		result.then( function (response) {
+			if (response.error) {
+				alert('error');
+				return;
+			}
+
+			loadShoppingCart()
+			loadShoppingCartHeader()
+		})
+		result.finally( function() {
+			deleteProductFromCartPopup.hide();
+			myShoppingCart.show()
+		})
+
+		return result
+	}
+
 	let spinner = `<div class="text-center">
 						<div class="spinner-border text-primary" role="status">
 							<span class="visually-hidden">Loading...</span>
@@ -374,11 +413,11 @@
 	}
 
 	// show ShoppingCart content
-	var myShoppingCart = document.getElementById('myShoppingCart')
-	var bsMyShoppingCart = new bootstrap.Offcanvas(myShoppingCart)
+	let myShoppingCartElement = document.getElementById('myShoppingCart')
+	var myShoppingCart = new bootstrap.Offcanvas(myShoppingCartElement)
 
 	function showMyShoppingCart() {
-		bsMyShoppingCart.show()
+		myShoppingCart.show()
 
 		loadShoppingCart();
 	}
@@ -386,6 +425,13 @@
 	// add product to cart
 	function addToCart(categoryId, productId, quantity, shoppingCartId) {
 		const addToCartUrl = '/shopping_carts/addToCart';
+		let qty = parseInt(quantity)
+
+		if (isNaN(qty)) {
+			qty = 1
+		}
+		
+		qty = qty < 1 ? 1 : qty
 
 		if (!shoppingCartId) {
 			shoppingCartId = null
@@ -393,7 +439,7 @@
 
 		let data = {
 			'ShoppingCartProduct': {
-				'quantity': quantity,
+				'quantity': qty,
 				'categoryId': categoryId,
 				'productId': productId,
 				'shoppingCartId': shoppingCartId,
@@ -414,8 +460,16 @@
 	}
 
 	function updateProductQtyFromShoppingCart(categoryId, productId, quantity, shoppingCartId) {
+		let qty = parseInt(quantity);
+
+		if (isNaN(qty)) {
+			qty = 1
+		}
+
+		qty = qty < 1 ? 1 : qty;
+
 		$('#updatingCartSpinner' + shoppingCartId).removeClass('d-none');
-		const response = addToCart(categoryId, productId, quantity, shoppingCartId);
+		const response = addToCart(categoryId, productId, qty, shoppingCartId);
 
 		response.then(function (data) {
 			if (data.success == 1) {

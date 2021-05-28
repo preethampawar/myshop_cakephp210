@@ -56,24 +56,22 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 					<div class="p-1 pb-3 border rounded">
 						<div class="bg-light rounded p-2">
 							<div class="d-flex justify-content-between">
-											<span onclick="bsMyShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>')"
+											<span onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>')"
 												  role="button" class="text-primary">
 												<?= $productName ?>
 											</span>
 
 								<div>
 									<?php
-									echo $this->Html->link(
-											'<i class="fa fa-times"></i>',
-											'/ShoppingCarts/deleteShoppingCartProduct/' . $shoppingCartProductID,
-											[
-													'title' => 'Remove from cart: ' . $categoryNameSlug . ' &raquo; ' . $productNameSlug,
-													'escape' => false,
-													'class' => 'text-danger p-2'
-											],
-											'Are you sure you want to delete this product. ' . $categoryName . ' &raquo; ' . $productName . ', quantity: ' . $qty
-									);
+									$title = $categoryName . ' &raquo; ' . $productName . '<br>Quantity: ' . $qty;
 									?>
+									<span
+										href="#"
+										onclick="showDeleteProductFromCartPopup('<?= $shoppingCartProductID ?>', '<?= $title ?>')"
+										class="text-danger p-2"
+										title="<?= $title ?>"
+										role="button"
+									><i class="fa fa-times"></i></span>
 								</div>
 							</div>
 
@@ -87,7 +85,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 									alt="<?php echo $productName; ?>"
 									id="<?php echo $imageTagId; ?>"
 									style="width: 75px; height: 75px"
-									onclick="bsMyShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
+									onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
 							/>
 							<div class="ms-2">
 								<div class="small text-muted">
@@ -148,11 +146,11 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		}
 		?>
 
-		<div class="mt-5 text-center">
+		<div class="mt-3 text-center">
 			<?php
 			echo $this->Form->create(null, ['url' => '/RequestPriceQuote', 'method' => 'get', 'encoding' => false]);
 			?>
-			<button class="btn btn-orange">Book Order</button>
+			<button class="btn btn-orange d-none">Book Order</button>
 			<?php
 			//echo $this->Form->submit('Book Order', ['escape' => false, 'div' => false]);
 			echo $this->Form->end();
