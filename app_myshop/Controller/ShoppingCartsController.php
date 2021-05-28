@@ -171,8 +171,12 @@ class ShoppingCartsController extends AppController
 	/**
 	 * Function to delete shopping cart product
 	 */
-	public function deleteShoppingCartProduct($shoppingCartProductID)
+	public function deleteShoppingCartProduct($shoppingCartProductID, $isAjax = false)
 	{
+		if ((int)$isAjax === 1) {
+			$this->layout = false;
+		}
+
 		App::uses('ShoppingCartProduct', 'Model');
 		$shoppingCartProductModel = new ShoppingCartProduct;
 
@@ -180,13 +184,21 @@ class ShoppingCartsController extends AppController
 			'ShoppingCartProduct.id' => $shoppingCartProductID,
 			'ShoppingCartProduct.shopping_cart_id' => $this->Session->read('ShoppingCart.id'),
 		];
+
 		if ($productInfo = $shoppingCartProductModel->find('first', ['conditions' => $conditions])) {
 			$shoppingCartProductModel->delete($shoppingCartProductID);
-			$this->successMsg('Product successfully deleted from shopping list');
+			if ((int)$isAjax !== 1) {
+				$this->successMsg('Product successfully deleted from shopping list');
+			}
 		} else {
-			$this->successMsg('Product not found in shopping list');
+			if ((int)$isAjax !== 1) {
+				$this->successMsg('Product not found in shopping list');
+			}
 		}
-		$this->redirect($this->request->referer());
+
+		if ((int)$isAjax !== 1) {
+			return $this->redirect($this->request->referer());
+		}
 	}
 
 	/**

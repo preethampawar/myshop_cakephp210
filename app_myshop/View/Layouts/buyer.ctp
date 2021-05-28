@@ -210,32 +210,7 @@
 
 	<br>
 
-	<div aria-live="polite" aria-atomic="true" class="position-relative">
-		<!-- Position it: -->
-		<!-- - `.toast-container` for spacing between toasts -->
-		<!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
-		<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
-		<div class="toast-container fixed-top end-0 p-3" style="left: auto">
-			<div id="ToastMessage" class="d-none">
-				<div id="toastDiv" class="toast text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="toast-body"></div>
-						<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
-								aria-label="Close"></button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
-		<div class="offcanvas-header border-bottom border-4 border-warning">
-			<h5 id="offcanvasTopLabel">My Shopping Cart</h5>
-			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body" id="myShoppingCartBody"></div>
-	</div>
-
+	<!-- Categories Menu -->
 	<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
 		<div class="offcanvas-header border-bottom border-4 border-warning">
 			<h5 id="offcanvasTopLabel">Shop By Category</h5>
@@ -246,6 +221,16 @@
 		</div>
 	</div>
 
+	<!-- Shopping Cart -->
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
+		<div class="offcanvas-header border-bottom border-4 border-warning">
+			<h5 id="offcanvasTopLabel">My Shopping Cart</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body" id="myShoppingCartBody"></div>
+	</div>
+
+	<!-- Product Details -->
 	<div class="modal fade" id="productDetails" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -267,6 +252,7 @@
 		</div>
 	</div>
 
+	<!-- Product Quantity -->
 	<div class="modal" id="addProductQty" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProductQtyLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm modal-dialog-centered">
 			<div class="modal-content">
@@ -309,6 +295,7 @@
 		</div>
 	</div>
 
+	<!-- Ajax loader -->
 	<div id="fullLoader">
 		<div class="modal" id="fullLoaderBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-sm">
@@ -323,6 +310,87 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Confirm Popup -->
+	<div class="modal" id="confirmPopup" data-bs-backdrop="static" data-bs-keyboard="false"
+		 aria-labelledby="deleteModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteModal"></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="content">Are you sure?</div>
+				</div>
+				<div class="modal-footer mt-3 p-1">
+					<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25"><span class="ok">Ok</span></a>
+					<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span
+								class="ok">Ok</span></button>
+					<button type="button" class="btn btn-outline-secondary btn-sm cancelButton w-25" data-bs-dismiss="modal">
+						Cancel
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- delete product from cart popup -->
+	<div class="modal fade" id="deleteProductFromCartPopup" data-bs-backdrop="static" data-bs-keyboard="false"
+		 aria-labelledby="deleteProductFromCartModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="d-flex justify-content-between">
+						<div>
+							Are you sure you want to delete this product?
+							<div id="deleteProductFromCartPopupProductName" class="fw-bold mt-3"></div>
+						</div>
+						<div class="ms-2">
+							<button
+								type="button"
+								class="btn-close p-2"
+								data-bs-dismiss="modal"
+								aria-label="Close"
+								onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">
+								<span aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer mt-2 p-1">
+					<a href="#" class="deleteLink btn btn-danger btn-sm me-3 w-25" onclick="deleteProductFromCart()"><span class="ok">Ok</span></a>
+					<button
+						type="button"
+						class="btn btn-outline-secondary btn-sm w-25"
+						data-bs-dismiss="modal"
+						onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Toast messages -->
+	<div aria-live="polite" aria-atomic="true" class="position-relative">
+		<!-- Position it: -->
+		<!-- - `.toast-container` for spacing between toasts -->
+		<!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
+		<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+		<div class="toast-container fixed-top end-0 p-3" style="left: auto">
+			<div id="ToastMessage" class="d-none">
+				<div id="toastDiv" class="toast text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
+					<div class="d-flex align-items-center justify-content-between">
+						<div class="toast-body"></div>
+						<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
+								aria-label="Close"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 
 <div class="container">
@@ -350,6 +418,12 @@
 		crossorigin="anonymous" async></script>
 -->
 <?= $this->element('customjs') ?>
+<script>
+	$(document).ready(function() {
+		$.fn.modal.Constructor.prototype.enforceFocus = function (){};
+	})
+
+</script>
 
 </body>
 </html>
