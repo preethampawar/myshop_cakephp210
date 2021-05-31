@@ -577,6 +577,36 @@ class AppController extends Controller
 	/**
 	 * Function to get shopping cart id for the current session
 	 */
+	function getOrderId()
+	{
+		$orderId = null;
+
+		if ($this->Session->check('Order.id')) {
+			$orderId = $this->Session->read('Order.id');
+		} else {
+			App::uses('Order', 'Model');
+			$orderModel = new Order;
+			$tmp['Order']['id'] = null;
+			$tmp['Order']['status'] = Order::ORDER_STATUS_DRAFT;
+			$tmp['Order']['site_id'] = $this->Session->read('Site.id');
+			$tmp['Order']['log'] = json_encode([[
+				'orderStatus' => Order::ORDER_STATUS_DRAFT,
+				'date' => date('d/m/Y H:i:s')
+			]]);
+
+			if ($orderModel->save($tmp)) {
+				$orderInfo = $orderModel->read();
+				$orderId = $orderInfo['Order']['id'];
+				$this->Session->write('Order', $orderInfo['Order']);
+			}
+		}
+
+		return $orderId;
+	}
+
+	/**
+	 * Function to get shopping cart id for the current session
+	 */
 	function getShoppingCartID()
 	{
 		$shoppingCartID = null;

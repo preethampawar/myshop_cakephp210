@@ -250,6 +250,34 @@ class ShoppingCartsController extends AppController
 		}
 		$this->redirect('/RequestPriceQuote');
 	}
+
+	public function loadOrderSummary()
+	{
+		$this->layout = 'ajax';
+		$shoppingCartProducts = $this->ShoppingCart->getShoppingCartProducts($this->Session->read('ShoppingCart.id'));
+
+		App::uses('Order', 'Model');
+		$orderModel = new Order();
+
+		$orderDetails = $orderModel->findById($this->getOrderId());
+
+		$this->set('shoppingCartProducts', $shoppingCartProducts);
+		$this->set('orderDetails', $orderDetails);
+	}
+
+	public function loadOrderDeliveryDetails()
+	{
+		$this->layout = 'ajax';
+		$shoppingCartProducts = $this->ShoppingCart->getShoppingCartProducts($this->Session->read('ShoppingCart.id'));
+
+		App::uses('Order', 'Model');
+		$orderModel = new Order();
+
+		$orderDetails = $orderModel->findById($this->getOrderId());
+
+		$this->set('shoppingCartProducts', $shoppingCartProducts);
+		$this->set('orderDetails', $orderDetails);
+	}
 }
 
 ?>

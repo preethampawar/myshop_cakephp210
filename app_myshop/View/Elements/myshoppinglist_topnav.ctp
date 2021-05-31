@@ -20,6 +20,10 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		<?php
 		$i = 0;
 		$cartValue = 0;
+		$cartMrpValue = 0;
+		$totalDiscount = 0;
+		$deliveryCharges = $this->Session->read('Site.shipping_charges');
+
 		foreach ($shoppingCart['ShoppingCartProduct'] as $row) {
 			$i++;
 			$shoppingCartProductID = $row['id'];
@@ -46,6 +50,10 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			$imageTagId = random_int(1, 10000);
 			$productCartValue = $qty * $salePrice;
 			$productCartMRPValue = $qty * $mrp;
+			$totalDiscount += $qty * $discount;
+			$cartMrpValue += $productCartMRPValue;
+			$payableAmount = $cartValue + $deliveryCharges;
+
 			if ($imageDetails) {
 				$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
 			}
@@ -146,18 +154,38 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		}
 		?>
 
-		<div class="mt-3 text-center">
-			<?php
-			echo $this->Form->create(null, ['url' => '/RequestPriceQuote', 'method' => 'get', 'encoding' => false]);
-			?>
-			<button class="btn btn-orange d-none">Book Order</button>
-			<?php
-			//echo $this->Form->submit('Book Order', ['escape' => false, 'div' => false]);
-			echo $this->Form->end();
-			?>
-			<br>
+		<div class="mt-3 p-3 shadow rounded">
 
-			<a href="#" type="button" class="small" data-bs-dismiss="offcanvas" aria-label="Close">Hide Cart</a>
+			<h5>PRICE DETAILS</h5>
+			<hr>
+
+			<div class="d-flex justify-content-between mt-3">
+				<span>Price (<?= $totalItems ?> items)</span>
+				<span><?= $this->App->price($cartMrpValue) ?></span>
+			</div>
+
+			<div class="d-flex justify-content-between mt-3">
+				<span>Discount</span>
+				<span class="text-success">- <?= $this->App->price($totalDiscount) ?></span>
+			</div>
+
+			<div class="d-flex justify-content-between mt-3">
+				<span>Delivery Charges</span>
+				<span><?= $deliveryCharges > 0 ? $this->App->price($deliveryCharges) : '<span class="text-success">FREE</span>' ?></span>
+			</div>
+
+			<hr class="my-2">
+			<div class="d-flex justify-content-between mt-2 fw-bold fs-5">
+				<span>Total Amount</span>
+				<span><?= $this->App->price($payableAmount) ?></span>
+			</div>
+
+		</div>
+
+		<div class="mt-5 text-center">
+			<button class="btn btn-orange" onclick="showOrderDeliveryDetails()">PLACE ORDER</button>
+
+			<a href="#" type="button" class="small mt-3 d-none" data-bs-dismiss="offcanvas" aria-label="Close">Hide Cart</a>
 		</div>
 	</div>
 
@@ -171,4 +199,5 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 	<?php
 }
 ?>
+<br><br><br><br>
 
