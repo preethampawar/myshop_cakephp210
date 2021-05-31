@@ -1,3 +1,6 @@
+<?php
+App::uses('Order', 'Model');
+?>
 <script>
 	var handleError = function (err) {
 		alert('Network error. Please check the internet connection and try again.')
@@ -422,6 +425,225 @@
 		loadShoppingCart();
 	}
 
+	// show Order Summary
+	let orderSummaryElement = document.getElementById('orderSummary')
+	var orderSummary = new bootstrap.Offcanvas(orderSummaryElement)
+
+	function showOrderSummary() {
+		loadOrderSummary()
+		orderPaymentDetails.hide()
+		orderSummary.show()
+	}
+
+	// show Order Delivery Details
+	let orderDeliveryDetailsElement = document.getElementById('orderDeliveryDetails')
+	var orderDeliveryDetails = new bootstrap.Offcanvas(orderDeliveryDetailsElement)
+
+	function showOrderDeliveryDetails() {
+		loadOrderDeliveryDetails()
+		myShoppingCart.hide()
+		orderDeliveryDetails.show()
+	}
+
+	// show Order Payment Details
+	let orderPaymentDetailsElement = document.getElementById('orderPaymentDetails')
+	var orderPaymentDetails = new bootstrap.Offcanvas(orderPaymentDetailsElement)
+
+	function showOrderPaymentDetails() {
+		loadOrderPaymentDetails()
+		orderDeliveryDetails.hide()
+		orderPaymentDetails.show()
+	}
+
+	// load order Summary
+	function loadOrderSummary() {
+		let orderSummaryUrl = '/shopping_carts/loadOrderSummary';
+		const data = getPage(orderSummaryUrl);
+		$("#orderSummaryBody").html(spinner);
+		data.then(function (response) {
+			$("#orderSummaryBody").html(response);
+		})
+
+		return data;
+	}
+
+	// load Order Delivery Details
+	function loadOrderDeliveryDetails() {
+		let loadDeliveryDetailsUrl = '/shopping_carts/loadOrderDeliveryDetails';
+		const data = getPage(loadDeliveryDetailsUrl);
+		$("#orderDeliveryDetailsBody").html(spinner);
+		data.then(function (response) {
+			$("#orderDeliveryDetailsBody").html(response);
+		})
+
+		return data;
+	}
+
+	// load Order Payment Details
+	function loadOrderPaymentDetails() {
+		let loadPaymentDetailsUrl = '/orders/loadOrderPaymentDetails';
+		const data = getPage(loadPaymentDetailsUrl);
+		$("#orderPaymentDetailsBody").html(spinner);
+		data.then(function (response) {
+			$("#orderPaymentDetailsBody").html(response);
+		})
+
+		return data;
+	}
+
+	// check payment method
+	function checkPaymentMethod(element) {
+		let paymentMethod = element.value
+
+		if (paymentMethod == '<?= Order::PAYMENT_METHOD_COD ?>') {
+			$('#paymentReferenceNoDiv').addClass('disabledElement')
+			$('#paymentReferenceNo').removeAttr('required')
+			$('#paymentReferenceNo').val('')
+		} else {
+			$('#paymentReferenceNoDiv').removeClass('disabledElement')
+			$('#paymentReferenceNo').attr('required', true)
+		}
+	}
+
+	function saveOrderDeliveryDetails() {
+		const saveOrderDeliveryDetails = '/orders/saveOrderDeliveryDetails'
+		let form = document.getElementById('ShoppingCartLoadOrderDeliveryDetailsForm')
+		const formValid = form.checkValidity()
+		form.classList.add('was-validated')
+
+		$('#deliveryErrorAlert').addClass('d-none')
+
+		if(formValid) {
+			let formData = new FormData(document.getElementById('ShoppingCartLoadOrderDeliveryDetailsForm'));
+			let customerName = formData.get('data[customer_name]')
+			let customerPhone = formData.get('data[customer_phone]')
+			let customerAddress = formData.get('data[customer_address]')
+			let customerMessage = formData.get('data[customer_message]')
+			let data = {
+				'customerName': customerName,
+				'customerPhone': customerPhone,
+				'customerAddress': customerAddress,
+				'customerMessage': customerMessage,
+			}
+
+			const response = postData(saveOrderDeliveryDetails, data)
+
+			let loader = spinner+'<div class="text-center small">Please wait.</div>'
+
+			$('#orderDeliveryDetailsSpinner').html(loader);
+			$('#saveOrderDeliveryDetailsButton').addClass('disabled');
+
+			response.then(function (data) {
+				if (data.error != 1) {
+					showOrderPaymentDetails();
+				} else {
+					$('#deliveryErrorAlert').removeClass('d-none')
+					$('#deliveryErrorAlert .content').html(data.errorMsg)
+					$('#deliveryErrorAlert .btn-close').focus()
+				}
+			}).finally(function() {
+				$('#orderDeliveryDetailsSpinner').html('');
+				$('#saveOrderDeliveryDetailsButton').removeClass('disabled');
+			})
+
+		} else {
+			$('#deliveryErrorAlert .content').html('There are some missing/invalid values in the form. Please fix those and try again.')
+			$('#deliveryErrorAlert').removeClass('d-none')
+			$('#deliveryErrorAlert .btn-close').focus()
+		}
+	}
+
+
+	function saveOrderPaymentDetails() {
+		const saveOrderPaymentUrl = '/orders/saveOrderPaymentDetails'
+		let form = document.getElementById('ShoppingCartLoadOrderPaymentDetailsForm')
+		const formValid = form.checkValidity()
+		form.classList.add('was-validated')
+
+		$('#paymentErrorAlert').addClass('d-none')
+
+		if(formValid) {
+			let formData = new FormData(document.getElementById('ShoppingCartLoadOrderPaymentDetailsForm'));
+			let paymentMethod = formData.get('data[payment_method]')
+			let paymentReferenceNo = formData.get('data[payment_reference_no]')
+			let data = {
+				'paymentMethod': paymentMethod,
+				'paymentReferenceNo': paymentReferenceNo,
+			}
+
+			const response = postData(saveOrderPaymentUrl, data)
+
+			let loader = spinner+'<div class="text-center small">Please wait.'
+
+			$('#orderPaymentDetailsSpinner').html(loader);
+			$('#placeOrderButton').addClass('disabled');
+
+			response.then(function (data) {
+				if (data.error != 1) {
+					showOrderSummary()
+				} else {
+					$('#paymentErrorAlert').removeClass('d-none')
+					$('#paymentErrorAlert .content').html(data.errorMsg)
+					$('#paymentErrorAlert .btn-close').focus()
+				}
+			}).finally(function() {
+				$('#orderPaymentDetailsSpinner').html('');
+				$('#placeOrderButton').removeClass('disabled');
+			})
+
+		} else {
+			$('#paymentErrorAlert .content').html('There are some missing/invalid values in the form. Please fix those and try again.')
+			$('#paymentErrorAlert').removeClass('d-none')
+			$('#paymentErrorAlert .btn-close').focus()
+		}
+	}
+
+
+	function placeOrder() {
+		const placeOrderUrl = '/orders/create'
+
+		let data = {
+			'confirmed': 1,
+		}
+
+		const response = postData(placeOrderUrl, data)
+
+		let loader = spinner+'<div class="text-center small">Please wait.<br>Your order is in process. Do not press back button.</div>'
+
+		$('#confirmOrderSpinner').html(loader);
+		$('#placeOrderButton').addClass('disabled');
+
+		response.then(function (data) {
+			if (data.error != 1) {
+				loadShoppingCart();
+				loadShoppingCartHeader();
+				orderSummary.hide()
+				showAlert(data.successMsg, 'Success!')
+			} else {
+				alert(data.errorMsg)
+			}
+		}).finally(function() {
+			$('#confirmOrderSpinner').html('');
+			$('#placeOrderButton').removeClass('disabled');
+		})
+	}
+
+	var alertModal = new bootstrap.Modal(document.getElementById('alertModal'), {
+		keyboard: false
+	})
+
+	function showAlert(msg, title) {
+		title = title ? title : 'Alert!'
+
+		$('#alertModalLabel').html(title)
+		$('#alertModalContent').html(msg)
+		alertModal.show()
+	}
+
+	function hideAlert() {
+		alertModal.hide()
+	}
+
 	// add product to cart
 	function addToCart(categoryId, productId, quantity, shoppingCartId) {
 		const addToCartUrl = '/shopping_carts/addToCart';
@@ -430,7 +652,7 @@
 		if (isNaN(qty)) {
 			qty = 1
 		}
-		
+
 		qty = qty < 1 ? 1 : qty
 
 		if (!shoppingCartId) {

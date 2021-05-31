@@ -230,6 +230,35 @@
 		<div class="offcanvas-body" id="myShoppingCartBody"></div>
 	</div>
 
+
+	<!-- Order Summary -->
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="orderSummary" aria-labelledby="offcanvasTopLabel">
+		<div class="offcanvas-header border-bottom border-4 border-warning">
+			<h5 id="offcanvasTopLabel">Order Summary</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body" id="orderSummaryBody"></div>
+	</div>
+
+	<!-- Order delivery details -->
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="orderDeliveryDetails" aria-labelledby="offcanvasTopLabel">
+		<div class="offcanvas-header border-bottom border-4 border-warning">
+			<h5 id="offcanvasTopLabel">Order Delivery Details</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body" id="orderDeliveryDetailsBody"></div>
+	</div>
+
+	<!-- Order payment details -->
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="orderPaymentDetails" aria-labelledby="offcanvasTopLabel">
+		<div class="offcanvas-header border-bottom border-4 border-warning">
+			<h5 id="offcanvasTopLabel">Order Payment Details</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body" id="orderPaymentDetailsBody"></div>
+	</div>
+
+
 	<!-- Product Details -->
 	<div class="modal fade" id="productDetails" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
@@ -294,6 +323,23 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Alert -->
+	<div class="modal" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body" id="alertModalBody">
+					<div class="d-flex justify-content-between">
+						<h5 class="modal-title" id="alertModalLabel">Alert!</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<hr>
+					<div class="mt-3 mb-3" id="alertModalContent"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- Ajax loader -->
 	<div id="fullLoader">

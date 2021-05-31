@@ -150,6 +150,12 @@ class AppHelper extends Helper
 
 	public function price($value)
 	{
+		$tmp = explode('.', $value);
+
+		if (isset($tmp[1]) && $tmp[1] == 0) {
+			$value = $tmp[0];
+		}
+
 		return '&#8377;'. $value;
 	}
 
