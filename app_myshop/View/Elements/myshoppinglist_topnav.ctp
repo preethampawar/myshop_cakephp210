@@ -154,9 +154,9 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		}
 		?>
 
-		<div class="mt-3 p-3 shadow rounded">
+		<div class="mt-3 p-3 shadow rounded small">
 
-			<h5>PRICE DETAILS</h5>
+			<h5>Price Details</h5>
 			<hr>
 
 			<div class="d-flex justify-content-between mt-3">
@@ -175,7 +175,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			</div>
 
 			<hr class="my-2">
-			<div class="d-flex justify-content-between mt-2 fw-bold fs-5">
+			<div class="d-flex justify-content-between mt-2 fw-bold fs-6">
 				<span>Total Amount</span>
 				<span><?= $this->App->price($payableAmount) ?></span>
 			</div>

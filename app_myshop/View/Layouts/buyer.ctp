@@ -23,7 +23,7 @@
 	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css">
+	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -76,7 +76,7 @@
 		<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-bs-toggle="collapse"
 			 data-bs-target="#navbarNav"
 			 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<i class="fa fa-ellipsis-v"></i> Menu
+			<span  class="small"><i class="fa fa-chevron-circle-down"></i></span> Menu
 		</div>
 		<a class="navbar-brand" href="/">
 			<i class="fa fa-home"></i>
@@ -132,8 +132,8 @@
 	</div>
 </nav>
 
-<div class="shadow-sm border-bottom bg-white">
-	<ul class="nav container justify-content-between py-2">
+<div class="shadow-sm border-bottom bg-white sticky-top">
+	<ul class="nav container justify-content-between py-2 small">
 		<li class="nav-item">
 			<div id="topCategoriesMenu">
 				<a href="#" class="nav-link  fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
@@ -224,7 +224,7 @@
 	<!-- Shopping Cart -->
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
 		<div class="offcanvas-header border-bottom border-4 border-warning">
-			<h5 id="offcanvasTopLabel">My Shopping Cart</h5>
+			<h5 id="offcanvasTopLabel"><i class="fa fa-shopping-cart"></i> My Cart</h5>
 			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
 		<div class="offcanvas-body" id="myShoppingCartBody"></div>

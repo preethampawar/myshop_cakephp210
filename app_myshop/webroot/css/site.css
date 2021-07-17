@@ -16,6 +16,7 @@
     --cus-primary-light: #0d6efdc2;
     --cus-success-light: #198754E2;
     --cus-danger-light: #DC3545D8;
+	--cus-pink-light: #fcf5ef;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -257,4 +258,7 @@ h3,h4 {
 }
 .hoverHighlight:hover {
     background-color: var(--cus-ivory);
+}
+.hoverHighlightPink:hover {
+	background-color: var(--cus-pink-light);
 }

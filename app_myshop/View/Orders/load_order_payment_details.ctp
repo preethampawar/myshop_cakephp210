@@ -25,7 +25,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 	$payableAmount = $cartValue + $deliveryCharges;
 	?>
 
-	<div class="p-3 shadow rounded">
+	<div class="p-3 shadow rounded d-none">
 
 		<h5>PRICE DETAILS</h5>
 		<hr>
@@ -61,7 +61,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 	</div>
 
 
-	<div class="p-3 shadow rounded mt-5">
+	<div class="p-3 shadow rounded">
 
 		<div class="fw-bold">
 			<h5>PAYMENT METHOD</h5>
@@ -75,6 +75,9 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 			</label>
 		</div>
 
+		<?php
+		/*
+		?>
 		<div class="form-check mt-2 small">
 			<input class="form-check-input" type="radio" name="data[payment_method]" id="paymentOption2" value="<?= Order::PAYMENT_METHOD_GPAY ?>" onclick="checkPaymentMethod(this)">
 			<label class="form-check-label" for="paymentOption2">
@@ -100,12 +103,16 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 			<label for="paymentReferenceNo">Payment Reference No. <span class="text-danger small">(required)</span></label>
 			<input class="form-control form-control-sm" type="text" name="data[payment_reference_no]" id="paymentReferenceNo">
 		</div>
+		<?php
+		*/
+		?>
+		<input class="form-control form-control-sm" type="hidden" name="data[payment_reference_no]" id="paymentReferenceNo">
 	</div>
 
 
 	<div class="mt-5 text-center">
 		<div class="d-flex justify-content-center">
-			<button type="button" class="btn btn-secondary me-4" onclick="orderPaymentDetails.hide(); orderDeliveryDetails.show()">&laquo; Back</button>
+			<button type="button" class="btn btn-secondary me-4" onclick="orderPaymentDetails.hide(); orderDeliveryDetails.show()">Back</button>
 			<button type="button" id="saveOrderDeliveryDetailsButton" class="btn btn-orange" onclick="saveOrderPaymentDetails()">Next &raquo;</button>
 		</div>
 	</div>

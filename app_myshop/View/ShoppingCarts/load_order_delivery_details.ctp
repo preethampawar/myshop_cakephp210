@@ -70,10 +70,9 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				class="form-control form-control-sm"><?= $orderDetails['Order']['customer_message'] ?></textarea>
 		</div>
 	</div>
-	<div class="mt-4 text-center">
-		<div class="d-flex justify-content-between">
-			<button type="button" class="btn btn-secondary" onclick="orderDeliveryDetails.hide(); myShoppingCart.show()">&laquo; Back</button>
-			<button type="button" id="placeOrderButton" class="btn btn-orange d-none" onclick="placeOrder()">Confirm & Place Order &raquo;</button>
+	<div class="mt-5 text-center">
+		<div class="d-flex justify-content-center">
+			<button type="button" class="btn btn-secondary me-4" onclick="orderDeliveryDetails.hide(); myShoppingCart.show()">Back</button>
 			<button type="button" id="saveOrderDeliveryDetailsButton" class="btn btn-orange" onclick="saveOrderDeliveryDetails()">Next &raquo;</button>
 		</div>
 	</div>
