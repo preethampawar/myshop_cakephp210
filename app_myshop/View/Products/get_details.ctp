@@ -102,7 +102,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 							</div>
 						<?php endif; ?>
 
-						<?php if ($cartEnabled && !$noStock): ?>
+						<?php if ($cartEnabled && !$noStock && false): ?>
 							<form id="AddToCart<?php echo $productID; ?>"
 								  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
 								  method="post" class="flex">

@@ -11,8 +11,8 @@ $loadingImageUrl = '/loading2.gif';
 // http://www.apnastores.com/assets/images/loading/loading.gif
 ?>
 
-<div class="col mb-3" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
-	<div class=" card h-100 shadow p-0 mb-1 bg-white text-dark border-0" id="productCard<?php echo $productID; ?>">
+<div class="col mb-3 bg-white hoverHighlightPink" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
+	<div class="card h-100 shadow p-0 mb-1 text-dark border-0 hoverHighlightPink" id="productCard<?php echo $productID; ?>">
 
 		<img
 			src="<?php echo $loadingImageUrl; ?>"
@@ -59,7 +59,7 @@ $loadingImageUrl = '/loading2.gif';
 
 
 		<?php if (!$hideProductPrice && $cartEnabled): ?>
-			<div class="card-footer text-center bg-white border-top-0 pt-0 pb-3">
+			<div class="card-footer text-center border-top-0 pt-3 pb-3">
 				<div class="card-text">
 					<?php if (!$noStock): ?>
 						<div class="text-center p-0">
