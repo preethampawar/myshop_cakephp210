@@ -109,7 +109,7 @@
 
 					<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item px-1">
-						<a class="nav-link fw-normal px-1" href="#">Orders</a>
+						<a class="nav-link fw-normal px-1" href="/orders/">My Orders</a>
 					</li>
 					<?php endif; ?>
 
@@ -126,13 +126,29 @@
 							<a class="nav-link px-1" href="/users/login">Login</a>
 						<?php endif; ?>
 					</li>
+					<?php if (!$this->Session->check('User.id')): ?>
+						<li class="nav-item px-1">
+							<a class="nav-link px-1" href="/users/customerRegistration">Register</a>
+						</li>
+					<?php endif; ?>
+					<?php if ($this->Session->check('User.id')): ?>
+						<li class="nav-item px-1">
+							<?php
+							//debug($this->Session->read('User'));
+							?>
+							<a class="nav-link px-1 disabled" href="#">
+								<i class="fa fa-user-circle text-warning"></i>
+								<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
+							</a>
+						</li>
+					<?php endif; ?>
 				<?php } ?>
 			</ul>
 		</div>
 	</div>
 </nav>
 
-<div class="shadow-sm border-bottom bg-white sticky-top">
+<div class="shadow border-bottom bg-white sticky-top border-warning bg-light border-4">
 	<ul class="nav container justify-content-between py-2 small">
 		<li class="nav-item">
 			<div id="topCategoriesMenu">
@@ -157,11 +173,11 @@
 <?php
 //debug($this->Session->read());
 ?>
-<div class="container">
+<div class="container mt-4">
 	<?php echo $this->Session->flash(); ?>
 </div>
 
-<div class="container mt-3">
+<div class="container mt-4">
 	<?php if ($this->Session->read('Site.shopping_cart')): ?>
 <!--		<div id="topNavShoppingCart"></div>-->
 	<?php endif; ?>
@@ -172,14 +188,15 @@
 	$showPaymentContactInfo = false;
 
 	if ($this->request->params['controller'] != 'users'
-		&& $this->request->params['controller'] != 'sites') {
+		&& $this->request->params['controller'] != 'sites'
+		&& $this->request->params['controller'] != 'orders') {
 		$showPaymentContactInfo = true;
 	}
 
 	if ($showPaymentContactInfo && !empty($this->Session->read('Site.contact_info'))):
 		?>
-		<div class="text-center small alert alert-info">
-			<h4 class="mb-3 text-decoration-underline">Contact</h4>
+		<div class="text-center small alert alert-info mt-4">
+			<h4 class="m-3 text-decoration-underline">Contact</h4>
 			<?= $this->Session->read('Site.contact_info') ?>
 		</div>
 	<?php
@@ -190,7 +207,7 @@
 	if ($showPaymentContactInfo && !empty($this->Session->read('Site.payment_info'))):
 		?>
 
-		<div class="text-center small alert alert-info">
+		<div class="text-center small alert alert-info mt-4">
 			<h4 class="mb-3 text-decoration-underline">Payment Details</h4>
 			<?= $this->Session->read('Site.payment_info') ?>
 		</div>
@@ -296,7 +313,7 @@
 						<div class="d-flex justify-content-between">
 							<select id="addProductQtyModal-quantity"
 									name="addProductQtyModal-quantity"
-									class="form-control form-control-sm"
+									class="form-select form-select-sm"
 							>
 								<?php foreach(range(1,100) as $qty): ?>
 									<option value="<?= $qty ?>"><?= $qty ?></option>

@@ -102,7 +102,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 							</div>
 						<?php endif; ?>
 
-						<?php if ($cartEnabled && !$noStock && false): ?>
+						<?php if ($cartEnabled && !$noStock): ?>
 							<form id="AddToCart<?php echo $productID; ?>"
 								  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
 								  method="post" class="flex">
@@ -113,15 +113,26 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 										<select
 											name="data[ShoppingCartProduct][quantity]"
 											id="ShoppingCartProductQuantity<?php echo $productID; ?>"
-											class="form-control form-control-sm"
+											class="form-select form-select-sm"
 											style="margin-top: 1px;"
 										>
 											<?php echo $selectBoxQuantityOptions; ?>
 										</select>
 									</div>
 									<div class="col">
-										<button type="submit" class="btn btn-sm btn-primary active mt-4">Add To Cart
+										<button
+												onclick="addToCartFromProductDetailsPage('<?= $categoryID ?>', '<?= $productID ?>', $('#ShoppingCartProductQuantity<?php echo $productID; ?>').val())"
+												type="button"
+												class="btn btn-sm btn-primary active mt-4">
+											Add To Cart
 										</button>
+									</div>
+								</div>
+								<div class="ms-2" style="width:45px">
+									<div id="addQtyProductDetails-spinner" class="d-none">
+										<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">
+											<span class="visually-hidden">Loading...</span>
+										</div>
 									</div>
 								</div>
 							</form>

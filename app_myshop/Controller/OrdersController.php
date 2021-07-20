@@ -10,12 +10,74 @@ class OrdersController extends AppController
 		parent::beforeFilter();
 	}
 
+	public function index()
+	{
+		$conditions = [
+			'Order.site_id' => $this->Session->read('Site.id'),
+			'Order.user_id' => $this->Session->read('User.id'),
+			'Order.status !=' => Order::ORDER_STATUS_DRAFT,
+		];
+
+		$this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
+
+		$this->paginate = [
+			'limit' => 10,
+			'order' => ['Order.created' => 'DESC'],
+			'conditions' => $conditions,
+		];
+		$orders = $this->paginate();
+
+		$this->set('orders', $orders);
+	}
+
+	public function admin_index()
+	{
+		$conditions = [
+			'Order.site_id' => $this->Session->read('Site.id'),
+		];
+
+		$this->Order->bindModel(['belongsTo' => ['User']]);
+		$this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
+
+		$this->paginate = [
+			'limit' => 100,
+			'order' => ['Order.created' => 'DESC'],
+			'conditions' => $conditions,
+		];
+		$orders = $this->paginate();
+
+		$this->set('orders', $orders);
+	}
+
+	public function details($encodedOrderId)
+	{
+		$orderId = base64_decode($encodedOrderId);
+		$order = $this->Order->findById($orderId);
+
+		$this->set('order', $order);
+	}
+
+	public function admin_details($encodedOrderId)
+	{
+		$orderId = base64_decode($encodedOrderId);
+		$order = $this->Order->findById($orderId);
+
+		$this->set('order', $order);
+	}
+
 	public function create()
 	{
 		App::uses('ShoppingCart', 'Model');
 		$shoppingCartModel = new ShoppingCart;
 		App::uses('ShoppingCartProduct', 'Model');
 		$shoppingCartProductModel = new ShoppingCartProduct;
+		$error = null;
+
+		if (!$this->Session->check('User.id')) {
+			$error = 'Please login to place an Order';
+		}
+
+
 
 
 		$this->layout = false;
@@ -39,11 +101,15 @@ class OrdersController extends AppController
 		$orderStatus = Order::ORDER_STATUS_NEW;
 		$newLog = [
 			'orderStatus' => $orderStatus,
-			'date' => date('d/m/Y H:i:s')
+			'date' => time()
 		];
 		$log[] = $newLog;
 		$log = json_encode($log);
-		$error = isset($data['confirmed']) && $data['confirmed'] == 1 ? null : 'Invalid request (OR) Your session has timed out.';
+		$userId = $this->Session->read('User.id');
+
+		if (!$error) {
+			$error = isset($data['confirmed']) && $data['confirmed'] == 1 ? null : 'Invalid request (OR) Your session has timed out.';
+		}
 
 		if (!$error) {
 			$shoppingCartProducts = $shoppingCartModel->getShoppingCartProducts($shoppingCartId);
@@ -79,6 +145,7 @@ class OrdersController extends AppController
 					'status' => $orderStatus,
 					'log' => $log,
 					'notes' => null,
+					'user_id' => $userId,
 				]
 			];
 

@@ -14,6 +14,7 @@ $enableTextEditor = $enableTextEditor ?? false;
 	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
+	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -97,7 +98,7 @@ $enableTextEditor = $enableTextEditor ?? false;
 			<a class="nav-link font-weight-bold" href="/admin/categories/">Manage Products</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link font-weight-bold" href="#">Manage Orders</a>
+			<a class="nav-link font-weight-bold" href="/admin/orders/">Manage Orders</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link font-weight-bold" href="/admin/sites/settings">Store Settings</a>

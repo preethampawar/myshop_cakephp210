@@ -344,6 +344,8 @@ App::uses('Order', 'Model');
 		}
 
 		addProductQtyModal.show();
+
+		$('#addProductQtyModal-quantity').val(1);
 		$('#addProductQtyModal-quantity').data('category-id', categoryId);
 		$('#addProductQtyModal-quantity').data('product-id', productId);
 
@@ -359,6 +361,45 @@ App::uses('Order', 'Model');
 		// data.then(function (response) {
 		// 	$("#productDetailsBody").html(response);
 		// });
+	}
+
+	function addToCartFromProductDetailsPage(categoryId, productId, qty) {
+		qty = !qty ? 1 : qty;
+
+		$('#addQtyProductDetails-spinner').removeClass('d-none');
+
+		const response = addToCart(categoryId, productId, qty, null);
+
+		response.then(function (data) {
+			$('#ToastMessage').removeClass('d-none');
+			$('#toastDiv').removeClass('bg-primary');
+			$('#toastDiv').removeClass('bg-danger');
+			$('#toastDiv').removeClass('bg-notice');
+
+			if (data.success == 1) {
+				let cartData = loadShoppingCart();
+				cartData.finally(function () {
+					$('#addQtyProductDetails-spinner').addClass('d-none');
+				})
+
+				loadShoppingCartHeader();
+
+				$('#toastDiv').addClass('bg-primary');
+				$("#toastDiv .toast-body").html("<i class='fa fa-check-circle'></i> Product successfully added to cart.");
+			} else {
+				$('#toastDiv').addClass('bg-danger');
+				$("#toastDiv .toast-body").html("<i class='fa fa-exclamation-circle'></i> " + data.errorMessage);
+			}
+
+			showToastMessages();
+		})
+		response.finally(function() {
+			$('#addQtyProductDetails-spinner').addClass('d-none');
+			productDetailsModal.hide()
+		})
+
+		return response;
+
 	}
 
 	function saveProductQtyToCart() {

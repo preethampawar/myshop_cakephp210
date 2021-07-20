@@ -591,7 +591,7 @@ class AppController extends Controller
 			$tmp['Order']['site_id'] = $this->Session->read('Site.id');
 			$tmp['Order']['log'] = json_encode([[
 				'orderStatus' => Order::ORDER_STATUS_DRAFT,
-				'date' => date('d/m/Y H:i:s')
+				'date' => time()
 			]]);
 
 			if ($orderModel->save($tmp)) {
