@@ -91,7 +91,17 @@ App::uses('Order', 'Model');
 
 	// show toast messages
 	function showToastMessages() {
-		var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+		var toastElList = [].slice.call(document.querySelectorAll('.toast-js'))
+		var toastList = toastElList.map(function (toastEl) {
+			return new bootstrap.Toast(toastEl)
+		});
+
+		toastList.forEach(toast => toast.show());
+	}
+
+	// show server toast messages
+	function showServerToastMessages() {
+		var toastElList = [].slice.call(document.querySelectorAll('.toast-php'))
 		var toastList = toastElList.map(function (toastEl) {
 			return new bootstrap.Toast(toastEl)
 		});
@@ -811,7 +821,7 @@ App::uses('Order', 'Model');
 		}
 
 		try {
-			showToastMessages();
+			showServerToastMessages();
 		} catch (err) {
 			console.log('Error - Toast messages: ', err.message);
 		}
