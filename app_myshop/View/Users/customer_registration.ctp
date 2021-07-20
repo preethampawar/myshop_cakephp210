@@ -1,13 +1,8 @@
-<style type="text/css">
-	.mb-3 {
-		margin-bottom: 1.2rem;
-	}
-</style>
 <div>
 	<?php echo $this->Form->create(); ?>
-	<h1 class="mb-3">Login</h1>
+	<h1 class="">Customer Registration</h1>
 
-	<div class="mb-3 d-none">
+	<div class="mt-3">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
 			Email Address
 			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
@@ -20,35 +15,31 @@
 			id="UserEmail"
 			placeholder="Enter your email address"
 			maxlength="55"
-
+			value="<?= $email ?>"
+			required
 			autofocus>
 	</div>
 
-	<div class="mb-3">
+	<div class="mt-3">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">Mobile Number
 			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
 				  title="Enter your 10 digit mobile number without country code">?</span>
 		</label>
 		<input
-			type="tel"
+			type="number"
 			name="data[User][mobile]"
 			class="form-control"
 			id="UserMobile"
 			placeholder="Enter your 10 digit mobile number"
 			minlength="10"
 			maxlength="10"
+			value="<?= $mobile ?>"
 			required
 			autofocus>
 	</div>
-	<div class="mb-3">
+	<div class="mt-4">
 		<button type="submit" class="btn btn-md btn-primary">Next - Generate OTP</button>
+		<a href="/" class="btn btn-md btn-secondary ms-3">Cancel</a>
 	</div>
-
 	<?php echo $this->Form->end(); ?>
-</div>
-
-<div class="mt-5">
-	<h5>New Customer?</h5>
-	<a href="/users/customerRegistration" class="link-danger">Click here to Register</a>.
-
 </div>

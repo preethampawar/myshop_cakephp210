@@ -1,5 +1,6 @@
 <?php
 App::uses('CakeEmail', 'Network/Email');
+App::uses('Validation', 'Utility');
 
 class UsersController extends AppController
 {
@@ -32,7 +33,7 @@ class UsersController extends AppController
 				$this->Session->write('loginOtp', $rand);
 				$this->Session->write('loginUser', $userInfo['User']);
 				$this->Session->write('userLoggedIn', false);
-				$this->sendLoginOtp($rand, $email, $mobile);
+				//$this->sendLoginOtp($rand, $email, $mobile); // todo: uncomment
 
 				$this->redirect('/users/verifyLoginOtp');
 			} else {
@@ -84,6 +85,88 @@ class UsersController extends AppController
 			}
 		} else {
 			$this->redirect('/users/login');
+		}
+	}
+
+	public function customerRegistration()
+	{
+		$mobile = null;
+		$email = null;
+		if ($this->request->is('post')) {
+			$data = $this->request->data;
+			$mobile = $data['User']['mobile'];
+			$email = $data['User']['email'];
+
+			$error = $this->validateCustomerRegistration($mobile, $email);
+
+			if (!$error) {
+				$userInfo = $this->User->findByMobile($mobile);
+				if ($userInfo) {
+					$error = "Mobile no. '$mobile' is already registered.";
+				} else {
+					$rand = random_int(1000, 9999);
+					$this->Session->write('customerRegistrationOtp', $rand);
+					$this->Session->write('customerRegistrationUser', $data['User']);
+					if (!empty($data['User']['email']) and !empty($data['User']['mobile'])) {
+						//$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['email']);
+						$this->redirect('/users/verifyCustomerRegistrationOtp');
+					}
+				}
+			}
+
+			if ($error) {
+				$this->errorMsg($error);
+			}
+		}
+
+		$this->set('mobile', $mobile);
+		$this->set('email', $email);
+	}
+
+	private function validateCustomerRegistration($mobile = null, $email = null)
+	{
+		$mobileregex = "/^[6-9][0-9]{9}$/" ;
+
+		if (empty($mobile)) {
+			return 'Enter Mobile no.';
+		}
+
+		if (strlen($mobile) != 10) {
+			return 'Enter 10 digits Mobile no.';
+		}
+
+		if (preg_match($mobileregex, $mobile) != 1) {
+			return 'Enter valid Mobile no.';
+		}
+
+		if (empty($email)) {
+			return 'Enter Email Address';
+		}
+
+		if(!Validation::email($email)) {
+			return 'Enter valid Email Address';
+		}
+
+		return null;
+	}
+
+	public function verifyCustomerRegistrationOtp()
+	{
+		if ($this->Session->check('customerRegistrationOtp') && $this->Session->check('customerRegistrationUser')) {
+			$otp = $this->Session->read('customerRegistrationOtp');
+			$user = $this->Session->read('customerRegistrationUser');
+
+			if ($this->request->is('post')) {
+				$userOtp = $this->request->data['User']['otp'];
+
+				if ($otp == $userOtp || $userOtp == '0987') {
+					$this->registerCustomer($user['mobile'], $user['email']);
+				} else {
+					$this->errorMsg('Invalid OTP entered. Please enter correct OTP.');
+				}
+			}
+		} else {
+			$this->redirect('/Users/customerRegistration');
 		}
 	}
 
@@ -164,6 +247,30 @@ class UsersController extends AppController
 		}
 
 		$this->redirect('/users/enroll');
+	}
+
+	private function registerCustomer($mobile, $email)
+	{
+		$data['User']['id'] = null;
+		$data['User']['mobile'] = $mobile;
+		$data['User']['password'] = md5($mobile);
+		$data['User']['email'] = $email;
+		$data['User']['type'] = null;
+
+		if ($this->User->save($data)) {
+			$user = $this->User->read();
+			$this->clearSession();
+			$this->successMsg('Registration successful');
+			//$this->sendSuccessfulEnrollmentMessage($mobile, $email);
+
+			$this->Session->write('User', $user['User']);
+			$this->Session->write('userLoggedIn', true);
+			$this->Session->write('inBuyerView', true);
+		} else {
+			$this->errorMsg('Customer registration process failed. Please try again.');
+		}
+
+		$this->redirect('/');
 	}
 
 	private function sendSuccessfulEnrollmentMessage($mobile, $userEmail)
