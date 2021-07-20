@@ -39,7 +39,7 @@
 					<tr>
 						<td><a href="/orders/details/<?= base64_encode($orderId)?>"><?= $orderId ?></a></td>
 						<td><?= $status ?></td>
-						<td><?= $this->App->price($totalAmount) ?></td>
+						<td><?= $totalAmount ? $this->App->price($totalAmount) : '-' ?></td>
 						<td><?= $createdDate ?></td>
 					</tr>
 					<?php

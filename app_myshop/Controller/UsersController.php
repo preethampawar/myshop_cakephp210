@@ -33,7 +33,7 @@ class UsersController extends AppController
 				$this->Session->write('loginOtp', $rand);
 				$this->Session->write('loginUser', $userInfo['User']);
 				$this->Session->write('userLoggedIn', false);
-				$this->sendLoginOtp($rand, $email, $mobile);
+				//$this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
 
 				$this->redirect('/users/verifyLoginOtp');
 			} else {
@@ -108,7 +108,7 @@ class UsersController extends AppController
 					$this->Session->write('customerRegistrationOtp', $rand);
 					$this->Session->write('customerRegistrationUser', $data['User']);
 					if (!empty($data['User']['email']) and !empty($data['User']['mobile'])) {
-						$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['email']);
+						//$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['email']); //todo: uncomment
 						$this->redirect('/users/verifyCustomerRegistrationOtp');
 					}
 				}
@@ -261,7 +261,7 @@ class UsersController extends AppController
 			$user = $this->User->read();
 			$this->clearSession();
 			$this->successMsg('Registration successful');
-			$this->sendSuccessfulEnrollmentMessage($mobile, $email);
+			//$this->sendSuccessfulEnrollmentMessage($mobile, $email); todo: uncomment
 
 			$this->Session->write('User', $user['User']);
 			$this->Session->write('userLoggedIn', true);

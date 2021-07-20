@@ -443,7 +443,7 @@
 		<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
 		<div class="toast-container fixed-top end-0 p-3" style="left: auto">
 			<div id="ToastMessage" class="d-none">
-				<div id="toastDiv" class="toast text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
+				<div id="toastDiv" class="toast toast-js text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
 					<div class="d-flex align-items-center justify-content-between">
 						<div class="toast-body"></div>
 						<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"

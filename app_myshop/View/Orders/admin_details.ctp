@@ -182,8 +182,8 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 	<?php
 } else {
 	?>
-	<div class="bg-white">
-		No items in your order.
+	<div class="bg-white mt-3">
+		No items found.
 	</div>
 	<?php
 }
