@@ -180,22 +180,6 @@ $enableTextEditor = $enableTextEditor ?? false;
 	</div>
 </div>
 
-<!-- Ajax loader -->
-<div id="fullLoader">
-	<div class="modal" id="fullLoaderBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-sm">
-			<div class="modal-content">
-				<div class="modal-body text-center text-purple">
-					<div class="d-flex justify-content-center">
-						<div class="spinner-border text-purple" role="status" aria-hidden="true"></div>
-						<span class="ms-3 fs-5">Loading...</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 <!-- Optional JavaScript -->
 <!-- Popper.js first, then Bootstrap JS -->
 
@@ -242,7 +226,7 @@ if ($enableTextEditor) {
 	<?= $this->element('text_editor') ?>
 <?php endif; ?>
 
-<?= $this->element('customjs') ?>
+<?= $this->element('custom_seller_js') ?>
 
 <?php if ($enableImageCropper): ?>
 	<?= $this->element('imagecropper') ?>
