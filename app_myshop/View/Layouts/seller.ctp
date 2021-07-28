@@ -17,6 +17,7 @@ $enableTextEditor = $enableTextEditor ?? false;
 	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
 	<?= $this->element('customcss') ?>
 
+	<script src="https://polyfill.io/v3/polyfill.js?features=es5,es6,es7&flags=gated"></script>
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 
 	<!--
