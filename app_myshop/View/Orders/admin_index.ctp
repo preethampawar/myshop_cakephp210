@@ -23,7 +23,7 @@
 					$i++;
 					$orderId = $row['Order']['id'];
 					$status = $row['Order']['status'];
-					$mobile = $row['User']['mobile'] ?: null ;
+					$mobile = $row['Order']['customer_phone'] ?: null ;
 					$customerName = $row['Order']['customer_name'] ?: null ;
 					$totalAmount = $row['Order']['total_order_amount'];
 					$modifiedDate = date('d-m-Y', strtotime($row['Order']['modified']));
