@@ -80,6 +80,7 @@ class OrdersController extends AppController
 		$this->layout = false;
 		$orderId = $this->getOrderId();
 		$orderDetails = $this->Order->findById($orderId);
+		$orderEmailUrl = '/orders/sendOrderEmail/' . base64_encode($orderId) . '/NEW';
 
 		$log = json_decode($orderDetails['Order']['log'], true);
 
@@ -165,6 +166,7 @@ class OrdersController extends AppController
 
 		$this->set('error', $error);
 		$this->set('msg', $msg);
+		$this->set('orderEmailUrl', $orderEmailUrl);
 	}
 
 	private function saveOrderProducts($shoppingCartProducts, $orderId)
