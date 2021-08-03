@@ -672,6 +672,10 @@ App::uses('Order', 'Model');
 				loadShoppingCartHeader();
 				orderSummary.hide()
 				showAlert(data.successMsg, 'Success!')
+
+				getData(data.orderEmailUrl).then(function(resp) {
+					console.log(resp)
+				})
 			} else {
 				alert(data.errorMsg)
 			}
