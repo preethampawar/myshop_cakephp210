@@ -13,14 +13,14 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 
 	<div class="p-3 shadow small mt-4">
 		<h5>PRODUCTS</h5>
-		<hr>
-		<table class="table small" style="width:100%">
+
+		<table class="table small" style="width:100%" border="1">
 			<thead>
 			<tr>
-				<th>Product</th>
-				<th class="text-center">Price</th>
-				<th class="text-center">Qty</th>
-				<th class="text-center">Amount</th>
+				<th style="text-align: left;">Product</th>
+				<th style="text-align: left;" class="text-center">Price</th>
+				<th style="text-align: left;" class="text-center">Qty</th>
+				<th style="text-align: left;" class="text-center">Amount</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -54,8 +54,6 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 					<td><?= $productName ?></td>
 					<td class="text-center">
 						<?= $this->App->price($salePrice) ?>
-						<br>
-						<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
 					</td>
 					<td class="text-center">
 						<?=  $qty ?>
@@ -73,7 +71,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			<tfoot>
 			<tr class="text-muted">
 				<td>Total Cart Value</td>
-				<td class="text-decoration-line-through text-center">MRP <?= $this->App->price($cartMrpValue) ?></td>
+				<td class="text-decoration-line-through text-center"></td>
 				<td class="text-center"></td>
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
@@ -93,6 +91,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			</tfoot>
 
 		</table>
+		<br>
 		<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order</div>
 	</div>
 	<br><br>
@@ -137,6 +136,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 	</div>
 	<?php
 }
+exit;
 ?>
 <br>
 <p>This is an auto generated email. Please do not respond.</p>
