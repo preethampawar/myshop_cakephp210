@@ -52,6 +52,17 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 		</div>
 
 		<div class="mt-3">
+			<label for="orderCustomerEmail">Contact Email <span class="text-danger small">(required)</span></label>
+			<input
+				type="email"
+				name="data[customer_email]"
+				id="orderCustomerEmail"
+				class="form-control form-control-sm"
+				value="<?= $orderDetails['Order']['customer_email'] ?>"
+				required>
+		</div>
+
+		<div class="mt-3">
 			<label for="orderCustomerAddress">Delivery Address <span class="text-danger small">(required)</span></label>
 			<textarea
 				name="data[customer_address]"
@@ -70,7 +81,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				class="form-control form-control-sm"><?= $orderDetails['Order']['customer_message'] ?></textarea>
 		</div>
 	</div>
-	<div class="mt-5 text-center">
+	<div class="mt-4 text-center">
 		<div class="d-flex justify-content-center">
 			<button type="button" class="btn btn-secondary me-4" onclick="orderDeliveryDetails.hide(); myShoppingCart.show()">Back</button>
 			<button type="button" id="saveOrderDeliveryDetailsButton" class="btn btn-orange" onclick="saveOrderDeliveryDetails()">Next &raquo;</button>

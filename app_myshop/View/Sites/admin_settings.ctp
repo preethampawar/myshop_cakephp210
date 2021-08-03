@@ -119,6 +119,16 @@ $this->set('enableTextEditor', true);
 						placeholder="Enter Terms of Service"
 					><?php echo $this->data['Site']['tos']; ?></textarea>
 				</div>
+				<div class="mb-3">
+					<label for="SiteAnalyticsCode" class="form-label">Analytics Code</label>
+					<textarea
+							id="SiteAnalyticsCode"
+							name="data[Site][analytics_code]"
+							class="form-control form-control-sm"
+							placeholder="Enter Analytics Code"
+							rows="4"
+					><?php echo $this->data['Site']['analytics_code']; ?></textarea>
+				</div>
 			</div>
 			<br>
 			<div class="my-3 py-3 d-inline">

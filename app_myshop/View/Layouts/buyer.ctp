@@ -37,6 +37,12 @@
 	-->
 
 	<?php
+	if (!empty(trim($this->Session->read('Site.analytics_code')))) {
+		?>
+			<?= $this->Session->read('Site.analytics_code') ?>
+		<?php
+	}
+
 	if ((isset($loadVueJs) && $loadVueJs == true) || $this->Session->read('Site.shopping_cart') == true) {
 		?>
 		<script src="/vendor/vue/vue.min.js"></script>
