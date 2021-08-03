@@ -20,8 +20,8 @@
 <html>
 <head>
 	<title><?php echo $title_for_layout; ?></title>
-	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
+	<link rel="stylesheet" href="<?= $this->Html->url('/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css', true) ?>">
+	<link rel="stylesheet" href="<?= $this->Html->url('/css/site.css?v=1.0.0', true) ?>">
 </head>
 <body>
 
