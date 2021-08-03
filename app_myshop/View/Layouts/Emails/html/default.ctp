@@ -20,10 +20,12 @@
 <html>
 <head>
 	<title><?php echo $title_for_layout; ?></title>
+	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
 </head>
 <body>
+
 <?php echo $content_for_layout; ?>
 
-<p>This email was sent using the <a href="http://cakephp.org">CakePHP Framework</a></p>
 </body>
 </html>

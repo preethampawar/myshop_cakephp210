@@ -568,11 +568,13 @@ App::uses('Order', 'Model');
 			let formData = new FormData(document.getElementById('ShoppingCartLoadOrderDeliveryDetailsForm'));
 			let customerName = formData.get('data[customer_name]')
 			let customerPhone = formData.get('data[customer_phone]')
+			let customerEmail = formData.get('data[customer_email]')
 			let customerAddress = formData.get('data[customer_address]')
 			let customerMessage = formData.get('data[customer_message]')
 			let data = {
 				'customerName': customerName,
 				'customerPhone': customerPhone,
+				'customerEmail': customerEmail,
 				'customerAddress': customerAddress,
 				'customerMessage': customerMessage,
 			}

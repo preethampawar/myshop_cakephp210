@@ -77,16 +77,11 @@ class OrdersController extends AppController
 			$error = 'Please login to place an Order';
 		}
 
-
-
-
 		$this->layout = false;
 		$orderId = $this->getOrderId();
 		$orderDetails = $this->Order->findById($orderId);
 
 		$log = json_decode($orderDetails['Order']['log'], true);
-
-
 
 		$data = $this->request->input('json_decode', true);
 		$msg = '';
@@ -221,6 +216,43 @@ class OrdersController extends AppController
 		return true;
 	}
 
+	public function sendOrderEmail($encodedOrderId, $orderStatus)
+	{
+		$this->layout = false;
+		$emailTemplate = null;
+		$subject = null;
+		$error = null;
+		$orderId = base64_decode($encodedOrderId);
+		$order = $this->Order->findById($orderId);
+
+		switch($orderStatus) {
+			case Order::ORDER_STATUS_NEW:
+				$emailTemplate = 'order_new';
+				$subject = 'New Order #'.$orderId;
+				break;
+			default:
+				break;
+		}
+
+		if (!$emailTemplate) {
+			$error = 'No template found';
+		}
+
+		$toName = $order['Order']['customer_name'];
+		$toEmail = $order['Order']['customer_email'];
+
+		$Email = new CakeEmail('smtpNoReply');
+		$Email->viewVars(array('order' => $order));
+		$Email->template('order_new', 'default')
+			->emailFormat('html')
+			->to([$toEmail => $toName])
+			->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']])
+			->subject($subject)
+			->send();
+
+		$this->set('error', $error);
+	}
+
 	private function validatePaymentDetails($data)
 	{
 		$paymentMethods = [Order::PAYMENT_METHOD_COD, Order::PAYMENT_METHOD_GPAY, Order::PAYMENT_METHOD_PHONE_PE, Order::PAYMENT_METHOD_PAYTM];
@@ -271,6 +303,7 @@ class OrdersController extends AppController
 					'id' => $orderId,
 					'customer_name' => $data['customerName'],
 					'customer_phone' => $data['customerPhone'],
+					'customer_email' => $data['customerEmail'],
 					'customer_address' => $data['customerAddress'],
 					'customer_message' => $data['customerMessage'],
 				]
