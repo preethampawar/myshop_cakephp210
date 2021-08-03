@@ -240,6 +240,9 @@ class OrdersController extends AppController
 
 		$toName = $order['Order']['customer_name'];
 		$toEmail = $order['Order']['customer_email'];
+		$adminEmail = Configure::read('AdminEmail');
+		$storeAdminEmail = $this->Session->read('User.email');
+		$bccEmail = [$adminEmail, $storeAdminEmail];
 
 		$Email = new CakeEmail('smtpNoReply');
 		$Email->viewVars(array('order' => $order));
@@ -247,6 +250,7 @@ class OrdersController extends AppController
 			->emailFormat('html')
 			->to([$toEmail => $toName])
 			->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']])
+			->bcc($bccEmail)
 			->subject($subject)
 			->send();
 

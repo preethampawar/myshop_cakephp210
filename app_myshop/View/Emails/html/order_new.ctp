@@ -138,4 +138,8 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 	<?php
 }
 ?>
+<br>
 <p>This is an auto generated email. Please do not respond.</p>
+<p>-<br>
+<?= $this->Html->url('/', true) ?>
+</p>
