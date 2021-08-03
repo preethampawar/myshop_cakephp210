@@ -136,7 +136,6 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 	</div>
 	<?php
 }
-exit;
 ?>
 <br>
 <p>This is an auto generated email. Please do not respond.</p>
