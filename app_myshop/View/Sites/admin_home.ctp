@@ -1,3 +1,3 @@
 <div class="text-center">
-	<h1>Manage your store</h1>
+	<h5>Manage your store</h5>
 </div>

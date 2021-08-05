@@ -30,11 +30,27 @@ class OrdersController extends AppController
 		$this->set('orders', $orders);
 	}
 
-	public function admin_index()
+	public function admin_index($orderType = null)
 	{
 		$conditions = [
 			'Order.site_id' => $this->Session->read('Site.id'),
 		];
+
+		switch ($orderType) {
+			case Order::ORDER_STATUS_DRAFT:
+			case Order::ORDER_STATUS_NEW:
+			case Order::ORDER_STATUS_CONFIRMED:
+			case Order::ORDER_STATUS_SHIPPED:
+			case Order::ORDER_STATUS_DELIVERED:
+			case Order::ORDER_STATUS_CANCELLED:
+			case Order::ORDER_STATUS_CLOSED:
+				break;
+			default:
+				$orderType = Order::ORDER_STATUS_NEW;
+				break;
+		}
+
+		$conditions['Order.status'] = $orderType;
 
 		$this->Order->bindModel(['belongsTo' => ['User']]);
 		$this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
@@ -46,6 +62,7 @@ class OrdersController extends AppController
 		];
 		$orders = $this->paginate();
 
+		$this->set('orderType', $orderType);
 		$this->set('orders', $orders);
 	}
 

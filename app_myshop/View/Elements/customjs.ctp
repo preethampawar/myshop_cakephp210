@@ -678,6 +678,7 @@ App::uses('Order', 'Model');
 				})
 			} else {
 				alert(data.errorMsg)
+				window.location = '/users/login'
 			}
 		}).finally(function() {
 			$('#confirmOrderSpinner').html('');

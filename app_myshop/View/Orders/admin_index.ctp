@@ -1,4 +1,31 @@
-<h1>All Orders</h1>
+<h1>Manage Orders</h1>
+
+<div class="d-flex justify-content-end">
+	<div class="btn-group">
+		<button type="button" class="btn btn-sm btn-purple dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+			Filter By Status
+		</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_NEW ?>"><?= Order::ORDER_STATUS_NEW ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CONFIRMED ?>"><?= Order::ORDER_STATUS_CONFIRMED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_SHIPPED ?>"><?= Order::ORDER_STATUS_SHIPPED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_DELIVERED ?>"><?= Order::ORDER_STATUS_DELIVERED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CLOSED ?>"><?= Order::ORDER_STATUS_CLOSED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_DRAFT ?>"><?= Order::ORDER_STATUS_DRAFT ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CANCELLED ?>"><?= Order::ORDER_STATUS_CANCELLED ?></a></li>
+		</ul>
+	</div>
+</div>
+
+<?php
+if ($orderType) {
+	?>
+		<div class="mt-2">
+		Showing all "<span class="text-orange fst-italic"><?= $orderType ?></span>" <b><?= $this->Paginator->params()['count'] ?></b> orders.
+		</div>
+	<?php
+}
+?>
 
 <div class="mt-3">
 	<?php

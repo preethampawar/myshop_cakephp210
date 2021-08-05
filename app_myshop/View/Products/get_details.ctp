@@ -19,8 +19,8 @@ $showRequestPriceQuote = $productInfo['Product']['request_price_quote'];
 $assetDomainUrl = Configure::read('AssetDomainUrl');
 $productUploadedImages = $productInfo['Product']['images'] ? json_decode($productInfo['Product']['images']) : [];
 $imageDetails = $this->App->getRearrangedImages($productUploadedImages);
-$mrp = $productInfo['Product']['mrp'];
-$discount = $productInfo['Product']['discount'];
+$mrp = (float)$productInfo['Product']['mrp'];
+$discount = (float)$productInfo['Product']['discount'];
 $salePrice = $mrp - $discount;
 $showDiscount = $mrp !== $salePrice;
 $noStock = $productInfo['Product']['no_stock'];
@@ -32,7 +32,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 	<?php
 	if (!$isAjax) {
 		?>
-		<nav aria-label="breadcrumb">
+		<nav aria-label="breadcrumb" class="mb-4">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a
 						href="/products/show/<?php echo $categoryID; ?>"><?= $categoryName; ?></a></li>
@@ -40,7 +40,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 			</ol>
 		</nav>
 
-		<h2 class="mb-3"><?= $productName; ?></h2>
+
 		<?php
 	}
 	?>
@@ -96,8 +96,10 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 							<?php endif; ?>
 						</div>
 
+
+
 						<?php if ($showDiscount): ?>
-							<div class="small text-left">
+							<div class="small text-left text-success">
 								Save - <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?>
 							</div>
 						<?php endif; ?>

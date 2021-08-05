@@ -147,7 +147,11 @@ class AppController extends Controller
 				'login',
 				'logout',
 				'forgotpassword',
+				'verifyLoginOtp',
+				'setView',
 			];
+
+			$this->layout = 'textonly';
 
 			if (!in_array($this->request->params['action'], $allowedActionsInMaintenance, true)) {
 				$this->redirect('/sites/under_maintenance');
@@ -538,16 +542,24 @@ class AppController extends Controller
 		App::uses('ProductVisit', 'Model');
 		$productVisitModel = new ProductVisit;
 
-		// remove this product from categories
-		if (!empty($categoryID)) {
-			// remove this product from the selected category
+		// check if product belongs to one or more categories.
+		$belongsToMultipleCategories = false;
+		$results = $categoryProductModel->findAllByProductId($productID);
+
+		if (count($results) > 1) {
+			$belongsToMultipleCategories = true;
+		}
+
+		if ($categoryID && $belongsToMultipleCategories) { // delete product only from the selected category
+
 			$conditions = ['CategoryProduct.product_id' => $productID, 'CategoryProduct.category_id' => $categoryID];
 			$categoryProductModel->deleteAll($conditions);
 
 			// remove this product from product_visits table
 			$conditions = ['ProductVisit.product_id' => $productID, 'ProductVisit.category_id' => $categoryID];
 			$productVisitModel->deleteAll($conditions);
-		} else {
+		} else { // completely delete the product
+
 			// remove this product from all categories
 			$conditions = ['CategoryProduct.product_id' => $productID];
 			$categoryProductModel->deleteAll($conditions);
@@ -557,13 +569,21 @@ class AppController extends Controller
 			$productVisitModel->deleteAll($conditions);
 
 			// delete product images
-			App::uses('Image', 'Model');
-			$imageModel = new Image;
-			$productImages = $imageModel->findAllByProductId($productID);
-			if (!empty($productImages)) {
-				foreach ($productImages as $row) {
-					$this->deleteImage($row['Image']['id']);
-				}
+			$baseUrl = Router::url('/', true );
+			$productInfo = $this->isSiteProduct($productID);
+			$productImages = $this->getRearrangedImages($productInfo['Product']['images']);
+
+			foreach ($productImages as $row) {
+				$image = $row['thumb'];
+				$imageOri = $row['ori'];
+
+				$deleteImages = [
+					$image->imagePath,
+					$imageOri->imagePath,
+				];
+				$deleteImages = base64_encode(json_encode($deleteImages));
+				$deleteImagesUrl = $baseUrl . 'deleteImage.php?images=' . $deleteImages . '&i=' . time();
+				$resp = file_get_contents("$deleteImagesUrl");
 			}
 
 			// delete product from database
@@ -571,6 +591,7 @@ class AppController extends Controller
 			$productModel = new Product;
 			$productModel->delete($productID);
 		}
+
 		return true;
 	}
 
