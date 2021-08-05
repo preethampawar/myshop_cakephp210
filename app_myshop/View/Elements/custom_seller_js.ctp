@@ -206,6 +206,17 @@ App::uses('Order', 'Model');
 		deletePopup.show();
 	}
 
+	function changeOrderStatus(orderId, status) {
+		if (status != '0') {
+			let sendEmailToCustomer = $('#sendEmailToCustomer').prop('checked') ? 1 : 0
+			let url = '/admin/orders/updateStatus/' + orderId + '/' + status + '/' + sendEmailToCustomer
+			let title = 'Update Status'
+			let content = 'Are sure you sure you want to change the order status to <b>"'+status+'"</b>?'
+			showConfirmPopup(url, title, content)
+		}
+	}
+
+
 	let spinner = `<div class="text-center">
 						<div class="spinner-border text-primary" role="status">
 							<span class="visually-hidden">Loading...</span>

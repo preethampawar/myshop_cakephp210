@@ -1,11 +1,9 @@
-<p>Thank you for your order. You will be notified once the order is confirmed.</p>
-<br>
+<p>Dear <?= $order['Order']['customer_name']?>,</p>
+<p>We have received your order. You will be notified once the order is confirmed.</p>
 <p>Below are your order details:</p>
-
 <p>
 	<h2>Order No. #<?= $order['Order']['id']; ?></h2>
 </p>
-
 
 <?php
 if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
@@ -14,7 +12,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 	<div class="p-3 shadow small mt-4">
 		<h5>PRODUCTS</h5>
 
-		<table class="table small" style="width:100%" border="1">
+		<table class="table small" style="width: 100%" cellpadding="5" cellspacing="0" border="1">
 			<thead>
 			<tr>
 				<th style="text-align: left;">Product</th>
@@ -69,12 +67,18 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 
 			</tbody>
 			<tfoot>
+			<?php
+			/*
+			 ?>
 			<tr class="text-muted">
 				<td>Total Cart Value</td>
 				<td class="text-decoration-line-through text-center"></td>
 				<td class="text-center"></td>
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
+			<?php
+			*/
+			?>
 			<tr class="text-muted">
 				<td>Shipping Charges</td>
 				<td></td>
@@ -94,28 +98,34 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 		<br>
 		<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order</div>
 	</div>
-	<br><br>
+	<br>
 	<div class="p-3 mt-4 shadow small">
 		<h5>DELIVERY DETAILS</h5>
 		<hr>
-		<div class="">
-			Contact Name:<br>
-			<b><?= $order['Order']['customer_name'] ?></b>
-		</div>
-		<div class="mt-2">
-			Contact Phone No:<br>
-			<b><?= $order['Order']['customer_phone'] ?></b>
-		</div>
-		<div class="mt-2">
-			Delivery Address:<br>
-			<b><?= $order['Order']['customer_address'] ?></b>
-		</div>
-		<div class="mt-2">
-			Special Instructions:<br>
-			<b><?= h($order['Order']['customer_message']) ?></b>
-		</div>
+		<table class="table small" cellpadding="5" cellspacing="0" border="0">
+			<tr>
+				<td>Contact Name:</td>
+				<td><b><?= $order['Order']['customer_name'] ?></b></td>
+			</tr>
+			<tr>
+				<td>Contact Phone No:</td>
+				<td><b><?= $order['Order']['customer_phone'] ?></b></td>
+			</tr>
+			<tr>
+				<td>Contact Phone No:</td>
+				<td><b><?= $order['Order']['customer_address'] ?></b></td>
+			</tr>
+			<tr>
+				<td>Delivery Address:</td>
+				<td><b><?= $order['Order']['customer_name'] ?></b></td>
+			</tr>
+			<tr>
+				<td>Special Instructions:</td>
+				<td><b><?= $order['Order']['customer_message'] ?></b></td>
+			</tr>
+		</table>
 	</div>
-	<br><br>
+	<br>
 	<div class="p-3 mt-4 shadow small">
 		<h5>PAYMENT DETAILS</h5>
 		<hr>
@@ -125,7 +135,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 		</div>
 		<div class="mt-2">
 			Payment Reference No:
-			<b><?= !empty($order['Order']['payment_reference_no']) ? $order['Order']['payment_reference_no'] : '-' ?></b>
+			<b><?= !empty($order['Order']['payment_reference_no']) ? $order['Order']['payment_reference_no'] : 'N/A' ?></b>
 		</div>
 	</div>
 	<?php
@@ -137,8 +147,14 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 	<?php
 }
 ?>
+
 <br>
-<p>This is an auto generated email. Please do not respond.</p>
-<p>-<br>
-<?= $this->Html->url('/', true) ?>
+<p>Thank you for shopping with us.</p>
+
+<p>
+	-<br>
+	<?= $this->Session->read('Site.title') ?><br>
+	<?= $this->Html->url('/', true) ?>
 </p>
+
+<p>This is an auto generated email. Please do not respond.</p>

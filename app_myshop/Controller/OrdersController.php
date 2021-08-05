@@ -186,6 +186,53 @@ class OrdersController extends AppController
 		$this->set('orderEmailUrl', $orderEmailUrl);
 	}
 
+	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null)
+	{
+		if (!in_array($orderStatus, Order::ORDER_STATUS_OPTIONS)) {
+			$this->errorMsg('Invalid request');
+			$this->redirect('/admin/orders/details/'.$encodedOrderId);
+			return;
+		}
+
+		$orderId = base64_decode($encodedOrderId);
+		$this->layout = false;
+		$error = null;
+
+		$siteId = $this->Session->read('Site.id');
+		$conditions = ['Order.site_id' => $siteId, 'Order.id' => $orderId];
+		$orderDetails = $this->Order->find('first', ['conditions'=>$conditions]);
+
+		$log = json_decode($orderDetails['Order']['log'], true);
+
+		$newLog = [
+			'orderStatus' => $orderStatus,
+			'date' => time()
+		];
+		$log[] = $newLog;
+		$log = json_encode($log);
+
+		$orderData = [
+			'Order' => [
+				'id' => $orderId,
+				'status' => $orderStatus,
+				'log' => $log,
+			]
+		];
+
+		if ($this->Order->save($orderData)) {
+			$this->successMsg('Order status updated successfully');
+
+			if ($sendEmailToCustomer) {
+				$this->sendOrderEmail($encodedOrderId, $orderStatus, true);
+			}
+		} else {
+			$this->errorMsg('Failed to update order status');
+		}
+
+		$this->redirect('/admin/orders/details/'.$encodedOrderId);
+		exit;
+	}
+
 	private function saveOrderProducts($shoppingCartProducts, $orderId)
 	{
 		App::uses('OrderProduct', 'Model');
@@ -216,8 +263,6 @@ class OrdersController extends AppController
 				]
 			];
 
-
-
 			if (!$orderProductModel->save($orderProductData)) {
 				$error = true;
 				break;
@@ -235,7 +280,7 @@ class OrdersController extends AppController
 		return true;
 	}
 
-	public function sendOrderEmail($encodedOrderId, $orderStatus)
+	public function sendOrderEmail($encodedOrderId, $orderStatus, $return = false)
 	{
 		$this->layout = false;
 		$emailTemplate = null;
@@ -249,6 +294,30 @@ class OrdersController extends AppController
 				$emailTemplate = 'order_new';
 				$subject = 'New Order #'.$orderId;
 				break;
+			case Order::ORDER_STATUS_CONFIRMED:
+				$emailTemplate = 'order_confirmed';
+				$subject = 'Confirmed - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_SHIPPED:
+				$emailTemplate = 'order_shipped';
+				$subject = 'Shipped - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_DELIVERED:
+				$emailTemplate = 'order_delivered';
+				$subject = 'Delivered - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_CANCELLED:
+				$emailTemplate = 'order_cancelled';
+				$subject = 'Cancelled - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_RETURNED:
+				$emailTemplate = 'order_returned';
+				$subject = 'Returned - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_CLOSED:
+				$emailTemplate = 'order_closed';
+				$subject = 'Closed - Order #'.$orderId;
+				break;
 			default:
 				break;
 		}
@@ -259,21 +328,24 @@ class OrdersController extends AppController
 
 		$toName = $order['Order']['customer_name'];
 		$toEmail = $order['Order']['customer_email'];
-		$adminEmail = Configure::read('AdminEmail');
-		$storeAdminEmail = $this->Session->read('User.email');
-		$bccEmail = [$adminEmail, $storeAdminEmail];
+		$bccEmails = $this->getBccEmails();
+		$noReply = $this->getNoReplyEmail();
 
 		$Email = new CakeEmail('smtpNoReply');
 		$Email->viewVars(array('order' => $order));
-		$Email->template('order_new', 'default')
+		$Email->template($emailTemplate, 'default')
 			->emailFormat('html')
 			->to([$toEmail => $toName])
-			->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']])
-			->bcc($bccEmail)
+			->from([$noReply['fromEmail'] => $noReply['fromName']])
+			->bcc($bccEmails)
 			->subject($subject)
 			->send();
 
 		$this->set('error', $error);
+
+		if ($return) {
+			return $error;
+		}
 	}
 
 	private function validatePaymentDetails($data)

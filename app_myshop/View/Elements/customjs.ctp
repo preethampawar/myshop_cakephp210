@@ -405,7 +405,10 @@ App::uses('Order', 'Model');
 		})
 		response.finally(function() {
 			$('#addQtyProductDetails-spinner').addClass('d-none');
-			productDetailsModal.hide()
+
+			if (productDetailsModal){
+				productDetailsModal.hide()
+			}
 		})
 
 		return response;

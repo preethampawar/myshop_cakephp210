@@ -120,6 +120,15 @@ $this->set('enableTextEditor', true);
 					><?php echo $this->data['Site']['tos']; ?></textarea>
 				</div>
 				<div class="mb-4">
+					<label for="SitePrivacyPolicy" class="form-label">Privacy Policy</label>
+					<textarea
+							id="SitePrivacyPolicy"
+							name="data[Site][privacy_policy]"
+							class="form-control form-control-sm tinymce"
+							placeholder="Enter Privacy Policy"
+					><?php echo $this->data['Site']['privacy_policy']; ?></textarea>
+				</div>
+				<div class="mb-4">
 					<label for="SiteAnalyticsCode" class="form-label">Analytics Code</label>
 					<textarea
 							id="SiteAnalyticsCode"
@@ -143,6 +152,20 @@ $this->set('enableTextEditor', true);
 							max="10000"
 							required
 					>
+				</div>
+				<div class="mb-4">
+					<label for="SiteFromEmailAddress" class="form-label">Send Notification Emails To </label>
+
+					<input
+							type="text"
+							id="SiteFromEmailAddress"
+							name="data[Site][seller_notification_email]"
+							value="<?php echo $this->data['Site']['seller_notification_email']; ?>"
+							class="form-control form-control-sm"
+							placeholder="Enter Notification Email Address"
+							required
+					>
+					<span class="text-muted small">Note: You can specify more than one email address separated by commas "<b>,</b>"</span> (<code>abc@gmail.com,xyz@gmail.com</code>).
 				</div>
 			</div>
 			<br>

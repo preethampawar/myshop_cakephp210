@@ -34,7 +34,7 @@ $createdDate = $createdDate ?: $modifiedDate;
 		<?php
 		if ($log) {
 			foreach($log as $row2) {
-				$updatedOn = date('d-m-Y', $row2['date']);
+				$updatedOn = date('d-m-Y h:i A', $row2['date']);
 				?>
 					<tr>
 						<td><?=$row2['orderStatus'] ?></td>
