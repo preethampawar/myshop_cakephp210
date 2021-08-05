@@ -69,7 +69,7 @@ $this->set('enableTextEditor', true);
 
 		<div class="mt-2">
 			<div>
-				<div class="my-3">
+				<div class="mb-4 mt-4">
 					<label for="SiteTitle" class="form-label">Store Title</label>
 					<input
 						type="text"
@@ -83,8 +83,8 @@ $this->set('enableTextEditor', true);
 						required
 					>
 				</div>
-				<div class="mb-3">
-					<label for="SiteDescription" class="form-label">Store Description</label>
+				<div class="mb-4">
+					<label for="SiteDescription" class="form-label">About Us</label>
 					<textarea
 						id="SiteDescription"
 						name="data[Site][description]"
@@ -92,8 +92,8 @@ $this->set('enableTextEditor', true);
 						placeholder="Enter Site description"
 					><?php echo $this->data['Site']['description']; ?></textarea>
 				</div>
-				<div class="mb-3">
-					<label for="SiteContactInfo" class="form-label">Store Contact Information</label>
+				<div class="mb-4">
+					<label for="SiteContactInfo" class="form-label">Contact Us</label>
 					<textarea
 						id="SiteContactInfo"
 						name="data[Site][contact_info]"
@@ -101,7 +101,7 @@ $this->set('enableTextEditor', true);
 						placeholder="Enter Contact Information"
 					><?php echo $this->data['Site']['contact_info']; ?></textarea>
 				</div>
-				<div class="mb-3">
+				<div class="mb-4">
 					<label for="SitePaymentInfo" class="form-label">Payment Information</label>
 					<textarea
 						id="SitePaymentInfo"
@@ -110,7 +110,7 @@ $this->set('enableTextEditor', true);
 						placeholder="Enter Payment Related Information"
 					><?php echo $this->data['Site']['payment_info']; ?></textarea>
 				</div>
-				<div class="mb-3">
+				<div class="mb-4">
 					<label for="SiteTos" class="form-label">Terms of Service</label>
 					<textarea
 						id="SiteTos"
@@ -119,7 +119,7 @@ $this->set('enableTextEditor', true);
 						placeholder="Enter Terms of Service"
 					><?php echo $this->data['Site']['tos']; ?></textarea>
 				</div>
-				<div class="mb-3">
+				<div class="mb-4">
 					<label for="SiteAnalyticsCode" class="form-label">Analytics Code</label>
 					<textarea
 							id="SiteAnalyticsCode"
@@ -129,12 +129,27 @@ $this->set('enableTextEditor', true);
 							rows="4"
 					><?php echo $this->data['Site']['analytics_code']; ?></textarea>
 				</div>
+				<div class="mb-4">
+					<label for="SiteShippingCharges" class="form-label">Shipping Charges</label>
+
+					<input
+							type="number"
+							id="SiteShippingCharges"
+							name="data[Site][shipping_charges]"
+							value="<?php echo $this->data['Site']['shipping_charges']; ?>"
+							class="form-control form-control-sm"
+							placeholder="Enter Shipping/Delivery Charges"
+							min="0"
+							max="10000"
+							required
+					>
+				</div>
 			</div>
 			<br>
 			<div class="my-3 py-3 d-inline">
 
 				<button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-				<a href="/admin/sites/home" class="btn btn-outline-secondary btn-sm ms-3">Cancel</a>
+				<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ms-3">Cancel</a>
 			</div>
 		</div>
 

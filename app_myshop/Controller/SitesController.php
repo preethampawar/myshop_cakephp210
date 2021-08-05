@@ -123,7 +123,7 @@ class SitesController extends AppController
 
 	public function under_maintenance()
 	{
-		$this->layout = 'undermaintenance';
+		$this->layout = 'textonly';
 	}
 
 	public function admin_edit()

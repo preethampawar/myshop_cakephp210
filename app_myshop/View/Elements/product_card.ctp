@@ -8,32 +8,29 @@ for ($i = 1; $i <= 50; $i++) {
 $showDiscount = $mrp != $salePrice;
 $assetDomainUrl = Configure::read('AssetDomainUrl');
 $loadingImageUrl = '/loading2.gif';
+$productSlug = Inflector::slug($productTitle, '-');
+$productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productID . '/' . $productSlug;
 // http://www.apnastores.com/assets/images/loading/loading.gif
 ?>
 
 <div class="col mb-3 bg-white hoverHighlightPink" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
 	<div class="card h-100 shadow p-0 mb-1 text-dark border-0 hoverHighlightPink" id="productCard<?php echo $productID; ?>">
 
-		<img
-			src="<?php echo $loadingImageUrl; ?>"
-			data-original="<?php echo $productImageUrl; ?>"
-			class="lazy w-100"
-			role="button"
-			alt="<?php echo $productName; ?>"
-			id="<?php echo $imageTagId; ?>"
-			onclick="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
-		/>
+		<a href="<?= $productDetailsPageUrl ?>" class="text-decoration-underline">
+			<img
+				src="<?php echo $loadingImageUrl; ?>"
+				data-original="<?php echo $productImageUrl; ?>"
+				class="lazy w-100"
+				role="button"
+				alt="<?php echo $productName; ?>"
+				id="<?php echo $imageTagId; ?>"
+			/>
+		</a>
 
 		<div class="card-body p-2 pt-0 text-center">
-			<h6 class="mt-3">
-				<span
-					class=""
-					role="button"
-					onclick="showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
-				>
-					<?php echo $productTitle; ?>
-				</span>
-			</h6>
+			<a href="<?= $productDetailsPageUrl ?>" class="text-purple text-decoration-underline">
+				<h6 class="mt-3"><?php echo $productTitle; ?></h6>
+			</a>
 
 			<?php if (!$hideProductPrice): ?>
 				<div class="mt-3 d-flex justify-content-between">
@@ -48,10 +45,10 @@ $loadingImageUrl = '/loading2.gif';
 					<?php endif; ?>
 				</div>
 
+
 				<?php if ($showDiscount): ?>
 					<div class="small text-center">
-						<span
-							class="text-success">Save <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?></span>
+						<span class="text-success">Save <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?></span>
 					</div>
 				<?php endif; ?>
 			<?php endif; ?>
