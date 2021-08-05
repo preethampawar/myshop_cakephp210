@@ -854,5 +854,28 @@ class AppController extends Controller
 		return $productModel->find('count', ['conditions' => ['Product.site_id' => $this->Session->read('Site.id')]]);
 	}
 
+	protected function getBccEmails()
+	{
+		$adminEmail = Configure::read('AdminEmail');
+		$bccEmails = [$adminEmail];
+
+		$storeNotificationsEmails = $this->Session->read('Site.seller_notification_email');
+		$storeNotificationsEmails = explode(',', $storeNotificationsEmails);
+		if ($storeNotificationsEmails) {
+			foreach($storeNotificationsEmails as $storeNotificationsEmail) {
+				$bccEmails[] = $storeNotificationsEmail;
+			}
+		}
+
+		return $bccEmails;
+	}
+
+	protected function getNoReplyEmail()
+	{
+		return [
+			'fromName' => $this->Session->read('Site.title'),
+			'fromEmail' => 'no-reply@letsgreenify.com',
+		];
+	}
 }
 ?>

@@ -4,6 +4,74 @@
 
 <h1>Order No. #<?= $order['Order']['id']; ?></h1>
 
+<div class="mt-3 text-end">
+	<?php
+	$orderStatus = $order['Order']['status'];
+
+	switch ($orderStatus) {
+		case Order::ORDER_STATUS_NEW:
+			$orderStatusOptions = [
+					Order::ORDER_STATUS_CONFIRMED => Order::ORDER_STATUS_CONFIRMED,
+					Order::ORDER_STATUS_CANCELLED => Order::ORDER_STATUS_CANCELLED,
+			];
+			break;
+		case Order::ORDER_STATUS_CONFIRMED:
+			$orderStatusOptions = [
+					Order::ORDER_STATUS_SHIPPED => Order::ORDER_STATUS_SHIPPED,
+					Order::ORDER_STATUS_CANCELLED => Order::ORDER_STATUS_CANCELLED,
+			];
+			break;
+		case Order::ORDER_STATUS_SHIPPED:
+			$orderStatusOptions = [
+					Order::ORDER_STATUS_DELIVERED => Order::ORDER_STATUS_DELIVERED,
+					Order::ORDER_STATUS_CANCELLED => Order::ORDER_STATUS_CANCELLED,
+			];
+			break;
+		case Order::ORDER_STATUS_DELIVERED:
+			$orderStatusOptions = [
+					Order::ORDER_STATUS_RETURNED => Order::ORDER_STATUS_RETURNED,
+					Order::ORDER_STATUS_CANCELLED => Order::ORDER_STATUS_CANCELLED,
+					Order::ORDER_STATUS_CLOSED => Order::ORDER_STATUS_CLOSED,
+			];
+			break;
+		default:
+			$orderStatusOptions = null;
+			break;
+	}
+	?>
+
+	<?php
+	if ($orderStatusOptions) {
+		?>
+			<div class="alert alert-warning">
+				<select
+						name="selectedOrderStatus"
+						id="selectedOrderStatus"
+						class="form-select form-select-sm"
+						onchange="changeOrderStatus('<?= base64_encode($order['Order']['id']) ?>', this.value)">
+					<option value="0">Change Order Status</option>
+					<?php
+					foreach($orderStatusOptions as $index => $option) {
+						?>
+						<option class="<?= $index ?>"><?= $option ?></option>
+						<?php
+					}
+					?>
+				</select>
+
+				<div class="form-check d-flex justify-content-start mt-3">
+					<input name="sendEmailToCustomer" class="form-check-input" type="checkbox" value="" id="sendEmailToCustomer" checked>
+					<label class="form-check-label ms-2 text-start" for="sendEmailToCustomer">
+						Send Notification Email to Customer
+					</label>
+				</div>
+			</div>
+
+		<?php
+	}
+	?>
+</div>
+
 <?php
 $modifiedDate = date('d-m-Y', strtotime($order['Order']['modified']));
 $log = !empty($order['Order']['log']) ? json_decode($order['Order']['log'], true) : null;
@@ -34,7 +102,7 @@ $createdDate = $createdDate ?: $modifiedDate;
 		<?php
 		if ($log) {
 			foreach($log as $row2) {
-				$updatedOn = date('d-m-Y', $row2['date']);
+				$updatedOn = date('d-m-Y h:i A', $row2['date']);
 				?>
 					<tr>
 						<td><?=$row2['orderStatus'] ?></td>
@@ -46,8 +114,6 @@ $createdDate = $createdDate ?: $modifiedDate;
 		?>
 		</tbody>
 	</table>
-
-
 
 </div>
 <?php

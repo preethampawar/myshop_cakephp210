@@ -1,9 +1,9 @@
 <h1>Manage Orders</h1>
 
-<div class="d-flex justify-content-end">
+<div class="mt-3">
 	<div class="btn-group">
 		<button type="button" class="btn btn-sm btn-purple dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-			Filter By Status
+			Filter By Status - <?= $orderType ?>
 		</button>
 		<ul class="dropdown-menu">
 			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_NEW ?>"><?= Order::ORDER_STATUS_NEW ?></a></li>
@@ -20,8 +20,8 @@
 <?php
 if ($orderType) {
 	?>
-		<div class="mt-2">
-		Showing all "<span class="text-orange fst-italic"><?= $orderType ?></span>" <b><?= $this->Paginator->params()['count'] ?></b> orders.
+		<div class="mt-3">
+		Showing all "<b><?= $this->Paginator->params()['count'] ?></b>" <span class="text-orange fw-bold"><?= $orderType ?></span> orders.
 		</div>
 	<?php
 }
@@ -30,56 +30,67 @@ if ($orderType) {
 <div class="mt-3">
 	<?php
 	if (!empty($orders)) {
+		$totalOrderValue = 0;
 	?>
 		<div class="table-responsive">
 			<table class="table text-center">
-			<thead>
-			<tr>
-				<th>Order No.</th>
-				<th>Status</th>
-				<th>Order Value</th>
-				<th>Customer</th>
-				<th>Mobile</th>
-				<th>Created On</th>
-			</tr>
-			</thead>
-			<tbody>
-				<?php
-				$i = 0;
-				foreach ($orders as $row) {
-					$i++;
-					$orderId = $row['Order']['id'];
-					$status = $row['Order']['status'];
-					$mobile = $row['Order']['customer_phone'] ?: null ;
-					$customerName = $row['Order']['customer_name'] ?: null ;
-					$totalAmount = $row['Order']['total_order_amount'];
-					$modifiedDate = date('d-m-Y', strtotime($row['Order']['modified']));
-					$createdDate = null;
-					$log = !empty($row['Order']['log']) ? json_decode($row['Order']['log'], true) : null;
+				<thead>
+				<tr>
+					<th>Order No.</th>
+					<th>Status</th>
+					<th>Order Value</th>
+					<th>Customer</th>
+					<th>Mobile</th>
+					<th>Created On</th>
+				</tr>
+				</thead>
+				<tbody>
+					<?php
+					$i = 0;
+					foreach ($orders as $row) {
+						$i++;
+						$orderId = $row['Order']['id'];
+						$status = $row['Order']['status'];
+						$mobile = $row['Order']['customer_phone'] ?: null ;
+						$customerName = $row['Order']['customer_name'] ?: null ;
+						$totalAmount = $row['Order']['total_order_amount'];
+						$totalOrderValue += (float)$totalAmount;
+						$modifiedDate = date('d-m-Y', strtotime($row['Order']['modified']));
+						$createdDate = null;
+						$log = !empty($row['Order']['log']) ? json_decode($row['Order']['log'], true) : null;
 
-					if ($log) {
-						foreach($log as $row2) {
-							if ($row2['orderStatus'] == Order::ORDER_STATUS_NEW) {
-								$createdDate = date('d-m-Y', $row2['date']);
-								break;
+						if ($log) {
+							foreach($log as $row2) {
+								if ($row2['orderStatus'] == Order::ORDER_STATUS_NEW) {
+									$createdDate = date('d-m-Y', $row2['date']);
+									break;
+								}
 							}
 						}
+						$createdDate = $createdDate ?: $modifiedDate;
+						?>
+						<tr>
+							<td><a href="/admin/orders/details/<?= base64_encode($orderId)?>"><?= $orderId ?></a></td>
+							<td><?= $status ?></td>
+							<td><?= $this->App->price($totalAmount) ?></td>
+							<td><?= $customerName ?></td>
+							<td><?= $mobile ?></td>
+							<td><?= $createdDate ?></td>
+						</tr>
+						<?php
 					}
-					$createdDate = $createdDate ?: $modifiedDate;
 					?>
-					<tr>
-						<td><a href="/admin/orders/details/<?= base64_encode($orderId)?>"><?= $orderId ?></a></td>
-						<td><?= $status ?></td>
-						<td><?= $this->App->price($totalAmount) ?></td>
-						<td><?= $customerName ?></td>
-						<td><?= $mobile ?></td>
-						<td><?= $createdDate ?></td>
-					</tr>
-					<?php
-				}
-				?>
-			</tbody>
-		</table>
+				</tbody>
+				<tfoot>
+				<tr>
+					<th colspan="2" class="text-start">Total Order Value</th>
+					<th><?= $this->App->price($totalOrderValue) ?></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+				</tfoot>
+			</table>
 		</div>
 
 		<br>

@@ -136,8 +136,8 @@ $enableTextEditor = $enableTextEditor ?? false;
 				<div class="content">Are you sure?</div>
 			</div>
 			<div class="modal-footer mt-2 p-1">
-				<a href="#" class="actionLink btn btn-danger btn-sm me-2"><span class="ok">Ok</span></a>
-				<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span
+				<a href="#" class="actionLink btn btn-danger btn-sm me-2  px-3"><span class="ok">Ok</span></a>
+				<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2 px-3" data-bs-dismiss="modal"><span
 						class="ok">Ok</span></button>
 				<button type="button" class="btn btn-outline-secondary btn-sm cancelButton" data-bs-dismiss="modal">
 					Cancel
