@@ -259,7 +259,7 @@ class UsersController extends AppController
 
 		if ($this->User->save($data)) {
 			$user = $this->User->read();
-			$this->clearSession();
+			// $this->clearSession();
 			$this->successMsg('Registration successful');
 			$this->sendSuccessfulEnrollmentMessage($mobile, $email); //todo: uncomment
 
