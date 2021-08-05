@@ -52,6 +52,8 @@ class AppController extends Controller
 		Configure::write('SupportEmail', $supportEmail);
 		Configure::write('NoReply', ['name' => $this->request->domain(), 'email' => 'noreply@' . $this->request->domain()]);
 		Configure::write('Security.salt', '');
+
+		$this->noReplyEmail = $this->getNoReplyEmail();
 	}
 
 	public function setBuyerCategories()
@@ -873,7 +875,7 @@ class AppController extends Controller
 	protected function getNoReplyEmail()
 	{
 		return [
-			'fromName' => $this->Session->read('Site.title'),
+			'fromName' => html_entity_decode($this->Session->read('Site.title')),
 			'fromEmail' => 'no-reply@letsgreenify.com',
 		];
 	}
