@@ -82,21 +82,69 @@ class OrdersController extends AppController
 		$this->set('order', $order);
 	}
 
-	public function create()
+	private function registerGuestUser($mobile, $email)
 	{
+		$user = $this->createCustomer($mobile, $email);
+
+		if ($user) {
+			try {
+				$this->sendSuccessfulEnrollmentMessage($mobile, $email);
+			} catch (Exception $e) {
+			}
+
+			return $user;
+		}
+
+		return false;
+	}
+
+	public function create($autoRegister = 0)
+	{
+		$autoRegister = (int)$autoRegister;
+
 		App::uses('ShoppingCart', 'Model');
 		$shoppingCartModel = new ShoppingCart;
+
+		App::uses('User', 'Model');
+		$userModel = new User;
+
 		App::uses('ShoppingCartProduct', 'Model');
 		$shoppingCartProductModel = new ShoppingCartProduct;
 		$error = null;
 
-		if (!$this->Session->check('User.id')) {
-			$error = 'Please login to place an Order';
-		}
-
 		$this->layout = false;
 		$orderId = $this->getOrderId();
 		$orderDetails = $this->Order->findById($orderId);
+
+		$userId = null;
+
+		// if the user is not logged in then auto register user based on $autoRegister flag
+		if (!$this->Session->check('User.id')) {
+			if ($autoRegister === 1) {
+				$userEmail = $orderDetails['Order']['customer_email'];
+				$userMobile = $orderDetails['Order']['customer_phone'];
+
+				// check if guest is already registered
+				$existingUser = $userModel->findByMobileAndSiteId($userMobile, $this->Session->read('Site.id'));
+
+				if ($existingUser) {
+					$userId = $existingUser['User']['id'];
+				} else {
+					$newUser = $this->registerGuestUser($userMobile, $userEmail);
+
+					if ($newUser) {
+						$userId = $newUser['User']['id'];
+					} else {
+						$error = 'Could not auto register user. Please try again.';
+					}
+				}
+			} else {
+				$error = 'Please login to place an Order';
+			}
+		} else {
+			$userId = $this->Session->read('User.id');
+		}
+
 		$orderEmailUrl = '/orders/sendOrderEmail/' . base64_encode($orderId) . '/NEW';
 
 		$log = json_decode($orderDetails['Order']['log'], true);
@@ -118,7 +166,6 @@ class OrdersController extends AppController
 		];
 		$log[] = $newLog;
 		$log = json_encode($log);
-		$userId = $this->Session->read('User.id');
 
 		if (!$error) {
 			$error = isset($data['confirmed']) && $data['confirmed'] == 1 ? null : 'Invalid request (OR) Your session has timed out.';

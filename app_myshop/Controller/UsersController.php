@@ -24,7 +24,7 @@ class UsersController extends AppController
 				$this->redirect('/users/login');
 			}
 
-			$userInfo = $this->User->findByMobile($mobile);
+			$userInfo = $this->User->findByMobileAndSiteId($mobile, $this->Session->read('Site.id'));
 
 			if ($userInfo) {
 				$email = !empty($userInfo['User']['email']) ? $userInfo['User']['email'] : Configure::read('SupportEmail');
@@ -100,7 +100,7 @@ class UsersController extends AppController
 			$error = $this->validateCustomerRegistration($mobile, $email);
 
 			if (!$error) {
-				$userInfo = $this->User->findByMobile($mobile);
+				$userInfo = $this->User->findByMobileAndSiteId($mobile, $this->Session->read('Site.id'));
 				if ($userInfo) {
 					$error = "Mobile no. '$mobile' is already registered.";
 				} else {
@@ -251,17 +251,16 @@ class UsersController extends AppController
 
 	private function registerCustomer($mobile, $email)
 	{
-		$data['User']['id'] = null;
-		$data['User']['mobile'] = $mobile;
-		$data['User']['password'] = md5($mobile);
-		$data['User']['email'] = $email;
-		$data['User']['type'] = null;
+		$user = $this->createCustomer($mobile, $email);
 
-		if ($this->User->save($data)) {
-			$user = $this->User->read();
+		if ($user) {
 			// $this->clearSession();
 			$this->successMsg('Registration successful');
-			$this->sendSuccessfulEnrollmentMessage($mobile, $email); //todo: uncomment
+
+			try {
+				$this->sendSuccessfulEnrollmentMessage($mobile, $email);
+			} catch (Exception $e) {
+			}
 
 			$this->Session->write('User', $user['User']);
 			$this->Session->write('userLoggedIn', true);
@@ -271,17 +270,6 @@ class UsersController extends AppController
 		}
 
 		$this->redirect('/');
-	}
-
-	private function sendSuccessfulEnrollmentMessage($mobile, $userEmail)
-	{
-		$subject = 'Registration Successful - ' . $mobile;
-		$mailContent = 'Your account has been created with us. You can use your mobile no. ' . $mobile . ' to login.';
-		$email = new CakeEmail('smtpNoReply');
-		$email->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']]);
-		$email->to([$userEmail => $userEmail]);
-		$email->subject($subject);
-		$email->send($mailContent);
 	}
 
 	public function setView($userType = 'buyer')
@@ -833,6 +821,27 @@ Message: ' . htmlentities($data['User']['message']) . '
 		$this->set(compact('errorMsg', 'userID'));
 	}
 
-}
+	function admin_manage()
+	{
+		$siteId = $this->Session->read('Site.id');
 
-?>
+		$conditions = [
+			'User.site_id' => $siteId,
+		];
+
+		$this->paginate = [
+			'limit' => 100,
+			'order' => ['User.created' => 'DESC'],
+			'conditions' => $conditions,
+		];
+
+		$users = $this->paginate();
+		$this->set('users', $users);
+	}
+
+	public function admin_details()
+	{
+
+	}
+
+}

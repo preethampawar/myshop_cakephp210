@@ -47,7 +47,11 @@
 	<?php echo $this->Form->end(); ?>
 </div>
 
-<div class="mt-5">
+<div class="alert alert-warning mt-4 p-2 small">
+	Note: OTP will be sent to the linked Email Address of your mobile number.
+</div>
+
+<div class="mt-4">
 	<h5>New Customer?</h5>
 	<a href="/users/customerRegistration" class="link-danger">Click here to Register</a>.
 

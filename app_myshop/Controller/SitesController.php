@@ -374,6 +374,16 @@ Disallow:
 	{
 
 	}
+
+	public function about()
+	{
+
+	}
+
+	public function privacy()
+	{
+
+	}
 }
 
 ?>

@@ -95,13 +95,16 @@ $enableTextEditor = $enableTextEditor ?? false;
 <div class="bg-light border-bottom">
 	<ul class="nav container justify-content-start">
 		<li class="nav-item productSideBar">
-			<a class="nav-link font-weight-bold" href="/admin/categories/">Manage Products</a>
+			<a class="nav-link" href="/admin/categories/">Products</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link font-weight-bold" href="/admin/orders/">Manage Orders</a>
+			<a class="nav-link" href="/admin/orders/">Orders</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link font-weight-bold" href="/admin/sites/settings">Store Settings</a>
+			<a class="nav-link" href="/admin/users/manage">Users</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/admin/sites/settings">Store Settings</a>
 		</li>
 	</ul>
 </div>

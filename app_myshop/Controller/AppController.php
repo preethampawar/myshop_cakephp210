@@ -252,8 +252,8 @@ class AppController extends Controller
 			return true;
 		}
 
-		if (!$this->isSeller()) {
-			return false;
+		if ($this->isSeller()) {
+			return true;
 		}
 
 		if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {
@@ -859,13 +859,16 @@ class AppController extends Controller
 	protected function getBccEmails()
 	{
 		$adminEmail = Configure::read('AdminEmail');
-		$bccEmails = [$adminEmail];
+		$bccEmails = [];
+		$bccEmails[] = $adminEmail;
 
 		$storeNotificationsEmails = $this->Session->read('Site.seller_notification_email');
-		$storeNotificationsEmails = explode(',', $storeNotificationsEmails);
-		if ($storeNotificationsEmails) {
-			foreach($storeNotificationsEmails as $storeNotificationsEmail) {
-				$bccEmails[] = $storeNotificationsEmail;
+		if (!empty(trim($storeNotificationsEmails))) {
+			$storeNotificationsEmails = explode(',', $storeNotificationsEmails);
+			if ($storeNotificationsEmails) {
+				foreach($storeNotificationsEmails as $storeNotificationsEmail) {
+					$bccEmails[] = $storeNotificationsEmail;
+				}
 			}
 		}
 
@@ -878,6 +881,36 @@ class AppController extends Controller
 			'fromName' => html_entity_decode($this->Session->read('Site.title')),
 			'fromEmail' => 'no-reply@letsgreenify.com',
 		];
+	}
+
+	protected function createCustomer($mobile, $email)
+	{
+		App::uses('User', 'Model');
+		$userModel = new User();
+
+		$data['User']['id'] = null;
+		$data['User']['mobile'] = $mobile;
+		$data['User']['password'] = md5($mobile);
+		$data['User']['email'] = $email;
+		$data['User']['type'] = 'buyer';
+		$data['User']['site_id'] = $this->Session->read('Site.id');
+
+		if ($userModel->save($data)) {
+			return $userModel->read();
+		}
+
+		return false;
+	}
+
+	protected function sendSuccessfulEnrollmentMessage($mobile, $userEmail)
+	{
+		$subject = 'Registration Successful - ' . $mobile;
+		$mailContent = 'Your account has been created with us. You can use your mobile no. ' . $mobile . ' to login.';
+		$email = new CakeEmail('smtpNoReply');
+		$email->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']]);
+		$email->to([$userEmail => $userEmail]);
+		$email->subject($subject);
+		$email->send($mailContent);
 	}
 }
 ?>

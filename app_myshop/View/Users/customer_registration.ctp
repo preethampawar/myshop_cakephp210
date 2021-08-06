@@ -42,4 +42,8 @@
 		<a href="/" class="btn btn-md btn-secondary ms-3">Cancel</a>
 	</div>
 	<?php echo $this->Form->end(); ?>
+
+	<div class="alert alert-warning mt-4 p-2 small">
+		Note: OTP will be sent to the selected Email Address.
+	</div>
 </div>
