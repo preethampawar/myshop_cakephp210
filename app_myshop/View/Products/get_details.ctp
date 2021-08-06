@@ -167,7 +167,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 
 	<div class="mt-4">
 		<?php
-		if (!empty($this->Session->read('Site.contact_info'))):
+		if ($isAjax && !empty($this->Session->read('Site.contact_info'))):
 			?>
 			<div class="text-center small alert alert-info">
 				<h4 class="mb-3 text-decoration-underline">Contact</h4>
@@ -178,7 +178,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 		?>
 
 		<?php
-		if (!empty($this->Session->read('Site.payment_info'))):
+		if ($isAjax && !empty($this->Session->read('Site.payment_info'))):
 			?>
 
 			<div class="text-center small alert alert-info">
@@ -190,7 +190,7 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 		?>
 
 		<?php
-		if (!empty($this->Session->read('Site.tos'))):
+		if ($isAjax && !empty($this->Session->read('Site.tos'))):
 			?>
 			<div class="text-center small alert alert-warning">
 				Please read our <a href="/sites/tos">Terms of Service</a> before you place an order with us.
@@ -199,11 +199,4 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 		endif;
 		?>
 	</div>
-
-
-
-
-
-
-
-
+</div>

@@ -654,9 +654,23 @@ App::uses('Order', 'Model');
 		}
 	}
 
+	var placeOrderLoginPopupModal = new bootstrap.Modal(document.getElementById('placeOrderLoginPopup'), {
+		keyboard: false
+	})
 
-	function placeOrder() {
-		const placeOrderUrl = '/orders/create'
+	function showPlaceOrderLoginPopup() {
+		placeOrderLoginPopupModal.show()
+	}
+
+	function hidePlaceOrderLoginPopup() {
+		placeOrderLoginPopupModal.hide()
+	}
+
+	function placeOrder(guest) {
+
+		guest = typeof(guest) !== 'undefined' ? 1 : 0
+
+		const placeOrderUrl = '/orders/create/' + guest
 
 		let data = {
 			'confirmed': 1,
@@ -680,12 +694,15 @@ App::uses('Order', 'Model');
 					console.log(resp)
 				})
 			} else {
-				alert(data.errorMsg)
-				window.location = '/users/login'
+				// alert(data.errorMsg)
+				//window.location = '/users/login'
+				orderSummary.hide()
+				showPlaceOrderLoginPopup()
 			}
 		}).finally(function() {
 			$('#confirmOrderSpinner').html('');
 			$('#placeOrderButton').removeClass('disabled');
+			hidePlaceOrderLoginPopup()
 		})
 	}
 

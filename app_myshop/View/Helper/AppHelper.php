@@ -62,8 +62,8 @@ class AppHelper extends Helper
 			return true;
 		}
 
-		if (!$this->isSeller()) {
-			return false;
+		if ($this->isSeller()) {
+			return true;
 		}
 
 		if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {

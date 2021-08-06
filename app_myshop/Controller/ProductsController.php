@@ -123,11 +123,10 @@ class ProductsController extends AppController
 
 		if (!$categoryInfo = $this->isSiteCategory($categoryID)) {
 			$this->errorMsg('Category not found');
-			$this->redirect('/admin/categories/');
+			$this->redirect('/');
 		} elseif (!$productInfo = $this->isSiteProduct($productID)) {
 			$this->errorMsg('Product not found');
-			$categoryNameSlug = Inflector::slug($categoryInfo['Category']['name'], '-');
-			$this->redirect('/admin/products/show/' . $categoryID . '/' . $categoryNameSlug);
+			$this->redirect('/');
 		}
 
 		// update product visits
