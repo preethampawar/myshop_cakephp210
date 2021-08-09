@@ -447,9 +447,12 @@
 							<div class="mt-3 text-center">(OR)</div>
 
 							<div class="mt-3">
-								Click to <a href="#" class="text-orange" onclick="placeOrder(1)">Auto Register & Place Order</a>.
+								Click to <a href="#" id="placeOrderLinkGuest" class="text-orange" onclick="placeOrder(1)">Auto Register & Place Order</a>.
 								A new account will be created for you and order will be placed based on the contact information provided in the order details.
 							</div>
+
+							<div id="confirmOrderSpinnerGuest" class="mt-4"></div>
+
 						</div>
 						<div class="modal-footer">
 							<a href="/users/login" role="button" class="btn btn-orange">Go to Login Page</a>

@@ -37,17 +37,21 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				maxlength="55"
 				class="form-control form-control-sm"
 				value="<?= $orderDetails['Order']['customer_name'] ?>"
+				placeholder="Enter Full Name"
 				required>
 		</div>
 
 		<div class="mt-3">
-			<label for="orderCustomerPhone">Contact Phone No. <span class="text-danger small">(required)</span></label>
+			<label for="orderCustomerPhone">Contact Phone No. (10 digits)  <span class="text-danger small">(required)</span></label>
 			<input
-				type="tel"
+				type="number"
 				name="data[customer_phone]"
 				id="orderCustomerPhone"
 				class="form-control form-control-sm"
 				value="<?= $orderDetails['Order']['customer_phone'] ?>"
+				min="6000000000"
+				max="9999999999"
+				placeholder="Enter 10 digit mobile no."
 				required>
 		</div>
 
@@ -59,6 +63,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				id="orderCustomerEmail"
 				class="form-control form-control-sm"
 				value="<?= $orderDetails['Order']['customer_email'] ?>"
+				placeholder="Enter Email Address"
 				required>
 		</div>
 
@@ -69,6 +74,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				id="orderCustomerAddress"
 				rows="3"
 				class="form-control form-control-sm"
+				placeholder="Enter Delivery Address"
 				required><?= $orderDetails['Order']['customer_address'] ?></textarea>
 		</div>
 
@@ -78,6 +84,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				name="data[customer_message]"
 				id="orderCustomerMessage"
 				rows="3"
+				placeholder="Enter your message here"
 				class="form-control form-control-sm"><?= $orderDetails['Order']['customer_message'] ?></textarea>
 		</div>
 	</div>

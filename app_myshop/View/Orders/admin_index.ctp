@@ -1,8 +1,138 @@
 <h1>Manage Orders</h1>
 
-<div class="mt-3">
+<div class="mt-4 d-none d-lg-block">
+	<?php
+	$orderOptions = Order::ORDER_STATUS_OPTIONS;
+	//$this->set('ordersCountByStatus', $ordersCountByStatus);
+	//$this->set('archivedOrdersCount', $archivedOrdersCount);
+
+	$ordersCountStatus = [];
+	foreach($ordersCountByStatus as $row) {
+		$ordersCountStatus[$row['orders']['status']] = $row[0]['count'];
+	}
+
+	$archivedOrdersCount =  (isset($archivedOrdersCount[0][0]['count']) && !empty($archivedOrdersCount[0][0]['count'])) ? $archivedOrdersCount[0][0]['count'] : 0;
+
+	foreach($orderOptions as $option) {
+		$btnColor = 'btn-outline-secondary';
+		$bgColor = 'bg-secondary';
+
+		switch ($option) {
+			case Order::ORDER_STATUS_DRAFT:
+				$btnColor = 'btn-outline-secondary';
+				$bgColor = 'bg-secondary';
+				break;
+			case Order::ORDER_STATUS_NEW:
+				$btnColor = 'btn-primary';
+				$bgColor = 'bg-danger';
+				break;
+			case Order::ORDER_STATUS_CONFIRMED:
+				$btnColor = 'btn-outline-info';
+				$bgColor = 'bg-info';
+				break;
+			case Order::ORDER_STATUS_SHIPPED:
+			case Order::ORDER_STATUS_DELIVERED:
+				$btnColor = 'btn-outline-warning';
+				$bgColor = 'bg-warning';
+				break;
+			case Order::ORDER_STATUS_RETURNED:
+			case Order::ORDER_STATUS_CANCELLED:
+				$btnColor = 'btn-outline-danger';
+				$bgColor = 'bg-danger';
+				break;
+			case Order::ORDER_STATUS_CLOSED:
+				$btnColor = 'btn-outline-success';
+				$bgColor = 'bg-success';
+				break;
+			default:
+				break;
+		}
+
+		if ($option == Order::ORDER_STATUS_DRAFT) {
+			continue;
+		}
+		?>
+		<a href="/admin/orders/index/<?= $option ?>" role="button" class="btn <?= $btnColor ?> btn-sm position-relative me-2 mb-3">
+			<?= $option ?>
+			<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill <?= $bgColor ?>">
+				<?= $ordersCountStatus[$option] ?? 0 ?>
+			</span>
+		</a>
+		<?php
+	}
+	?>
+	<!--
+	<a href="/admin/orders/index/<?= Order::ORDER_STATUS_DRAFT ?>" role="button" class="btn btn-outline-secondary btn-sm position-relative me-2 mb-3">
+		<?= Order::ORDER_STATUS_DRAFT ?>
+		<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+			<?= $ordersCountStatus[Order::ORDER_STATUS_DRAFT] ?>
+		</span>
+	</a>
+	<a href="/admin/orders/index/ARCHIVED" role="button" class="btn btn-secondary btn-sm position-relative me-2 mb-3">
+		ARCHIVED
+		<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+			<?= $ordersCountStatus[$option] ?? 0 ?>
+		</span>
+	</a>
+	-->
+</div>
+
+<div class="mt-4 d-block d-lg-none">
+	<div class="list-group">
+
+		<?php
+		foreach($orderOptions as $option) {
+			$btnColor = 'btn-outline-secondary';
+			$bgColor = 'bg-secondary';
+
+			switch ($option) {
+				case Order::ORDER_STATUS_DRAFT:
+					$btnColor = 'btn-outline-secondary';
+					$bgColor = 'bg-secondary';
+					break;
+				case Order::ORDER_STATUS_NEW:
+					$btnColor = 'btn-primary';
+					$bgColor = 'bg-danger';
+					break;
+				case Order::ORDER_STATUS_CONFIRMED:
+					$btnColor = 'btn-outline-info';
+					$bgColor = 'bg-info';
+					break;
+				case Order::ORDER_STATUS_SHIPPED:
+				case Order::ORDER_STATUS_DELIVERED:
+					$btnColor = 'btn-outline-warning';
+					$bgColor = 'bg-warning';
+					break;
+				case Order::ORDER_STATUS_RETURNED:
+				case Order::ORDER_STATUS_CANCELLED:
+					$btnColor = 'btn-outline-danger';
+					$bgColor = 'bg-danger';
+					break;
+				case Order::ORDER_STATUS_CLOSED:
+					$btnColor = 'btn-outline-success';
+					$bgColor = 'bg-success';
+					break;
+				default:
+					break;
+			}
+			if ($option == Order::ORDER_STATUS_DRAFT) {
+				continue;
+			}
+			?>
+			<a href="/admin/orders/index/<?= $option ?>" class="list-group-item list-group-item-action ">
+				<span class="text-primary"><?= $option ?></span>
+				<span class="badge <?= $bgColor ?> rounded-pill ms-1"><?= $ordersCountStatus[$option] ?? 0 ?></span>
+			</a>
+			<?php
+		}
+		?>
+	</div>
+
+</div>
+
+<div class="mt-3 d-flex justify-content-end">
 	<div class="btn-group">
-		<button type="button" class="btn btn-sm btn-purple dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+		<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 			Filter By Status - <?= $orderType ?>
 		</button>
 		<ul class="dropdown-menu">
@@ -21,7 +151,7 @@
 if ($orderType) {
 	?>
 		<div class="mt-3">
-		Showing all "<b><?= $this->Paginator->params()['count'] ?></b>" <span class="text-orange fw-bold"><?= $orderType ?></span> orders.
+			<b><?= $this->Paginator->params()['count'] ?></b> '<span class="text-orange fw-bold"><?= $orderType ?></span>' orders.
 		</div>
 	<?php
 }
@@ -33,7 +163,7 @@ if ($orderType) {
 		$totalOrderValue = 0;
 	?>
 		<div class="table-responsive">
-			<table class="table text-center">
+			<table class="table text-center" style="min-height:200px;">
 				<thead>
 				<tr>
 					<th>Order No.</th>
@@ -68,9 +198,45 @@ if ($orderType) {
 							}
 						}
 						$createdDate = $createdDate ?: $modifiedDate;
+						$encodedOrderId = base64_encode($orderId);
+						$encodedArchiveText = base64_encode(Order::ORDER_ARCHIVE);
+						$archiveUrl = '/admin/orders/archive/' . $encodedOrderId . '/' . $encodedArchiveText;
+						$archiveContent = 'Are you sure you want to archive this order #' . $orderId . '?<br><br>Once an order is archived, you cannot make any changes to the order.';
 						?>
 						<tr>
-							<td><a href="/admin/orders/details/<?= base64_encode($orderId)?>"><?= $orderId ?></a></td>
+							<td>
+								<?php
+								$hideForOptions = [Order::ORDER_STATUS_DRAFT];
+								$hideDropdown = !in_array($status, $hideForOptions);
+
+								$showLink = $status !== Order::ORDER_STATUS_DRAFT;
+								?>
+
+								<?php
+								if ($hideDropdown) {
+								?>
+								<div class="dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?= $orderId ?></a>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<li>
+											<a class="dropdown-item" href="/admin/orders/details/<?= base64_encode($orderId)?>">Details</a>
+										</li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item" href="#" onclick="showConfirmPopup('<?= $archiveUrl ?>', 'Archive Order', '<?= $archiveContent ?>'); return false;">Archive</a></li>
+									</ul>
+								</div>
+								<?php
+								} elseif ($showLink) {
+									?>
+									<a href="/admin/orders/details/<?= base64_encode($orderId)?>"><?= $orderId ?></a>
+									<?php
+								} else {
+									?>
+										<?= $orderId ?>
+									<?php
+								}
+								?>
+							</td>
 							<td><?= $status ?></td>
 							<td><?= $this->App->price($totalAmount) ?></td>
 							<td><?= $customerName ?></td>
