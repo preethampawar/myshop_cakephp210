@@ -32,6 +32,8 @@ class OrdersController extends AppController
 
 	public function admin_index($orderType = null)
 	{
+		$this->checkSeller();
+
 		$siteId = $this->Session->read('Site.id');
 
 		$sql = 'select count(*) count, status from orders where site_id = '.$siteId.' and archived = 0 group by status';

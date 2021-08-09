@@ -201,7 +201,7 @@ if ($orderType) {
 						$encodedOrderId = base64_encode($orderId);
 						$encodedArchiveText = base64_encode(Order::ORDER_ARCHIVE);
 						$archiveUrl = '/admin/orders/archive/' . $encodedOrderId . '/' . $encodedArchiveText;
-						$archiveContent = 'Are you sure you want to archive this order #' . $orderId . '?<br><br>Once an order is archived, you cannot make any changes to the order.';
+						$archiveContent = 'Are you sure you want to archive/remove this order #' . $orderId . '?';
 						?>
 						<tr>
 							<td>

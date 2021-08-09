@@ -14,8 +14,18 @@ class SitesController extends AppController
 
 	public function admin_home()
 	{
+		$this->checkSeller();
 		$this->layout = 'seller';
+		$siteId = $this->Session->read('Site.id');
 
+		$sql = 'select count(*) count, status from orders where site_id = '.$siteId.' and archived = 0 group by status';
+		$ordersCountByStatus = $this->Site->query($sql);
+
+		$sql = 'select count(*) count from orders where site_id = '.$siteId.' and archived = 1';
+		$archivedOrdersCount = $this->Site->query($sql);
+
+		$this->set('ordersCountByStatus', $ordersCountByStatus);
+		$this->set('archivedOrdersCount', $archivedOrdersCount);
 	}
 
 	public function register($userId)
