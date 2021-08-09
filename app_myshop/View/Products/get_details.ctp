@@ -26,6 +26,9 @@ $showDiscount = $mrp !== $salePrice;
 $noStock = $productInfo['Product']['no_stock'];
 $cartEnabled = $this->Session->read('Site.shopping_cart');
 $hideProductPrice = $productInfo['Product']['hide_price'];
+
+$pageUrl = $this->Html->url($this->request->here, true);
+$pageUniqueIdentifier = $categoryID.'-'.$productID;
 ?>
 
 <div itemscope itemtype="http://schema.org/Product">
@@ -200,3 +203,23 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 		?>
 	</div>
 </div>
+
+<div id="disqus_thread" class="my-5"></div>
+<script>
+	/**
+	 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+	 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+	 */
+
+	var disqus_config = function () {
+		this.page.url = '<?= $pageUrl ?>';
+		this.page.identifier = '<?= $pageUniqueIdentifier ?>';
+	};
+
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = 'https://https-www-herbsnnaturals-in.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>

@@ -32,8 +32,17 @@ class OrdersController extends AppController
 
 	public function admin_index($orderType = null)
 	{
+		$siteId = $this->Session->read('Site.id');
+
+		$sql = 'select count(*) count, status from orders where site_id = '.$siteId.' and archived = 0 group by status';
+		$ordersCountByStatus = $this->Order->query($sql);
+
+		$sql = 'select count(*) count from orders where site_id = '.$siteId.' and archived = 1';
+		$archivedOrdersCount = $this->Order->query($sql);
+
 		$conditions = [
-			'Order.site_id' => $this->Session->read('Site.id'),
+			'Order.site_id' => $siteId,
+			'Order.archived' => 0,
 		];
 
 		switch ($orderType) {
@@ -44,6 +53,7 @@ class OrdersController extends AppController
 			case Order::ORDER_STATUS_DELIVERED:
 			case Order::ORDER_STATUS_CANCELLED:
 			case Order::ORDER_STATUS_CLOSED:
+			case Order::ORDER_STATUS_RETURNED:
 				break;
 			default:
 				$orderType = Order::ORDER_STATUS_NEW;
@@ -64,6 +74,8 @@ class OrdersController extends AppController
 
 		$this->set('orderType', $orderType);
 		$this->set('orders', $orders);
+		$this->set('ordersCountByStatus', $ordersCountByStatus);
+		$this->set('archivedOrdersCount', $archivedOrdersCount);
 	}
 
 	public function details($encodedOrderId)
@@ -249,6 +261,11 @@ class OrdersController extends AppController
 		$conditions = ['Order.site_id' => $siteId, 'Order.id' => $orderId];
 		$orderDetails = $this->Order->find('first', ['conditions'=>$conditions]);
 
+		if ($orderDetails['Order']['archived']) {
+			$this->errorMsg('This action cannot be performed on archived orders');
+			$this->redirect('/admin/orders/details/'.$encodedOrderId);
+		}
+
 		$log = json_decode($orderDetails['Order']['log'], true);
 
 		$newLog = [
@@ -277,6 +294,43 @@ class OrdersController extends AppController
 		}
 
 		$this->redirect('/admin/orders/details/'.$encodedOrderId);
+		exit;
+	}
+
+	public function admin_archive($encodedOrderId, $archiveText)
+	{
+		$orderId = base64_decode($encodedOrderId);
+		$archiveText = base64_decode($archiveText);
+
+		if ($archiveText !== Order::ORDER_ARCHIVE) {
+			$this->errorMsg('Invalid request. Please try again.');
+			$this->redirect($this->request->referer());
+		}
+
+		$siteId = $this->Session->read('Site.id');
+		$conditions = ['Order.site_id' => $siteId, 'Order.id' => $orderId];
+		$orderDetails = $this->Order->find('first', ['conditions'=>$conditions]);
+
+		if (empty($orderDetails)) {
+			$this->errorMsg('You are not authorized to perform this action.');
+			$this->redirect($this->request->referer());
+		}
+
+		$this->layout = false;
+		$orderData = [
+			'Order' => [
+				'id' => $orderId,
+				'archived' => true,
+			]
+		];
+
+		if ($this->Order->save($orderData)) {
+			$this->successMsg('Order no. #' . $orderId . ' has been archived.');
+		} else {
+			$this->errorMsg('Failed to update order status');
+		}
+
+		$this->redirect($this->request->referer());
 		exit;
 	}
 

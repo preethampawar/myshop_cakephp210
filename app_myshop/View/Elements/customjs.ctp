@@ -667,24 +667,22 @@ App::uses('Order', 'Model');
 	}
 
 	function placeOrder(guest) {
-
 		guest = typeof(guest) !== 'undefined' ? 1 : 0
-
 		const placeOrderUrl = '/orders/create/' + guest
-
+		let spinnerElementId = guest === 1 ? '#confirmOrderSpinnerGuest' : '#confirmOrderSpinner'
+		let placeOrderButtonElementId = guest === 1 ? '#placeOrderLinkGuest' : '#placeOrderButton'
 		let data = {
 			'confirmed': 1,
 		}
+		let loader = spinner+'<div class="text-center small">Please wait.<br>Your order is in process. Do not press back button.</div>'
 
 		const response = postData(placeOrderUrl, data)
 
-		let loader = spinner+'<div class="text-center small">Please wait.<br>Your order is in process. Do not press back button.</div>'
-
-		$('#confirmOrderSpinner').html(loader);
-		$('#placeOrderButton').addClass('disabled');
+		$(spinnerElementId).html(loader);
+		$(placeOrderButtonElementId).addClass('disabled');
 
 		response.then(function (data) {
-			if (data.error != 1) {
+			if (data.error !== true) {
 				loadShoppingCart();
 				loadShoppingCartHeader();
 				orderSummary.hide()
@@ -700,8 +698,8 @@ App::uses('Order', 'Model');
 				showPlaceOrderLoginPopup()
 			}
 		}).finally(function() {
-			$('#confirmOrderSpinner').html('');
-			$('#placeOrderButton').removeClass('disabled');
+			$(spinnerElementId).html('');
+			$(placeOrderButtonElementId).removeClass('disabled');
 			hidePlaceOrderLoginPopup()
 		})
 	}
