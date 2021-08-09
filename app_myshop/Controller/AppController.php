@@ -11,7 +11,6 @@ class AppController extends Controller
 	public $noReplyEmail = [
 		'fromName' => 'ApnaStores',
 		'fromEmail' => 'no-reply@letsgreenify.com',
-
 	];
 
 	public $components = [
@@ -165,24 +164,6 @@ class AppController extends Controller
 		$this->Session->write('Domain', $defaultDomainInfo['Domain']);
 	}
 
-	/**
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function updateSiteVisits()
-	{
-		App::uses('Site', 'Model');
-		$siteModel = new Site;
-		$siteModel->recursive = -1;
-		$siteInfo = $siteModel->findById($this->Session->read('Site.id'));
-		$visitCount = $siteInfo['Site']['views'];
-		$tmp['Site']['id'] = $this->Session->read('Site.id');
-		$tmp['Site']['views'] = $visitCount + 1;
-		$siteModel->save($tmp);
-		$this->Session->write('SiteVisits', $visitCount);
-		return $visitCount;
-	}
-
 	public function errorMsg($msg)
 	{
 		if ($msg) {
@@ -230,8 +211,12 @@ class AppController extends Controller
 
 	public function checkSeller()
 	{
-		if (!$this->Session->read('User.seller')) {
-			$this->Session->setFlash('You are not authorized to view this page');
+		if ($this->Session->read('User.superadmin') == 1) {
+			return true;
+		}
+
+		if ($this->Session->read('User.type') !== 'seller') {
+			$this->errorMsg('You are not authorized to view this page');
 			$this->redirect('/');
 		} else {
 			return true;
@@ -240,6 +225,10 @@ class AppController extends Controller
 
 	public function isSeller()
 	{
+		if ($this->Session->read('User.superadmin') == 1) {
+			return true;
+		}
+
 		if ($this->Session->read('User.type') == 'seller') {
 			return true;
 		}

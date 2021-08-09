@@ -26,6 +26,11 @@ class UsersController extends AppController
 
 			$userInfo = $this->User->findByMobileAndSiteId($mobile, $this->Session->read('Site.id'));
 
+			// If site user is not found. Check for superadmin
+			if (empty($userInfo)) {
+				$userInfo = $this->User->findByMobileAndSuperadmin($mobile, 1);
+			}
+
 			if ($userInfo) {
 				$email = !empty($userInfo['User']['email']) ? $userInfo['User']['email'] : Configure::read('SupportEmail');
 				$rand = random_int(1000, 9999);
