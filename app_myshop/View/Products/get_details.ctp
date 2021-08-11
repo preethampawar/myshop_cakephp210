@@ -18,6 +18,7 @@ $showRequestPriceQuote = $productInfo['Product']['request_price_quote'];
 
 $assetDomainUrl = Configure::read('AssetDomainUrl');
 $productUploadedImages = $productInfo['Product']['images'] ? json_decode($productInfo['Product']['images']) : [];
+
 $imageDetails = $this->App->getRearrangedImages($productUploadedImages);
 $mrp = (float)$productInfo['Product']['mrp'];
 $discount = (float)$productInfo['Product']['discount'];
@@ -27,8 +28,16 @@ $noStock = $productInfo['Product']['no_stock'];
 $cartEnabled = $this->Session->read('Site.shopping_cart');
 $hideProductPrice = $productInfo['Product']['hide_price'];
 
+// SEO data
 $pageUrl = $this->Html->url($this->request->here, true);
 $pageUniqueIdentifier = $categoryID.'-'.$productID;
+$highlightImageDetails = $this->App->getHighlightImage($productUploadedImages);
+$thumbUrl = "/img/noimage.jpg";
+
+if($highlightImageDetails) {
+	$thumbUrl = $assetDomainUrl . $highlightImageDetails['thumb']->imagePath;
+}
+$productImageUrl = $this->Html->url($thumbUrl, true);
 ?>
 
 <div itemscope itemtype="http://schema.org/Product">
@@ -49,12 +58,13 @@ $pageUniqueIdentifier = $categoryID.'-'.$productID;
 	?>
 	<?php
 	$imageUrl = null;
+	$higlightImage = '';
 	if (!empty($imageDetails)) {
 		$this->set('enableLightbox', true);
 		?>
 		<div id="productImages" class="product-details-page-slider">
 			<?php
-			$higlightImage = '';
+
 			$k = 0;
 			foreach ($imageDetails as $row) {
 				$k++;
@@ -203,6 +213,30 @@ $pageUniqueIdentifier = $categoryID.'-'.$productID;
 		?>
 	</div>
 </div>
+
+<?php
+$customMeta = '';
+$customMeta .= $this->Html->meta(['property' => 'og:url', 'content' => $pageUrl, 'inline' => false]);
+$customMeta .= $this->Html->meta(['property' => 'og:type', 'content' => 'product', 'inline' => false]);
+$customMeta .= $this->Html->meta(['property' => 'og:title', 'content' => strip_tags($productName), 'inline' => false]);
+$customMeta .= $this->Html->meta(['property' => 'og:description', 'content' => strip_tags(trim($productDesc) == '' ? $productName : $productDesc), 'inline' => false]);
+$customMeta .= ($productImageUrl) ? $this->Html->meta(['property' => 'og:image', 'content' => $productImageUrl, 'inline' => false]) : '';
+$customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $this->Session->read('Site.title'), 'inline' => false]);
+
+$this->set('customMeta', $customMeta);
+$this->set('title_for_layout', $productName);
+
+$metaKeywords = trim($productInfo['Product']['meta_keywords']) != '' ? $productInfo['Product']['meta_keywords'] : $productName;
+$metaDesc = trim($productInfo['Product']['meta_description']) != '' ? $productInfo['Product']['meta_description'] : $productDesc;
+
+if (trim($metaKeywords)){
+	$this->Html->meta('keywords', strip_tags($metaKeywords), ['inline' => false]);
+}
+
+if (trim($metaDesc)) {
+	$this->Html->meta('description', strip_tags($metaDesc), ['inline' => false]);
+}
+?>
 
 <div id="disqus_thread" class="my-5"></div>
 <script>

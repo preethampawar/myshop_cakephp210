@@ -901,5 +901,39 @@ class AppController extends Controller
 		$email->subject($subject);
 		$email->send($mailContent);
 	}
+
+	protected function getNewOrderStatusLog($orderId, $newOrderStatus) {
+		App::uses('Order', 'Model');
+		$orderModel = new Order();
+		$orderDetails = $orderModel->findById($orderId);
+
+		if (empty($orderId) || empty($orderDetails)) {
+			$log[] = [
+				'orderStatus' => Order::ORDER_STATUS_DRAFT,
+				'date' => time()
+			];
+		} else {
+			$log = json_decode($orderDetails['Order']['log'], true);
+			$orderStatusAlreadyExists = false;
+
+			if ($log) {
+				foreach($log as $row) {
+					if ($row['orderStatus'] === $newOrderStatus) {
+						$orderStatusAlreadyExists = true;
+						break;
+					}
+				}
+			}
+
+			if ($orderStatusAlreadyExists === false) {
+				$log[] = [
+					'orderStatus' => $newOrderStatus,
+					'date' => time()
+				];
+			}
+		}
+
+		return json_encode($log);
+	}
 }
 ?>

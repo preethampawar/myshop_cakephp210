@@ -5,6 +5,8 @@ App::uses('Order', 'Model');
 class OrdersController extends AppController
 {
 
+	private $divider = '#####';
+
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
@@ -22,7 +24,7 @@ class OrdersController extends AppController
 
 		$this->paginate = [
 			'limit' => 10,
-			'order' => ['Order.created' => 'DESC'],
+			'order' => ['Order.created' => 'ASC'],
 			'conditions' => $conditions,
 		];
 		$orders = $this->paginate();
@@ -69,7 +71,7 @@ class OrdersController extends AppController
 
 		$this->paginate = [
 			'limit' => 100,
-			'order' => ['Order.created' => 'DESC'],
+			'order' => ['Order.created' => 'ASC'],
 			'conditions' => $conditions,
 		];
 		$orders = $this->paginate();
@@ -160,9 +162,6 @@ class OrdersController extends AppController
 		}
 
 		$orderEmailUrl = '/orders/sendOrderEmail/' . base64_encode($orderId) . '/NEW';
-
-		$log = json_decode($orderDetails['Order']['log'], true);
-
 		$data = $this->request->input('json_decode', true);
 		$msg = '';
 		$siteId = $this->Session->read('Site.id');
@@ -173,6 +172,8 @@ class OrdersController extends AppController
 		$totalTax = 0;
 		$payableAmount = 0;
 		$shippingAmount = $this->Session->read('Site.shipping_charges');
+
+		$log = json_decode($orderDetails['Order']['log'], true);
 		$orderStatus = Order::ORDER_STATUS_NEW;
 		$newLog = [
 			'orderStatus' => $orderStatus,
@@ -554,6 +555,248 @@ class OrdersController extends AppController
 		}
 
 		$this->set('error', $error);
+	}
+
+	public function admin_createOrder()
+	{
+		$orderStatus = Order::ORDER_STATUS_DRAFT;
+		$tmp['Order']['id'] = null;
+		$tmp['Order']['user_id'] = null;
+		$tmp['Order']['status'] = $orderStatus;
+		$tmp['Order']['site_id'] = $this->Session->read('Site.id');
+		$tmp['Order']['is_offline_order'] = 1;
+
+		$log = $this->getNewOrderStatusLog(null, $orderStatus);
+		$tmp['Order']['log'] = $log;
+
+		if ($this->Order->save($tmp)) {
+			$orderInfo = $this->Order->read();
+			$orderId = $orderInfo['Order']['id'];
+			$encodedOrderId = base64_encode($orderId);
+
+			$this->successMsg('Offline order created.');
+			$this->redirect('/admin/orders/saveOrder/'.$encodedOrderId);
+		}
+
+		$this->errorMsg('Failed to create offline order.');
+		$this->redirect('/admin/orders/');
+	}
+
+	public function admin_saveOrder($encodedOrderId)
+	{
+		$orderId = (int)base64_decode($encodedOrderId);
+
+		$error = null;
+
+		if ($orderId <= 0) {
+			$error = 'Invalid request.';
+		}
+
+		if (!$error) {
+			$orderInfo = $this->Order->findById($orderId);
+
+			if (empty($orderInfo)) {
+				$error = 'Order #' . $orderId . ' could not be found.';
+			}
+		}
+
+		if ($error) {
+			$this->errorMsg($error);
+			$this->redirect('/admin/orders/');
+		}
+
+		if ($this->request->isPost() || $this->request->isPut()) {
+			$data = $this->request->data;
+
+			$totalCartValue = 0;
+			$totalItems = 0;
+			$totalDiscount = 0;
+			$totalTax = 0;
+			$totalOrderAmount = 0;
+			$shippingAmount = (float)$data['shipping_amount'];
+
+			foreach($orderInfo['OrderProduct'] as $offlineOrderProduct) {
+				$qty = (int)$offlineOrderProduct['quantity'];
+				$mrp = (float)$offlineOrderProduct['mrp'];
+				$discount = (float)$offlineOrderProduct['discount'];
+				$salePrice = $mrp - $discount;
+				$totalProductPurchaseValue = $salePrice * $qty;
+
+				$totalCartValue += $totalProductPurchaseValue;
+				$totalItems += $qty;
+				$totalDiscount += $discount * $qty;
+			}
+			$totalOrderAmount = $totalCartValue + $shippingAmount + $totalTax;
+
+			$orderStatus = Order::ORDER_STATUS_NEW;
+
+			$log = $this->getNewOrderStatusLog($orderId, $orderStatus);
+
+			$tmpData['Order'] = [
+				'id' => $orderId,
+				'customer_name' => $data['customer_name'],
+				'customer_phone' => $data['customer_phone'],
+				'customer_email' => $data['customer_email'],
+				'customer_address' => $data['customer_address'],
+				'customer_message' => $data['customer_message'],
+				'payment_method' => $data['payment_method'],
+				'shipping_amount' => $shippingAmount,
+				'total_cart_value' => $totalCartValue,
+				'total_items' => $totalItems,
+				'total_discount' => $totalDiscount,
+				'total_tax' => $totalTax,
+				'total_order_amount' => $totalOrderAmount,
+				'status' => $orderStatus,
+				'log' => $log,
+			];
+
+			if($this->Order->save($tmpData)) {
+				$this->successMsg('Order Saved.');
+				$this->redirect('/admin/orders/');
+			} else {
+				$this->errorMsg('Something went wrong. Could not save order information.');
+			}
+
+			$orderInfo['Order'] = $tmpData['Order'];
+		}
+
+
+		// get category products
+		App::uses('CategoryProduct', 'Model');
+		$categoryProductModel = new CategoryProduct;
+
+		$categoryProductModel->bindModel([
+			'belongsTo' => [
+				'Product' => [
+					'order' => 'Product.name',
+					'fields' => ['Product.id', 'Product.name', 'Product.mrp', 'Product.discount'],
+					'conditions' => ['Product.active' => 1, 'Product.deleted' => 0],
+				],
+				'Category' => [
+					'fields' => ['Category.id', 'Category.name'],
+					'conditions' => ['Category.active' => 1, 'Category.deleted' => 0],
+				]
+			]
+		]);
+
+		$products = $categoryProductModel->find('all', ['conditions' => ['CategoryProduct.site_id' => $this->Session->read('Site.id')]]);
+
+		$categoryProducts = [];
+		if ($products) {
+			foreach($products as $row) {
+				if (!empty($row['Category']['id']) && !empty($row['Product']['id'])) {
+					$categoryIdProductIdHash = $row['Category']['id'] . $this->divider . $row['Product']['id'];
+
+					$categoryProducts[$categoryIdProductIdHash] = $row['Product']['name']
+						. ' [ '.$row['Category']['name'].' ]'
+						. '[ mrp='.$row['Product']['mrp'].' ]'
+						. '[ discount='.$row['Product']['discount'].' ]';
+
+				}
+			}
+		}
+
+		$this->set('categoryProducts', $categoryProducts);
+		$this->set('orderInfo', $orderInfo);
+	}
+
+	public function admin_addOfflineProduct($encodedOrderId) {
+		$orderId = (int)base64_decode($encodedOrderId);
+
+		if ($this->request->isPost() || $this->request->isPut()) {
+			list($categoryId, $productId) = explode($this->divider, $this->request->data['categoryIdProductId']);
+
+			// get category product
+			App::uses('CategoryProduct', 'Model');
+			$categoryProductModel = new CategoryProduct;
+
+			App::uses('Category', 'Model');
+			$categoryModel = new Category;
+			$category = $categoryModel->findById($categoryId, ['Category.id', 'Category.name'], [], -1);
+
+			App::uses('Product', 'Model');
+			$productModel = new Product;
+			$product = $productModel->findById($productId, ['Product.id', 'Product.name', 'Product.mrp', 'Product.discount'], [], -1);
+
+			$qty = (int)($this->request->data['quantity'] ?? 1);
+			$qty = $qty < 1 ? 1 : $qty;
+
+			$data['OrderProduct'] = [
+				'id' => null,
+				'order_id' => $orderId,
+				'site_id' => $this->Session->read('Site.id'),
+				'product_name' => $product['Product']['name'],
+				'category_name' => $category['Category']['name'],
+				'quantity' => $qty,
+				'mrp' => $product['Product']['mrp'],
+				'discount' => $product['Product']['discount'],
+				'sale_price' => (float)$product['Product']['mrp'] - (float)$product['Product']['discount'],
+			];
+
+			App::uses('OrderProduct', 'Model');
+			$orderProductModel = new OrderProduct;
+
+			if($orderProductModel->save($data)) {
+				$this->successMsg('Product added successfully');
+				$this->redirect('/admin/orders/saveOrder/'.$encodedOrderId);
+			}
+		}
+
+		$this->errorMsg('Something went wrong. Please try again.');
+		$this->redirect('/admin/orders/saveOrder/'.$encodedOrderId);
+	}
+
+	public function admin_updateOfflineProducts($encodedOrderId)
+	{
+		if ($this->request->isPost() || $this->request->isPut()) {
+			$data = $this->request->data;
+			debug($data);
+
+			foreach($data as $orderProductId => $row) {
+
+				$qty = (int)$row['quantity'];
+				$mrp = (float)$row['mrp'];
+				$discount = (float)$row['discount'];
+				$salePrice = $mrp - $discount;
+
+				$tmpData['OrderProduct'] = [
+					'id' => $orderProductId,
+					'quantity' => $qty,
+					'mrp' => $mrp,
+					'discount' => $discount,
+					'sale_price' => $salePrice,
+				];
+
+				App::uses('OrderProduct', 'Model');
+				$orderProductModel = new OrderProduct;
+
+				$orderProductModel->save($tmpData);
+			}
+
+			$this->successMsg('Products updated successfully');
+			$this->redirect('/admin/orders/saveOrder/'.$encodedOrderId);
+		}
+
+		$this->errorMsg('Something went wrong. Please try again.');
+		$this->redirect('/admin/orders/saveOrder/'.$encodedOrderId);
+
+		exit;
+	}
+
+	public function admin_deleteOrderProduct($encodedOrderProductId)
+	{
+		$orderProductId = (int)base64_decode($encodedOrderProductId);
+
+		App::uses('OrderProduct', 'Model');
+		$orderProductModel = new OrderProduct;
+
+		if($orderProductModel->delete($orderProductId)) {
+			$this->successMsg('Product deleted successfully from this order');
+		} else {
+			$this->errorMsg('Failed to delete the product');
+		}
+
+		$this->redirect($this->request->referer());
 	}
 
 }
