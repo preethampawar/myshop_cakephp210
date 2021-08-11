@@ -257,9 +257,6 @@ class ProductsController extends AppController
 			}
 			// Sanitize data
 			$data['Product']['name'] = Sanitize::paranoid($data['Product']['name'], [' ', '-']);
-			$data['Product']['meta_keywords'] = Sanitize::paranoid($data['Product']['meta_keywords'], [' ', '-', ',']);
-			$data['Product']['meta_description'] = Sanitize::paranoid($data['Product']['meta_description'], [' ', '-', ',']);
-
 
 			if (!$errorMsg) {
 				$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.name' => $data['Product']['name'], 'Product.id NOT' => $productID];

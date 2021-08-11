@@ -262,6 +262,31 @@ $this->set('enableTextEditor', true);
 							required
 					>
 				</div>
+
+				<div class="my-3">
+					<label for="ProductMetaKeywords" class="form-label">Meta Keywords (SEO)</label>
+					<textarea
+							id="ProductMetaKeywords"
+							name="data[Product][meta_keywords]"
+							class="form-control form-control-sm"
+							placeholder="Enter meta keywords"
+							rows="2"
+					><?php echo $this->data['Product']['meta_keywords']; ?></textarea>
+					<div class="small text-muted">Note: Enter 5 to 10 unique keywords separated by commas. Do not enter any special chars.</div>
+				</div>
+
+				<div class="my-3">
+					<label for="ProductMetaDesc" class="form-label">Meta Description (SEO)</label>
+					<textarea
+							id="ProductMetaDesc"
+							name="data[Product][meta_description]"
+							class="form-control form-control-sm"
+							placeholder="Enter a short description of this product"
+							rows="2"
+					><?php echo $this->data['Product']['meta_description']; ?></textarea>
+					<div class="small text-muted">Note: Enter a short description of this product. Preferably, a very short paragraph without any special chars.</div>
+				</div>
+
 			</div>
 			<br>
 			<div class="my-3 py-3 d-inline">
@@ -274,8 +299,6 @@ $this->set('enableTextEditor', true);
 		</div>
 
 		<?php
-		echo $this->Form->hidden('Product.meta_keywords');
-		echo $this->Form->hidden('Product.meta_description');
 		echo $this->Form->end();
 		?>
 </div>

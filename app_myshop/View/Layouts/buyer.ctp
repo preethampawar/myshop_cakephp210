@@ -3,8 +3,26 @@
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title><?= $this->Session->read('Site.title') ?></title>
+
+	<?php
+	echo $this->fetch('meta');
+	echo (isset($customMeta)) ? $customMeta : null;
+	echo (isset($facebookMetaTags)) ? $facebookMetaTags : null;
+	?>
+
+	<title><?php
+		if (!empty($title_for_layout)) {
+			echo $title_for_layout . ' - ' . $this->Session->read('Site.title');
+		} else {
+			$siteCaption = $this->Session->read('Site.caption');
+			$title_for_layout = $this->Session->read('Site.title');
+			$title_for_layout .= (!empty($siteCaption)) ? ' - ' . $siteCaption : '';
+			echo $title_for_layout;
+		}
+		?></title>
+
 	<script>
 		if (!window.fetch) {
 			window.location = '/pages/unsupportedbrowser'

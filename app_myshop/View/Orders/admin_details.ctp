@@ -83,7 +83,7 @@ if ($log) {
 		}
 	}
 }
-$createdDate = $createdDate ?: $modifiedDate;
+$createdDate = $createdDate ?? $modifiedDate;
 ?>
 
 <div class="p-3 shadow small mt-4">

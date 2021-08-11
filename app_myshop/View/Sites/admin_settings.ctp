@@ -139,6 +139,29 @@ $this->set('enableTextEditor', true);
 					><?php echo $this->data['Site']['analytics_code']; ?></textarea>
 				</div>
 				<div class="mb-4">
+					<label for="SiteMetaKeywords" class="form-label">Meta Keywords (SEO)</label>
+					<textarea
+							id="SiteMetaKeywords"
+							name="data[Site][meta_keywords]"
+							class="form-control form-control-sm"
+							placeholder="Enter meta keywords"
+							rows="2"
+					><?php echo $this->data['Site']['meta_keywords']; ?></textarea>
+					<div class="small text-muted">Note: Enter 5 to 10 unique keywords separated by commas. Do not enter any special chars.</div>
+				</div>
+				<div class="mb-4">
+					<label for="SiteMetaDesc" class="form-label">Meta Description (SEO)</label>
+					<textarea
+							id="SiteMetaDesc"
+							name="data[Site][meta_description]"
+							class="form-control form-control-sm"
+							placeholder="Enter short description of the store"
+							rows="2"
+					><?php echo $this->data['Site']['meta_description']; ?></textarea>
+					<div class="small text-muted">Note: Enter short description of this store. Preferably, a very short paragraph without any special chars.</div>
+				</div>
+
+				<div class="mb-4">
 					<label for="SiteShippingCharges" class="form-label">Shipping Charges</label>
 
 					<input

@@ -167,14 +167,13 @@ $this->Html->meta('description', $desc, ['inline' => false]);
 	</div>
 	<?php
 	$customMeta = '';
-	$customMeta .= $this->Html->meta(['property' => 'og:title', 'content' => $productName, 'inline' => false]);
-	$customMeta .= $this->Html->meta(['property' => 'og:type', 'content' => 'product', 'inline' => false]);
 	$customMeta .= $this->Html->meta(['property' => 'og:url', 'content' => $url, 'inline' => false]);
-
+	$customMeta .= $this->Html->meta(['property' => 'og:type', 'content' => 'product', 'inline' => false]);
+	$customMeta .= $this->Html->meta(['property' => 'og:title', 'content' => $productName, 'inline' => false]);
+	$customMeta .= $this->Html->meta(['property' => 'og:description', 'content' => $desc, 'inline' => false]);
 	$customMeta .= ($imageUrl) ? $this->Html->meta(['property' => 'og:image', 'content' => ($higlightImage) ? $higlightImage : $imageUrl, 'inline' => false]) : '';
 	$customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $this->Session->read('Site.title'), 'inline' => false]);
 	//$customMeta.=$this->Html->meta(array('property' => 'fb:admins', 'content' => '530846121', 'inline'=>false));
-	$customMeta .= $this->Html->meta(['property' => 'og:description', 'content' => $desc, 'inline' => false]);
 	$this->set('customMeta', $customMeta);
 	?>
 
