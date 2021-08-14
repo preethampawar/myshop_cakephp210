@@ -55,48 +55,41 @@ class AppController extends Controller
 		$this->noReplyEmail = $this->getNoReplyEmail();
 	}
 
-	public function setBuyerCategories()
+	public function isSellerForThisSite()
 	{
-		App::uses('Category', 'Model');
-		$categoryModel = new Category;
-		$categories = $categoryModel->getCategories($this->Session->read('Site.id'));
-		$this->Session->write('SiteCategories', $categories);
-	}
-
-	private function getDefaultDomainInfo()
-	{
-		$siteInfo = [];
-		$dName = $this->request->host();
-
-		App::import('Model', 'Domain');
-		$domainModel = new Domain;
-		$domainModel->unbindModel(['belongsTo'=>['Site']]);
-		$sitedomain = $domainModel->findByName($dName, ['Domain.id', 'Domain.site_id']);
-
-		if (!empty($sitedomain)) {
-
-			// find all domains related to the selected site and get the default domain
-			$sitedomains = $domainModel->findAllBySiteId($sitedomain['Domain']['site_id']);
-
-			App::uses('User', 'Model');
-			$userModel = new User;
-			$userModel->recursive = '-1';
-			$userModel->unbindModel(['hasOne'=>['Site']]);
-
-			foreach ($sitedomains as $row) {
-				if ($row['Domain']['default']) {
-					$siteUser = $userModel->findById($row['Site']['user_id']);
-
-					$siteInfo['Domain'] = $row['Domain'];
-					$siteInfo['Site'] = $row['Site'];
-					$siteInfo['Site']['Account'] = $siteUser['User'] ?? null;
-
-					break;
-				}
-			}
+		if ($this->Session->read('User.superadmin') == 1) {
+			return true;
 		}
 
-		return $siteInfo;
+		if ($this->isSeller()) {
+			return true;
+		}
+
+		if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function isSeller()
+	{
+		if ($this->Session->read('User.superadmin') == 1) {
+			return true;
+		}
+
+		if ($this->Session->read('User.type') == 'seller') {
+			return true;
+		}
+		return false;
+	}
+
+	public function errorMsg($msg)
+	{
+		if ($msg) {
+			$this->Session->setFlash($msg, 'Flash/error');
+		}
+		return true;
 	}
 
 	/**
@@ -164,12 +157,56 @@ class AppController extends Controller
 		$this->Session->write('Domain', $defaultDomainInfo['Domain']);
 	}
 
-	public function errorMsg($msg)
+	private function getDefaultDomainInfo()
 	{
-		if ($msg) {
-			$this->Session->setFlash($msg, 'Flash/error');
+		$siteInfo = [];
+		$dName = $this->request->host();
+
+		App::import('Model', 'Domain');
+		$domainModel = new Domain;
+		$domainModel->unbindModel(['belongsTo' => ['Site']]);
+		$sitedomain = $domainModel->findByName($dName, ['Domain.id', 'Domain.site_id']);
+
+		if (!empty($sitedomain)) {
+
+			// find all domains related to the selected site and get the default domain
+			$sitedomains = $domainModel->findAllBySiteId($sitedomain['Domain']['site_id']);
+
+			App::uses('User', 'Model');
+			$userModel = new User;
+			$userModel->recursive = '-1';
+			$userModel->unbindModel(['hasOne' => ['Site']]);
+
+			foreach ($sitedomains as $row) {
+				if ($row['Domain']['default']) {
+					$siteUser = $userModel->findById($row['Site']['user_id']);
+
+					$siteInfo['Domain'] = $row['Domain'];
+					$siteInfo['Site'] = $row['Site'];
+					$siteInfo['Site']['Account'] = $siteUser['User'] ?? null;
+
+					break;
+				}
+			}
 		}
-		return true;
+
+		return $siteInfo;
+	}
+
+	protected function getNoReplyEmail()
+	{
+		return [
+			'fromName' => html_entity_decode($this->Session->read('Site.title')),
+			'fromEmail' => 'no-reply@letsgreenify.com',
+		];
+	}
+
+	public function setBuyerCategories()
+	{
+		App::uses('Category', 'Model');
+		$categoryModel = new Category;
+		$categories = $categoryModel->getCategories($this->Session->read('Site.id'));
+		$this->Session->write('SiteCategories', $categories);
 	}
 
 	public function noticeMsg($msg)
@@ -223,35 +260,6 @@ class AppController extends Controller
 		}
 	}
 
-	public function isSeller()
-	{
-		if ($this->Session->read('User.superadmin') == 1) {
-			return true;
-		}
-
-		if ($this->Session->read('User.type') == 'seller') {
-			return true;
-		}
-		return false;
-	}
-
-	public function isSellerForThisSite()
-	{
-		if ($this->Session->read('User.superadmin') == 1) {
-			return true;
-		}
-
-		if ($this->isSeller()) {
-			return true;
-		}
-
-		if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {
-			return true;
-		}
-
-		return false;
-	}
-
 	function checkLandingPage()
 	{
 		$contentInfo = $this->getLandingPageInfo();
@@ -286,33 +294,6 @@ class AppController extends Controller
 		return $contentInfo;
 	}
 
-	/**
-	 * Function to check if product is from selected site.
-	 */
-	function isSiteProduct($productID)
-	{
-		App::uses('Product', 'Model');
-		$productModel = new Product;
-		$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.id' => $productID];
-		return $productModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
-	}
-
-	public function getRearrangedImages($data)
-	{
-		if (!is_array($data) and !empty($data)) {
-			$data = json_decode($data);
-		}
-
-		$images = [];
-		if($data) {
-			foreach ($data as $row) {
-				$images[$row->commonId][$row->type] = $row;
-			}
-		}
-
-		return $images;
-	}
-
 	public function getHighlightImage($data)
 	{
 		$highlightImage = [];
@@ -334,6 +315,22 @@ class AppController extends Controller
 		}
 
 		return $highlightImage;
+	}
+
+	public function getRearrangedImages($data)
+	{
+		if (!is_array($data) and !empty($data)) {
+			$data = json_decode($data);
+		}
+
+		$images = [];
+		if ($data) {
+			foreach ($data as $row) {
+				$images[$row->commonId][$row->type] = $row;
+			}
+		}
+
+		return $images;
 	}
 
 	/**
@@ -560,7 +557,7 @@ class AppController extends Controller
 			$productVisitModel->deleteAll($conditions);
 
 			// delete product images
-			$baseUrl = Router::url('/', true );
+			$baseUrl = Router::url('/', true);
 			$productInfo = $this->isSiteProduct($productID);
 			$productImages = $this->getRearrangedImages($productInfo['Product']['images']);
 
@@ -584,6 +581,17 @@ class AppController extends Controller
 		}
 
 		return true;
+	}
+
+	/**
+	 * Function to check if product is from selected site.
+	 */
+	function isSiteProduct($productID)
+	{
+		App::uses('Product', 'Model');
+		$productModel = new Product;
+		$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.id' => $productID];
+		return $productModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 	}
 
 	/**
@@ -831,14 +839,15 @@ class AppController extends Controller
 
 		$productsCount = $this->getSiteProductsCount();
 
-		if($productsCount <= $productsLimitForThisSite) {
+		if ($productsCount <= $productsLimitForThisSite) {
 			return false;
 		}
 
 		return true;
 	}
 
-	public function getSiteProductsCount() {
+	public function getSiteProductsCount()
+	{
 		App::uses('Product', 'Model');
 		$productModel = new Product();
 
@@ -855,21 +864,13 @@ class AppController extends Controller
 		if (!empty(trim($storeNotificationsEmails))) {
 			$storeNotificationsEmails = explode(',', $storeNotificationsEmails);
 			if ($storeNotificationsEmails) {
-				foreach($storeNotificationsEmails as $storeNotificationsEmail) {
+				foreach ($storeNotificationsEmails as $storeNotificationsEmail) {
 					$bccEmails[] = $storeNotificationsEmail;
 				}
 			}
 		}
 
 		return $bccEmails;
-	}
-
-	protected function getNoReplyEmail()
-	{
-		return [
-			'fromName' => html_entity_decode($this->Session->read('Site.title')),
-			'fromEmail' => 'no-reply@letsgreenify.com',
-		];
 	}
 
 	protected function createCustomer($mobile, $email)
@@ -902,7 +903,8 @@ class AppController extends Controller
 		$email->send($mailContent);
 	}
 
-	protected function getNewOrderStatusLog($orderId, $newOrderStatus) {
+	protected function getNewOrderStatusLog($orderId, $newOrderStatus)
+	{
 		App::uses('Order', 'Model');
 		$orderModel = new Order();
 		$orderDetails = $orderModel->findById($orderId);
@@ -917,7 +919,7 @@ class AppController extends Controller
 			$orderStatusAlreadyExists = false;
 
 			if ($log) {
-				foreach($log as $row) {
+				foreach ($log as $row) {
 					if ($row['orderStatus'] === $newOrderStatus) {
 						$orderStatusAlreadyExists = true;
 						break;
@@ -936,4 +938,5 @@ class AppController extends Controller
 		return json_encode($log);
 	}
 }
+
 ?>
