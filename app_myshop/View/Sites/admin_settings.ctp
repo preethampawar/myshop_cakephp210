@@ -118,6 +118,10 @@ $this->set('enableTextEditor', true);
 						>
 						<span class="text-muted small">Note: You can specify more than one email address separated by commas "<b>,</b>"</span> (<code>abc@gmail.com,xyz@gmail.com</code>).
 					</div>
+
+					<?php
+					/*
+					?>
 					<div class="mb-4">
 						<label for="StoreSupportEmailAddress" class="form-label">Store Support Email </label>
 
@@ -144,6 +148,9 @@ $this->set('enableTextEditor', true);
 								required
 						>
 					</div>
+					<?php
+					*/
+					?>
 				</div>
 
 				<hr class="mt-5">

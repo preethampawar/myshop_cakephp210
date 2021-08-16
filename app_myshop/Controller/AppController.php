@@ -51,8 +51,6 @@ class AppController extends Controller
 		Configure::write('SupportEmail', $supportEmail);
 		Configure::write('NoReply', ['name' => $this->request->domain(), 'email' => 'noreply@' . $this->request->domain()]);
 		Configure::write('Security.salt', '');
-
-		$this->noReplyEmail = $this->getNoReplyEmail();
 	}
 
 	public function isSellerForThisSite()
@@ -191,14 +189,6 @@ class AppController extends Controller
 		}
 
 		return $siteInfo;
-	}
-
-	protected function getNoReplyEmail()
-	{
-		return [
-			'fromName' => html_entity_decode($this->Session->read('Site.title')),
-			'fromEmail' => 'no-reply@letsgreenify.com',
-		];
 	}
 
 	public function setBuyerCategories()
@@ -897,7 +887,6 @@ class AppController extends Controller
 		$subject = 'Registration Successful - ' . $mobile;
 		$mailContent = 'Your account has been created with us. You can use your mobile no. ' . $mobile . ' to login.';
 		$email = new CakeEmail('smtpNoReply');
-		$email->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']]);
 		$email->to([$userEmail => $userEmail]);
 		$email->subject($subject);
 		$email->send($mailContent);

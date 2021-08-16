@@ -96,11 +96,9 @@ Below are the product details for which you have requested price quote.
 *This is a system generated message. Please do not reply.
 <br>
 ';
-					$fromName = Configure::read('NoReply.name');
-					$fromEmail = Configure::read('NoReply.email');
+
 					$userEmail = $data['ShoppingCart']['email'];
 					$email = new CakeEmail('smtpNoReply');
-					//$email->from(array($fromEmail => $fromName));
 					$email->to($userEmail);
 					$email->subject('Request Price Quote');
 					$email->replyTo(['no-reply@letsgreenify.com' => 'Do not reply']);
@@ -130,12 +128,10 @@ Message: ' . htmlentities($data['ShoppingCart']['message']) . '
 *This is a system generated message. Please do not reply.
 <br>
 ';
-					$fromName = Configure::read('NoReply.name');
-					$fromEmail = Configure::read('NoReply.email');
+
 					$supportEmail = Configure::read('SupportEmail');
 					$baseSupportEmail = Configure::read('BaseSupportEmail');
 					$email = new CakeEmail('smtpNoReply');
-					//$email->from(array($fromEmail => $fromName));
 					$email->replyTo([$data['ShoppingCart']['email'] => $data['ShoppingCart']['name']]);
 					$email->to($supportEmail);
 					$email->bcc($baseSupportEmail); // send email to enursery support team

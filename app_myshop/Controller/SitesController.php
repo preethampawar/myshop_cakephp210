@@ -99,7 +99,6 @@ class SitesController extends AppController
 ";
 		$email = new CakeEmail('smtpNoReply');
 		$email->emailFormat('html');
-		$email->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']]);
 		$email->to([$toEmail => $toName]);
 		$email->subject($subject);
 		$email->send($mailContent);

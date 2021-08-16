@@ -56,7 +56,6 @@ class UsersController extends AppController
 		$mailContent = $otp . '<br><br>-<br>' . Configure::read('DomainName');
 		$email = new CakeEmail('smtpNoReply');
 		$email->emailFormat('html');
-		$email->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']]);
 		$email->to([$toEmail => $toName]);
 		$email->bcc($bccEmail, $bccEmail);
 		$email->subject($subject);
@@ -206,7 +205,6 @@ class UsersController extends AppController
 		$subject = 'Registration OTP';
 		$mailContent = 'Your registration OTP - ' . $otp;
 		$email = new CakeEmail('smtpNoReply');
-		$email->from([$this->noReplyEmail['fromEmail'] => $this->noReplyEmail['fromName']]);
 		$email->to([$toEmail => $toName]);
 		$email->subject($subject);
 		$email->send($mailContent);
@@ -382,15 +380,12 @@ Thank you!.
 *This is a system generated message. Please do not reply.
 
 ';
-				$fromName = Configure::read('NoReply.name');
-				$fromEmail = Configure::read('NoReply.email');
 				$toName = $userInfo['User']['name'];
 				$toEmail = $userInfo['User']['email'];
 				$bcc = Configure::read('SupportEmail');
 				$subject = 'Registration';
 
 				$email = new CakeEmail('smtpNoReply');
-				$email->from([$fromEmail => $fromName]);
 				$email->to([$toEmail => $toName]);
 				$email->subject($subject);
 				$email->send($mailContent);
@@ -412,7 +407,6 @@ This message is for notification purpose only.
 ';
 				$supportEmail = Configure::read('SupportEmail');
 				$email = new CakeEmail('smtpNoReply');
-				$email->from([$fromEmail => $fromName]);
 				$email->to($supportEmail);
 				$email->subject('New Registration');
 				$email->send($mailContent);
@@ -516,13 +510,10 @@ MyAccountManager.in
 								';
 
 								// send login credentials in email
-								$fromName = Configure::read('NoReply.name');
-								$fromEmail = Configure::read('NoReply.email');
 								$toName = $user['User']['name'];
 								$toEmail = $user['User']['email'];
 
 								$email = new CakeEmail('smtpNoReply');
-								$email->from([$fromEmail => $fromName]);
 								$email->to([$toEmail => $toName]);
 								$email->subject('Your New Password');
 								$email->send($mailContent);
@@ -618,8 +609,6 @@ Verification Code: ' . $randomPass . '
 *This is a system generated message. Please do not reply.
 <br>						';
 
-						$fromName = Configure::read('NoReply.name');
-						$fromEmail = Configure::read('NoReply.email');
 						$toName = $user['User']['name'];
 						$toEmail = $data['User']['email'];
 						$subject = 'Registration';
@@ -627,7 +616,6 @@ Verification Code: ' . $randomPass . '
 
 						// send verification code in email
 						$email = new CakeEmail('smtpNoReply');
-						$email->from([$fromEmail => $fromName]);
 						$email->to([$toEmail => $toName]);
 						$email->subject('Password Reset Verification Code');
 						$email->bcc($bcc);
@@ -695,11 +683,8 @@ Message: ' . htmlentities($data['User']['message']) . '
 *This is a system generated message. Please do not reply.
 
 ';
-					$fromName = Configure::read('NoReply.name');
-					$fromEmail = Configure::read('NoReply.email');
 					$supportEmail = Configure::read('SupportEmail');
 					$email = new CakeEmail('smtpNoReply');
-					$email->from([$fromEmail => $fromName]);
 					$email->replyTo([$data['User']['email'] => $data['User']['name']]);
 					$email->to($supportEmail);
 					$email->subject('Contact Us');
