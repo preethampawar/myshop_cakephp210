@@ -433,14 +433,12 @@ class OrdersController extends AppController
 		$toName = $order['Order']['customer_name'];
 		$toEmail = $order['Order']['customer_email'];
 		$bccEmails = $this->getBccEmails();
-		$noReply = $this->getNoReplyEmail();
 
 		$Email = new CakeEmail('smtpNoReply');
 		$Email->viewVars(array('order' => $order));
 		$Email->template($emailTemplate, 'default')
 			->emailFormat('html')
 			->to([$toEmail => $toName])
-			->from([$noReply['fromEmail'] => $noReply['fromName']])
 			->bcc($bccEmails)
 			->subject($subject)
 			->send();

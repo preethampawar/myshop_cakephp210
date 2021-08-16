@@ -272,10 +272,8 @@ class ProductsController extends AppController
 
 						$categoryProductModel->deleteAll($conditions);
 
-						if ($categoryID && $data['Category']['id']) {
-							if (!in_array($categoryID, $data['Category']['id'])) {
-								$data['Category']['id'][] = $categoryID;
-							}
+						if (empty($data['Category']['id'])) {
+							$data['Category']['id'] = [$categoryID];
 						}
 
 						if ($data['Category']['id']) {
