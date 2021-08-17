@@ -47,9 +47,9 @@ class AppController extends Controller
 		Configure::write('DomainUrl', 'http://' . $this->request->host());
 
 		/* Site email configuration */
-		$supportEmail = $this->Session->read('Site.contact_email');
-		Configure::write('SupportEmail', $supportEmail);
-		Configure::write('NoReply', ['name' => $this->request->domain(), 'email' => 'noreply@' . $this->request->domain()]);
+//		$supportEmail = $this->Session->read('Site.contact_email');
+//		Configure::write('SupportEmail', $supportEmail);
+//		Configure::write('NoReply', ['name' => $this->request->domain(), 'email' => 'noreply@' . $this->request->domain()]);
 		Configure::write('Security.salt', '');
 	}
 
@@ -366,6 +366,18 @@ class AppController extends Controller
 		$blogModel = new Blog;
 		$conditions = ['Blog.site_id' => $this->Session->read('Site.id'), 'Blog.id' => $blogID];
 		$content = $blogModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		return $content;
+	}
+
+	/**
+	 * Function to check if banner is from selected site.
+	 */
+	function isSiteBanner($bannerId)
+	{
+		App::uses('Banner', 'Model');
+		$bannerModel = new Banner;
+		$conditions = ['Banner.site_id' => $this->Session->read('Site.id'), 'Banner.id' => $bannerId];
+		$content = $bannerModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 		return $content;
 	}
 

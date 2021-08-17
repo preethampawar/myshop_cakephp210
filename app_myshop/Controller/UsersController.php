@@ -56,7 +56,7 @@ class UsersController extends AppController
 		$mailContent = $otp . '<br><br>-<br>' . Configure::read('DomainName');
 		$email = new CakeEmail('smtpNoReply');
 		$email->emailFormat('html');
-		$email->to([$toEmail => $toName]);
+		$email->to([$toEmail => $toEmail]);
 		$email->bcc($bccEmail, $bccEmail);
 		$email->subject($subject);
 		$email->send($mailContent);
@@ -205,7 +205,7 @@ class UsersController extends AppController
 		$subject = 'Registration OTP';
 		$mailContent = 'Your registration OTP - ' . $otp;
 		$email = new CakeEmail('smtpNoReply');
-		$email->to([$toEmail => $toName]);
+		$email->to([$toEmail => $toEmail]);
 		$email->subject($subject);
 		$email->send($mailContent);
 	}
