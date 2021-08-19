@@ -284,7 +284,7 @@ class BannersController extends AppController
 			'Banner.images',
 			'Banner.url',
 		];
-		$banners = $this->Banner->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'sort'=>'Banner.created DESC', 'recursive'=> -1]);
+		$banners = $this->Banner->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'order'=>'Banner.created DESC', 'recursive'=> -1]);
 
 		$this->set('banners', $banners);
 	}

@@ -53,7 +53,7 @@ class UsersController extends AppController
 		$subject = 'Login OTP for ' . $toName;
 		$bccEmail = Configure::read('AdminEmail');
 
-		$mailContent = '<p>Please use the below OTP to login.</p><p><b>' . $otp . '</b></p><p>Note*: The above OTP is valid only for 15mins.</p><br><br>-<br>' . Configure::read('DomainName');
+		$mailContent = '<p>Please use the below OTP to login.</p><p><b>' . $otp . '</b></p><p><br>*Note: The above OTP is valid only for 15mins.</p><br><br>-<br>' . $this->Session->read('Site.title');
 		$email = new CakeEmail('smtpNoReply');
 		$email->emailFormat('html');
 		$email->to([$toEmail => $toEmail]);
@@ -374,7 +374,7 @@ Below are your login details
 Thank you!.
 
 -
-' . Configure::read('Domain') . '
+' . $this->Session->read('Site.title') . '
 
 
 *This is a system generated message. Please do not reply.
@@ -395,12 +395,12 @@ Thank you!.
 Dear Admin,
 
 ' .
-					$toName . '(' . $toEmail . ') has registered on ' . Configure::read('Domain') . '
+					$toName . '(' . $toEmail . ') has registered on ' . $this->Session->read('Site.title') . '
 
 This message is for notification purpose only.
 
 -
-' . Configure::read('Domain') . '
+' . $this->Session->read('Site.title') . '
 
 *This is a system generated message. Please do not reply.
 
@@ -603,7 +603,7 @@ Verification Code: ' . $randomPass . '
 <br><br>
 
 -<br>
-' . $this->Session->read('Domain.name') . '
+' . $this->Session->read('Site.title') . '
 <br>
 <br>
 *This is a system generated message. Please do not reply.
@@ -668,7 +668,7 @@ Verification Code: ' . $randomPass . '
 					$mailContent = '
 Dear Admin,
 
-A person has tried to contact you on ' . Configure::read('Domain') . '.
+A person has tried to contact you on ' . $this->Session->read('Site.title') . '.
 
 Contact Details:
 ----------------------------------------
@@ -678,7 +678,7 @@ Message: ' . htmlentities($data['User']['message']) . '
 
 
 -
-' . Configure::read('Domain') . '
+' . $this->Session->read('Site.title') . '
 
 *This is a system generated message. Please do not reply.
 
