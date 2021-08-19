@@ -166,12 +166,12 @@
 			</div>
 		</nav>
 
-		<div class="shadow border-bottom bg-white sticky-top border-warning bg-light border-4">
+		<div class="shadow border-bottom sticky-top border-warning bg-light border-4">
 			<ul class="nav container justify-content-between py-2 small">
 				<li class="nav-item">
 					<div id="topCategoriesMenu">
-						<a href="#" class="nav-link  fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-							<i class="fa fa-bars"></i> Shop By Category
+						<a href="#" class="nav-link fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
+							<span class="px-2 py-1 border border-warning rounded-pill border-2"><i class="fa fa-bars text-primary"></i></span> Shop By Category
 						</a>
 					</div>
 				</li>
@@ -240,7 +240,11 @@
 				</div>
 				<div class="offcanvas-body" id="categoriesMenuBody">
 					<?php echo $this->element('categories_menu'); ?>
+					<div class="mt-4 text-center">
+						<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
+					</div>
 				</div>
+
 			</div>
 
 			<!-- Shopping Cart -->
