@@ -1,7 +1,10 @@
+<?php
+$this->set('title_for_layout', $categoryInfo['Category']['name']);
+?>
 <section id="ProductInfo">
 	<article>
 		<header>
-			<h2><?php echo ucwords($categoryInfo['Category']['name']); ?></h2>
+			<h1><?php echo ucwords($categoryInfo['Category']['name']); ?></h1>
 			<h6>Showing all products in this category</h6>
 			<br>
 		</header>
