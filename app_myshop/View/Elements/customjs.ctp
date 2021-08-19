@@ -824,12 +824,22 @@ App::uses('Order', 'Model');
 
 		return response
 	}
+
+	// load store banners in homepage
+	function showSlideShowInHomePage() {
+		let slideShowUrl = '/banners/slideshow/1';
+		const data = getPage(slideShowUrl);
+		data.then(function (response) {
+			$("#storeSlideShow").html(response);
+		});
+
+		return data;
+	}
 </script>
 
 <script>
 	// scripts executed after the page load
 	$(document).ready(function () {
-
 		<?php if ($this->Session->read('Site.shopping_cart')): ?>
 		try {
 			loadShoppingCartHeader();
@@ -838,6 +848,21 @@ App::uses('Order', 'Model');
 			console.log('Error - Shopping cart top nav header: ', err.message);
 		}
 		<?php endif; ?>
+
+		<?php
+		// show slideshow only in homepage
+		$slideshowEnabled = (int)$this->Session->read('Site.show_banners') === 1;
+
+		if($slideshowEnabled && $this->request->params['action'] === 'display' && $this->request->params['pass'][0] === 'home') {
+		?>
+			try {
+				showSlideShowInHomePage();
+			} catch (err) {
+				console.log('Error - Slide show: ', err.message);
+			}
+		<?php
+		}
+		?>
 
 		try {
 			lazyLoadImages();
