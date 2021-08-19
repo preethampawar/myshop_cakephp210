@@ -88,6 +88,15 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				class="form-control form-control-sm"><?= $orderDetails['Order']['customer_message'] ?></textarea>
 		</div>
 	</div>
+
+	<?php
+	if ($prefilledDeliveryDetails) {
+		?>
+			<div class="alert alert-warning mt-3">The above delivery details are pre-filled from your last order. Please cross check and confirm the details before placing a new order.</div>
+		<?php
+	}
+	?>
+
 	<div class="mt-4 text-center">
 		<div class="d-flex justify-content-center">
 			<button type="button" class="btn btn-secondary me-4" onclick="orderDeliveryDetails.hide(); myShoppingCart.show()">Back</button>

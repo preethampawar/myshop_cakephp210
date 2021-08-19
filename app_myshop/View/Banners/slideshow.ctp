@@ -30,7 +30,7 @@ if ($banners) {
 if ($slideShowImages) {
 ?>
 
-<div class="mb-5">
+<div class="mb-4">
 	<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
 		<div class="carousel-indicators">
 			<?php
@@ -50,7 +50,6 @@ if ($slideShowImages) {
 			?>
 		</div>
 		<div class="carousel-inner">
-
 			<?php
 			$i = 0;
 			foreach($slideShowImages  as $row) {
@@ -61,21 +60,21 @@ if ($slideShowImages) {
 				$imageUrl = $row['imageUrl'];
 				?>
 				<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
-					<img src="<?= $imageUrl ?>" class="d-block w-100" alt="">
-					<div class="carousel-caption d-none d-md-block">
-						<?php if ($title) { ?>
-							<span class="bg-light text-dark shadow-sm rounded px-2 fw-bold fs-5">
-								<?php if ($linkUrl) { ?>
-									<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none"><?= $title ?></a>
-								<?php } else {
-									?>
-									<?= $title ?>
-									<?php
-								} ?>
-
-							</span>
+					<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none">
+						<img src="<?= $imageUrl ?>" class="d-block w-100" style="max-height: 475px" alt="<?= $title ?>">
+					</a>
+					<div class="carousel-caption d-none d-md-block" role="button">
+						<p>
+						<?php if ($title) {
+							?>
+							<span class="bg-light text-primary shadow-sm rounded px-2"><?= $title ?></span><br>
+						<?php
+						}
+						if ($desc) {
+							?>
+							<span class="bg-light text-muted shadow-sm rounded px-2 small"><?= $desc ?></span>
 						<?php } ?>
-						<p><?php if ($desc) { ?><span class="bg-light text-dark shadow-sm rounded px-2"><?= $desc ?><?php } ?></span></p>
+						</p>
 					</div>
 				</div>
 				<?php
