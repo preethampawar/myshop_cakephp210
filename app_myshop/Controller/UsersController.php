@@ -53,7 +53,7 @@ class UsersController extends AppController
 		$subject = 'Login OTP for ' . $toName;
 		$bccEmail = Configure::read('AdminEmail');
 
-		$mailContent = $otp . '<br><br>-<br>' . Configure::read('DomainName');
+		$mailContent = '<p>Please use the below OTP to login.</p><p><b>' . $otp . '</b></p><p>Note*: The above OTP is valid only for 15mins.</p><br><br>-<br>' . Configure::read('DomainName');
 		$email = new CakeEmail('smtpNoReply');
 		$email->emailFormat('html');
 		$email->to([$toEmail => $toEmail]);

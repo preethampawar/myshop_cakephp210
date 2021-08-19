@@ -28,9 +28,6 @@
 <?php echo $content_for_layout; ?>
 
 <br>
-<p>
-<i><small>*This email is sent using LetsGreenify email server.</small></i>
-</p>
 
 </body>
 </html>

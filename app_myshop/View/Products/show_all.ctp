@@ -1,12 +1,12 @@
 <section id="ProductsInfo">
 	<header class="featuredLabel">
-		<?php echo $this->Html->link('Best Deals', '/', ['class' => 'active text-decoration-none']); ?> |
+		<?php echo $this->Html->link('Best Deals', '/', ['class' => 'text-decoration-none']); ?> |
 		<b>
-		<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'text-decoration-none']); ?>
+		<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'active']); ?>
 		</b>
 	</header>
 	<hr>
-	<h6 class="mb-4">Showing all products by category</h6>
+	<p class="mb-4">Showing all products by category</p>
 	<?php
 	if (!empty($allProducts)) {
 		$k = 1;
@@ -19,7 +19,7 @@
 			?>
 			<article class="mb-4">
 				<header>
-					<h2><?php echo $categoryName; ?></h2>
+					<h5><?php echo $categoryName; ?></h5>
 					<hr>
 				</header>
 				<?php

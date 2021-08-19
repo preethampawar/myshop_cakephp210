@@ -8,7 +8,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 	<article>
 		<header class="featuredLabel">
 			<b>
-			<?php echo $this->Html->link('Best Deals', '/', ['class' => 'active text-decoration-none']); ?> |
+			<?php echo $this->Html->link('Best Deals', '/', ['class' => 'active']); ?> |
 			</b>
 			<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'text-decoration-none']); ?>
 

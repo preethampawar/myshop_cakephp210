@@ -275,6 +275,27 @@ class ShoppingCartsController extends AppController
 
 		$orderDetails = $orderModel->findById($this->getOrderId());
 
+		$prefilledDeliveryDetails = false;
+
+		// get prev order details
+		if ($this->Session->check('User.id')) {
+			$user_id = $this->Session->read('User.id');
+			$conditions = [
+				'Order.user_id' => $user_id,
+				'Order.site_id' => $this->Session->read('Site.id'),
+				'Order.id NOT' => $orderDetails['Order']['id'],
+				'Order.status NOT' => Order::ORDER_STATUS_DRAFT,
+			];
+
+			$prevOrderDetails = $orderModel->find('first', ['conditions'=> $conditions, 'order' => 'Order.created DESC']);
+
+			if (!empty($prevOrderDetails) && empty($orderDetails['Order']['customer_name'])) {
+				$orderDetails = $prevOrderDetails;
+				$prefilledDeliveryDetails = true;
+			}
+		}
+
+		$this->set('prefilledDeliveryDetails', $prefilledDeliveryDetails);
 		$this->set('shoppingCartProducts', $shoppingCartProducts);
 		$this->set('orderDetails', $orderDetails);
 	}
