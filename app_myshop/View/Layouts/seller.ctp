@@ -1,6 +1,7 @@
 <?php
 $assetDomainUrl = Configure::read('AssetDomainUrl');
 $enableImageCropper = $enableImageCropper ?? false;
+$enableBannerImageCropper = $enableBannerImageCropper ?? false;
 $enableTextEditor = $enableTextEditor ?? false;
 ?>
 <!doctype html>
@@ -94,6 +95,9 @@ $enableTextEditor = $enableTextEditor ?? false;
 
 <div class="bg-light border-bottom">
 	<ul class="nav container justify-content-start">
+		<li class="nav-item">
+			<a class="nav-link" href="/admin/banners/">Banners</a>
+		</li>
 		<li class="nav-item productSideBar">
 			<a class="nav-link" href="/admin/categories/">Products</a>
 		</li>
@@ -233,6 +237,10 @@ if ($enableTextEditor) {
 
 <?php if ($enableImageCropper): ?>
 	<?= $this->element('imagecropper') ?>
+<?php endif; ?>
+
+<?php if ($enableBannerImageCropper): ?>
+	<?= $this->element('bannerimagecropper') ?>
 <?php endif; ?>
 
 <?= $this->element('sql_dump'); ?>

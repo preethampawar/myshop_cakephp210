@@ -27,10 +27,9 @@ $customMeta .= $this->Html->meta(['property' => 'og:description', 'content' => s
 $customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $this->Session->read('Site.title'), 'inline' => false]);
 ?>
 
+<div id="storeSlideShow"></div>
+
 <?php
-//if ($this->Session->read('Site.featured_products')) {
-//	echo $this->element('featured_products');
-//}
 echo $this->element('featured_products');
 
 $this->set('customMeta', $customMeta);

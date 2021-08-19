@@ -78,6 +78,21 @@ class ImagesController extends AppController
 		$this->set(compact('productInfo', 'successMsg', 'errorMsg', 'productImages', 'categoryID', 'productInfoLinkActive'));
 	}
 
+
+	function admin_manageBannerImages($bannerId)
+	{
+		if (!$bannerInfo = $this->isSiteBanner($bannerId)) {
+			$this->errorMsg('Banner Not Found');
+			if (!empty($bannerId)) {
+				$this->redirect('/admin/banners/');
+			} else {
+				$this->redirect('/admin/banners/');
+			}
+		}
+
+		$this->set(compact('bannerInfo'));
+	}
+
 	function admin_uploadImage($data)
 	{
 		$status = [];
