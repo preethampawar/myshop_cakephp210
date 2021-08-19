@@ -1,33 +1,25 @@
 <?php
 /**
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       Cake.View.Layouts.Emails.html
- * @since         CakePHP(tm) v 0.10.0.1076
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
+ * @since         0.10.0
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
+ * @var \App\View\AppView $this
  */
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
 	<title><?php echo $title_for_layout; ?></title>
-	<link rel="stylesheet" href="<?= $this->Html->url('/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css', true) ?>">
-	<link rel="stylesheet" href="<?= $this->Html->url('/css/site.css?v=1.0.0', true) ?>">
 </head>
 <body>
-
-<?php echo $content_for_layout; ?>
-
-<br>
-
+<?= $this->fetch('content') ?>
 </body>
 </html>
