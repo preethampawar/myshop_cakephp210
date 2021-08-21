@@ -5,8 +5,7 @@ $this->set('title_for_layout', $categoryInfo['Category']['name']);
 	<article>
 		<header>
 			<h1><?php echo ucwords($categoryInfo['Category']['name']); ?></h1>
-			<h6>Showing all products in this category</h6>
-			<br>
+			<p class="text-muted mb-4"><?= $categoryInfo['Category']['description'] ?></p>
 		</header>
 		<?php
 		$categoryProducts = $categoryInfo['CategoryProducts'];
@@ -76,3 +75,41 @@ $this->set('title_for_layout', $categoryInfo['Category']['name']);
 	</article>
 </section>
 <br>
+
+
+<?php
+$categoryUploadedImages = $categoryInfo['Category']['images'] ? json_decode($categoryInfo['Category']['images']) : [];
+$assetDomainUrl = Configure::read('AssetDomainUrl');
+$categoryHighlightImage = $this->App->getHighlightImage($categoryUploadedImages);
+$pageUrl = $this->Html->url($this->request->here, true);
+$categoryDesc = $categoryInfo['Category']['description'];
+$categoryName = $categoryInfo['Category']['name'];
+
+$imageUrl = '';
+if ($categoryHighlightImage) {
+	$image = $categoryHighlightImage['thumb'];
+	$imageUrl = $this->Html->url($assetDomainUrl.$image->imagePath, true);
+}
+
+$customMeta = '';
+$customMeta .= $this->Html->meta(['property' => 'og:url', 'content' => $pageUrl, 'inline' => false]);
+$customMeta .= $this->Html->meta(['property' => 'og:type', 'content' => 'product', 'inline' => false]);
+$customMeta .= $this->Html->meta(['property' => 'og:title', 'content' => strip_tags($categoryName), 'inline' => false]);
+$customMeta .= $this->Html->meta(['property' => 'og:description', 'content' => strip_tags(trim($categoryDesc) == '' ? $categoryName : $categoryDesc), 'inline' => false]);
+$customMeta .= ($imageUrl) ? $this->Html->meta(['property' => 'og:image', 'content' => $imageUrl, 'inline' => false]) : '';
+$customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $this->Session->read('Site.title'), 'inline' => false]);
+
+$this->set('customMeta', $customMeta);
+$this->set('title_for_layout', $categoryName);
+
+$metaKeywords = trim($categoryInfo['Category']['meta_keywords']) != '' ? $categoryInfo['Category']['meta_keywords'] : $categoryName;
+$metaDesc = trim($categoryInfo['Category']['meta_description']) != '' ? $categoryInfo['Category']['meta_description'] : $categoryDesc;
+
+if (trim($metaKeywords)){
+	$this->Html->meta('keywords', strip_tags($metaKeywords), ['inline' => false]);
+}
+
+if (trim($metaDesc)) {
+	$this->Html->meta('description', strip_tags($metaDesc), ['inline' => false]);
+}
+?>

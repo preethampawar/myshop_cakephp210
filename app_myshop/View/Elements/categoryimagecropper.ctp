@@ -6,20 +6,20 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 <script>
 
 	$(document).ready(function () {
-		let updateBannerImage;
-		const bannerImageUpdateUrl = '/admin/banners/updateImage';
+		let updateCategoryImage;
+		const categoryImageUpdateUrl = '/admin/categories/updateImage';
 		const imageUploadUrl = "<?php echo $assetDomainUrl; ?>upload.php";
 		const imageUploadRelPathDefault = '/<?php echo $this->Session->read('Site.id');?>/unknown';
-		let imageUploadBannerId = "";
+		let imageUploadCategoryId = "";
 
 
-		updateBannerImage = function (bannerId, imagePath, type, commonId, reload = false) {
+		updateCategoryImage = function (categoryId, imagePath, type, commonId, reload = false) {
 			if (!commonId) {
 				commonId = getRndInteger(1, 10000);
 			}
 
 			$.ajax({
-				url: bannerImageUpdateUrl + '/' + bannerId,
+				url: categoryImageUpdateUrl + '/' + categoryId,
 				type: "PUT",
 				data: {
 					"imagePath": imagePath,
@@ -41,8 +41,8 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 			enableExif: true,
 			enableResize: false,
 			viewport: {
-				width: 300,
-				height: 100,
+				width: 200,
+				height: 200,
 				type: 'square' //circle
 			},
 			boundary: {
@@ -75,7 +75,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 			}
 
 			if ($('#upload_image').data('productId')) {
-				imageUploadBannerId = $('#upload_image').data('productId');
+				imageUploadCategoryId = $('#upload_image').data('productId');
 			}
 
 			$("#imageUploadProcessingDiv").removeClass("d-none");
@@ -95,19 +95,19 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 					data: {
 						"image": response,
 						"type": "ori",
-						"image_name": imageUploadBannerId,
+						"image_name": imageUploadCategoryId,
 						"relative_path": imageUploadRelPath
 					},
 					success: function (data) {
 						let responseImagePath = data.imagePath;
 
-						updateBannerImage(imageUploadBannerId, responseImagePath, "ori", commonId);
+						updateCategoryImage(imageUploadCategoryId, responseImagePath, "ori", commonId);
 
 						$("#imageUploadProcessingDiv span").text("2. Uploading thumbnail image");
 
 						$image_crop.croppie('result', {
 							type: 'canvas',
-							size: {"width": 1080, "height": 360},
+							size: {"width": 300, "height": 300},
 							format: 'webp',
 						}).then(function (response) {
 							$.ajax({
@@ -116,12 +116,12 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 								data: {
 									"image": response,
 									"type": "thumb",
-									"image_name": imageUploadBannerId,
+									"image_name": imageUploadCategoryId,
 									"relative_path": imageUploadRelPath
 								},
 								success: function (data) {
 									responseImagePath = data.imagePath;
-									updateBannerImage(imageUploadBannerId, responseImagePath, "thumb", commonId, true);
+									updateCategoryImage(imageUploadCategoryId, responseImagePath, "thumb", commonId, true);
 
 									$("#imageUploadProcessingDiv").addClass("d-none");
 									$("#imageUploadProcessingDiv span").text("");

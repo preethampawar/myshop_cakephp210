@@ -78,11 +78,11 @@ class ImagesController extends AppController
 		$this->set(compact('productInfo', 'successMsg', 'errorMsg', 'productImages', 'categoryID', 'productInfoLinkActive'));
 	}
 
-
 	function admin_manageBannerImages($bannerId)
 	{
 		if (!$bannerInfo = $this->isSiteBanner($bannerId)) {
 			$this->errorMsg('Banner Not Found');
+
 			if (!empty($bannerId)) {
 				$this->redirect('/admin/banners/');
 			} else {
@@ -91,6 +91,21 @@ class ImagesController extends AppController
 		}
 
 		$this->set(compact('bannerInfo'));
+	}
+
+	function admin_manageCategoryImages($categoryId)
+	{
+		if (!$categoryInfo = $this->isSiteCategory($categoryId)) {
+			$this->errorMsg('Category Not Found');
+
+			if (!empty($categoryId)) {
+				$this->redirect('/admin/categories/edit/'.$categoryId);
+			} else {
+				$this->redirect('/admin/categories/');
+			}
+		}
+
+		$this->set(compact('categoryInfo'));
 	}
 
 	function admin_uploadImage($data)

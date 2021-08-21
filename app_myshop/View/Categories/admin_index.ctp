@@ -57,8 +57,19 @@
 					$tmp = substr($categoryName, 0, 25);
 					$categoryDisplayName = (strlen($categoryName) > 28) ? $tmp . '...' : $categoryName;
 					$categoryNameSlug = Inflector::slug($categoryName, '-');
+
+					$categoryUploadedImages = $row['Category']['images'] ? json_decode($row['Category']['images']) : [];
+					$assetDomainUrl = Configure::read('AssetDomainUrl');
+					$categoryHighlightImage = $this->App->getHighlightImage($categoryUploadedImages);
+
+					$imageUrl = '';
+					if ($categoryHighlightImage) {
+						$image = $categoryHighlightImage['thumb'];
+						$imageUrl = $assetDomainUrl.$image->imagePath;
+					}
+
 					?>
-					<li class="list-group-item d-flex justify-content-between align-items-center p-1">
+					<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3">
 						<div>
 							<?php if($categoryActive): ?>
 								<span class="small fa fa-circle text-success" title="Active"></span>
@@ -70,9 +81,22 @@
 						</div>
 
 						<div>
-							<?php echo $this->App->getLinkButton('<span class="far fa-edit"></span>', '/admin/categories/edit/' . $categoryID, 'edit'); ?>
+							<?php
+							if ($imageUrl) {
+								?>
+								<a href='/admin/categories/showProducts/<?= $categoryID ?>'>
+									<img src="<?= $imageUrl ?> " loading="lazy" width="100" height="100" class="mb-2">
+								</a>
+								<?php
+							}
+							?>
+						</div>
+
+						<div>
+							<a href="/admin/categories/edit/<?= $categoryID ?>" class="btn btn-sm btn-primary">Edit</a>
 
 							<?php
+							/*
 							$confirmMessage = 'Deleting this category will delete all the category information and products associated with it. This action is irreversible. <br><br> Are you sure you want to delete this category?';
 							$url = '/admin/categories/delete/' . $categoryID;
 							$title = 'Delete - '. $categoryName;
@@ -80,6 +104,9 @@
 							<span
 								class="far fa-trash-alt ms-2 text-danger"
 							 	onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
+							<?php
+							*/
+							?>
 						</div>
 					</li>
 					<?php
