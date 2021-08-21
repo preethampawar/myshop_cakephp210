@@ -14,7 +14,7 @@ if ($banners) {
 		$highlightImage = $this->App->getHighlightImage($bannerUploadedImages);
 
 		if ($highlightImage) {
-			$image = $highlightImage['ori'];
+			$image = $highlightImage['thumb'];
 			$imageUrl = $assetDomainUrl.$image->imagePath;
 
 			$slideShowImages[$i]['bannerId'] = $banner['Banner']['id'];
@@ -61,7 +61,7 @@ if ($slideShowImages) {
 				?>
 				<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="3000">
 					<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none">
-						<img src="<?= $imageUrl ?>" class="d-block w-100" style="max-height: 475px" alt="<?= $title ?>">
+						<img src="<?= $imageUrl ?>" class="d-block w-100" style="" alt="<?= $title ?>">
 					</a>
 					<div class="carousel-caption d-none d-md-block" role="button">
 						<p>

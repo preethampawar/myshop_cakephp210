@@ -2,6 +2,7 @@
 $assetDomainUrl = Configure::read('AssetDomainUrl');
 $enableImageCropper = $enableImageCropper ?? false;
 $enableBannerImageCropper = $enableBannerImageCropper ?? false;
+$enableCategoryImageCropper = $enableCategoryImageCropper ?? false;
 $enableTextEditor = $enableTextEditor ?? false;
 ?>
 <!doctype html>
@@ -241,6 +242,10 @@ if ($enableTextEditor) {
 
 <?php if ($enableBannerImageCropper): ?>
 	<?= $this->element('bannerimagecropper') ?>
+<?php endif; ?>
+
+<?php if ($enableCategoryImageCropper): ?>
+	<?= $this->element('categoryimagecropper') ?>
 <?php endif; ?>
 
 <?= $this->element('sql_dump'); ?>

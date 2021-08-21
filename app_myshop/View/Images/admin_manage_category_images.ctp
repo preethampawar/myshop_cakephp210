@@ -1,37 +1,37 @@
 <?php
-$this->set('enableBannerImageCropper', true);
+$this->set('enableCategoryImageCropper', true);
 $siteId = $this->Session->read('Site.id');
-$bannerId = $bannerInfo['Banner']['id'];
-$imageUploadRelPath = '/site_id/' . $siteId . '/' . 'banners' . '/' . $bannerId;
-$bannerUploadedImages = $bannerInfo['Banner']['images'] ? json_decode($bannerInfo['Banner']['images']) : [];
+$categoryId = $categoryInfo['Category']['id'];
+$imageUploadRelPath = '/site_id/' . $siteId . '/' . 'categories' . '/' . $categoryId;
+$categoryUploadedImages = $categoryInfo['Category']['images'] ? json_decode($categoryInfo['Category']['images']) : [];
 $assetDomainUrl = Configure::read('AssetDomainUrl');
-$bannerUploadedImages = $this->App->getRearrangedImages($bannerUploadedImages);
+$categoryUploadedImages = $this->App->getRearrangedImages($categoryUploadedImages);
 ?>
 
 <div>
 
 	<div class="my-3 d-flex justify-content-between align-items-center">
 		<h5>Manage Images</h5>
-		<a href='/admin/banners/edit/<?php echo $bannerInfo['Banner']['id']; ?>' class="btn btn-warning btn-sm">Go Back</a>
+		<a href='/admin/categories/edit/<?php echo $categoryInfo['Category']['id']; ?>' class="btn btn-warning btn-sm">Go Back</a>
 	</div>
-	<h6><?php echo $bannerInfo['Banner']['title']; ?></h6>
+	<h6><?php echo $categoryInfo['Category']['name']; ?></h6>
 
 	<div class="mt-3 shadow border-0 p-3 ">
-		<h6>Upload Banner Image</h6>
+		<h6>Upload Category Image</h6>
 		<input
 			type="file"
 			name="upload_image"
 			id="upload_image"
 			class="btn btn-sm btn-outline-secondary"
 			data-image-rel-path="<?php echo $imageUploadRelPath; ?>"
-			data-product-id="<?php echo $bannerId; ?>"
+			data-product-id="<?php echo $categoryId; ?>"
 			accept="image/*"
 		/>
 		<br/>
-		<div class="text-danger mt-3 small">Min 1080 x 360 pixels (3:1 ratio)</div>
+		<div class="text-danger mt-3 small">Min dimensions - 300 x 300 pixels</div>
 
 		<div class="mt-3">
-			<a href="/admin/banners/edit/<?php echo $bannerInfo['Banner']['id']; ?>"
+			<a href="/admin/categories/edit/<?php echo $categoryInfo['Category']['id']; ?>"
 			   class="btn btn-sm btn-secondary p-0 px-1">Cancel</a>
 		</div>
 
@@ -66,17 +66,17 @@ $bannerUploadedImages = $this->App->getRearrangedImages($bannerUploadedImages);
 	<div class="">
 		<ul class="list-group list-group-flush">
 			<?php
-			if($bannerUploadedImages) {
-				foreach($bannerUploadedImages as $row) {
+			if($categoryUploadedImages) {
+				foreach($categoryUploadedImages as $row) {
 					$image = $row['thumb'];
 					$imageOri = $row['ori'];
 					$encodedImagePath = base64_encode($image->imagePath);
 					$imageUrl = $assetDomainUrl.$image->imagePath;
 					$imageHighlight = $image->highlight;
 					$imageCommonId = $image->commonId;
-					$highlightImagePath = '/admin/banners/highlightImage/' . $bannerId . '/' . $imageCommonId;
-					$deleteImagePath = '/admin/banners/deleteImage/' . $bannerId . '/' . $imageCommonId;
-					// $deleteOriImagePath = '/admin/banners/deleteImage/' . $bannerId . '/' . $imageCommonId;
+					$highlightImagePath = '/admin/categories/highlightImage/' . $categoryId . '/' . $imageCommonId;
+					$deleteImagePath = '/admin/categories/deleteImage/' . $categoryId . '/' . $imageCommonId;
+					// $deleteOriImagePath = '/admin/categories/deleteImage/' . $categoryId . '/' . $imageCommonId;
 					$deleteImages = [
 						$image->imagePath,
 						$imageOri->imagePath,
@@ -85,8 +85,8 @@ $bannerUploadedImages = $this->App->getRearrangedImages($bannerUploadedImages);
 					$deleteImagesUrl = $assetDomainUrl . 'deleteImage.php?images=' . $deleteImages . '&i=' . time();
 
 					?>
-					<li class="list-group-item">
-						<img src="<?= $imageUrl ?> " loading="lazy" width="200" height="80" class="mb-2">
+					<li class="list-group-item pt-3 pb-3">
+						<img src="<?= $imageUrl ?> " loading="lazy" width="300" height="300" class="mb-2">
 
 						<?php
 						if (!$imageHighlight) {

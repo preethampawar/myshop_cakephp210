@@ -86,11 +86,6 @@
 
 <body class="bg-dark">
 	<div class="bg-white ">
-		<nav class="navbar navbar-dark bg-dark bg-gradient">
-			<div class="container">
-				<a class="navbar-brand text-truncate" href="/"><?= $this->Session->read('Site.title') ?></a>
-			</div>
-		</nav>
 
 		<nav class="navbar p-0" role="navigation">
 			<!-- navbar-side will go here -->
@@ -101,15 +96,17 @@
 		</nav>
 
 		<nav class="navbar navbar-expand-lg navbar-dark navbar-static bg-purple bg-gradient">
-			<div class="container">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/">
+					<?= $this->Session->read('Site.title') ?>
+				</a>
+
 				<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-bs-toggle="collapse"
 					 data-bs-target="#navbarNav"
 					 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span  class="small"><i class="fa fa-chevron-circle-down"></i></span> Menu
+					<span  class="small"><i class="fa fa-bars"></i></span>
 				</div>
-				<a class="navbar-brand" href="/">
-					<i class="fa fa-home"></i>
-				</a>
+
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ml-auto">
 						<?php
@@ -167,19 +164,19 @@
 		</nav>
 
 		<div class="shadow border-bottom sticky-top border-warning bg-light border-4">
-			<ul class="nav container justify-content-between py-2 small">
+			<ul class="nav container-fluid justify-content-center py-2 small">
 				<li class="nav-item">
 					<div id="topCategoriesMenu">
 						<a href="#" class="nav-link fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-							<span class="px-2 py-1 border border-warning rounded-pill border-2"><i class="fa fa-bars text-primary"></i></span> Shop By Category
+							<span class="fs-5"><i class="fa fa-th text-primary"></i></span> Shop By Category
 						</a>
 					</div>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item">
 						<div id="topNavShoppingCart">
-							<a href="#" class="nav-link  fw-normal" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-								<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill bg-orange">0</span>
+							<a href="#" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
+								<span class="fs-5"><i class="fa fa-shopping-cart"></i></span> My Cart <span class="badge rounded-pill bg-orange">0</span>
 							</a>
 						</div>
 					</li>
@@ -187,16 +184,13 @@
 			</ul>
 		</div>
 
+		<div id="storeSlideShow"></div>
 
 		<div class="container mt-4">
 			<?php echo $this->Session->flash(); ?>
 		</div>
 
 		<div class="container mt-4" style="min-height: 400px;">
-			<?php if ($this->Session->read('Site.shopping_cart')): ?>
-		<!--		<div id="topNavShoppingCart"></div>-->
-			<?php endif; ?>
-
 			<?php echo $this->fetch('content'); ?>
 
 			<?php

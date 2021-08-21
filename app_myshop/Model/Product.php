@@ -90,6 +90,6 @@ class Product extends AppModel
 			array_push($productConditions, ['Product.featured' => '1']);
 		}
 
-		return $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => 'Product.name', 'fields' => $fields]);
+		return $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => 'Category.name', 'fields' => $fields]);
 	}
 }

@@ -28,7 +28,7 @@ $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productI
 		</a>
 
 		<div class="card-body p-2 pt-0 text-center">
-			<a href="<?= $productDetailsPageUrl ?>" class="text-purple text-decoration-underline">
+			<a href="<?= $productDetailsPageUrl ?>" class="text-purple text-decoration-none">
 				<h6 class="mt-3"><?php echo $productTitle; ?></h6>
 			</a>
 
