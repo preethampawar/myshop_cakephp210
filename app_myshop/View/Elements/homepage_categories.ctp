@@ -54,7 +54,7 @@ if ($categories) {
 							<div class="card-body text-center">
 
 									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
-										<?= $categoryName ?>
+										<h6><?= $categoryName ?></h6>
 									</a>
 
 

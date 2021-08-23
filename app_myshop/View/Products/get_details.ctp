@@ -56,13 +56,14 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<?php
 	}
 	?>
+	<h1><?= $productName; ?></h1>
 	<?php
 	$imageUrl = null;
 	$higlightImage = '';
 	if (!empty($imageDetails)) {
 		$this->set('enableLightbox', true);
 		?>
-		<div id="productImages" class="product-details-page-slider">
+		<div id="productImages" class="mt-3 product-details-page-slider row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-2 g-lg-x-2 p-0">
 			<?php
 
 			$k = 0;
@@ -73,13 +74,26 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 				$imageUrl = $assetDomainUrl . $row['ori']->imagePath;
 				$imageThumbUrl = $assetDomainUrl . $row['thumb']->imagePath;
 				?>
-				<div style="float:left; border:0px solid #fff; width:auto; padding:2px;">
-					<a href="<?php echo $imageUrl; ?>" title='<?php echo $imageCaption; ?>'
-					   data-lightbox="productImages<?php echo $productID; ?>">
-						<img itemprop="image" src="<?php echo $imageThumbUrl; ?>" alt="<?php echo $productName; ?>"
-							 width='150' height='150' loading="lazy"/>
+			<div class="col bg-white hoverHighlightPink" id="productCard<?php echo $imageID . '-' . $productID; ?>">
+
+					<a
+						href="<?= $imageUrl ?>"
+						class="text-decoration-underline p-0"
+						title='<?php echo $imageCaption; ?>'
+						data-lightbox="productImages<?php echo $productID; ?>">
+						<img
+								itemprop="image"
+								src="<?php echo $imageThumbUrl; ?>"
+								data-original="<?php echo $imageUrl; ?>"
+								class="img-thumbnail"
+								role="button"
+								alt="<?php echo $productName; ?>"
+								id="Img<?php echo $imageID; ?>"
+								loading="lazy"
+						/>
 					</a>
-				</div>
+
+			</div>
 				<?php
 			}
 			?>
@@ -89,13 +103,12 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 	}
 	?>
 
-	<div id="productDetails">
+	<div id="productDetails" class="mt-3">
 		<section>
 			<article>
 				<?php if (!$hideProductPrice): ?>
 
-					<div class="mt-2 bg-light p-2 rounded">
-						<h5><?= $productName; ?></h5>
+					<div class="mt-3 bg-light p-3 rounded">
 						<div class="d-flex mt-3">
 							<h4>
 								<span
@@ -166,7 +179,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 				<?php
 				if (!empty($productDesc)) {
 					?>
-					<div class="mt-3">
+					<div class="mt-3 bg-light p-3 rounded">
 						<div itemprop="description" class="overflow-auto mt-2">
 							<?php echo $productDesc; ?>
 						</div>
@@ -174,6 +187,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 					<?php
 				}
 				?>
+
 			</article>
 		</section>
 	</div>
