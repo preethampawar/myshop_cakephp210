@@ -202,6 +202,16 @@ $this->set('enableTextEditor', true);
 								rows="4"
 						><?php echo $this->data['Site']['analytics_code']; ?></textarea>
 					</div>
+					<div class="mb-4">
+						<label for="SiteMapCode" class="form-label">Embed Map (HTML/Javascript code)</label>
+						<textarea
+								id="SiteMapCode"
+								name="data[Site][embed_map]"
+								class="form-control form-control-sm"
+								placeholder="Enter Map Code"
+								rows="4"
+						><?php echo $this->data['Site']['embed_map']; ?></textarea>
+					</div>
 				</div>
 
 

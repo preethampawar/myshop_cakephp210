@@ -186,10 +186,6 @@
 
 		<div id="storeSlideShow"></div>
 
-		<div class="container mt-4">
-			<?php echo $this->Session->flash(); ?>
-		</div>
-
 		<div class="container mt-4" style="min-height: 400px;">
 			<?php echo $this->fetch('content'); ?>
 
@@ -197,16 +193,19 @@
 			$showPaymentContactInfo = false;
 
 			if ($this->request->params['controller'] != 'users'
-				&& $this->request->params['controller'] != 'sites'
-				&& $this->request->params['controller'] != 'orders') {
+					&& $this->request->params['controller'] != 'sites'
+					&& $this->request->params['controller'] != 'orders') {
 				$showPaymentContactInfo = true;
 			}
 
 			if ($showPaymentContactInfo && !empty($this->Session->read('Site.contact_info'))):
 				?>
-				<div class="text-center small alert alert-info mt-4">
-					<h4 class="m-3 text-decoration-underline">Contact</h4>
-					<?= $this->Session->read('Site.contact_info') ?>
+
+				<div class="text-center alert alert-info mt-4">
+					<h4 class="m-3 text-decoration-underline">Contact Us</h4>
+					<div class="small">
+						<?= $this->Session->read('Site.contact_info') ?>
+					</div>
 				</div>
 			<?php
 			endif;
@@ -216,13 +215,17 @@
 			if ($showPaymentContactInfo && !empty($this->Session->read('Site.payment_info'))):
 				?>
 
-				<div class="text-center small alert alert-info mt-4">
+				<div class="text-center alert alert-info mt-4">
 					<h4 class="mb-3 text-decoration-underline">Payment Details</h4>
-					<?= $this->Session->read('Site.payment_info') ?>
+					<div class="small">
+						<?= $this->Session->read('Site.payment_info') ?>
+					</div>
 				</div>
 			<?php
 			endif;
 			?>
+
+			<?= $this->element('showmap') ?>
 
 			<!-- --------------------------End of visible content----------------------------- -->
 
@@ -413,11 +416,11 @@
 								</div>
 								<div class="ms-2">
 									<button
-										type="button"
-										class="btn-close p-2"
-										data-bs-dismiss="modal"
-										aria-label="Close"
-										onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">
+											type="button"
+											class="btn-close p-2"
+											data-bs-dismiss="modal"
+											aria-label="Close"
+											onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">
 										<span aria-hidden="true"></span>
 									</button>
 								</div>
@@ -426,10 +429,10 @@
 						<div class="modal-footer mt-2 p-1">
 							<a href="#" class="deleteLink btn btn-danger btn-sm me-3 w-25" onclick="deleteProductFromCart()"><span class="ok">Ok</span></a>
 							<button
-								type="button"
-								class="btn btn-outline-secondary btn-sm w-25"
-								data-bs-dismiss="modal"
-								onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">Cancel</button>
+									type="button"
+									class="btn btn-outline-secondary btn-sm w-25"
+									data-bs-dismiss="modal"
+									onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -478,6 +481,10 @@
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<div class="container mt-4">
+			<?php echo $this->Session->flash(); ?>
 		</div>
 
 		<!-- footer -->
