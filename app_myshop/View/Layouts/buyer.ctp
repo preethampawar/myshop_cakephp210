@@ -29,24 +29,10 @@
 		}
 	</script>
 
-	<!-- Bootstrap CSS -->
-	<!-- todo: delete it
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-		  integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
-		  -->
-
-	<!-- light box css -->
-	<!-- todo: delete it
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"
-		  integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA=="
-		  crossorigin="anonymous"/>
-		  -->
-
-
-	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
+	<link rel="stylesheet" href="/css/site.css?v=1.0.1">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -98,7 +84,7 @@
 		<nav class="navbar navbar-expand-lg navbar-dark navbar-static bg-purple bg-gradient">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="/">
-					<?= $this->Session->read('Site.title') ?>
+					<i class="fa fa-home"></i> <?= $this->Session->read('Site.title') ?>
 				</a>
 
 				<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-bs-toggle="collapse"
@@ -163,8 +149,8 @@
 			</div>
 		</nav>
 
-		<div class="shadow border-bottom sticky-top border-warning bg-light border-4">
-			<ul class="nav container-fluid justify-content-center py-2 small">
+		<div class="shadow border-bottom sticky-top border-warning bg-light border-2">
+			<ul class="nav container-fluid justify-content-center py-0 small">
 				<li class="nav-item">
 					<div id="topCategoriesMenu">
 						<a href="#" class="nav-link fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
@@ -184,7 +170,9 @@
 			</ul>
 		</div>
 
-		<div id="storeSlideShow"></div>
+		<div id="storeSlideShow">
+			<?= $this->element('banner_slideshow') ?>
+		</div>
 
 		<div class="container mt-4" style="min-height: 400px;">
 			<?php echo $this->fetch('content'); ?>
@@ -515,7 +503,7 @@
 	<?php echo $this->element('sql_dump'); ?>
 </div>
 
-<script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js"></script>
 <script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js"></script>
 

@@ -1,5 +1,5 @@
 <div>
-	<h5>Contact Details</h5>
+	<h1>Contact Details</h1>
 	<br>
 	<?php
 	echo $this->Session->read('Site.contact_info');
