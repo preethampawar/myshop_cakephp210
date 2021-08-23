@@ -846,32 +846,6 @@ App::uses('Order', 'Model');
 
 </script>
 
-<style type="text/css">
-	.transition {
-		-webkit-transform: scale(1);
-		-moz-transform: scale(1);
-		-o-transform: scale(1);
-		transform: scale(1);
-
-		-webkit-transition: all .2s ease-in-out;
-		-moz-transition: all .2s ease-in-out;
-		-o-transition: all .2s ease-in-out;
-		-ms-transition: all .2s ease-in-out;
-	}
-	.transition:hover {
-		-webkit-transform: scale(1.11);
-		-moz-transform: scale(1.11);
-		-o-transform: scale(1.11);
-		transform: scale(1.11);
-		z-index: 999;
-
-		-webkit-transition: all .2s ease-in-out;
-		-moz-transition: all .2s ease-in-out;
-		-o-transition: all .2s ease-in-out;
-		-ms-transition: all .2s ease-in-out;
-	}
-</style>
-
 <script>
 	// scripts executed after the page load
 	$(document).ready(function () {
@@ -885,6 +859,7 @@ App::uses('Order', 'Model');
 		<?php endif; ?>
 
 		<?php
+			/*
 		// show slideshow only in homepage
 		$slideshowEnabled = (int)$this->Session->read('Site.show_banners') === 1;
 
@@ -897,6 +872,8 @@ App::uses('Order', 'Model');
 			}
 		<?php
 		}
+
+		*/
 		?>
 
 		try {

@@ -1,5 +1,5 @@
 <div>
-	<h5>About Us</h5>
+	<h1>About Us</h1>
 	<br>
 	<?php
 	echo $this->Session->read('Site.description');
