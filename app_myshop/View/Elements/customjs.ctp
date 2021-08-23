@@ -835,7 +835,42 @@ App::uses('Order', 'Model');
 
 		return data;
 	}
+
+	function zoomInEffect(elementId) {
+		$("#"+elementId).addClass('transition');
+	}
+
+	function zoomOutEffect(elementId) {
+		$("#"+elementId).removeClass('transition');
+	}
+
 </script>
+
+<style type="text/css">
+	.transition {
+		-webkit-transform: scale(1);
+		-moz-transform: scale(1);
+		-o-transform: scale(1);
+		transform: scale(1);
+
+		-webkit-transition: all .2s ease-in-out;
+		-moz-transition: all .2s ease-in-out;
+		-o-transition: all .2s ease-in-out;
+		-ms-transition: all .2s ease-in-out;
+	}
+	.transition:hover {
+		-webkit-transform: scale(1.11);
+		-moz-transform: scale(1.11);
+		-o-transform: scale(1.11);
+		transform: scale(1.11);
+		z-index: 999;
+
+		-webkit-transition: all .2s ease-in-out;
+		-moz-transition: all .2s ease-in-out;
+		-o-transition: all .2s ease-in-out;
+		-ms-transition: all .2s ease-in-out;
+	}
+</style>
 
 <script>
 	// scripts executed after the page load
@@ -887,6 +922,7 @@ App::uses('Order', 'Model');
 		} catch (err) {
 			console.log('Error - Bootstrap tooltips: ', err.message);
 		}
+
 	});
 </script>
 

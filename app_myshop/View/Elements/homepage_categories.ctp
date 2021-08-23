@@ -17,7 +17,7 @@ $categories = $categoryModel->find(
 if ($categories) {
 	?>
 		<div class="mb-5">
-			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
+			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
 				<?php
 				foreach($categories as $row) {
 					$categoryId = $row['Category']['id'];
@@ -38,7 +38,7 @@ if ($categories) {
 					?>
 					<div class="col text-center" id="categoryCard<?= $categoryId ?>">
 
-						<div class="card h-100 shadow-sm" id="category<?php echo $categoryId; ?>">
+						<div class="card h-100 shadow-sm transition" id="category<?php echo $categoryId; ?>">
 
 							<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none d-block">
 								<img
