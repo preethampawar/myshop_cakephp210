@@ -879,6 +879,7 @@ App::uses('Order', 'Model');
 			}
 		}).finally(function() {
 			$('#submitReviewButton').removeClass('disabledElement')
+			location.reload()
 		})
 
 		response.then(function (response) {
