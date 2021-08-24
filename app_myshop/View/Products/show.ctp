@@ -43,6 +43,8 @@ $this->set('title_for_layout', $categoryInfo['Category']['name']);
 					$noStock = $row2['Product']['no_stock'];
 					$cartEnabled = $this->Session->read('Site.shopping_cart');
 					$hideProductPrice = $row2['Product']['hide_price'];
+					$avgRating = $row2['Product']['avg_rating'];
+					$ratingsCount = $row2['Product']['ratings_count'];
 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
@@ -59,6 +61,8 @@ $this->set('title_for_layout', $categoryInfo['Category']['name']);
 							'cartEnabled' => $cartEnabled,
 							'noStock' => $noStock,
 							'hideProductPrice' => $hideProductPrice,
+							'avgRating' => $avgRating,
+							'ratingsCount' => $ratingsCount,
 						]
 					);
 				}

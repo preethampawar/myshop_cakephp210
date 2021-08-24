@@ -83,7 +83,7 @@ class Product extends AppModel
 		$this->CategoryProduct = new CategoryProduct;
 		$this->CategoryProduct->recursive = 0;
 
-		$fields = ['Category.id', 'Category.name', 'Product.id', 'Product.name', 'Product.images', 'Product.mrp', 'Product.discount', 'Product.no_stock', 'Product.hide_price'];
+		$fields = ['Category.id', 'Category.name', 'Product.id', 'Product.name', 'Product.images', 'Product.mrp', 'Product.discount', 'Product.no_stock', 'Product.hide_price', 'Product.avg_rating', 'Product.ratings_count'];
 		$productConditions[] = ['Category.active' => '1', 'Category.site_id' => $siteId, 'Product.active' => '1',  'Product.site_id' => $siteId];
 
 		if ($featured) {
