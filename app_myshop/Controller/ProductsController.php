@@ -129,11 +129,151 @@ class ProductsController extends AppController
 			$this->redirect('/');
 		}
 
-		// update product visits
-//		$this->addProductVisit($categoryID, $productID, $categoryInfo['Category']['name'], $productInfo['Product']['name']);
-//		$visits = $this->getProductVisits($categoryID, $productID);
+		App::uses('ProductReview', 'Model');
+		$productReviewsModel = new ProductReview();
+		$productReviews = $productReviewsModel->find(
+			'all', [
+				'conditions' => [
+					'ProductReview.product_id' => $productID,
+					'ProductReview.user_id > ' => 0
+				],
+				'order' => [
+					'ProductReview.created DESC'
+				],
+				'recursive' => -1
+			]);
 
-		$this->set(compact('productInfo', 'categoryInfo', 'isAjax'));
+		$userReview = null;
+		if ($this->Session->read('User.id')) {
+			$productReviewsModel->recursive = -1;
+			$userReview = $productReviewsModel->findByProductIdAndUserId($productID, $this->Session->read('User.id'));
+		}
+
+		$ratingsInfo = $productReviewsModel->getProductRating($productID);
+
+		$this->set(compact('productInfo', 'categoryInfo', 'isAjax', 'productReviews', 'ratingsInfo', 'userReview'));
+	}
+
+	public function setRating($productId, $ratingValue = 5) {
+		$this->layout = false;
+
+		if (!$productInfo = $this->isSiteProduct($productId)) {
+			$this->response->header('Content-type', 'application/json');
+			$this->response->body(json_encode([
+					'error' => true,
+					'msg' => 'Product not found',
+				], JSON_THROW_ON_ERROR)
+			);
+			$this->response->send();
+			exit;
+		}
+
+		$ratingValue = $ratingValue > 5 ? 5 : $ratingValue;
+		$ratingValue = $ratingValue < 0 ? 0 : $ratingValue;
+
+		App::uses('ProductReview', 'Model');
+		$productReviewsModel = new ProductReview();
+
+		$tmp['ProductReview']['id'] = null;
+
+		$userId = $this->Session->check('User.id') ? $this->Session->read('User.id') : 0;
+		if ($userId) {
+			$productReview = $productReviewsModel->findByProductIdAndUserId($productId, $userId);
+			if ($productReview) {
+				$tmp['ProductReview']['id'] = $productReview['ProductReview']['id'];
+			}
+		}
+
+		if (!$tmp['ProductReview']['id']) {
+			$productReviewId = $this->Session->check('ProductReview.'.$productId) ? $this->Session->read('ProductReview.'.$productId) : null;
+			$tmp['ProductReview']['id'] = $productReviewId;
+		}
+
+		$tmp['ProductReview']['rating'] = (int)$ratingValue;
+		$tmp['ProductReview']['user_id'] = $userId;
+		$tmp['ProductReview']['product_id'] = $productId;
+		$tmp['ProductReview']['product_name'] = $productInfo['Product']['name'];
+
+		$productReviewRating = $productReviewsModel->save($tmp);
+
+		if ($productReviewRating) {
+			$this->Session->write('ProductReview.'.$productId, $productReviewRating['ProductReview']['id']);
+		}
+
+		// save average rating in products table
+		$productRatings = $productReviewsModel->getProductRating($productId);
+		$tmp = null;
+		$tmp['Product']['id'] = $productId;
+		$tmp['Product']['avg_rating'] = $productRatings['avgRating'];
+		$tmp['Product']['ratings_count'] = $productRatings['ratingsCount'];
+		$this->Product->save($tmp);
+
+		$this->response->header('Content-type', 'application/json');
+		$this->response->body(json_encode([
+				'error' => false,
+				'msg' => 'Ratings updated for this product',
+			], JSON_THROW_ON_ERROR)
+		);
+		$this->response->send();
+		exit;
+	}
+
+	public function submitProductReview()
+	{
+		$this->layout = false;
+		$error = false;
+		$msg = '';
+
+		$userId = $this->Session->check('User.id') ? $this->Session->read('User.id') : 0;
+		$userName = $this->Session->check('User.email') ? $this->Session->read('User.email') : 'anonymous@anonymous';
+		$userName = explode('@', $userName);
+		//$userName = substr($userName[0], 0,3).'****'.substr($userName[0], -2,2).'@'.$userName[1];
+		$userName = $userName[0];
+
+		if ($userId && ($this->request->isPost() || $this->request->isPut())) {
+			$data = $this->request->input('json_decode', true);
+
+			if (!$productInfo = $this->isSiteProduct($data['productId'])) {
+				$error = true;
+				$msg = 'Product not found';
+			}
+
+
+
+			App::uses('ProductReview', 'Model');
+			$productReviewsModel = new ProductReview();
+			$productReview = $productReviewsModel->findByProductIdAndUserId($data['productId'], $userId);
+
+			$tmp['ProductReview']['id'] = null;
+
+			if ($productReview) {
+				$tmp['ProductReview']['id'] = $productReview['ProductReview']['id'];
+			}
+
+			$tmp['ProductReview']['category_id'] = $data['categoryId'];
+			$tmp['ProductReview']['product_id'] = $data['productId'];
+			$tmp['ProductReview']['comments'] = $data['comments'];
+			$tmp['ProductReview']['product_name'] = $productInfo['Product']['name'];
+			$tmp['ProductReview']['user_id'] = $userId;
+			$tmp['ProductReview']['user_name'] = $userName;
+
+			$productReviewsModel->save($tmp);
+
+			$error = false;
+			$msg = 'Review submitted successfully';
+		} else {
+			$error = true;
+			$msg = 'Invalid request';
+		}
+
+		$this->response->header('Content-type', 'application/json');
+		$this->response->body(json_encode([
+				'error' => $error,
+				'msg' => $msg,
+			], JSON_THROW_ON_ERROR)
+		);
+		$this->response->send();
+		exit;
 	}
 
 	/**

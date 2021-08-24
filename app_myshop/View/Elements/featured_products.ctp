@@ -50,6 +50,8 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					$noStock = $row['Product']['no_stock'];
 					$cartEnabled = $this->Session->read('Site.shopping_cart');
 					$hideProductPrice = $row['Product']['hide_price'];
+					$avgRating = $row['Product']['avg_rating'];
+					$ratingsCount = $row['Product']['ratings_count'];
 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
@@ -66,6 +68,8 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 							'cartEnabled' => $cartEnabled,
 							'noStock' => $noStock,
 							'hideProductPrice' => $hideProductPrice,
+							'avgRating' => $avgRating,
+							'ratingsCount' => $ratingsCount,
 						]
 					);
 

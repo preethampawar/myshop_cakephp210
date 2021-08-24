@@ -844,6 +844,63 @@ App::uses('Order', 'Model');
 		$("#"+elementId).removeClass('transition');
 	}
 
+	function setRating(elementId, productId) {
+		let rating = $("#"+elementId).data('rating')
+		let ratingsDivId = '#ratingsDiv'+productId
+
+		rating = rating < 0 ? 0 : rating
+		rating = rating > 5 ? 5 : rating
+		fillProductRatingStars(rating)
+
+		let setProductRatingUrl = '/products/setRating/'+productId+'/'+rating
+		const data = getPage(setProductRatingUrl);
+		$(ratingsDivId).addClass('disabledElement');
+		data.then(function (response) {
+			// showAlert('Thank you so much for taking the time to leave us a rating.', 'You are Awesome :)')
+		}).finally(function() {
+			$(ratingsDivId).removeClass('disabledElement');
+		});
+	}
+
+	function submitProductReview(categoryId, productId) {
+		const productReviewUrl = '/products/submitProductReview/'+categoryId+'/'+productId
+		const comments = $('<div />').text($('#productReview'+productId).val()).html()
+
+		let data = {
+			'categoryId': categoryId,
+			'productId': productId,
+			'comments': comments,
+		}
+		$('#submitReviewButton').addClass('disabledElement')
+		const response = postData(productReviewUrl, data)
+		response.then(function (data) {
+			if (data.error != 1) {
+				showAlert('Thank you so much for taking the time to leave us a rating.', 'You are Awesome :)')
+			}
+		}).finally(function() {
+			$('#submitReviewButton').removeClass('disabledElement')
+		})
+
+		response.then(function (response) {
+			showAlert('Thank you so much for taking the time to leave us a rating.', 'You are Awesome :)')
+		});
+	}
+
+	function fillProductRatingStars(ratingValue) {
+		ratingValue = ratingValue < 0 ? 0 : ratingValue;
+		ratingValue = ratingValue > 5 ? 5 : ratingValue;
+
+		for(let i=1; i<=5; i++) {
+			if (i <= ratingValue) {
+				$('#starRating'+i).children(0).removeClass('far')
+				$('#starRating'+i).children(0).addClass('fa')
+			} else {
+				$('#starRating'+i).children(0).removeClass('fa')
+				$('#starRating'+i).children(0).addClass('far')
+			}
+		}
+	}
+
 </script>
 
 <script>

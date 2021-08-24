@@ -11,6 +11,9 @@ $loadingImageUrl = '/loading2.gif';
 $productSlug = Inflector::slug($productTitle, '-');
 $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productID . '/' . $productSlug;
 // http://www.apnastores.com/assets/images/loading/loading.gif
+
+$avgRating = $avgRating ?? 0;
+$ratingsCount = $ratingsCount ?? 0;
 ?>
 
 <div class="col mb-3 bg-white hoverHighlightPink" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
@@ -31,6 +34,10 @@ $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productI
 			<a href="<?= $productDetailsPageUrl ?>" class="text-purple text-decoration-none">
 				<h6 class="mt-3"><?php echo $productTitle; ?></h6>
 			</a>
+
+			<div class="mt-2 small text-center d-flex justify-content-center">
+				<?= $this->element('show_rating_stars', ['rating' => $avgRating, 'count' => $ratingsCount]) ?>
+			</div>
 
 			<?php if (!$hideProductPrice): ?>
 				<div class="mt-3 d-flex justify-content-between">

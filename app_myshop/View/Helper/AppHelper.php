@@ -209,4 +209,27 @@ class AppHelper extends Helper
 
 		return $highlightImage;
 	}
+
+	public function convertTimeToDays($date) {
+		$current_date = date("Y-m-d H:m:s");
+		$time = array();
+		$day = floor((strtotime($current_date) - strtotime($date)) / (60 * 60 * 24));
+
+		if ($day == 0) {
+			$hour = floor((strtotime($current_date) - strtotime($date)) / (60 * 60));
+
+			if ($hour == 0) {
+				$minute = floor((strtotime($current_date) - strtotime($date)) / (60));
+				$time = $minute . __d('course', " min(s) ago");
+
+			} else {
+				$time = $hour . __d('course', " hour(s) ago");
+			}
+
+		} else {
+			$time = $day . __d('course', " day(s) ago");
+		}
+
+		return $time;
+	}
 }

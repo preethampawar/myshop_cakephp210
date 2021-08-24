@@ -30,11 +30,11 @@ $hideProductPrice = $productInfo['Product']['hide_price'];
 
 // SEO data
 $pageUrl = $this->Html->url($this->request->here, true);
-$pageUniqueIdentifier = $categoryID . '-' . $productID;
+$pageUniqueIdentifier = $categoryID.'-'.$productID;
 $highlightImageDetails = $this->App->getHighlightImage($productUploadedImages);
 $thumbUrl = "/img/noimage.jpg";
 
-if ($highlightImageDetails) {
+if($highlightImageDetails) {
 	$thumbUrl = $assetDomainUrl . $highlightImageDetails['thumb']->imagePath;
 }
 $productImageUrl = $this->Html->url($thumbUrl, true);
@@ -47,7 +47,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<nav aria-label="breadcrumb" class="mb-4">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a
-							href="/products/show/<?php echo $categoryID; ?>"><?= $categoryName; ?></a></li>
+						href="/products/show/<?php echo $categoryID; ?>"><?= $categoryName; ?></a></li>
 				<li class="breadcrumb-item active" aria-current="page"><?= $productName ?></li>
 			</ol>
 		</nav>
@@ -56,35 +56,14 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<?php
 	}
 	?>
-	<h1 itemprop="name"><?= $productName; ?></h1>
-
-	<?php
-	if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
-		?>
-		<div class="mt-3">
-			<?= $this->element('show_rating_stars', ['rating' => $ratingsInfo['avgRating'], 'count' => $ratingsInfo['ratingsCount']]) ?>
-		</div>
-		<div class="mt-2 text-muted small">
-			<div itemprop="aggregateRating"
-				 itemscope itemtype="https://schema.org/AggregateRating">
-				Rated <span itemprop="ratingValue" class="fw-bold"><?= $ratingsInfo['avgRating'] ?></span> out of <span
-						class="fw-bold">5</span>
-				based on <span itemprop="reviewCount"><?= $ratingsInfo['ratingsCount'] ?></span> customer reviews.
-			</div>
-		</div>
-		<?php
-	}
-	?>
-
-
+	<h1><?= $productName; ?></h1>
 	<?php
 	$imageUrl = null;
 	$higlightImage = '';
 	if (!empty($imageDetails)) {
 		$this->set('enableLightbox', true);
 		?>
-		<div id="productImages"
-			 class="mt-3 product-details-page-slider row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-2 g-lg-x-2 p-0">
+		<div id="productImages" class="mt-3 product-details-page-slider row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-2 g-lg-x-2 p-0">
 			<?php
 
 			$k = 0;
@@ -95,13 +74,13 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 				$imageUrl = $assetDomainUrl . $row['ori']->imagePath;
 				$imageThumbUrl = $assetDomainUrl . $row['thumb']->imagePath;
 				?>
-				<div class="col bg-white hoverHighlightPink" id="productCard<?php echo $imageID . '-' . $productID; ?>">
+			<div class="col bg-white hoverHighlightPink" id="productCard<?php echo $imageID . '-' . $productID; ?>">
 
 					<a
-							href="<?= $imageUrl ?>"
-							class="text-decoration-underline p-0"
-							title='<?php echo $imageCaption; ?>'
-							data-lightbox="productImages<?php echo $productID; ?>">
+						href="<?= $imageUrl ?>"
+						class="text-decoration-underline p-0"
+						title='<?php echo $imageCaption; ?>'
+						data-lightbox="productImages<?php echo $productID; ?>">
 						<img
 								itemprop="image"
 								src="<?php echo $imageThumbUrl; ?>"
@@ -114,7 +93,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 						/>
 					</a>
 
-				</div>
+			</div>
 				<?php
 			}
 			?>
@@ -133,15 +112,16 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 						<div class="d-flex">
 							<h4>
 								<span
-										class="text-danger font-weight-bold"><?php echo $this->App->price($salePrice); ?></span>
+									class="text-danger font-weight-bold"><?php echo $this->App->price($salePrice); ?></span>
 							</h4>
 							<?php if ($showDiscount): ?>
 								<div class="ms-3">
 									<span
-											class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
+										class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
 								</div>
 							<?php endif; ?>
 						</div>
+
 
 
 						<?php if ($showDiscount): ?>
@@ -159,10 +139,10 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 										<label for="ShoppingCartProductQuantity<?php echo $productID; ?>"
 											   class="small">Select Quantity</label>
 										<select
-												name="data[ShoppingCartProduct][quantity]"
-												id="ShoppingCartProductQuantity<?php echo $productID; ?>"
-												class="form-select form-select-sm"
-												style="margin-top: 1px;"
+											name="data[ShoppingCartProduct][quantity]"
+											id="ShoppingCartProductQuantity<?php echo $productID; ?>"
+											class="form-select form-select-sm"
+											style="margin-top: 1px;"
 										>
 											<?php echo $selectBoxQuantityOptions; ?>
 										</select>
@@ -212,106 +192,22 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		</section>
 	</div>
 
-	<div class="mt-5">
-		<h2 class="">Did you love it? Let us know!</h2>
-		<div class="mt-4">
-			<?php
-			$userRating = 0;
-			if (!empty($userReview)) {
-				$userRating = (int)($userReview['ProductReview']['rating'] ? $userReview['ProductReview']['rating'] : 0);
-			}
-			?>
-			<span class="text-purple">Rate this product</span>
-			<div class="mt-1 fs-5" id="ratingsDiv<?= $productID ?>">
-				<span class="text-orange" id="starRating1" data-rating="1"
-					  onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating2" data-rating="2"
-					  onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating3" data-rating="3"
-					  onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating4" data-rating="4"
-					  onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating5" data-rating="5"
-					  onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-			</div>
+	<div class="mt-5 alert bg-light border">
+		<h5>Add Review</h5>
 
-			<?php
-			if (!empty($userReview)) {
-				?>
-				<div class="text-start mt-3">
-					<div class="text-start text-purple"><label for="productReview<?= $productID ?>">Your review
-							comments</label></div>
-					<textarea id="productReview<?= $productID ?>" class="form-control"
-							  rows="2"><?= $userReview['ProductReview']['comments'] ?></textarea>
-				</div>
-				<script>
-					$(document).ready(function () {
-						fillProductRatingStars(<?= $userRating ?>)
-					})
-				</script>
-			<?php
-			} else {
-			?>
-				<div class="text-start mt-3">
-					<div class="text-start text-purple"><label for="productReview<?= $productID ?>">Write a
-							review</label></div>
-					<textarea id="productReview<?= $productID ?>" class="form-control" rows="2"
-							  placeholder="Enter your comments here..."></textarea>
-				</div>
+		<div class="mt-3 fs-5">
+			<span class="text-orange" id="starRating1" data-rating="1" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
+			<span class="text-orange" id="starRating2" data-rating="2" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
+			<span class="text-orange" id="starRating3" data-rating="3" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
+			<span class="text-orange" id="starRating4" data-rating="4" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
+			<span class="text-orange" id="starRating5" data-rating="5" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
+		</div>
 
-				<div class="text-start mt-4">
-					<?php
-					if ($this->Session->check('User.id')) {
-						?>
-						<button type="button" id="submitReviewButton" class="btn btn-orange btn-sm"
-								onclick="submitProductReview('<?= $categoryID ?>', '<?= $productID ?>')">Submit Review
-						</button>
-						<?php
-					} else {
-						?>
-						<button type="button" class="btn btn-orange btn-sm disabled">Submit</button>
-						<span class="ms-2 text-danger small">Please <a href="/users/login">login</a> to submit a review.</span>
-						<?php
-					}
-					?>
-				</div>
-				<?php
-			}
-			?>
+		<div class="text-end mt-3">
+			<textarea id="productReview<?= $productID ?>" class="form-control" rows="2" placeholder="Enter your comments"></textarea>
+			<button type="button" class="btn btn-primary btn-sm mt-3">Submit Review</button>
 		</div>
 	</div>
-
-	<?php
-	if ($productReviews) {
-		?>
-		<div class="mt-5">
-			<h2 class="">Review Comments</h2>
-			<div class="mt-4">
-				<?php
-				foreach($productReviews as $row) {
-					?>
-						<div class="border rounded p-3 mb-3">
-							<div class="text-start small text-muted d-flex justify-content-between">
-								<div class="small text-muted"><i class="fa fa-user"></i> <?= $row['ProductReview']['user_name'] ?></div>
-								<div class="small"><small><?= $this->App->convertTimeToDays($row['ProductReview']['created']) ?></small></div>
-							</div>
-
-							<div class="mt-4 mb-2">
-								<?= $this->element('show_rating_stars', ['rating' => $row['ProductReview']['rating']]) ?>
-								<div class="mt-1 text-dark">
-									<?= $row['ProductReview']['comments'] ?>
-								</div>
-							</div>
-						</div>
-					<?php
-				}
-				?>
-			</div>
-		</div>
-		<?php
-	}
-	?>
-
 
 	<div class="mt-5">
 		<?php
@@ -364,7 +260,7 @@ $this->set('title_for_layout', $productName);
 $metaKeywords = trim($productInfo['Product']['meta_keywords']) != '' ? $productInfo['Product']['meta_keywords'] : $productName;
 $metaDesc = trim($productInfo['Product']['meta_description']) != '' ? $productInfo['Product']['meta_description'] : $productDesc;
 
-if (trim($metaKeywords)) {
+if (trim($metaKeywords)){
 	$this->Html->meta('keywords', strip_tags($metaKeywords), ['inline' => false]);
 }
 
