@@ -47,7 +47,7 @@
 		<?php
 	}
 
-	if ((isset($loadVueJs) && $loadVueJs == true) || $this->Session->read('Site.shopping_cart') == true) {
+	if (isset($loadVueJs) && $loadVueJs == true) {
 		?>
 		<script src="/vendor/vue/vue.min.js"></script>
 

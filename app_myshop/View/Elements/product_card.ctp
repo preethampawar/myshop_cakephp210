@@ -1,5 +1,5 @@
 <?php
-$this->set('loadVueJs', true);
+$this->set('loadVueJs', false);
 $selectBoxQuantityOptions = '';
 for ($i = 1; $i <= 50; $i++) {
 	$selectBoxQuantityOptions .= "<option value='$i'>$i</option>";
@@ -27,6 +27,8 @@ $ratingsCount = $ratingsCount ?? 0;
 				role="button"
 				alt="<?php echo $productName; ?>"
 				id="<?php echo $imageTagId; ?>"
+				width="200"
+				height="200"
 			/>
 		</a>
 
