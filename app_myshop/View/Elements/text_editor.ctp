@@ -59,7 +59,7 @@
 			// ['color', ['color']],
 			['para', ['ul', 'ol', 'paragraph']],
 			// ['table', ['table']],
-			['insert', ['link', 'video']],
+			['insert', ['link', 'video', 'picture']],
 			// ['insert', ['link', 'picture', 'video']],
 			// ['view', ['fullscreen', 'codeview', 'help']]
 		]
