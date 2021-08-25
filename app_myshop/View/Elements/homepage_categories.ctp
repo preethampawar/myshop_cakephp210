@@ -48,7 +48,6 @@ if ($categories) {
 										role="button"
 										alt="<?php echo $categoryName; ?>"
 										width="300"
-										height="300"
 								/>
 							</a>
 

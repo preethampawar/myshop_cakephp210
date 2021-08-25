@@ -28,7 +28,6 @@ $ratingsCount = $ratingsCount ?? 0;
 				alt="<?php echo $productName; ?>"
 				id="<?php echo $imageTagId; ?>"
 				width="200"
-				height="200"
 			/>
 		</a>
 
