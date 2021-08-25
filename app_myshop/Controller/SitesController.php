@@ -1,5 +1,6 @@
 <?php
 App::uses('CakeEmail', 'Network/Email');
+App::uses('Validation', 'Utility');
 
 class SitesController extends AppController
 {
@@ -371,7 +372,66 @@ Disallow:
 
 	public function contact()
 	{
+		$errorMsg = [];
+		$successMsg = null;
 
+		if ($this->request->is('post')) {
+			$data = $this->request->data;
+
+			if (Validation::blank($data['User']['name'])) {
+				$errorMsg[] = 'Enter your name';
+			}
+
+			if (Validation::blank($data['User']['email'])) {
+				$errorMsg[] = 'Enter Email Address';
+			} else if (!(Validation::email($data['User']['email']))) {
+				$errorMsg[] = 'Invalid Email Address';
+			}
+
+			// Validate message
+			if (Validation::blank($data['User']['message'])) {
+				$errorMsg[] = 'Message field cannot be empty';
+			}
+
+			if (empty($errorMsg)) {
+				try {
+					$mailContent = '
+Dear Admin,
+
+A person has tried to contact you on ' . $this->Session->read('Site.title') . '.
+
+Contact Details:
+----------------------------------------
+Name: ' . htmlentities($data['User']['name']) . '
+Email: ' . $data['User']['email'] . '
+Phone: ' . $data['User']['phone'] . '
+Message: ' . htmlentities($data['User']['message']) . '
+
+-
+' . $this->Session->read('Site.title') . '
+
+*This is a system generated message. Please do not reply.
+
+';
+					$supportEmail = Configure::read('SupportEmail');
+					$superAdminEmail = Configure::read('AdminEmail');
+					$email = new CakeEmail('smtpNoReply');
+					$email->replyTo([$data['User']['email'] => $data['User']['name']]);
+					$email->to($supportEmail);
+					$email->bcc($superAdminEmail);
+					$email->subject('Contact Us - Someone is trying to reach you');
+					$email->send($mailContent);
+
+					$this->successMsg('Your message has been sent successfully.');
+					$this->redirect('/sites/contact');
+				} catch (Exception $ex) {
+					$this->errorMsg('An error occurred while communicating with the server. Please try again.');
+				}
+			}
+		}
+		$errorMsg = implode('<br>', $errorMsg);
+		$this->set('errorMsg', $errorMsg);
+		$this->set('successMsg', $successMsg);
 	}
 
 	public function paymentInfo()
