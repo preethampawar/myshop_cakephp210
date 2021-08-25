@@ -47,6 +47,8 @@ if ($categories) {
 										class="lazy card-img-top"
 										role="button"
 										alt="<?php echo $categoryName; ?>"
+										width="300"
+										height="300"
 								/>
 							</a>
 
