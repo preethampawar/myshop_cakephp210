@@ -382,6 +382,18 @@ class AppController extends Controller
 	}
 
 	/**
+	 * Function to check if testimonial is from selected site.
+	 */
+	function isSiteTestimonial($testimonialId)
+	{
+		App::uses('Testimonial', 'Model');
+		$testimonialModel = new Testimonial;
+		$conditions = ['Testimonial.site_id' => $this->Session->read('Site.id'), 'Testimonial.id' => $testimonialId];
+		$content = $testimonialModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		return $content;
+	}
+
+	/**
 	 * Function to check valid image size
 	 */
 	function isValidImageSize($imgSize)
