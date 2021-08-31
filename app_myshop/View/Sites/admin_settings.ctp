@@ -54,6 +54,18 @@ $this->set('enableTextEditor', true);
 				<label class="form-check-label" for="SiteShowBanners">Enable Banners Slideshow</label>
 			</div>
 			<div class="form-check form-switch">
+				<input type="hidden" name="data[Site][show_testimonials]" value="0">
+				<input
+					type="checkbox"
+					id="SiteShowTestimonials"
+					name="data[Site][show_testimonials]"
+					value="1"
+					class="form-check-input"
+					<?php echo $this->data['Site']['show_testimonials'] ? 'checked' : null; ?>
+				>
+				<label class="form-check-label" for="SiteShowTestimonials">Enable Testimonials Slideshow</label>
+			</div>
+			<div class="form-check form-switch">
 				<input type="hidden" name="data[Site][shopping_cart]" value="0">
 				<input
 					type="checkbox"

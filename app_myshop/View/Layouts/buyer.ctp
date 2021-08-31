@@ -174,6 +174,11 @@
 			<?= $this->element('banner_slideshow') ?>
 		</div>
 
+
+		<div id="storeSlideShow">
+			<?= $this->element('testimonials_slideshow') ?>
+		</div>
+
 		<div class="container mt-4" style="min-height: 400px;">
 			<?php echo $this->fetch('content'); ?>
 
