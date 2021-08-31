@@ -112,12 +112,12 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				<td><b><?= $order['Order']['customer_phone'] ?></b></td>
 			</tr>
 			<tr>
-				<td>Contact Phone No:</td>
-				<td><b><?= $order['Order']['customer_address'] ?></b></td>
+				<td>Contact Email:</td>
+				<td><b><?= $order['Order']['customer_email'] ?></b></td>
 			</tr>
 			<tr>
-				<td>Delivery Address:</td>
-				<td><b><?= $order['Order']['customer_name'] ?></b></td>
+				<td>Contact Address:</td>
+				<td><b><?= $order['Order']['customer_address'] ?></b></td>
 			</tr>
 			<tr>
 				<td>Special Instructions:</td>
