@@ -20,7 +20,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 				'Banner.images',
 				'Banner.url',
 		];
-		$banners = $bannerModel->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'sort'=>'Banner.created DESC', 'recursive'=> -1]);
+		$banners = $bannerModel->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'order'=>'Banner.created DESC', 'recursive'=> -1]);
 		$slideShowImages = [];
 
 		if ($banners) {

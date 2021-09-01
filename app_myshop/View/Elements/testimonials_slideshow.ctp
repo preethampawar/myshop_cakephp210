@@ -19,7 +19,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 				'Testimonial.customer_name',
 				'Testimonial.url',
 		];
-		$testimonials = $testimonialModel->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'sort'=>'Testimonial.created DESC', 'recursive'=> -1]);
+		$testimonials = $testimonialModel->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'order'=>'Testimonial.created DESC', 'recursive'=> -1]);
 		$slideShowImages = [];
 
 		if ($testimonials) {
@@ -58,37 +58,35 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 					$customerName = $row['customerName'];
 					$linkUrl = $row['linkUrl'];
 					?>
-					<div class="carousel-item <?= $i === 0 ? 'active' : '' ?> px-lg-5" data-bs-interval="2500" style="min-height: 150px;">
-
-						<div class="d-block w-100 text-center py-0 px-5 pt-lg-4">
-							<div class="text-dark px-lg-4">
-								<?php
-								if ($linkUrl) {
-									?>
-									<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none text-dark">
-										<?= $title ?>
-									</a>
-									<?php
-								} else {
-									?>
-									<?= $title ?>
-									<?php
-								}
+					<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="2500">
+						<div class="container p-3 text-center">
+							<i class="fa fa-quote-left small text-orange me-2"></i>
+							<?php
+							if ($linkUrl) {
 								?>
-							</div>
+								<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none text-dark">
+									<?= $title ?>
+								</a>
+								<?php
+							} else {
+								?>
+								<?= $title ?>
+								<?php
+							}
+							?>
+							<i class="fa fa-quote-right small text-orange ms-2"></i>
 
 							<?php
 							if ($customerName) {
 								?>
-								<div class="text-center mt-3 fst-italic text-muted small">
+								<div class="text-center mt-2 fst-italic text-orange small">
 									<?= $customerName ?>
 								</div>
 								<?php
 							}
 							?>
+							<div class="mt-1 small"><a href="/testimonials/" class="small">Show All</a></div>
 						</div>
-
-
 					</div>
 					<?php
 					$i++;

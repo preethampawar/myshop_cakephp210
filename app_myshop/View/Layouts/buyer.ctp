@@ -1,3 +1,6 @@
+<?php
+$testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -496,6 +499,12 @@
 				<div class="d-inline text-nowrap mx-2">
 					<a href="/sites/privacy" class="link-light text-decoration-none">Privacy Policy</a>
 				</div>
+
+				<?php if ($testimonialsEnabled) { ?>
+					<div class="d-inline text-nowrap mx-2">
+						<a href="/testimonials/" class="link-light text-decoration-none">Testimonials</a>
+					</div>
+				<?php } ?>
 			</div>
 		</div>
 		</footer>

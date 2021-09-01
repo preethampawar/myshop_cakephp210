@@ -11,16 +11,16 @@ class TestimonialsController extends AppController
 
 	function index()
 	{
-		$hideLeftMenu = true;
 		$conditions = ['Testimonial.site_id' => $this->Session->read('Site.id')];
 		$this->paginate = [
-			'limit' => 10,
+			'limit' => 50,
 			'order' => ['Testimonial.created' => 'DESC'],
 			'conditions' => $conditions,
+			'recursive' => -1
 		];
 		$testimonials = $this->paginate();
 		$title_for_layout = 'Testimonials';
-		$this->set(compact('testimonials', 'title_for_layout', 'hideLeftMenu'));
+		$this->set(compact('testimonials', 'title_for_layout'));
 	}
 
 	function show($testimonialId)
