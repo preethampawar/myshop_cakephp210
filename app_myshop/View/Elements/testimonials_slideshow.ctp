@@ -58,7 +58,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 					$customerName = $row['customerName'];
 					$linkUrl = $row['linkUrl'];
 					?>
-					<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="2500">
+					<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="4500">
 						<div class="container p-3 text-center">
 							<i class="fa fa-quote-left small text-orange me-2"></i>
 							<?php
