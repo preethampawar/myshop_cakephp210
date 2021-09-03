@@ -2,6 +2,14 @@
 
 <p>Your Order No. #<?= $order['Order']['id']; ?> has been confirmed.</p>
 
+<?php
+if (trim($message)) {
+	?>
+		<p>Message from Seller: <?= $message ?></p>
+	<?php
+}
+?>
+
 <p>You will be notified once the order is shipped</p>
 
 <p>Thank you for shopping with us.</p>

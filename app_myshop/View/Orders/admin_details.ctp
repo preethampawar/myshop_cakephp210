@@ -4,7 +4,7 @@
 
 <h1>Order No. #<?= $order['Order']['id']; ?></h1>
 
-<div class="mt-3 text-end">
+<div class="mt-3">
 	<?php
 	$orderStatus = $order['Order']['status'];
 
@@ -43,13 +43,14 @@
 	<?php
 	if ($orderStatusOptions) {
 		?>
-			<div class="alert alert-warning">
+			<div class="alert alert-warning shadow">
+				<label for="selectedOrderStatus" class="form-label">Order Status</label>
 				<select
 						name="selectedOrderStatus"
 						id="selectedOrderStatus"
 						class="form-select form-select-sm"
-						onchange="changeOrderStatus('<?= base64_encode($order['Order']['id']) ?>', this.value)">
-					<option value="0">Change Order Status</option>
+						>
+					<option value="0">Select</option>
 					<?php
 					foreach($orderStatusOptions as $index => $option) {
 						?>
@@ -59,11 +60,20 @@
 					?>
 				</select>
 
+				<div class="mt-3">
+					<label for="selectedOrderStatusMessage" class="form-label">Message</label>
+					<textarea name="message" id="selectedOrderStatusMessage" class="form-control" placeholder="Enter your message"></textarea>
+				</div>
+
 				<div class="form-check d-flex justify-content-start mt-3">
 					<input name="sendEmailToCustomer" class="form-check-input" type="checkbox" value="" id="sendEmailToCustomer" checked>
 					<label class="form-check-label ms-2 text-start" for="sendEmailToCustomer">
 						Send Notification Email to Customer
 					</label>
+				</div>
+
+				<div class="mt-4 text-center">
+					<button class="btn btn-primary" onclick="changeOrderStatus('<?= base64_encode($order['Order']['id']) ?>')">Update Order Status</button>
 				</div>
 			</div>
 
@@ -86,7 +96,7 @@ if ($log) {
 $createdDate = $createdDate ?? $modifiedDate;
 ?>
 
-<div class="p-3 shadow small mt-4">
+<div class="p-3 shadow small mt-5">
 	<p>Order Status: <u><?= $order['Order']['status'] ?></u></p>
 	<p>Order Placed On: <u><?= $createdDate ?></u></p>
 
@@ -96,17 +106,20 @@ $createdDate = $createdDate ?? $modifiedDate;
 		<tr>
 			<th>Status</th>
 			<th>Date</th>
+			<th></th>
 		</tr>
 		</thead>
 		<tbody>
 		<?php
 		if ($log) {
 			foreach($log as $row2) {
+				$message = $row2['message'] ?? '';
 				$updatedOn = date('d-m-Y h:i A', $row2['date']);
 				?>
 					<tr>
 						<td><?=$row2['orderStatus'] ?></td>
 						<td><?=$updatedOn ?></td>
+						<td><?= html_entity_decode($message) ?></td>
 					</tr>
 				<?php
 			}

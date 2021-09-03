@@ -45,10 +45,26 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 	if ($slideShowImages) {
 	?>
 
-	<h4 class="text-decoration-underline text-center mt-4">Testimonials</h4>
-	<div class="mb-4 pt-3 px-3 alert-warning p-0">
-		<div id="testimonialSlideShow" class="carousel carousel-dark slide" data-bs-ride="carousel">
-
+	<h4 class="text-center text-decoration-underline">Testimonials</h4>
+	<div class="alert alert-warning rounded-0 pb-0">
+		<div id="testimonialSlideShow" class="carousel slide carousel-dark mt-3" data-bs-ride="carousel">
+			<div class="carousel-indicators">
+				<?php
+				$i = 0;
+				foreach($slideShowImages  as $row) {
+					?>
+					<button
+							type="button"
+							data-bs-target="#testimonialSlideShow"
+							data-bs-slide-to="<?=$i?>"
+							<?= $i === 0 ? 'class="active"' : '' ?>
+							aria-current="true"
+							aria-label="Slide <?=$i?>"></button>
+					<?php
+					$i++;
+				}
+				?>
+			</div>
 			<div class="carousel-inner">
 				<?php
 				$i = 0;
@@ -58,49 +74,39 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 					$customerName = $row['customerName'];
 					$linkUrl = $row['linkUrl'];
 					?>
-					<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="5000">
-						<div class="container p-3 text-center">
-							<i class="fa fa-quote-left small text-orange me-2"></i>
-							<?php
-							if ($linkUrl) {
-								?>
-								<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none text-dark">
-									<?= $title ?>
-								</a>
+					<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="6000">
+						<div class="container text-center pb-5">
+							<div class="fst-italic">
+								<i class="fa fa-quote-left small text-orange me-1"></i>
 								<?php
-							} else {
+								if ($linkUrl) {
+									?>
+									<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none text-dark">
+										<?= $title ?>
+									</a>
+									<?php
+								} else {
+									echo  $title;
+								}
 								?>
-								<?= $title ?>
-								<?php
-							}
-							?>
-							<i class="fa fa-quote-right small text-orange ms-2"></i>
+								<i class="fa fa-quote-right small text-orange ms-1"></i>
+							</div>
 
 							<?php
 							if ($customerName) {
 								?>
-								<div class="text-center mt-2 fst-italic text-orange small">
-									<?= $customerName ?>
-								</div>
+								<div class="text-center mt-2 text-orange"><?= $customerName ?></div>
 								<?php
 							}
 							?>
-							<div class="mt-1 small"><a href="/testimonials/" class="small">Show All</a></div>
+							<div class="my-3 small"><a href="/testimonials/" class="btn btn-outline-secondary btn-sm rounded-pill py-0">Show All Reviews</a></div>
+
 						</div>
 					</div>
 					<?php
 					$i++;
 				}
 				?>
-				<button class="carousel-control-prev" type="button" data-bs-target="#testimonialSlideShow" data-bs-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Previous</span>
-				</button>
-				<button class="carousel-control-next" type="button" data-bs-target="#testimonialSlideShow" data-bs-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Next</span>
-				</button>
-
 			</div>
 		</div>
 	</div>

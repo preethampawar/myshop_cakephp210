@@ -206,10 +206,12 @@ App::uses('Order', 'Model');
 		deletePopup.show();
 	}
 
-	function changeOrderStatus(orderId, status) {
+	function changeOrderStatus(orderId) {
+		let status = $('#selectedOrderStatus').val();
+		let message = btoa($('#selectedOrderStatusMessage').val());
 		if (status != '0') {
 			let sendEmailToCustomer = $('#sendEmailToCustomer').prop('checked') ? 1 : 0
-			let url = '/admin/orders/updateStatus/' + orderId + '/' + status + '/' + sendEmailToCustomer
+			let url = '/admin/orders/updateStatus/' + orderId + '/' + status + '/' + sendEmailToCustomer + '/' + message
 			let title = 'Update Status'
 			let content = 'Are sure you sure you want to change the order status to <b>"'+status+'"</b>?'
 			showConfirmPopup(url, title, content)
@@ -233,6 +235,17 @@ App::uses('Order', 'Model');
 
 	function hideAlert() {
 		alertModal.hide()
+	}
+
+	function htmlEncodeString(rawStr) {
+		if (typeof(rawStr) === 'undefined' || rawStr.length <= 0) {
+			return ""
+		}
+
+		//This code will replace all characters in the given range (unicode 00A0 - 9999, as well as ampersand, greater & less than) with their html entity equivalent
+		return rawStr.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+			return '&#'+i.charCodeAt(0)+';';
+		});
 	}
 
 </script>
