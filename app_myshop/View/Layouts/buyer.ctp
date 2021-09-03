@@ -30,7 +30,7 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 		if (!window.fetch) {
 			window.location = '/pages/unsupportedbrowser'
 		}
-	</script>
+	</script> 
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
