@@ -248,13 +248,16 @@ class OrdersController extends AppController
 		$this->set('orderEmailUrl', $orderEmailUrl);
 	}
 
-	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null)
+	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null)
 	{
 		if (!in_array($orderStatus, Order::ORDER_STATUS_OPTIONS)) {
 			$this->errorMsg('Invalid request');
 			$this->redirect('/admin/orders/details/'.$encodedOrderId);
 			return;
 		}
+
+		$message = $base64_encoded_message ? base64_decode($base64_encoded_message) : '';
+		$message = $message ? htmlentities($message) : '';
 
 		$orderId = base64_decode($encodedOrderId);
 		$this->layout = false;
@@ -269,14 +272,7 @@ class OrdersController extends AppController
 			$this->redirect('/admin/orders/details/'.$encodedOrderId);
 		}
 
-		$log = json_decode($orderDetails['Order']['log'], true);
-
-		$newLog = [
-			'orderStatus' => $orderStatus,
-			'date' => time()
-		];
-		$log[] = $newLog;
-		$log = json_encode($log);
+		$log = $this->getNewOrderStatusLog($orderId, $orderStatus, $message);
 
 		$orderData = [
 			'Order' => [
@@ -290,7 +286,8 @@ class OrdersController extends AppController
 			$this->successMsg('Order status updated successfully');
 
 			if ($sendEmailToCustomer) {
-				$this->sendOrderEmail($encodedOrderId, $orderStatus, true);
+				$message = html_entity_decode($message);
+				$this->sendOrderEmail($encodedOrderId, $orderStatus, true, $message);
 			}
 		} else {
 			$this->errorMsg('Failed to update order status');
@@ -384,7 +381,7 @@ class OrdersController extends AppController
 		return true;
 	}
 
-	public function sendOrderEmail($encodedOrderId, $orderStatus, $return = false)
+	public function sendOrderEmail($encodedOrderId, $orderStatus, $return = false, $message = null)
 	{
 		$this->layout = false;
 		$emailTemplate = null;
@@ -392,6 +389,7 @@ class OrdersController extends AppController
 		$error = null;
 		$orderId = base64_decode($encodedOrderId);
 		$order = $this->Order->findById($orderId);
+		$message = htmlentities(trim($message));
 
 		switch($orderStatus) {
 			case Order::ORDER_STATUS_NEW:
@@ -435,7 +433,7 @@ class OrdersController extends AppController
 		$bccEmails = $this->getBccEmails();
 
 		$Email = new CakeEmail('smtpNoReply');
-		$Email->viewVars(array('order' => $order));
+		$Email->viewVars(array('order' => $order, 'message' => $message));
 		$Email->template($emailTemplate, 'default')
 			->emailFormat('html')
 			->to([$toEmail => $toName])

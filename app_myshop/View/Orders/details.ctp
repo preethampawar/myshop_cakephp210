@@ -28,6 +28,7 @@ $createdDate = $createdDate ?: $modifiedDate;
 		<tr>
 			<th>Status</th>
 			<th>Date</th>
+			<th>Message</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -35,10 +36,12 @@ $createdDate = $createdDate ?: $modifiedDate;
 		if ($log) {
 			foreach($log as $row2) {
 				$updatedOn = date('d-m-Y h:i A', $row2['date']);
+				$message = $row2['message'] ?? '';
 				?>
 					<tr>
 						<td><?=$row2['orderStatus'] ?></td>
 						<td><?=$updatedOn ?></td>
+						<td><?=html_entity_decode($message) ?></td>
 					</tr>
 				<?php
 			}
