@@ -916,11 +916,13 @@ class AppController extends Controller
 		$email->send($mailContent);
 	}
 
-	protected function getNewOrderStatusLog($orderId, $newOrderStatus)
+	protected function getNewOrderStatusLog($orderId, $newOrderStatus, $message = null)
 	{
 		App::uses('Order', 'Model');
 		$orderModel = new Order();
 		$orderDetails = $orderModel->findById($orderId);
+
+		$message = htmlentities(trim($message));
 
 		if (empty($orderId) || empty($orderDetails)) {
 			$log[] = [
@@ -943,7 +945,8 @@ class AppController extends Controller
 			if ($orderStatusAlreadyExists === false) {
 				$log[] = [
 					'orderStatus' => $newOrderStatus,
-					'date' => time()
+					'date' => time(),
+					'message' => $message,
 				];
 			}
 		}

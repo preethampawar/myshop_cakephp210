@@ -2,6 +2,14 @@
 
 <p>Your Order No. #<?= $order['Order']['id']; ?> has been returned. Further process will be initiated (if any).</p>
 
+<?php
+if (trim($message)) {
+	?>
+	<p>Message from Seller: <?= $message ?></p>
+	<?php
+}
+?>
+
 <p>Thank you for shopping with us.</p>
 
 <p>

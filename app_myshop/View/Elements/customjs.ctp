@@ -902,6 +902,16 @@ App::uses('Order', 'Model');
 		}
 	}
 
+	function htmlEncodeString(rawStr) {
+		if (typeof(rawStr) === 'undefined' || rawStr.length <= 0) {
+			return ""
+		}
+
+		//This code will replace all characters in the given range (unicode 00A0 - 9999, as well as ampersand, greater & less than) with their html entity equivalent
+		return rawStr.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+			return '&#'+i.charCodeAt(0)+';';
+		});
+	}
 </script>
 
 <script>
