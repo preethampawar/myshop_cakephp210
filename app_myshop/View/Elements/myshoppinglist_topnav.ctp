@@ -155,6 +155,31 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		?>
 
 		<div class="mt-3 p-3 shadow rounded small">
+			<?php
+			$applyPromoDiscount = false;
+			$promoDiscountValue = 0;
+			$purchaseThisMuchToAvailPromoCode = 0;
+			$promoCodeInfo = $this->Session->check('PromoCode') ? $this->Session->read('PromoCode') : null;
+			$promoCode = null;
+
+			if ($promoCodeInfo) {
+				$promoCode = $promoCodeInfo['name'];
+				$minPurchaseValue = (float)$promoCodeInfo['min_purchase_value'];
+				$promoDiscountValue = (float)$promoCodeInfo['discount_value'];
+
+				if ($cartValue >= $minPurchaseValue) {
+					$applyPromoDiscount = true;
+				} else {
+					$purchaseThisMuchToAvailPromoCode = $minPurchaseValue - $cartValue;
+				}
+			}
+
+			if ($applyPromoDiscount) {
+				$totalDiscount = $totalDiscount + $promoDiscountValue;
+				$payableAmount = $payableAmount - $promoDiscountValue;
+			}
+			?>
+
 
 			<h5>Price Details</h5>
 			<hr>
@@ -169,6 +194,20 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				<span class="text-success">- <?= $this->App->price($totalDiscount) ?></span>
 			</div>
 
+			<!-------------- -->
+			<?php if($applyPromoDiscount) { ?>
+			<div class="small text-danger">
+				Promo Code Applied - <?= $this->App->price($promoDiscountValue) ?> OFF
+			</div>
+			<?php } ?>
+
+			<?php if($promoCodeInfo && $applyPromoDiscount === false) { ?>
+			<div class="small text-danger">
+				Add item(s) worth <?= $this->App->price($purchaseThisMuchToAvailPromoCode) ?> or more to get <?= $this->App->price($promoDiscountValue) ?> OFF
+			</div>
+			<?php } ?>
+			<!-------------- -->
+
 			<div class="d-flex justify-content-between mt-3">
 				<span>Delivery Charges</span>
 				<span><?= $deliveryCharges > 0 ? $this->App->price($deliveryCharges) : '<span class="text-success">FREE</span>' ?></span>
@@ -181,6 +220,36 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			</div>
 
 		</div>
+
+
+		<div class="mt-4 p-3 shadow rounded small">
+			<h6>Have Promo Code (or) Discount Code?</h6>
+			<div class="mt-3 d-flex justify-content-sm-between">
+				<input
+					type="text"
+					name="promoc"
+					id="promoCodeVal"
+					class="form-control form-control-sm"
+					placeholder="Enter code here"
+				>
+				<button class="btn btn-outline-primary btn-sm ms-2" onclick="applyPromoCode()">Apply</button>
+			</div>
+
+			<?php
+			if ($this->Session->check('PromoCode')) {
+				?>
+				<div class="mt-3 mb-0 alert alert-secondary bg-light">
+					Applied Promo Code: <b><?= $this->Session->read('PromoCode.name') ?></b>
+
+					<div class="mt-2 text-center">
+						<span class="btn btn-sm btn-outline-danger rounded-pill" onclick="removePromoCode()"><i class="fa fa-times me-1"></i> Remove Promo Code</span>
+					</div>
+				</div>
+				<?php
+			}
+			?>
+		</div>
+
 
 		<div class="mt-5 text-center">
 			<button class="btn btn-orange" onclick="showOrderDeliveryDetails()">PLACE ORDER</button>

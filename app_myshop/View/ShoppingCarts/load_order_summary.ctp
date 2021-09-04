@@ -1,4 +1,3 @@
-
 <?php
 if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCartProducts['ShoppingCartProduct'])) {
 	?>
@@ -12,7 +11,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				<th>Product</th>
 				<th>Price</th>
 				<th>Qty</th>
-				<th>Amount</th>
+				<th class="text-end">Amount</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -67,7 +66,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				<td class="text-center">
 					<?=  $qty ?>
 				</td>
-				<td class="text-center">
+				<td class="text-end">
 					<?= $this->App->price($productCartValue) ?>
 				</td>
 			</tr>
@@ -78,25 +77,65 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 		$payableAmount = $cartValue + $this->Session->read('Site.shipping_charges');
 		?>
 
+		<?php
+		$applyPromoDiscount = false;
+		$promoDiscountValue = 0;
+		$purchaseThisMuchToAvailPromoCode = 0;
+		$promoCodeInfo = $this->Session->check('PromoCode') ? $this->Session->read('PromoCode') : null;
+		$promoCode = null;
+
+		if ($promoCodeInfo) {
+			$promoCode = $promoCodeInfo['name'];
+			$minPurchaseValue = (float)$promoCodeInfo['min_purchase_value'];
+			$promoDiscountValue = (float)$promoCodeInfo['discount_value'];
+
+			if ($cartValue >= $minPurchaseValue) {
+				$applyPromoDiscount = true;
+			} else {
+				$purchaseThisMuchToAvailPromoCode = $minPurchaseValue - $cartValue;
+			}
+		}
+
+		if ($applyPromoDiscount) {
+			$totalDiscount = $totalDiscount + $promoDiscountValue;
+			$payableAmount = $payableAmount - $promoDiscountValue;
+		}
+		?>
+
 			</tbody>
 			<tfoot>
 				<tr class="text-muted">
 					<td>Total Cart Value</td>
 					<td class="text-decoration-line-through">MRP <?= $this->App->price($cartMrpValue) ?></td>
 					<td class="text-center"></td>
-					<td class="text-center"><?= $this->App->price($cartValue) ?></td>
+					<td class="text-end"><?= $this->App->price($cartValue) ?></td>
 				</tr>
+
+				<?php
+				if ($applyPromoDiscount) {
+					?>
+					<tr class="text-muted">
+						<td>Promo Code Discount</td>
+						<td></td>
+						<td class="text-center"></td>
+						<td class="text-end">-<?= $this->App->price($promoDiscountValue) ?></td>
+					</tr>
+					<?php
+				}
+				?>
+
 				<tr class="text-muted">
 					<td>Shipping Charges</td>
 					<td></td>
 					<td class="text-center"></td>
-					<td class="text-center"><?= $this->App->price($this->Session->read('Site.shipping_charges')) ?></td>
+					<td class="text-end"><?= $this->App->price($this->Session->read('Site.shipping_charges')) ?></td>
 				</tr>
+
 				<tr class="fw-bold">
 					<td>Total</td>
 					<td></td>
 					<td class="text-center"><?= $totalItems ?></td>
-					<td class="text-center"><?= $this->App->price($payableAmount) ?></td>
+					<td class="text-end"><?= $this->App->price($payableAmount) ?></td>
 				</tr>
 
 			</tfoot>

@@ -912,6 +912,52 @@ App::uses('Order', 'Model');
 			return '&#'+i.charCodeAt(0)+';';
 		});
 	}
+
+	function applyPromoCode() {
+		let promoCode = btoa($('#promoCodeVal').val().trim())
+
+		if (promoCode.length < 1) {
+			showAlert('Please enter promo code')
+
+			return
+		}
+
+		const promoUrl = '/promo_codes/applyCode/'+promoCode
+		const result = getData(promoUrl)
+
+		result.then( function (response) {
+			if (response.error) {
+				showAlert(response.errorMsg)
+				return
+			}
+			showAlert(response.successMsg, 'Success!')
+			loadShoppingCart()
+		})
+		result.finally( function() {
+			// myShoppingCart.show()
+		})
+
+		return result
+	}
+
+	function removePromoCode() {
+		const promoUrl = '/promo_codes/removeCode'
+		const result = getData(promoUrl)
+
+		result.then( function (response) {
+			if (response.error) {
+				showAlert(response.errorMsg)
+				return
+			}
+			showAlert(response.successMsg, 'Success!')
+			loadShoppingCart()
+		})
+		result.finally( function() {
+			// myShoppingCart.show()
+		})
+
+		return result
+	}
 </script>
 
 <script>

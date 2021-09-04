@@ -27,6 +27,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			$cartValue = $order['Order']['total_cart_value'];
 			$payableAmount = $order['Order']['total_order_amount'];
 			$totalDiscount = $order['Order']['total_discount'];
+			$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
 
 			$cartMrpValue = 0;
 			$totalItems = 0;
@@ -79,6 +80,18 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			<?php
 			*/
 			?>
+			<?php
+			if ($promoCodeDiscount > 0) {
+				?>
+				<tr class="text-muted">
+					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
+					<td></td>
+					<td class="text-center"></td>
+					<td class="text-center">-<?= $this->App->price($promoCodeDiscount) ?></td>
+				</tr>
+				<?php
+			}
+			?>
 			<tr class="text-muted">
 				<td>Shipping Charges</td>
 				<td></td>
@@ -95,8 +108,14 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			</tfoot>
 
 		</table>
-		<br>
-		<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order</div>
+		<?php
+		if ($totalDiscount > 0) {
+		?>
+			<br>
+			<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order</div>
+		<?php
+		}
+		?>
 	</div>
 	<br>
 	<div class="p-3 mt-4 shadow small">
@@ -129,14 +148,22 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 	<div class="p-3 mt-4 shadow small">
 		<h5>PAYMENT DETAILS</h5>
 		<hr>
-		<div class="">
-			Payment Method:
-			<b><?= $order['Order']['payment_method'] ?></b>
-		</div>
-		<div class="mt-2">
-			Payment Reference No:
-			<b><?= !empty($order['Order']['payment_reference_no']) ? $order['Order']['payment_reference_no'] : 'N/A' ?></b>
-		</div>
+		<table class="table small" cellpadding="5" cellspacing="0" border="0">
+			<tr>
+				<td>Payment Method:</td>
+				<td><b><?= $order['Order']['payment_method'] ?></b></td>
+			</tr>
+			<?php
+			if(!empty($order['Order']['payment_reference_no'])) {
+			?>
+			<tr>
+				<td>Payment Reference No:</td>
+				<td><b><?= $order['Order']['payment_reference_no'] ?></b></td>
+			</tr>
+			<?php
+			}
+			?>
+		</table>
 	</div>
 	<?php
 } else {

@@ -208,6 +208,34 @@ class OrdersController extends AppController
 
 			$payableAmount = $cartValue + $this->Session->read('Site.shipping_charges');
 
+			$applyPromoDiscount = false;
+			$promoDiscountValue = 0;
+			$purchaseThisMuchToAvailPromoCode = 0;
+			$promoCodeInfo = $this->Session->check('PromoCode') ? $this->Session->read('PromoCode') : null;
+			$promoCode = null;
+			$promoCodeId = null;
+			$promoCodeDetails = null;
+
+			if ($promoCodeInfo) {
+				$promoCodeId = $promoCodeInfo['id'];
+				$promoCode = $promoCodeInfo['name'];
+				$promoCodeDetails = json_encode($promoCodeInfo);
+				$minPurchaseValue = (float)$promoCodeInfo['min_purchase_value'];
+				$promoDiscountValue = (float)$promoCodeInfo['discount_value'];
+
+				if ($cartValue >= $minPurchaseValue) {
+					$applyPromoDiscount = true;
+				} else {
+					$purchaseThisMuchToAvailPromoCode = $minPurchaseValue - $cartValue;
+				}
+			}
+
+			if ($applyPromoDiscount) {
+				$totalDiscount = $totalDiscount + $promoDiscountValue;
+				$payableAmount = $payableAmount - $promoDiscountValue;
+			}
+
+
 			$orderData = [
 				'Order' => [
 					'id' => $orderId,
@@ -221,10 +249,15 @@ class OrdersController extends AppController
 					'log' => $log,
 					'notes' => null,
 					'user_id' => $userId,
+					'promo_code' => $promoCode,
+					'promo_code_discount' => $promoDiscountValue,
+					'promo_code_id' => $promoCodeId,
+					'promo_code_details' => $promoCodeDetails,
 				]
 			];
 
 			if ($orderDetails = $this->Order->save($orderData)) {
+				$this->Session->delete('PromoCode');
 
 				if ($this->saveOrderProducts($shoppingCartProducts['ShoppingCartProduct'], $orderId)) {
 					// delete shopping cart details

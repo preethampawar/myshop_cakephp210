@@ -75,6 +75,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			$cartValue = $order['Order']['total_cart_value'];
 			$payableAmount = $order['Order']['total_order_amount'];
 			$totalDiscount = $order['Order']['total_discount'];
+			$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
 
 			$cartMrpValue = 0;
 			$totalItems = 0;
@@ -123,6 +124,18 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				<td class="text-center"></td>
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
+			<?php
+			if ($promoCodeDiscount > 0) {
+				?>
+				<tr class="text-muted">
+					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
+					<td></td>
+					<td class="text-center"></td>
+					<td class="text-center">-<?= $this->App->price($promoCodeDiscount) ?></td>
+				</tr>
+				<?php
+			}
+			?>
 			<tr class="text-muted">
 				<td>Shipping Charges</td>
 				<td></td>

@@ -151,6 +151,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			$cartValue = $order['Order']['total_cart_value'];
 			$payableAmount = $order['Order']['total_order_amount'];
 			$totalDiscount = $order['Order']['total_discount'];
+			$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
 
 			$cartMrpValue = 0;
 			$totalItems = 0;
@@ -199,6 +200,18 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				<td class="text-center"></td>
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
+			<?php
+			if ($promoCodeDiscount > 0) {
+				?>
+				<tr class="text-muted">
+					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
+					<td></td>
+					<td class="text-center"></td>
+					<td class="text-center">-<?= $this->App->price($promoCodeDiscount) ?></td>
+				</tr>
+				<?php
+			}
+			?>
 			<tr class="text-muted">
 				<td>Shipping Charges</td>
 				<td></td>
@@ -215,7 +228,20 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			</tfoot>
 
 		</table>
-		<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order</div>
+		<div class="text-success text-center">
+			Saved <?= $this->App->price($totalDiscount) ?> on this Order
+			<?php
+			if ($order['Order']['promo_code']) {
+			?>
+			<div class="alert alert-secondary bg-light">
+				Promo Code<br>
+				<b><?= $order['Order']['promo_code'] ?></b> :
+				<b><?= $this->App->price($order['Order']['promo_code_discount']) ?> OFF</b>
+			</div>
+			<?php
+			}
+			?>
+		</div>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
