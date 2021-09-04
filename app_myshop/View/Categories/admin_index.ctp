@@ -1,9 +1,21 @@
-<div class="my-3 d-flex justify-content-between align-items-center">
-	<h5>Manage Products</h5>
-	<button id="addCategoryButton" type="button" class="btn btn-sm btn-info" onclick="$('#categoryForm').toggleClass('d-none'); $('#addCategoryButton').toggleClass('d-none')">+ Add Category</button>
+<h1>Manage Category/Products</h1>
+
+<div class="mt-4">
+	<?= $this->element('products_quota_widget') ?>
 </div>
 
-<div id="categoryForm" class="d-none bg-light border border-secondary rounded p-2">
+<div class="text-end mt-4">
+	<button
+		id="addCategoryButton"
+		type="button"
+		class="btn btn-sm btn-primary"
+		onclick="$('#categoryForm').toggleClass('d-none'); $('#addCategoryButton').toggleClass('d-none')"
+	>
+		+ Add Category
+	</button>
+</div>
+
+<div id="categoryForm" class="d-none alert alert-warning">
 	<div class="row">
 		<div class="col-xs-12 col-md-10 col-lg-8">
 			<?php echo $this->Form->create('', ['url' => '/admin/categories/add']); ?>
@@ -33,13 +45,8 @@
 
 </div>
 
-<div class="mt-4">
-	<?= $this->element('products_quota_widget') ?>
-</div>
+<div class="mt-3">
 
-<div class="mt-4">
-
-	<h6>Select Category</h6>
 	<?php
 	App::uses('Category', 'Model');
 	$categoryModel = new Category;
@@ -47,10 +54,22 @@
 
 	if (!empty($categories)) {
 		?>
-		<div id='adminCategoryNavigation'>
-			<ul class="list-group">
+		<div class="table-responsive mt-3">
+			<table class="table table-sm small">
+				<thead>
+				<tr>
+					<th>#</th>
+					<th>Image</th>
+					<th>Category</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
 				<?php
+				$k = 0;
 				foreach ($categories as $row) {
+					$k++;
 					$categoryID = $row['Category']['id'];
 					$categoryActive = $row['Category']['active'];
 					$categoryName = Inflector::humanize($row['Category']['name']);
@@ -69,50 +88,43 @@
 					}
 
 					?>
-					<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3">
-						<div>
-							<?php if($categoryActive): ?>
-								<span class="small fa fa-circle text-success" title="Active"></span>
-							<?php else: ?>
-								<span class="small fa fa-circle text-danger" title="Inactive"></span>
-							<?php endif; ?>
+						<tr>
+							<td><?= $k ?>.</td>
 
-							<?php echo $this->Html->link($categoryDisplayName, '/admin/categories/showProducts/' . $categoryID . '/' . $categoryNameSlug, ['title' => $categoryName, 'class' => 'floatLeft', 'style' => 'width:180px;']); ?>
-						</div>
-
-						<div>
-							<?php
-							if ($imageUrl) {
-								?>
-								<a href='/admin/categories/showProducts/<?= $categoryID ?>'>
-									<img src="<?= $imageUrl ?> " loading="lazy" width="100" height="100" class="mb-2">
-								</a>
+							<td>
 								<?php
-							}
-							?>
-						</div>
+								if ($imageUrl) {
+									?>
+									<a href='/admin/categories/showProducts/<?= $categoryID ?>'>
+										<img src="<?= $imageUrl ?> " loading="lazy" width="50" height="50" class="mb-2">
+									</a>
+									<?php
+								}
+								?>
+							</td>
+							<td>
+								<?php if($categoryActive): ?>
+									<span class="text-success" title="Active"><i class="fa fa-circle"></i></span>
+								<?php else: ?>
+									<span class="text-danger" title="Inactive"><i class="fa fa-circle"></i></span>
+								<?php endif; ?>
 
-						<div>
-							<a href="/admin/categories/edit/<?= $categoryID ?>" class="btn btn-sm btn-primary">Edit</a>
+								<a href="/admin/categories/showProducts/<?= $categoryID ?>" class="ms-1"><?= $categoryDisplayName ?></a>
 
-							<?php
-							/*
-							$confirmMessage = 'Deleting this category will delete all the category information and products associated with it. This action is irreversible. <br><br> Are you sure you want to delete this category?';
-							$url = '/admin/categories/delete/' . $categoryID;
-							$title = 'Delete - '. $categoryName;
-							?>
-							<span
-								class="far fa-trash-alt ms-2 text-danger"
-							 	onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
-							<?php
-							*/
-							?>
-						</div>
-					</li>
+							</td>
+							<td>
+
+							</td>
+							<td class="text-end text-nowrap">
+								<a href="/admin/categories/showProducts/<?= $categoryID ?>" class="btn btn-sm btn-primary">Manage Products</a>
+								<a href="/admin/categories/edit/<?= $categoryID ?>" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
+							</td>
+						</tr>
 					<?php
 				}
 				?>
-			</ul>
+				</tbody>
+			</table>
 		</div>
 		<?php
 	} else {

@@ -5,82 +5,101 @@
 	</ol>
 </nav>
 
+<h1>Products List - <?php echo trim($categoryInfo['Category']['name']); ?></h1>
+
 <div class="mt-4">
 	<?= $this->element('products_quota_widget') ?>
 </div>
 
-<div class="mt-4 mb-3 d-flex justify-content-between align-items-center">
-	<h5><?php echo $categoryInfo['Category']['name']; ?></h5>
 
+<div class="text-end mt-3">
 	<?php if (!$productsLimitExceeded): ?>
-	<a href='/admin/products/add/<?php echo $categoryInfo['Category']['id'];?>' class="btn btn-info btn-sm">+ Add Product</a>
+	<a href='/admin/products/add/<?php echo $categoryInfo['Category']['id'];?>' class="btn btn-primary btn-sm">+ Add Product</a>
 	<?php endif; ?>
 </div>
 
-<p>Below is the list of products in this category. </p>
-<?php
-if (!empty($categoryProducts)) {
 
-	$i = 0;
-	$categoryID = $categoryInfo['Category']['id'];
+<div class="table-responsive mt-3">
+	<?php
+	if (!empty($categoryProducts)) {
 
-	foreach ($productsList as $productID => $productName) {
-		if (!$productID) {
-			continue;
-		}
-		$i++;
-		$productActive = $categoryProducts[$productID]['Product']['active'];
-		$productFeatured = $categoryProducts[$productID]['Product']['featured'];
+		$i = 0;
+		$categoryID = $categoryInfo['Category']['id'];
 		?>
-		<li class="list-group-item d-flex justify-content-between align-items-center px-1">
-			<div>
+		<table class="table small">
+			<thead>
+			<tr>
+				<th>#</th>
+				<th>Product Name</th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody>
+
 				<?php
-				if ($productActive) {
-					$title = "Set Inactive - $productName";
-					$url = '/admin/products/setInactive/' . $productID;
-					$confirmMessage = 'Are you sure you want to deactivate this product? Deactivating will hide this product from public.';
+				$k = 0;
+				foreach ($productsList as $productID => $productName) {
+					$k++;
+					if (!$productID) {
+						continue;
+					}
+					$i++;
+					$productActive = $categoryProducts[$productID]['Product']['active'];
+					$productFeatured = $categoryProducts[$productID]['Product']['featured'];
 					?>
-					<span class="small fa fa-circle text-success"></span>
-					<!-- <span
-						class="small fa fa-circle text-success"
-						onclick="showConfirmPopup('<?php echo $url;?>//', '<?php echo $title;?>//', '<?php echo $confirmMessage;?>//')"></span> -->
+						<tr>
+							<td><?= $k ?>.</td>
+							<td>
+								<span class="me-1">
+									<?php
+									if ($productActive) {
+										$title = "Set Inactive - $productName";
+										$url = '/admin/products/setInactive/' . $productID;
+										$confirmMessage = 'Are you sure you want to deactivate this product? Deactivating will hide this product from public.';
+										?>
+										<i class="fa fa-circle text-success"></i>
+										<!-- <span
+										class="small fa fa-circle text-success"
+										onclick="showConfirmPopup('<?php echo $url;?>//', '<?php echo $title;?>//', '<?php echo $confirmMessage;?>//')"></span> -->
+										<?php
+									} else {
+										$title = "Set Active - $productName";
+										$url = '/admin/products/setActive/' . $productID;
+										$confirmMessage = 'Are you sure you want to activate this product? Activating will make this product available to public.';
+										?>
+										<i class="fa fa-circle text-danger"></i>
+										<!-- <span
+										class="small fa fa-circle text-danger"
+										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span> -->
+										<?php
+									}
+									?>
+								</span>
+
+								<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
+							</td>
+							<td class="text-end text-nowrap">
+								<a href="'/admin/products/edit/<?= $productID ?>/<?= $categoryID ?>" class="btn btn-primary btn-sm">Edit</a>
+
+								<?php
+								$confirmMessage = 'Are you sure you want to delete this product?';
+								$url = '/admin/products/deleteProduct/' . $productID . '/' . $categoryID;
+								$title = 'Delete - '. $productName;
+								?>
+								<span
+									class="ms-2 btn btn-outline-danger btn-sm"
+									onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')">Delete</span>
+							</td>
+						</tr>
 					<?php
-					// echo $this->Html->link("<span class='fa fa-toggle-on'></span>", '/admin/products/setInactive/' . $productID, ['escape' => false], 'Are you sure you want to deactivate this product? Deactivating will hide this product from public.');
-				} else {
-					$title = "Set Active - $productName";
-					$url = '/admin/products/setActive/' . $productID;
-					$confirmMessage = 'Are you sure you want to activate this product? Activating will make this product available to public.';
-					?>
-					<span class="small fa fa-circle text-danger"></span>
-					<!-- <span
-						class="small fa fa-circle text-danger"
-						onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span> -->
-					<?php
-					// echo $this->Html->link($this->Html->image('red_button.png', ['alt' => 'active', 'title' => 'Click to activate', 'height' => '12', 'width' => '12']), '/admin/products/setActive/' . $productID, ['escape' => false, 'style' => 'color:red; margin:2px;'], 'Are you sure you want to activate this product? Activating will make this product available to public.');
 				}
 				?>
-
-				<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
-			</div>
-
-			<div>
-				<?php echo $this->App->getLinkButton('<span class="far fa-edit"></span>', '/admin/products/edit/' . $productID . '/' . $categoryID, 'edit'); ?>
-
-				<?php
-				$confirmMessage = 'Are you sure you want to delete this product?';
-				$url = '/admin/products/deleteProduct/' . $productID . '/' . $categoryID;
-				$title = 'Delete - '. $productName;
-				?>
-				<span
-					class="far fa-trash-alt ms-2 text-danger"
-					onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
-			</div>
-		</li>
-
-
-
+			</tbody>
+		</table>
 		<?php
+	} else {
+		echo "No products found.";
 	}
-}
-?>
+	?>
+</div>
 <br><br>

@@ -394,6 +394,18 @@ class AppController extends Controller
 	}
 
 	/**
+	 * Function to check if testimonial is from selected site.
+	 */
+	function isSitePromoCode($promoCodeId)
+	{
+		App::uses('PromoCode', 'Model');
+		$promoCodeModel = new PromoCode;
+		$conditions = ['PromoCode.site_id' => $this->Session->read('Site.id'), 'PromoCode.id' => $promoCodeId];
+		$content = $promoCodeModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		return $content;
+	}
+
+	/**
 	 * Function to check valid image size
 	 */
 	function isValidImageSize($imgSize)

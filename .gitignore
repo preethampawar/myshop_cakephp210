@@ -19,6 +19,11 @@
 /app_pjn/tmp/*
 /app_pjn_mobile/tmp/*
 /app_wines/tmp/*
+/app_mam/tmp/*
+/app_varaprasad/tmp/*
+
+/app_myshop/webroot/croppie_uploads/*
+
 
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
