@@ -18,21 +18,20 @@ $this->set('enableTextEditor', true);
 </nav>
 
 <div id="EditProduct<?= $productInfo['Product']['id'] ?>">
-	<div class="mt-3 d-flex justify-content-between align-items-center">
-		<h5>Edit "<?php echo $productInfo['Product']['name']; ?>"</h5>
-	</div>
+	<h1>Product - "<?php echo $productInfo['Product']['name']; ?>"</h1>
 
 	<form action="/admin/products/edit/<?= $productInfo['Product']['id'] ?>/<?= $categoryID ?>"
 		  id="ProductAdminEditForm" method="post" accept-charset="utf-8" ref="form">
 
-		<div class="mt-3 d-flex justify-content-end align-items-center">
+		<div class="mt-3 text-end">
 			<button v-if="submitDisabled" type="button" class="btn btn-secondary btn-sm disabled">Save Changes
 			</button>
 			<button v-else type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ms-3">Cancel</a>
+			<a href="/admin/categories/showProducts/<?php echo $categoryID; ?>"
+			   class="btn btn-outline-warning btn-sm ms-3">Cancel</a>
 		</div>
 
-		<div class="mt-4">
+		<div class="mt-3">
 			<h6>Product Settings</h6>
 			<hr>
 			<div class="form-check form-switch">
@@ -89,7 +88,7 @@ $this->set('enableTextEditor', true);
 			<div class="mt-3 d-flex justify-content-between align-items-center">
 				<h6>Images</h6>
 				<a href="<?php echo '/admin/images/manageProductImages/' . $productInfo['Product']['id'] . '/' . $categoryID; ?>"
-				   class="btn btn-info btn-sm">Manage Images</a>
+				   class="btn btn-warning btn-sm">Manage Images</a>
 			</div>
 			<hr>
 			<?php
@@ -150,10 +149,8 @@ $this->set('enableTextEditor', true);
 		</div>
 
 		<div class="mt-2">
-			<div class="pt-3 d-flex justify-content-between align-items-center">
+			<div class="pt-3">
 				<h6>Select Category</h6>
-				<a href="<?php echo '/admin/images/manageProductImages/' . $productInfo['Product']['id'] . '/' . $categoryID; ?>"
-				   class="btn btn-info btn-sm">+ Add Category</a>
 			</div>
 			<hr>
 
@@ -294,7 +291,7 @@ $this->set('enableTextEditor', true);
 				</button>
 				<button v-else type="submit" class="btn btn-primary btn-sm">Save Changes</button>
 				<a href="/admin/categories/showProducts/<?php echo $categoryID; ?>"
-				   class="btn btn-outline-secondary btn-sm ms-3">Cancel</a>
+				   class="btn btn-outline-warning btn-sm ms-3">Cancel</a>
 			</div>
 		</div>
 

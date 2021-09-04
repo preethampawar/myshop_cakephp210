@@ -17,12 +17,12 @@
 		<div class="text-end mt-3">
 			<a href="/admin/banners/add/" class="btn btn-primary btn-sm">+ Add New Banner</a>
 		</div>
-		<div class="table-responsive">
+		<div class="table-responsive mt-3">
 			<?php
 			if (!empty($banners)) {
 				$i = 1;
 				?>
-				<table class="table">
+				<table class="table table-sm small">
 					<thead>
 					<tr>
 						<th>#</th>
@@ -44,6 +44,7 @@
 						?>
 						<tr>
 							<td><?php echo $i; ?>.</td>
+
 							<td>
 								<?php
 								$bannerUploadedImages = $row['Banner']['images'] ? json_decode($row['Banner']['images']) : [];
@@ -63,10 +64,9 @@
 							</td>
 							<td>
 								<?php
-								echo $this->Html->link("<strong>$bannerTitle</strong>", '/admin/banners/edit/' . $bannerId, ['escape' => false, 'style' => 'text-decoration:none;']);
+								echo $bannerTitle;
 								?>
 							</td>
-
 							<td>
 								<?php
 								if ($bannerActive) {
@@ -76,9 +76,10 @@
 								}
 								?>
 							</td>
+
 							<td><?php echo $blogCreatedOn; ?></td>
 
-							<td class="text-nowrap">
+							<td class="text-nowrap text-end">
 								<a href="/admin/banners/edit/<?= $bannerId ?>" class="btn btn-sm btn-primary">Edit</a>
 								<button
 									class="ms-2 btn btn-sm btn-outline-danger"

@@ -171,7 +171,7 @@ if ($orderType) {
 		$totalOrderValue = 0;
 	?>
 		<div class="table-responsive">
-			<table class="table text-center" style="min-height:200px;">
+			<table class="table table-sm small" style="min-height:200px;">
 				<thead>
 				<tr>
 					<th>Order No.</th>
@@ -180,6 +180,7 @@ if ($orderType) {
 					<th>Customer</th>
 					<th>Mobile</th>
 					<th>Created On</th>
+					<th></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -211,35 +212,13 @@ if ($orderType) {
 						$encodedArchiveText = base64_encode(Order::ORDER_ARCHIVE);
 						$archiveUrl = '/admin/orders/archive/' . $encodedOrderId . '/' . $encodedArchiveText;
 						$archiveContent = 'Are you sure you want to archive this order #' . $orderId . '?';
+						$showEditLink = $status === Order::ORDER_STATUS_DRAFT && $offlineOrder;
 						?>
 						<tr>
 							<td>
-								<?php
-								$showEditLink = $status === Order::ORDER_STATUS_DRAFT && $offlineOrder;
-								?>
-
-								<div class="dropdown">
-									<a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-										<?= $orderId ?>
-									</a>
-									<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-										<li>
-											<a class="dropdown-item" href="/admin/orders/details/<?= base64_encode($orderId)?>">Details</a>
-										</li>
-
-										<?php if ($showEditLink) { ?>
-										<li>
-											<a class="dropdown-item" href="/admin/orders/saveOrder/<?= base64_encode($orderId)?>">Edit Offline Order</a>
-										</li>
-										<?php } ?>
-
-										<li><hr class="dropdown-divider"></li>
-										<li><a class="dropdown-item" href="#" onclick="showConfirmPopup('<?= $archiveUrl ?>', 'Archive Order', '<?= $archiveContent ?>'); return false;">Archive</a></li>
-									</ul>
-								</div>
-
+								<a class="" href="/admin/orders/details/<?= base64_encode($orderId)?>"><?= $orderId ?></a>
 							</td>
-							<td>
+							<td class="text-start">
 								<?= $status ?>
 								<span class="ms-2" title="<?= $offlineOrder ? 'Offline Order' : 'Online Order' ?>">
 									<?= $offlineOrder ? '<i class="fa fa-headset text-warning"></i>' : '<i class="fa fa-mobile-alt text-success"></i>' ?>
@@ -249,6 +228,14 @@ if ($orderType) {
 							<td><?= $customerName ?></td>
 							<td><?= $mobile ?></td>
 							<td><?= $createdDate ?></td>
+							<td class="text-end text-nowrap">
+
+								<?php if ($showEditLink) { ?>
+									<a class="btn btn-primary btn-sm me-2" href="/admin/orders/saveOrder/<?= base64_encode($orderId)?>">Edit</a>
+								<?php } ?>
+
+								<a class="btn btn-outline-danger btn-sm" href="#" onclick="showConfirmPopup('<?= $archiveUrl ?>', 'Archive Order', '<?= $archiveContent ?>'); return false;">Archive</a>
+							</td>
 						</tr>
 						<?php
 					}
@@ -258,6 +245,7 @@ if ($orderType) {
 				<tr>
 					<th colspan="2" class="text-start">Total Order Value</th>
 					<th><?= $this->App->price($totalOrderValue) ?></th>
+					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>

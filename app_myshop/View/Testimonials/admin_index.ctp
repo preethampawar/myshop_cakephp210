@@ -17,19 +17,19 @@
 		<div class="text-end mt-3">
 			<a href="/admin/testimonials/add/" class="btn btn-primary btn-sm">+ Add New Testimonial</a>
 		</div>
-		<div class="table-responsive">
+		<div class="table-responsive mt-3">
 			<?php
 			if (!empty($testimonials)) {
 				$i = 1;
 				?>
-				<table class="table">
+				<table class="table table-sm small">
 					<thead>
 					<tr>
 						<th>#</th>
-						<th>Testimonial Title</th>
+						<th>Testimonial</th>
 						<th>Customer</th>
 						<th>Status</th>
-						<th>Created on</th>
+						<th>Created</th>
 						<th></th>
 					</tr>
 					</thead>
