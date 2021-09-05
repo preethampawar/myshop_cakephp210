@@ -24,7 +24,7 @@
 			autofocus>
 	</div>
 
-	<div class="mb-3">
+	<div class="mb-1">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">Mobile Number
 			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
 				  title="Enter your 10 digit mobile number without country code">?</span>
@@ -40,6 +40,9 @@
 			required
 			autofocus>
 	</div>
+	<div class="mb-4 small text-danger">
+		*OTP will be sent to the linked Email Address of your mobile number.
+	</div>
 	<div class="mb-3">
 		<button type="submit" class="btn btn-md btn-primary">Next - Generate OTP</button>
 	</div>
@@ -47,11 +50,9 @@
 	<?php echo $this->Form->end(); ?>
 </div>
 
-<div class="alert alert-warning mt-4 p-2 small">
-	Note: OTP will be sent to the linked Email Address of your mobile number.
-</div>
 
-<div class="mt-4">
+
+<div class="mt-5">
 	<h5>New Customer?</h5>
 	<a href="/users/customerRegistration" class="link-danger">Click here to Register</a>.
 

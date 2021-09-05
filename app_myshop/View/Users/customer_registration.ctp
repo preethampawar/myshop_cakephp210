@@ -18,6 +18,9 @@
 			value="<?= $email ?>"
 			required
 			autofocus>
+		<div class="mt-1 small text-danger">
+			*OTP will be sent to this Email Address.
+		</div>
 	</div>
 
 	<div class="mt-3">
@@ -37,13 +40,11 @@
 			required
 			autofocus>
 	</div>
+
 	<div class="mt-4">
 		<button type="submit" class="btn btn-md btn-primary">Next - Generate OTP</button>
 		<a href="/" class="btn btn-md btn-secondary ms-3">Cancel</a>
 	</div>
 	<?php echo $this->Form->end(); ?>
 
-	<div class="alert alert-warning mt-4 p-2 small">
-		Note: OTP will be sent to the selected Email Address.
-	</div>
 </div>

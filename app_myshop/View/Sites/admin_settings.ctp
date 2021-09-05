@@ -8,9 +8,7 @@ $this->set('enableTextEditor', true);
 </style>
 
 <div>
-	<div class="mt-3">
-		<h5>Store Settings</h5>
-	</div>
+	<h1>Store Settings</h1>
 
 	<form action="/admin/sites/settings" id="SiteAdminEditForm" method="post" accept-charset="utf-8" ref="form">
 		<div class="mt-0 d-flex justify-content-end align-items-center">

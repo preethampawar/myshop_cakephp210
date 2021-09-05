@@ -1,19 +1,22 @@
 <section>
 	<article>
+
+
+
+		<header><h1>Testimonials</h1></header>
+
 		<?php
 		if ((int)$this->Session->read('Site.show_testimonials') === 1) {
 			?>
-			<div class="alert alert-success">Testimonials slideshow on Homepage has been enabled. Go to Store Settings to disable slideshow.</div>
+			<div class="alert alert-success mt-3">Testimonials slideshow on Homepage has been enabled. Go to Store Settings to disable slideshow.</div>
 			<?php
 		} else {
 			?>
-			<div class="alert alert-warning">Testimonials slideshow on Homepage has been disabled. Go to Store Settings to enable slideshow.</div>
+			<div class="alert alert-warning mt-3">Testimonials slideshow on Homepage has been disabled. Go to Store Settings to enable slideshow.</div>
 			<?php
 		}
 		?>
 
-
-		<header><h2>Testimonials</h2></header>
 		<div class="text-end mt-3">
 			<a href="/admin/testimonials/add/" class="btn btn-primary btn-sm">+ Add New Testimonial</a>
 		</div>

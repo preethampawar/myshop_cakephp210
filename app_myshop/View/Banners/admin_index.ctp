@@ -1,19 +1,22 @@
 <section>
 	<article>
+
+
+
+		<header><h1>Banners</h1></header>
+
 		<?php
 		if ((int)$this->Session->read('Site.show_banners') === 1) {
 			?>
-			<div class="alert alert-success">Banners slideshow on Homepage has been enabled. Go to Store Settings to disable slideshow.</div>
+			<div class="alert alert-success mt-3">*Banners slideshow on Homepage has been enabled. Go to Store Settings to disable slideshow.</div>
 			<?php
 		} else {
 			?>
-			<div class="alert alert-warning">Banners slideshow on Homepage has been disabled. Go to Store Settings to enable slideshow.</div>
+			<div class="alert alert-warning mt-3">*Banners slideshow on Homepage has been disabled. Go to Store Settings to enable slideshow.</div>
 			<?php
 		}
 		?>
 
-
-		<header><h2>Banners</h2></header>
 		<div class="text-end mt-3">
 			<a href="/admin/banners/add/" class="btn btn-primary btn-sm">+ Add New Banner</a>
 		</div>

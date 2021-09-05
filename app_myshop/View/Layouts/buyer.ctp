@@ -35,7 +35,7 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.0.2">
+	<link rel="stylesheet" href="/css/site.css?v=1.0.3">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -152,12 +152,12 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 			</div>
 		</nav>
 
-		<div class="shadow border-bottom sticky-top border-warning bg-light border-2">
+		<div class="shadow border-bottom sticky-top border-warning bg-aliceblue border-2">
 			<ul class="nav container-fluid justify-content-center py-0 small">
 				<li class="nav-item">
 					<div id="topCategoriesMenu">
 						<a href="#" class="nav-link fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-							<span class="fs-5"><i class="fa fa-th text-primary"></i></span> Shop By Category
+							<span class="fs-5"><i class="fa fa-th"></i></span> Shop By Category
 						</a>
 					</div>
 				</li>
