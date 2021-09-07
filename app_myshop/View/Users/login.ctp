@@ -30,11 +30,11 @@
 				  title="Enter your 10 digit mobile number without country code">?</span>
 		</label>
 		<input
-			type="tel"
+			type="number"
 			name="data[User][mobile]"
 			class="form-control"
 			id="UserMobile"
-			placeholder="Enter your 10 digit mobile number"
+			placeholder="Enter your 10 digit mobile number ex: 9494555588."
 			minlength="10"
 			maxlength="10"
 			required

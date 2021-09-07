@@ -33,7 +33,7 @@
 			name="data[User][mobile]"
 			class="form-control"
 			id="UserMobile"
-			placeholder="Enter your 10 digit mobile number"
+			placeholder="Enter your 10 digit mobile number ex: 9494555588."
 			minlength="10"
 			maxlength="10"
 			value="<?= $mobile ?>"

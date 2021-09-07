@@ -6,11 +6,12 @@ class UsersController extends AppController
 {
 	const TEXT_SELLER = 'seller';
 
+	public $components = array('Sms');
+
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
 	}
-
 
 	public function login()
 	{
@@ -19,8 +20,23 @@ class UsersController extends AppController
 			$data = $this->request->data;
 			$mobile = (int)$data['User']['mobile'];
 
+			$error = null;
 			if (empty($mobile)) {
-				$this->errorMsg('Please enter your mobile number');
+				$error = 'Please enter your mobile number.';
+			}
+
+			if (strlen($mobile) !== 10) {
+				$error = 'Please enter your 10 digit mobile number.';
+			}
+
+			// validate mobile no.
+			$mobileregex = "/^[6-9][0-9]{9}$/" ;
+			if (preg_match($mobileregex, $mobile) != 1) {
+				$error = 'Enter valid Mobile no.';
+			}
+
+			if ($error) {
+				$this->errorMsg($error);
 				$this->redirect('/users/login');
 			}
 
@@ -48,9 +64,11 @@ class UsersController extends AppController
 		}
 	}
 
-	private function sendLoginOtp($otp, $toEmail, $toName)
+	private function sendLoginOtp($otp, $toEmail, $mobile)
 	{
-		$subject = 'Login OTP for ' . $toName;
+		$this->Sms->sendOtp($mobile, $otp);
+
+		$subject = 'Login OTP for ' . $mobile;
 		$bccEmail = Configure::read('AdminEmail');
 
 		$mailContent = '<p>Please use the below OTP to login.</p><p><b>' . $otp . '</b></p><p><br>*Note: The above OTP is valid only for 15mins.</p><br><br>-<br>' . $this->Session->read('Site.title');
@@ -98,7 +116,7 @@ class UsersController extends AppController
 		$email = null;
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
-			$mobile = $data['User']['mobile'];
+			$mobile = (int)$data['User']['mobile'];
 			$email = $data['User']['email'];
 
 			$error = $this->validateCustomerRegistration($mobile, $email);
@@ -112,7 +130,7 @@ class UsersController extends AppController
 					$this->Session->write('customerRegistrationOtp', $rand);
 					$this->Session->write('customerRegistrationUser', $data['User']);
 					if (!empty($data['User']['email']) and !empty($data['User']['mobile'])) {
-						$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['email']); //todo: uncomment
+						$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['mobile']); //todo: uncomment
 						$this->redirect('/users/verifyCustomerRegistrationOtp');
 					}
 				}
@@ -194,14 +212,16 @@ class UsersController extends AppController
 			$this->Session->write('enrollOtp', $rand);
 			$this->Session->write('enrollUser', $data['User']);
 			if (!empty($data['User']['email']) and !empty($data['User']['mobile'])) {
-				$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['email']);
+				$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['mobile']);
 				$this->redirect('/users/verifyEnrollOtp');
 			}
 		}
 	}
 
-	private function sendEnrollOtp($otp, $toEmail, $toName)
+	private function sendEnrollOtp($otp, $toEmail, $mobile)
 	{
+		$this->Sms->sendOtp($mobile, $otp);
+
 		$subject = 'Registration OTP';
 		$mailContent = 'Your registration OTP - ' . $otp;
 		$email = new CakeEmail('smtpNoReply');

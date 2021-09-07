@@ -801,40 +801,30 @@ class AppController extends Controller
 		return $data;
 	}
 
-	function sendSMS($to, $message = null)
+	function sendSMS($toNumber, $message = null)
 	{
 		try {
 			$message = trim($message);
 			if (!empty($message)) {
-				$params = [
-					'apikey=zxIG5YlUzkafKUwd6X82dw',
-					'senderid=ENURSE',
-					'channel=trans',
-					'dcs=0',
-					'flashsms=0',
-					'number=' . $to,
-					'text=' . urlencode($message),
-					'route=8',
-				];
-				$params_string = implode('&', $params);
+				// Use the REST API Client to make requests to the Twilio REST API
 
-				$api_url = 'http://apsms.s2mark.in/api/mt/SendSMS?' . $params_string;
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $api_url);
-				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				$contents = curl_exec($ch);
-				if (curl_errno($ch)) {
-					$contents = curl_error($ch);
-				} else {
-					curl_close($ch);
 
-					//return true;
-				}
+				// Your Account SID and Auth Token from twilio.com/console
+				$sid = 'AC93792ed60b8dd15bab61b64028223d57';
+				$token = 'c84745c3e6c5ee2677405044548cff56';
+				$client = new Client($sid, $token);
 
-				if (!is_string($contents) || !strlen($contents)) {
-					$contents = '';
-				}
+				// Use the client to do fun stuff like send text messages!
+				$client->messages->create(
+				// the number you'd like to send the message to
+					'+919866042196',
+					[
+						// A Twilio phone number you purchased at twilio.com/console
+						'from' => '+14843809078',
+						// the body of the text message you'd like to send
+						'body' => 'Welcome. This is a test message.'
+					]
+				);
 			}
 		} catch (Exception $e) {
 			//..
