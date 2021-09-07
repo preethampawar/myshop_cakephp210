@@ -810,8 +810,8 @@ class AppController extends Controller
 
 
 				// Your Account SID and Auth Token from twilio.com/console
-				$sid = 'AC93792ed60b8dd15bab61b64028223d57';
-				$token = 'c84745c3e6c5ee2677405044548cff56';
+				$sid = '';
+				$token = '';
 				$client = new Client($sid, $token);
 
 				// Use the client to do fun stuff like send text messages!
@@ -820,7 +820,7 @@ class AppController extends Controller
 					'+919866042196',
 					[
 						// A Twilio phone number you purchased at twilio.com/console
-						'from' => '+14843809078',
+						'from' => '', //+14843809078
 						// the body of the text message you'd like to send
 						'body' => 'Welcome. This is a test message.'
 					]
