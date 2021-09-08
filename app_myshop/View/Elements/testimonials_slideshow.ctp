@@ -45,9 +45,9 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 	if ($slideShowImages) {
 	?>
 
-	<h4 class="text-center text-decoration-underline">Testimonials</h4>
-	<div class="alert alert-warning rounded-0 pb-0">
-		<div id="testimonialSlideShow" class="carousel slide carousel-dark mt-3" data-bs-ride="carousel">
+	<div class="alert alert-warning pb-0">
+		<h4 class="text-center text-decoration-underline">Testimonials</h4>
+		<div id="testimonialSlideShow" class="carousel slide carousel-dark mt-4" data-bs-ride="carousel">
 			<div class="carousel-indicators">
 				<?php
 				$i = 0;

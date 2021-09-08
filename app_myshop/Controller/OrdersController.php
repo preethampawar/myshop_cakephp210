@@ -4,6 +4,7 @@ App::uses('Order', 'Model');
 
 class OrdersController extends AppController
 {
+	public $components = array('Sms');
 
 	private $divider = '#####';
 
@@ -256,7 +257,9 @@ class OrdersController extends AppController
 				]
 			];
 
-			if ($orderDetails = $this->Order->save($orderData)) {
+			if ($this->Order->save($orderData)) {
+				$orderDetails = $this->Order->read();
+
 				$this->Session->delete('PromoCode');
 
 				if ($this->saveOrderProducts($shoppingCartProducts['ShoppingCartProduct'], $orderId)) {
@@ -266,6 +269,10 @@ class OrdersController extends AppController
 					$shoppingCartModel->delete($shoppingCartId);
 					$shoppingCartProductModel->deleteAll(['ShoppingCartProduct.shopping_cart_id' => $shoppingCartId]);
 					$msg = 'Your order has been placed successfully. You will be notified once the order is confirmed.';
+
+					$customerPhone = $orderDetails['Order']['customer_phone'];
+					$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+
 				} else {
 					// delete Order as OrderProducts could not be saved
 					$this->Order->delete($orderId);
@@ -459,20 +466,29 @@ class OrdersController extends AppController
 
 		if (!$emailTemplate) {
 			$error = 'No template found';
+		} else {
+
+
+
+			$toName = $order['Order']['customer_name'];
+			$toEmail = $order['Order']['customer_email'];
+			$toPhone = $order['Order']['customer_phone'];
+			$bccEmails = $this->getBccEmails();
+
+			// send sms
+			if (!in_array($orderStatus, [Order::ORDER_STATUS_DRAFT, Order::ORDER_STATUS_NEW, Order::ORDER_STATUS_CLOSED])) {
+				$this->Sms->sendOrderUpdateSms($toPhone, '#'.$orderId, $orderStatus, $message, $this->Session->read('Site.title'));
+			}
+
+			$Email = new CakeEmail('smtpNoReply');
+			$Email->viewVars(array('order' => $order, 'message' => $message));
+			$Email->template($emailTemplate, 'default')
+				->emailFormat('html')
+				->to([$toEmail => $toName])
+				->bcc($bccEmails)
+				->subject($subject)
+				->send();
 		}
-
-		$toName = $order['Order']['customer_name'];
-		$toEmail = $order['Order']['customer_email'];
-		$bccEmails = $this->getBccEmails();
-
-		$Email = new CakeEmail('smtpNoReply');
-		$Email->viewVars(array('order' => $order, 'message' => $message));
-		$Email->template($emailTemplate, 'default')
-			->emailFormat('html')
-			->to([$toEmail => $toName])
-			->bcc($bccEmails)
-			->subject($subject)
-			->send();
 
 		$this->set('error', $error);
 

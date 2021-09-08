@@ -177,13 +177,13 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 			<?= $this->element('banner_slideshow') ?>
 		</div>
 
-
-		<div id="storeSlideShow">
-			<?= $this->element('testimonials_slideshow') ?>
-		</div>
-
 		<div class="container mt-4" style="min-height: 400px;">
 			<?php echo $this->fetch('content'); ?>
+
+
+			<div id="storeTestimonials" class="mt-4">
+				<?= $this->element('testimonials_slideshow') ?>
+			</div>
 
 			<?php
 			$showPaymentContactInfo = false;
@@ -198,8 +198,8 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 				?>
 
 				<div class="text-center alert alert-info mt-4">
-					<h4 class="m-3 text-decoration-underline">Contact Us</h4>
-					<div class="small">
+					<h4 class="text-decoration-underline">Contact Us</h4>
+					<div class="small mt-4">
 						<?= $this->Session->read('Site.contact_info') ?>
 					</div>
 				</div>
@@ -212,8 +212,8 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 				?>
 
 				<div class="text-center alert alert-info mt-4">
-					<h4 class="mb-3 text-decoration-underline">Payment Details</h4>
-					<div class="small">
+					<h4 class="text-decoration-underline">Payment Details</h4>
+					<div class="small mt-4">
 						<?= $this->Session->read('Site.payment_info') ?>
 					</div>
 				</div>

@@ -76,6 +76,42 @@ $this->set('enableTextEditor', true);
 				<label class="form-check-label" for="SiteShoppingCart">Enable Shopping Cart</label>
 			</div>
 			<div class="form-check form-switch">
+				<input type="hidden" name="data[Site][show_promo_codes]" value="0">
+				<input
+					type="checkbox"
+					id="SiteShowPromoCodes"
+					name="data[Site][show_promo_codes]"
+					value="1"
+					class="form-check-input"
+					<?php echo $this->data['Site']['show_promo_codes'] ? 'checked' : null; ?>
+				>
+				<label class="form-check-label" for="SiteShowPromoCodes">Enable Promo Codes</label>
+			</div>
+			<div class="form-check form-switch">
+				<input type="hidden" name="data[Site][sms_notifications]" value="0">
+				<input
+					type="checkbox"
+					id="SiteSmsNotifications"
+					name="data[Site][sms_notifications]"
+					value="1"
+					class="form-check-input"
+					<?php echo $this->data['Site']['sms_notifications'] ? 'checked' : null; ?>
+				>
+				<label class="form-check-label" for="SiteSmsNotifications">Enable SMS Notifications</label>
+
+					<?php
+					if(empty(Configure::read('Sms')) || empty(Configure::read('SmsProvider'))) {
+						?>
+						<div class="small text-danger mb-2">*SMS Gateway is not configured for this store. SMS notifications cannot be sent.</div>
+						<?php
+					} else {
+					?>
+						<span class="small text-success mb-2">(<?= Configure::read('SmsProvider') ?>)</span>
+						<?php
+					}
+					?>
+			</div>
+			<div class="form-check form-switch">
 				<input type="hidden" name="data[Site][under_maintenance]" value="0">
 				<input
 					type="checkbox"

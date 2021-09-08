@@ -34,7 +34,7 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-Configure::write('debug', 0);
+Configure::write('debug', 1);
 
 /**
  * Configure the Error handler used to handle errors for your application. By default
@@ -453,3 +453,23 @@ Configure::write('Product.quantity', $productQty);
 //Configure::write('AssetDomainUrl', 'http://assets.apnaaccounts.com/');
 Configure::write('AssetDomainUrl', 'http://www.apnastores.com/');
 Configure::write('AssetDomainUrl', '/');
+
+
+/* SMS Configuration */
+Configure::write(
+	'Sms',
+	[
+		'2Factor' => [
+			'apiKey' => '0e09820d-0fef-11ec-a13b-0200cd936042',
+			'otpTemplateName' => 'VerifyPhoneOtp',
+			'newOrderSenderId' => 'EMUKKA',
+			'newOrderTemplate' => 'NewOrder',
+			'OrderStatusUpdateSenderId' => 'EMUKKA',
+			'OrderStatusUpdateTemplate' => 'OrderStatusUpdate',
+			'otpUrl' => 'https://2factor.in/API/V1/{api_key}/SMS/{phone_number}/{otp}/{template_name}',
+			'transactionalUrl' => 'https://2factor.in/API/V1/{api_key}/ADDON_SERVICES/SEND/TSMS',
+		]
+	]
+);
+
+Configure::write('SmsProvider', '2Factor');

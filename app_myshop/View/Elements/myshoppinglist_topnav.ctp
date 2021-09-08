@@ -221,7 +221,9 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 
 		</div>
 
-
+		<?php
+		if ($this->Session->check('Site.show_promo_codes') && (bool)$this->Session->read('Site.show_promo_codes') === true) {
+		?>
 		<div class="mt-4 p-3 shadow rounded small">
 			<h6>Have Promo Code (or) Discount Code?</h6>
 			<div class="mt-3 d-flex justify-content-sm-between">
@@ -249,6 +251,9 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			}
 			?>
 		</div>
+		<?php
+		}
+		?>
 
 
 		<div class="mt-5 text-center">

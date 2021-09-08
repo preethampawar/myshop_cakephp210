@@ -106,7 +106,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 			<tfoot>
 				<tr class="text-muted">
 					<td>Total Cart Value</td>
-					<td class="text-decoration-line-through">MRP <?= $this->App->price($cartMrpValue) ?></td>
+					<td class="text-decoration-line-through"></td>
 					<td class="text-center"></td>
 					<td class="text-end"><?= $this->App->price($cartValue) ?></td>
 				</tr>
