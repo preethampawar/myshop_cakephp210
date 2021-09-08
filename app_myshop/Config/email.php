@@ -24,7 +24,7 @@
  * @package       cake.config
  */
 
-/**
+/** 
  * Email configuration class.
  * You can specify multiple configurations for production, development and testing.
  *
@@ -46,19 +46,19 @@ class EmailConfig
 
 	public $default = [
 		'transport' => 'Mail',
-		'from' => 'support@letsgreenify.com',
+		'from' => 'support@herbsandnaturals.com',
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
 	];
 
 	public $smtp = [
 		'transport' => 'Smtp',
-		'from' => ['support@letsgreenify.com' => 'LetsGreenify'],
-		'host' => 'letsgreenify.com',
+		'from' => ['support@herbsandnaturals.com' => 'support@herbsandnaturals.com'],
+		'host' => 'smtpout.secureserver.net',
 		'port' => 587,
 		'timeout' => 30,
-		'username' => 'support@letsgreenify.com',
-		'password' => 'preetham4662002',
+		'username' => 'support@herbsandnaturals.com',
+		'password' => 'murthy@ganesh#04',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',
@@ -67,12 +67,12 @@ class EmailConfig
 
 	public $smtpNoReply = [
 		'transport' => 'Smtp',
-		'from' => ['no-reply@letsgreenify.com' => 'LetsGreenify'],
-		'host' => 'letsgreenify.com',
+		'from' => ['support@herbsandnaturals.com' => 'support@herbsandnaturals.com'], 
+		'host' => 'smtpout.secureserver.net',
 		'port' => 587,
 		'timeout' => 30,
-		'username' => 'no-reply@letsgreenify.com',
-		'password' => 'preetham4662002',
+		'username' => 'support@herbsandnaturals.com',
+		'password' => 'murthy@ganesh#04',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',
