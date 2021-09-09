@@ -50,7 +50,7 @@ if ($this->Session->read('Site.logo')) {
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.0.3">
+	<link rel="stylesheet" href="/css/site.css?v=1.1.0">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -68,7 +68,7 @@ if ($this->Session->read('Site.logo')) {
 <body class="bg-dark">
 	<div class="bg-white ">
 		<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
-			<div class="container-fluid py-3">
+			<div class="container-fluid">
 				<a class="navbar-brand" href="/">
 					<?php
 					if ($logoUrl) {
@@ -168,7 +168,7 @@ if ($this->Session->read('Site.logo')) {
 			<?= $this->element('banner_slideshow') ?>
 		</div>
 
-		<div class="container mt-5" style="min-height: 400px;">
+		<div class="container mt-4" style="min-height: 400px;">
 			<?php echo $this->fetch('content'); ?>
 
 			<div id="storeTestimonials" class="mt-4">

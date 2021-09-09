@@ -6,7 +6,9 @@ $categories = $categoryModel->find(
 	[
 		'conditions' => [
 			'Category.site_id' => $this->Session->read('Site.id'),
-			'Category.deleted' => 0, 'Category.active' => 1
+			'Category.deleted' => 0,
+			'Category.active' => 1,
+			'Category.images NOT' => null
 		],
 		'order' => [
 			'Category.name'
@@ -14,7 +16,7 @@ $categories = $categoryModel->find(
 	]
 );
 
-if ($categories) {
+if ($categories and !empty($categories)) {
 	?>
 		<div class="mb-5">
 			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
