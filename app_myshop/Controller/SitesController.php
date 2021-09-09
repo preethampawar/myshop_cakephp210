@@ -4,7 +4,6 @@ App::uses('Validation', 'Utility');
 
 class SitesController extends AppController
 {
-
 	var $name = 'Sites';
 
 	public function beforeFilter()
@@ -332,6 +331,22 @@ Disallow:
 		exit;
 	}
 
+	public function admin_deleteFile($encodedFilePath)
+	{
+		$this->layout = false;
+		$filePath = base64_decode($encodedFilePath);
+
+		$data['Site']['id'] = $this->Session->read('Site.id');
+		$data['Site']['logo'] = null;
+		$this->Site->save($data);
+
+		if($this->deleteFile($filePath)) {
+			$this->successMsg('Logo deleted successfully.');
+		}
+
+		$this->redirect($this->request->referer());
+	}
+
 	public function admin_settings()
 	{
 		$siteID = $this->Session->read('Site.id');
@@ -340,6 +355,41 @@ Disallow:
 		$errorMsg = [];
 		if ($this->request->isPut() or $this->request->isPost()) {
 			$data['Site'] = $this->data['Site'];
+
+			$siteLogo = $this->data['Store']['logo'];
+
+			if ($siteLogo && $siteLogo['size'] > 0) {
+
+				if ($siteLogo['error'] != 0) {
+					$errorMsg[] = 'Invalid Logo image.';
+				}
+
+				if(!$this->isValidImage($siteLogo)) {
+					$errorMsg[] = 'Invalid Logo image format. Only PNG, JPEG and GIF image formats are allowed.';
+				}
+
+				if(!$this->isValidImageSize($siteLogo['size'], 5)) {
+					$errorMsg[] = 'Logo image size cannot be more than 5 MB.';
+				}
+
+				$filename = $siteLogo['name'];
+				$folder = "img/".$filename;
+
+				if (!move_uploaded_file($siteLogo['tmp_name'], $folder))  {
+					$errorMsg[] = "Failed to upload Logo image.";
+				}
+
+				if (empty($errorMsg)) {
+					$data['Site']['logo'] = $folder;
+
+					$previousLogoUrl = $this->Session->read('Site.logo');
+
+					if (file_exists($previousLogoUrl)) {
+						unlink($previousLogoUrl);
+					}
+				}
+
+			}
 
 			// validate Site Title
 			if (Validation::blank($data['Site']['title'])) {

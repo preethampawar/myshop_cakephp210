@@ -1,4 +1,6 @@
 <?php
+App::uses('Site', 'Model');
+
 $this->set('enableTextEditor', true);
 ?>
 <style type="text/css">
@@ -10,7 +12,7 @@ $this->set('enableTextEditor', true);
 <div>
 	<h1>Store Settings</h1>
 
-	<form action="/admin/sites/settings" id="SiteAdminEditForm" method="post" accept-charset="utf-8" ref="form">
+	<form action="/admin/sites/settings" id="SiteAdminEditForm" method="post" accept-charset="utf-8" ref="form" enctype="multipart/form-data">
 		<div class="mt-0 d-flex justify-content-end align-items-center">
 			<button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
 			<a href="/admin/sites/home" class="btn btn-outline-warning btn-sm ms-3">Cancel</a>
@@ -134,6 +136,37 @@ $this->set('enableTextEditor', true);
 				</div>
 				<div class="ps-3">
 					<div class="mb-4">
+						<label for="SiteTitle" class="form-label">Upload Logo</label>
+						<input
+								type="file"
+								id="SiteLogo"
+								name="data[Store][logo]"
+								class="form-control form-control-sm"
+								placeholder="Upload Store Logo"
+						>
+						<span class="text-muted small">*Best Size: 125 x 75 pixels (width x height)</span>
+						<?php
+						if (isset($this->data['Site']['logo']) && !empty(trim($this->data['Site']['logo']))) {
+						?>
+						<div class="mt-3">
+							<img class="border d-block" src="<?= $this->Html->url('/'.$this->data['Site']['logo'], true); ?>">
+							<button
+								type="button"
+								class="btn btn-outline-danger btn-sm mt-2"
+								onclick="showConfirmPopup(
+										'/admin/sites/deleteFile/<?= base64_encode($this->data['Site']['logo']) ?>',
+										'Delete Logo',
+										'Are you sure you want to remove this Logo?')"
+							>
+								<i class="fa fa-times"></i> Delete Logo
+							</button>
+						</div>
+						<?php
+						}
+						?>
+					</div>
+
+					<div class="mb-4">
 						<label for="SiteTitle" class="form-label">Store Title</label>
 						<input
 								type="text"
@@ -175,6 +208,29 @@ $this->set('enableTextEditor', true);
 								required
 						>
 						<span class="text-muted small">Note: You can specify more than one email address separated by commas "<b>,</b>"</span> (<code>abc@gmail.com,xyz@gmail.com</code>).
+					</div>
+
+					<div class="mb-4">
+						<label for="SiteTheme" class="form-label">Theme</label>
+						<?php
+						echo $this->Form->input('Site.theme', [
+								'type' => 'select',
+								'label' => false,
+								'options' => Site::THEME_OPTIONS,
+								'default' => Site::THEME_LIGHT,
+								'class' => 'form-select form-select-sm'
+						]);
+						?>
+					</div>
+					<div class="mb-4 d-none">
+						<label for="SiteThemeCss" class="form-label">Theme CSS</label>
+						<textarea
+								id="SiteThemeCss"
+								name="data[Site][theme_css]"
+								class="form-control form-control-sm"
+								placeholder="Enter only CSS Code"
+								rows="4"
+						><?php echo $this->data['Site']['theme_css']; ?></textarea>
 					</div>
 
 					<?php
@@ -312,7 +368,6 @@ $this->set('enableTextEditor', true);
 					><?php echo $this->data['Site']['privacy_policy']; ?></textarea>
 				</div>
 				</div>
-
 
 			</div>
 			<br>

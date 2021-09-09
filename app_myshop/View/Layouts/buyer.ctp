@@ -1,6 +1,32 @@
 <?php
 $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
+$theme = $this->Session->read('Theme');
+$navbarTheme = $theme['navbarTheme'];
+$secondaryMenuBg = $theme['secondaryMenuBg'];
+$linkColor = $theme['linkColor'];
+$cartBadgeBg = $theme['cartBadgeBg'];
+$hightlightLink = $theme['hightlightLink'];
+
+if (!empty($title_for_layout)) {
+	$title_for_layout = $title_for_layout . ' - ' . $this->Session->read('Site.title');
+} else {
+	$siteCaption = $this->Session->read('Site.caption');
+	$title_for_layout = $this->Session->read('Site.title');
+	$title_for_layout .= (!empty($siteCaption)) ? ' - ' . $siteCaption : '';
+}
+
+$analyticsCode = null;
+if (!empty(trim($this->Session->read('Site.analytics_code')))) {
+	$analyticsCode = $this->Session->read('Site.analytics_code');
+}
+
+$logoUrl = null;
+if ($this->Session->read('Site.logo')) {
+	$logoUrl = $this->Html->url('/'.$this->Session->read('Site.logo'), true);
+}
+
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,18 +40,7 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 	echo (isset($customMeta)) ? $customMeta : null;
 	echo (isset($facebookMetaTags)) ? $facebookMetaTags : null;
 	?>
-
-	<title><?php
-		if (!empty($title_for_layout)) {
-			echo $title_for_layout . ' - ' . $this->Session->read('Site.title');
-		} else {
-			$siteCaption = $this->Session->read('Site.caption');
-			$title_for_layout = $this->Session->read('Site.title');
-			$title_for_layout .= (!empty($siteCaption)) ? ' - ' . $siteCaption : '';
-			echo $title_for_layout;
-		}
-		?></title>
-
+	<title><?= $title_for_layout ?></title>
 	<script>
 		if (!window.fetch) {
 			window.location = '/pages/unsupportedbrowser'
@@ -39,61 +54,41 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-	<!-- todo: delete it
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	-->
+	<?= $analyticsCode ?>
 
 	<?php
-	if (!empty(trim($this->Session->read('Site.analytics_code')))) {
-		?>
-			<?= $this->Session->read('Site.analytics_code') ?>
-		<?php
-	}
-
 	if (isset($loadVueJs) && $loadVueJs == true) {
 		?>
 		<script src="/vendor/vue/vue.min.js"></script>
-
-
-		<!-- development version, includes helpful console warnings -->
-		<!--		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
-
-		<!-- production version, optimized for size and speed -->
-<!--		<script src="/vendor/vue/vuejs2.6.12.js"></script> dev version-->
-
-		<!-- todo: delete it
-		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-		-->
 		<?php
 	}
 	?>
-
-	<!-- todo: delete it
-	<script src="https://kit.fontawesome.com/231b614f56.js" crossorigin="anonymous" async></script>
-	-->
 </head>
 
 <body class="bg-dark">
 	<div class="bg-white ">
-
-		<nav class="navbar p-0" role="navigation">
-			<!-- navbar-side will go here -->
-			<ul class="navbar-side navbar-nav bg-white text-dark px-2 text-left list-group" id="navbarSide">
-				<?php echo $this->element('categories_menu'); ?>
-			</ul>
-			<div class="overlay"></div>
-		</nav>
-
-		<nav class="navbar navbar-expand-lg navbar-dark navbar-static bg-purple bg-gradient">
-			<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
+			<div class="container-fluid py-3">
 				<a class="navbar-brand" href="/">
-					<i class="fa fa-home"></i> <?= $this->Session->read('Site.title') ?>
+					<?php
+					if ($logoUrl) {
+						?>
+							<img
+								src="<?= $logoUrl ?>"
+								alt="<?= $this->Session->read('Site.title') ?>"
+								title="<?= $this->Session->read('Site.title') ?>"
+								style="max-width: 250px;">
+						<?php
+					} else {
+						?>
+						<i class="fa fa-home"></i> <?= $this->Session->read('Site.title') ?>
+						<?php
+					}
+					?>
 				</a>
 
-				<div class="navbar-toggler border-0 p-1 py-0 text-white" type="button" data-bs-toggle="collapse"
-					 data-bs-target="#navbarNav"
-					 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span  class="small"><i class="fa fa-bars"></i></span>
+				<div class="navbar-toggler border-0 " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<i class="fa fa-bars"></i>
 				</div>
 
 				<div class="collapse navbar-collapse" id="navbarNav">
@@ -102,7 +97,7 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 						if ($this->App->isSellerForThisSite()) {
 						?>
 						<li class="nav-item px-1">
-							<a class="nav-link px-1  text-warning" href="/users/setView/seller"><i class="fa fa-tools"></i> Manage Store</a>
+							<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="fa fa-tools"></i> Manage Store</a>
 						</li>
 						<?php
 						}
@@ -141,8 +136,8 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 								<?php
 								//debug($this->Session->read('User'));
 								?>
-								<a class="nav-link text-warning px-1 disabled" href="#">
-									<i class="fa fa-user-circle text-warning"></i>
+								<a class="nav-link <?= $hightlightLink ?>  highlight-link px-1 disabled" href="#">
+									<i class="fa fa-user-circle"></i>
 									<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
 								</a>
 							</li>
@@ -152,22 +147,18 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 			</div>
 		</nav>
 
-		<div class="shadow border-bottom sticky-top border-warning bg-aliceblue border-2">
-			<ul class="nav container-fluid justify-content-center py-0 small">
+		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>">
+			<ul class="nav container-fluid justify-content-center pt-3 pb-3 small">
 				<li class="nav-item">
-					<div id="topCategoriesMenu">
-						<a href="#" class="nav-link fw-normal" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-							<span class="fs-5"><i class="fa fa-th"></i></span> Shop By Category
-						</a>
-					</div>
+					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
+						<span class="fs-5"><i class="fa fa-th"></i></span> Shop By Category
+					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')): ?>
-					<li class="nav-item">
-						<div id="topNavShoppingCart">
-							<a href="#" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-								<span class="fs-5"><i class="fa fa-shopping-cart"></i></span> My Cart <span class="badge rounded-pill bg-orange">0</span>
-							</a>
-						</div>
+					<li class="nav-item" id="topNavShoppingCart">
+						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
+							<span class="fs-5"><i class="fa fa-shopping-cart"></i></span> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
+						</a>
 					</li>
 				<?php endif; ?>
 			</ul>
@@ -177,9 +168,8 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 			<?= $this->element('banner_slideshow') ?>
 		</div>
 
-		<div class="container mt-4" style="min-height: 400px;">
+		<div class="container mt-5" style="min-height: 400px;">
 			<?php echo $this->fetch('content'); ?>
-
 
 			<div id="storeTestimonials" class="mt-4">
 				<?= $this->element('testimonials_slideshow') ?>
@@ -302,40 +292,42 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 			<div class="modal" id="addProductQty" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProductQtyLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm modal-dialog-centered">
 					<div class="modal-content">
-
 						<div class="modal-body" id="addProductQtyBody">
 							<div class="d-flex justify-content-between">
-								<h5 class="modal-title" id="addProductQtyLabel">Select Quantity</h5>
+								<h6 class="modal-title" id="addProductQtyLabel">Select Quantity</h6>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<hr>
-							<div class="mt-4 mb-3">
-								<div class="d-flex justify-content-between">
-									<select id="addProductQtyModal-quantity"
-											name="addProductQtyModal-quantity"
-											class="form-select form-select-sm"
-									>
-										<?php foreach(range(1,100) as $qty): ?>
-											<option value="<?= $qty ?>"><?= $qty ?></option>
-										<?php endforeach; ?>
-									</select>
-									<div>
+							<table class="table table-borderless table-sm small mt-4 mb-2">
+								<tbody>
+								<tr>
+									<td>
+										<select id="addProductQtyModal-quantity"
+												name="addProductQtyModal-quantity"
+												class="form-select form-select-sm"
+										>
+											<?php foreach(range(1,100) as $qty): ?>
+												<option value="<?= $qty ?>"><?= $qty ?></option>
+											<?php endforeach; ?>
+										</select>
+									</td>
+									<td style="width: 50px;">
 										<button
 												id="addProductQtyModal-saveButton"
 												class="btn btn-primary btn-sm ms-2"
 												onclick="saveProductQtyToCart()">
 											Add
 										</button>
-									</div>
-									<div class="ms-2" style="width:45px">
+									</td>
+									<td style="width:45px">
 										<div id="addProductQtyModal-spinner" class="d-none">
 											<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">
 												<span class="visually-hidden">Loading...</span>
 											</div>
 										</div>
-									</div>
-								</div>
-							</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -485,28 +477,27 @@ $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1
 
 		<!-- footer -->
 		<footer>
-			<div class="container-fluid bg-dark bg-gradient p-2 py-3 mt-5 small">
-			<div class="text-center">
-				<div class="d-inline text-nowrap mx-2">
-					<a href="/sites/about" class="link-light text-decoration-none">About Us</a>
+			<nav class="navbar navbar-expand-lg navbar-static border-top <?= $navbarTheme ?>">
+				<div class="container-fluid justify-content-center text-center mb-2 small">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item px-1">
+							<a class="nav-link px-1" href="/sites/about">About Us</a>
+						</li>
+						<li class="nav-item px-1">
+							<a class="nav-link px-1" href="/sites/contact">Contact Us</a>
+						</li>
+						<li class="nav-item px-1">
+							<a class="nav-link px-1" href="/sites/tos">Terms of Service</a>
+						</li>
+						<li class="nav-item px-1">
+							<a class="nav-link px-1" href="/sites/privacy">Privacy Policy</a>
+						</li>
+						<li class="nav-item px-1">
+							<a class="nav-link px-1" href="/testimonials/">Testimonials</a>
+						</li>
+					</ul>
 				</div>
-				<div class="d-inline text-nowrap mx-2">
-					<a href="/sites/contact" class="link-light text-decoration-none">Contact Us</a>
-				</div>
-				<div class="d-inline text-nowrap mx-2">
-					<a href="/sites/tos" class="link-light text-decoration-none">Terms of Service</a>
-				</div>
-				<div class="d-inline text-nowrap mx-2">
-					<a href="/sites/privacy" class="link-light text-decoration-none">Privacy Policy</a>
-				</div>
-
-				<?php if ($testimonialsEnabled) { ?>
-					<div class="d-inline text-nowrap mx-2">
-						<a href="/testimonials/" class="link-light text-decoration-none">Testimonials</a>
-					</div>
-				<?php } ?>
-			</div>
-		</div>
+			</nav>
 		</footer>
 	</div>
 

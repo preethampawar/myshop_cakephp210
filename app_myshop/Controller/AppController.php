@@ -51,6 +51,8 @@ class AppController extends Controller
 //		Configure::write('SupportEmail', $supportEmail);
 //		Configure::write('NoReply', ['name' => $this->request->domain(), 'email' => 'noreply@' . $this->request->domain()]);
 		Configure::write('Security.salt', '');
+
+		$this->setTheme();
 	}
 
 	public function isSellerForThisSite()
@@ -408,10 +410,17 @@ class AppController extends Controller
 	/**
 	 * Function to check valid image size
 	 */
-	function isValidImageSize($imgSize)
+	function isValidImageSize($imgSize, $maxSize = null)
 	{
 		if ($imgSize > 0) {
-			$maxSize = Configure::read('MaxImageSize');
+			if ((int)$maxSize <= 0) {
+				$maxSize = Configure::read('MaxImageSize');
+			}
+
+			if ((int)$maxSize <= 0) {
+				$maxSize = 5; // set default maxsize if config is not specified or maxsize is not passed in param
+			}
+
 			if (ceil($imgSize / (1024 * 1024)) > $maxSize) {
 				return false;
 			} else {
@@ -432,11 +441,7 @@ class AppController extends Controller
 			if ($info) {
 				switch ($info[2]) {
 					case IMAGETYPE_PNG:
-						$validImage = true;
-						break;
 					case IMAGETYPE_JPEG:
-						$validImage = true;
-						break;
 					case IMAGETYPE_GIF:
 						$validImage = true;
 						break;
@@ -445,8 +450,19 @@ class AppController extends Controller
 						break;
 				}
 			}
-			return ($validImage) ? true : false;
+
+			return $validImage;
 		}
+		return false;
+	}
+
+	protected function deleteFile($image)
+	{
+		if (file_exists($image)) {
+			unlink($image);
+			return true;
+		}
+
 		return false;
 	}
 
@@ -955,6 +971,121 @@ class AppController extends Controller
 
 		return json_encode($log);
 	}
-}
 
-?>
+	protected function setTheme($theme = null)
+	{
+		App::uses('Site', 'Model');
+
+		if (empty($theme)) {
+			$theme = $this->Session->read('Site.theme');
+		}
+
+		$theme = !in_array($theme, Site::THEME_OPTIONS) ? Site::THEME_DARK : $theme;
+
+		$navbarTheme = ' navbar-dark bg-dark bg-gradient ';
+		$secondaryMenuBg = ' border-warning bg-ivory-light border-2 ';
+		$linkColor = ' link-primary ';
+		$cartBadgeBg = ' bg-orange ';
+		$hightlightLink = ' text-warning ';
+
+		switch ($theme) {
+			case Site::THEME_WHITE:
+				$navbarTheme = ' navbar-light bg-white ';
+
+				// secondary menu
+				$secondaryMenuBg = ' bg-light border-grey border-2 border-bottom border-top-1 border-start-0 border-end-0';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				$hightlightLink = ' text-orange ';
+				break;
+			case Site::THEME_WHITE_AND_RED:
+				$navbarTheme = ' navbar-light bg-white ';
+
+				// secondary menu
+				$secondaryMenuBg = ' bg-light border-grey border-2 border-bottom border-top-1 border-start-0 border-end-0';
+				$linkColor = ' link-danger ';
+				$cartBadgeBg = ' bg-orange ';
+				$hightlightLink = ' text-orange ';
+				break;
+			case Site::THEME_LIGHT:
+				$navbarTheme = ' navbar-light bg-light bg-gradient ';
+
+				// secondary menu
+				$secondaryMenuBg = ' bg-white border-secondary border-2 border-bottom';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				break;
+			case Site::THEME_BLUE:
+				$navbarTheme = ' navbar-dark bg-primary bg-gradient ';
+
+				// secondary menu bg-primary-light-50
+				$secondaryMenuBg = ' bg-primary-light-50 border-primary-light border-2 border-top-0 border-start-0 border-end-0 ';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				break;
+			case Site::THEME_GREEN:
+				$navbarTheme = ' navbar-dark bg-success bg-gradient ';
+
+				// secondary menu
+				$secondaryMenuBg = ' bg-success-light-50 border-success-light border-2 border-top-0 border-start-0 border-end-0 ';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				break;
+			case Site::THEME_YELLOW:
+				$navbarTheme = ' navbar-light bg-warning bg-gradient ';
+
+				// secondary menu
+				$secondaryMenuBg = ' bg-ivory-light border-warning-light border-2 border-top-0 border-start-0 border-end-0';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				$hightlightLink = ' text-dark ';
+				break;
+			case Site::THEME_DARK_GREY:
+				$navbarTheme = ' navbar-dark bg-secondary bg-gradient ';
+
+				// secondary menu
+				$secondaryMenuBg = ' bg-light border-grey border-2 border-bottom';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				break;
+			case Site::THEME_DARK:
+				$navbarTheme = ' navbar-dark bg-dark bg-gradient ';
+
+				// secondary menu
+				$secondaryMenuBg = ' border-bottom border-warning border-2 bg-ivory-light ';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				break;
+			case Site::THEME_PURPLE:
+				$navbarTheme = ' navbar-dark bg-purple bg-gradient ';
+
+				// secondary menu
+				$secondaryMenuBg = 'border-purple-light border-2 bg-purple-light-50 border-top-0 border-start-0 border-end-0';
+				$linkColor = ' link-primary ';
+				$cartBadgeBg = ' bg-orange ';
+				break;
+			case Site::THEME_RED:
+				$navbarTheme = ' navbar-dark bg-danger bg-gradient ';
+
+				// secondary menu
+				$secondaryMenuBg = 'border-danger-light border-2 bg-danger-light-50 border-top-0 border-start-0 border-end-0';
+				$linkColor = ' link-danger ';
+				$cartBadgeBg = ' bg-orange ';
+				break;
+			default:
+				break;
+		}
+
+		$themeInfo = [
+			'name' => $theme,
+			'navbarTheme' => $navbarTheme,
+			'secondaryMenuBg' => $secondaryMenuBg,
+			'linkColor' => $linkColor,
+			'cartBadgeBg' => $cartBadgeBg,
+			'hightlightLink' => $hightlightLink,
+		];
+
+		$this->Session->write('Theme', $themeInfo);
+	}
+
+}

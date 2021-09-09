@@ -1,54 +1,16 @@
+<?php
+App::uses('Site', 'Model');
+
+$theme = $this->Session->read('Theme');
+
+$navbarTheme = $theme['navbarTheme'];
+$secondaryMenuBg = $theme['secondaryMenuBg'];
+$linkColor = $theme['linkColor'];
+$cartBadgeBg = $theme['cartBadgeBg'];
+$hightlightLink = $theme['hightlightLink'];
+?>
+
 <style type="text/css">
-	.navbar-side {
-		height: 100%;
-		position: fixed;
-		top: 0;
-		right: 0;
-		padding: 0;
-		border-left: 4px solid #DDDDDD;
-		overflow-y: scroll;
-		z-index: 1000;
-
-		-webkit-transform: translateX(100%);
-		-ms-transform: translateX(100%);
-		transform: translateX(100%);
-		-webkit-transition: 300ms ease;
-		transition: 300ms ease;
-	}
-
-	.navbar-side-border-bottom {
-		border-bottom: 2px solid #ccc;
-	}
-
-	.navbar-side-border-top {
-		border-top: 2px solid #ccc;
-	}
-
-	.side-link {
-		padding-left: 2rem;
-	}
-
-	.reveal {
-		-webkit-transform: translateX(0%);
-		-ms-transform: translateX(0%);
-		transform: translateX(0%);
-		-webkit-transition: 300ms ease;
-		transition: 300ms ease;
-	}
-
-	.overlay {
-		position: fixed;
-		display: none;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		cursor: pointer;
-		background-color: #000000;
-		opacity: 0.6;
-		z-index: 990;
-	}
-
 	.x-small {
 		font-size: 0.75rem;
 	}
@@ -59,4 +21,109 @@
 		padding: 5px;
 		border-top: 1px solid dodgerblue;
 	}
+
+	<?php
+	if ($theme['name'] == Site::THEME_WHITE_AND_RED) {
+	?>
+		h1,h2,h3,h4,h5,h6 {
+			color: var(--cus-danger-dark);
+		}
+		a{
+			color: var(--cus-danger-dark);
+		}
+		a:hover {
+			color: var(--bs-danger);
+		}
+		.navbar-light .navbar-brand{
+			color: var(--cus-danger-dark);
+		}
+		.navbar-light .navbar-brand:hover {
+			color: var(--bs-danger);
+		}
+		.nav-link {
+			color: var(--cus-danger-dark);
+		}
+		.nav-link:hover {
+			color: var(--bs-danger);
+		}
+		.navbar-light .navbar-nav .nav-link {
+			color: var(--cus-danger-dark);
+		}
+		.navbar-light .navbar-nav .nav-link:hover {
+			color: var(--bs-danger);
+		}
+
+		.navbar-light .navbar-nav .highlight-link {
+			color: var(--cus-orange);
+		}
+	<?php
+	}
+
+	if ($theme['name'] == Site::THEME_PURPLE) {
+		?>
+		h1,h2,h3,h4,h5,h6 {
+			color: var(--cus-purple);
+		}
+		<?php
+	}
+
+	if ($theme['name'] == Site::THEME_BLUE) {
+		?>
+		h1,h2,h3,h4,h5,h6 {
+			color: var(--cus-primary-dark);
+		}
+		<?php
+	}
+
+	if ($theme['name'] == Site::THEME_YELLOW) {
+		?>
+		h1,h2,h3,h4,h5,h6 {
+			color: var(--cus-warning-dark);
+		}
+		<?php
+	}
+
+	if ($theme['name'] == Site::THEME_GREEN) {
+		?>
+		h1,h2,h3,h4,h5,h6 {
+			color: var(--cus-success-dark);
+		}
+		a{
+			color: var(--cus-success-dark);
+		}
+		a:hover {
+			color: var(--bs-success);
+		}
+		.nav-link {
+			color: var(--cus-success-dark);
+		}
+		.nav-link:hover {
+			color: var(--bs-success);
+		}
+		<?php
+	}
+
+	if ($theme['name'] == Site::THEME_RED) {
+		?>
+		h1,h2,h3,h4,h5,h6 {
+			color: var(--cus-danger-dark);
+		}
+		a{
+			color: var(--cus-danger-dark);
+		}
+		a:hover {
+			color: var(--bs-danger);
+		}
+		.nav-link {
+			color: var(--cus-danger-dark);
+		}
+		.nav-link:hover {
+			color: var(--bs-danger);
+		}
+		<?php
+	}
+
+
+?>
+
 </style>
