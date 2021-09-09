@@ -18,7 +18,7 @@ if (!empty($categories)) {
 				title="<?php echo $categoryName; ?>"
 			>
 				<span><?php echo $categoryName; ?></span>
-				<span class="text-primary">
+				<span>
 					<i class="fa fa-chevron-right"></i>
 				</span>
 			</a>
