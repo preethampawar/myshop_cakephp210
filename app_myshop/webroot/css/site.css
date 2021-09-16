@@ -32,7 +32,7 @@
     --cus-success-dark: rgb(1, 88, 57);
     --cus-danger-light: rgb(255, 201, 206);
     --cus-danger-light-50: rgb(253, 243, 243);
-    --cus-danger-dark: #a20312;
+    --cus-danger-dark: #85020e;
 	--cus-pink-light: #fcf5ef;
 	--cus-dark: #333333;
 }
@@ -311,7 +311,11 @@ h1,h2,h3,h4,h5,h6 {
 	background-color: var(--cus-dark);
 }
 
-/*.bg-success .navbar-nav .nav-link.active {*/
+.navbar-light .navbar-nav .nav-link {
+	color: var(--cus-dark);
+}
+
+	/*.bg-success .navbar-nav .nav-link.active {*/
 /*	border-radius: 5px;*/
 /*	background-color: var(--cus-success-dark);*/
 /*}*/

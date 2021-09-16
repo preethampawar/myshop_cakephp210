@@ -7,7 +7,7 @@ for ($i = 1; $i <= 50; $i++) {
 
 $showDiscount = $mrp != $salePrice;
 $assetDomainUrl = Configure::read('AssetDomainUrl');
-$loadingImageUrl = '/loading2.gif';
+$loadingImageUrl = '/loading4.jpg';
 $productSlug = Inflector::slug($productTitle, '-');
 $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productID . '/' . $productSlug;
 // http://www.apnastores.com/assets/images/loading/loading.gif

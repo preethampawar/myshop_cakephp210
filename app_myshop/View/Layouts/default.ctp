@@ -15,7 +15,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 	$shoppingCartIsEmpty = false;
 }
 
-if ($this->Session->read('userLoggedIn')) {
+if ($this->Session->read('User.id')) {
 	$userIsNotLoggedIn = false;
 }
 

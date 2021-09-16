@@ -29,7 +29,7 @@ if ($categories and !empty($categories)) {
 					$categoryUploadedImages = $row['Category']['images'] ? json_decode($row['Category']['images']) : [];
 					$assetDomainUrl = Configure::read('AssetDomainUrl');
 					$categoryHighlightImage = $this->App->getHighlightImage($categoryUploadedImages);
-					$loadingImageUrl = '/loading2.gif';
+					$loadingImageUrl = '/loading4.jpg';
 					$imageUrl = '';
 					if ($categoryHighlightImage) {
 						$image = $categoryHighlightImage['thumb'];

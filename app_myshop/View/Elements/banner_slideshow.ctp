@@ -83,7 +83,12 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 							?>
 							<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="3000">
 								<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none">
-									<img src="<?= $imageUrl ?>" class="d-block w-100" style="" alt="<?= $title ?>" width="1080">
+									<img
+										data-original="<?php echo $imageUrl; ?>"
+										class="delay-loading d-block w-100 bg-gradient bg-light"
+										alt=""
+										style="max-height: 500px;"
+										width="1080">
 								</a>
 								<div class="carousel-caption d-none d-md-block" role="button">
 									<p>

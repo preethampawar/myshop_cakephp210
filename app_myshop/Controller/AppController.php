@@ -22,13 +22,17 @@ class AppController extends Controller
 		parent::beforeFilter();
 
 		if (isset($this->request->params['admin']) && $this->request->params['admin'] === true) {
-			if (!$this->Session->check('userLoggedIn') || $this->Session->read('userLoggedIn') === false) {
+			if (!$this->Session->check('User.id') || $this->Session->read('User.id') === false) {
 				$this->redirect('/users/logout');
 			}
 
 			if (!$this->isSellerForThisSite()) {
-				$this->errorMsg('You don\'t have permissions to access this location');
+				$this->errorMsg("You don't have permissions to access this location");
 				$this->redirect('/users/setView/buyer');
+			}
+
+			if (!$this->Session->read('inSellerView')) {
+				$this->setView('seller');
 			}
 		}
 
@@ -53,6 +57,29 @@ class AppController extends Controller
 		Configure::write('Security.salt', '');
 
 		$this->setTheme();
+	}
+
+
+	public function setView($userType = 'buyer')
+	{
+		$this->Session->write('inBuyerView', false);
+		$this->Session->write('inSellerView', false);
+		$this->Session->write('inAdminView', false);
+
+		switch ($userType) {
+			case 'seller':
+				$this->Session->write('inSellerView', true);
+				$this->redirect('/admin/sites/home');
+				break;
+			case 'admin':
+				$this->Session->write('inAdminView', true);
+				break;
+			default:
+				$this->Session->write('inBuyerView', true);
+				break;
+		}
+
+		$this->redirect('/');
 	}
 
 	public function isSellerForThisSite()
@@ -84,13 +111,7 @@ class AppController extends Controller
 		return false;
 	}
 
-	public function errorMsg($msg)
-	{
-		if ($msg) {
-			$this->Session->setFlash($msg, 'Flash/error');
-		}
-		return true;
-	}
+
 
 	/**
 	 * Function to parse request URL
@@ -109,7 +130,7 @@ class AppController extends Controller
 
 		// check if default domain
 		if ($defaultDomainInfo['Domain']['name'] !== $dName) {
-			$redirectLink = 'http://' . $defaultDomainInfo['Domain']['name'] . $params;
+			$redirectLink = '//' . $defaultDomainInfo['Domain']['name'] . $params;
 			$this->redirect($redirectLink);
 		}
 
@@ -215,6 +236,14 @@ class AppController extends Controller
 			$this->Session->setFlash($msg, 'Flash/success');
 		}
 
+		return true;
+	}
+
+	public function errorMsg($msg)
+	{
+		if ($msg) {
+			$this->Session->setFlash($msg, 'Flash/error');
+		}
 		return true;
 	}
 
@@ -392,6 +421,18 @@ class AppController extends Controller
 		$testimonialModel = new Testimonial;
 		$conditions = ['Testimonial.site_id' => $this->Session->read('Site.id'), 'Testimonial.id' => $testimonialId];
 		$content = $testimonialModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+		return $content;
+	}
+	/**
+	 * Function to check if testimonial is from selected site.
+	 */
+	function isSiteSupplier($supplierId)
+	{
+		App::uses('Supplier', 'Model');
+		$supplierModel = new Supplier;
+		$conditions = ['Supplier.site_id' => $this->Session->read('Site.id'), 'Supplier.id' => $supplierId];
+		$content = $supplierModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+
 		return $content;
 	}
 
@@ -853,7 +894,6 @@ class AppController extends Controller
 	{
 		$this->Session->delete('loginOtp');
 		$this->Session->delete('loginUser');
-		$this->Session->delete('userLoggedIn');
 		$this->Session->delete('enrollOtp');
 		$this->Session->delete('enrollUser');
 		$this->Session->delete('User');

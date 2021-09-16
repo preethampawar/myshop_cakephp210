@@ -22,6 +22,10 @@ $hightlightLink = $theme['hightlightLink'];
 		border-top: 1px solid dodgerblue;
 	}
 
+	.navbar-light .navbar-nav .nav-link {
+		color: var(--cus-dark);
+	}
+
 	<?php
 	if ($theme['name'] == Site::THEME_WHITE_AND_RED) {
 	?>
