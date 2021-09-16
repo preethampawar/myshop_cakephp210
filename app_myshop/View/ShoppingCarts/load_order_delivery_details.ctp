@@ -28,7 +28,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 	<div class="">
 
 		<div class="">
-			<label for="orderCustomerName">Contact Name <span class="text-danger small">(required)</span></label>
+			<label for="orderCustomerName">Name <span class="text-danger small">(required)</span></label>
 			<input
 				type="text"
 				name="data[customer_name]"
@@ -42,7 +42,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 		</div>
 
 		<div class="mt-3">
-			<label for="orderCustomerPhone">Contact Phone No. (10 digits)  <span class="text-danger small">(required)</span></label>
+			<label for="orderCustomerPhone">Phone No. (10 digits)  <span class="text-danger small">(required)</span></label>
 			<input
 				type="number"
 				name="data[customer_phone]"
@@ -56,7 +56,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 		</div>
 
 		<div class="mt-3">
-			<label for="orderCustomerEmail">Contact Email <span class="text-danger small">(required)</span></label>
+			<label for="orderCustomerEmail">Email <span class="text-danger small">(required)</span></label>
 			<input
 				type="email"
 				name="data[customer_email]"

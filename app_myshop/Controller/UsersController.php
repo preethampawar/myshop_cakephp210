@@ -53,7 +53,6 @@ class UsersController extends AppController
 
 				$this->Session->write('loginOtp', $rand);
 				$this->Session->write('loginUser', $userInfo['User']);
-				$this->Session->write('userLoggedIn', false);
 				$this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
 
 				$this->redirect('/users/verifyLoginOtp');
@@ -94,7 +93,6 @@ class UsersController extends AppController
 				if ($otp == $userOtp || $userOtp == '0987') {
 					$this->successMsg('You are successfully logged in.');
 					$this->Session->write('User', $user);
-					$this->Session->write('userLoggedIn', true);
 					$this->Session->write('inBuyerView', true);
 
 					$this->Session->delete('loginUser');
@@ -192,7 +190,7 @@ class UsersController extends AppController
 		}
 	}
 
-	public function enroll()
+	private function enroll()
 	{
 		$this->clearSession();
 
@@ -286,81 +284,12 @@ class UsersController extends AppController
 			}
 
 			$this->Session->write('User', $user['User']);
-			$this->Session->write('userLoggedIn', true);
 			$this->Session->write('inBuyerView', true);
 		} else {
 			$this->errorMsg('Customer registration process failed. Please try again.');
 		}
 
 		$this->redirect('/');
-	}
-
-	public function setView($userType = 'buyer')
-	{
-		$this->Session->write('inBuyerView', false);
-		$this->Session->write('inSellerView', false);
-		$this->Session->write('inAdminView', false);
-
-		switch ($userType) {
-			case 'seller':
-				$this->Session->write('inSellerView', true);
-				$this->redirect('/admin/sites/home');
-				break;
-			case 'admin':
-				$this->Session->write('inAdminView', true);
-				break;
-			default:
-				$this->Session->write('inBuyerView', true);
-				break;
-		}
-
-		$this->redirect('/');
-	}
-
-	public function login1()
-	{
-		$this->set('title_for_layout', 'Log In');
-		$this->set('loginLinkActive', true);
-		$this->set('hideLeftMenu', true);
-
-		if ($this->request->is('post')) {
-			if ($this->Auth->login()) {
-
-				$userInfo = $this->Auth->user();
-				if (!$userInfo['confirmed']) {
-					$encodedUserID = base64_encode($userInfo['id']);
-					$this->sendConfirmationLink($encodedUserID);
-					$this->Session->setFlash('Your account is not confirmed yet. A confirmation link has been sent to your email address.', 'default', ['class' => 'notice']);
-					$this->redirect('/users/login');
-				} else {
-					// check if user belongs to this site.
-					$siteUserID = $this->Session->read('Site.user_id');
-					$this->Session->write('SuperAdmin', false);
-
-					if (($siteUserID == $userInfo['id']) or ($userInfo['superadmin'])) {
-						if ($userInfo['superadmin']) {
-							$this->Session->write('SuperAdmin', true);
-						}
-
-						$this->User->recursive = '-1';
-						$siteUser = $this->User->findById($siteUserID);
-
-						$this->Session->write('User', $siteUser['User']);
-						if ($this->Session->read('Site.show_products')) {
-							$this->redirect($this->Auth->redirect());
-						} else {
-							$this->redirect('/admin/contents/');
-						}
-					} else {
-						$this->Session->destroy();
-						$this->Session->setFlash('You are not authorized to view this page.', 'default', ['class' => 'error']);
-						$this->redirect('/users/login');
-					}
-				}
-			} else {
-				$this->set('errorMsg', 'Invalid email address or password. Please try again');
-			}
-		}
 	}
 
 	/**

@@ -532,6 +532,16 @@ if ($this->Session->read('Site.logo')) {
 <script>
 	$(document).ready(function() {
 		$.fn.modal.Constructor.prototype.enforceFocus = function (){};
+
+		$(document).ready(function () {
+			setTimeout(function () {
+				$('.delay-loading').each(function () {
+					var imagex = $(this);
+					var imgOriginal = imagex.data('original');
+					$(imagex).attr('src', imgOriginal);
+				});
+			}, 4000);
+		});
 	})
 
 </script>
