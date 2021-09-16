@@ -10,6 +10,8 @@
 /app_pjn_mobile/Config/database.php
 /app_wines/Config/database.php
 
+/app_myshop/Config/email.php
+
 /app/tmp/*
 /app_myshop/tmp/*
 /app_closing_stock/tmp/*
@@ -51,4 +53,3 @@
 Icon?
 ehthumbs.db
 Thumbs.db
-/app_pjn/tmp/
