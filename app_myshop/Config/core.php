@@ -485,6 +485,16 @@ Configure::write('LinkedLocations', [
 			'url' => 'zhb.eatmukka.com',
 		]
 	],
+	'zhb' => [
+		'sangareddy' => [
+			'title' => 'Sangareddy',
+			'url' => 'www.eatmukka.com',
+		],
+		'zhb' => [
+			'title' => 'Zaheerabad',
+			'url' => 'zhb.eatmukka.com',
+		]
+	],
 	'myshop' => [
 		'sangareddy' => [
 			'title' => 'Sangareddy',
