@@ -57,7 +57,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.1.0">
+	<link rel="stylesheet" href="/css/site.css?v=1.1.1">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
