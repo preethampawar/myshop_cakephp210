@@ -71,7 +71,6 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	}
 	?>
 
-
 	<script>
 		function selectLocation() {
 			let defaultLocation = localStorage.getItem('location');
@@ -81,12 +80,8 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 				showLocationPopup();
 			} else {
 				if (location.host !== defaultLocationUrl) {
-					console.log('redirect to '+defaultLocation);
 					goToLocation(defaultLocationId, defaultLocation, defaultLocationUrl);
 				}
-
-				console.log(location.host);
-				console.log(defaultLocationId, defaultLocation, defaultLocationUrl);
 			}
 		}
 
@@ -150,11 +145,11 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 
 
 				<div class="offcanvas offcanvas-end" id="navbarNav">
-					<div class="offcanvas-header">
+					<div class="offcanvas-header border-bottom border-4 border-warning">
 						<h5 class="offcanvas-title" id="offcanvasNavbarLabel"><?= $this->Session->read('Site.title') ?></h5>
 						<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 					</div>
-					<div class="offcanvas-body">
+					<div class="offcanvas-body  <?= $navbarTheme ?>">
 						<ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
 							<li class="nav-item px-1">
 								<a class="nav-link px-1" href="/">Home</a>
