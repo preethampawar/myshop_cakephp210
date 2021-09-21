@@ -66,7 +66,7 @@ class UsersController extends AppController
 		}
 	}
 
-	private function sendLoginOtp($otp, $toEmail, $mobile)
+	public function sendLoginOtp($otp, $toEmail, $mobile)
 	{
 		try {
 			$this->Sms->sendOtp($mobile, $otp);
@@ -152,7 +152,7 @@ class UsersController extends AppController
 		$this->set('email', $email);
 	}
 
-	private function validateCustomerRegistration($mobile = null, $email = null)
+	public function validateCustomerRegistration($mobile = null, $email = null)
 	{
 		$mobileregex = "/^[6-9][0-9]{9}$/" ;
 
@@ -199,7 +199,7 @@ class UsersController extends AppController
 		}
 	}
 
-	private function enroll()
+	public function enroll()
 	{
 		$this->clearSession();
 
@@ -225,7 +225,7 @@ class UsersController extends AppController
 		}
 	}
 
-	private function sendEnrollOtp($otp, $toEmail, $mobile)
+	public function sendEnrollOtp($otp, $toEmail, $mobile)
 	{
 		$this->Sms->sendOtp($mobile, $otp);
 
@@ -257,7 +257,7 @@ class UsersController extends AppController
 		}
 	}
 
-	private function registerUser($mobile, $email)
+	public function registerUser($mobile, $email)
 	{
 		$data['User']['id'] = null;
 		$data['User']['mobile'] = $mobile;
@@ -279,7 +279,7 @@ class UsersController extends AppController
 		$this->redirect('/users/enroll');
 	}
 
-	private function registerCustomer($mobile, $email)
+	public function registerCustomer($mobile, $email)
 	{
 		$user = $this->createCustomer($mobile, $email);
 
@@ -304,7 +304,7 @@ class UsersController extends AppController
 	/**
 	 * Function to send a account confirmation link to the user being registered
 	 */
-	function sendConfirmationLink($encodedUserID, $password = null)
+	public function sendConfirmationLink($encodedUserID, $password = null)
 	{
 		try {
 			$userID = base64_decode($encodedUserID);
@@ -384,7 +384,7 @@ This message is for notification purpose only.
 	/**
 	 * Function to change password
 	 */
-	function admin_changePassword()
+	public function admin_changePassword()
 	{
 		$this->set('title_for_layout', 'Change your password');
 		$errorMsg = '';
@@ -499,7 +499,7 @@ MyAccountManager.in
 	/**
 	 * Function to genereate random password
 	 */
-	function generatePassword($length = 8)
+	public function generatePassword($length = 8)
 	{
 		// inicializa variables
 		$password = "";
@@ -591,7 +591,7 @@ Verification Code: ' . $randomPass . '
 
 	}
 
-	function contactus()
+	public function contactus()
 	{
 		$this->set('contactUsLinkActive', true);
 
@@ -661,12 +661,12 @@ Message: ' . htmlentities($data['User']['message']) . '
 		$this->set('title_for_layout', 'Contact us');
 	}
 
-	function admin_login()
+	public function admin_login()
 	{
 		$this->redirect('/users/login');
 	}
 
-	function admin_logout()
+	public function admin_logout()
 	{
 		$this->Session->delete('User');
 		$this->Session->delete('Site');
@@ -674,7 +674,7 @@ Message: ' . htmlentities($data['User']['message']) . '
 		$this->redirect('/');
 	}
 
-	function admin_index($userID = null)
+	public function admin_index($userID = null)
 	{
 		if (!$userID) {
 			$userID = $this->Session->read('User.id');
@@ -696,7 +696,7 @@ Message: ' . htmlentities($data['User']['message']) . '
 		$this->set('userID', $userID);
 	}
 
-	function admin_edit($userID = null)
+	public function admin_edit($userID = null)
 	{
 		if (!$userID) {
 			$userID = $this->Session->read('User.id');
@@ -769,7 +769,7 @@ Message: ' . htmlentities($data['User']['message']) . '
 		$this->set(compact('errorMsg', 'userID'));
 	}
 
-	function admin_manage()
+	public function admin_manage()
 	{
 		$siteId = $this->Session->read('Site.id');
 
