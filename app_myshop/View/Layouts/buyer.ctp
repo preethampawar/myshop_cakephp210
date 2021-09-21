@@ -624,19 +624,19 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	$(document).ready(function() {
 		$.fn.modal.Constructor.prototype.enforceFocus = function (){};
 
-		<?php
-		if($showLocationPopup) {
-		?>
-		selectLocation();
-
-		if (localStorage.getItem('location')) {
-			$('#locationTitleSpan').text(localStorage.getItem('location'))
-		}
-		<?php
-		}
-		?>
-
 		$(document).ready(function () {
+			<?php
+			if($showLocationPopup) {
+			?>
+				selectLocation();
+
+				if (localStorage.getItem('location')) {
+					$('#locationTitleSpan').text(localStorage.getItem('location'))
+				}
+			<?php
+			}
+			?>
+
 			setTimeout(function () {
 				$('.delay-loading').each(function () {
 					var imagex = $(this);
