@@ -105,22 +105,24 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 
 <body class="bg-dark">
 	<div class="bg-white ">
-		<nav class="navbar navbar-expand-lg navbar-static navbar-light bg-light">
-			<div class="container-fluid justify-content-end">
-				<?php
-				if($showLocationPopup) {
-					?>
+
+		<?php
+		if($showLocationPopup) {
+			?>
+			<nav class="navbar navbar-expand-lg navbar-static navbar-light bg-light">
+				<div class="container-fluid justify-content-end">
 					<div onclick="showLocationPopup()">
 						<div role="button" class="">
 							<i class="fa fa-map-marker-alt text-danger"></i> <h6 id="locationTitleSpan" class="d-inline"></h6>
 							<span class="d-inline nav-link p-1 text-danger"><i class="fa fa-caret-down"></i></span>
 						</div>
 					</div>
-					<?php
-				}
-				?>
-			</div>
-		</nav>
+				</div>
+			</nav>
+			<?php
+		}
+		?>
+
 		<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="/">
