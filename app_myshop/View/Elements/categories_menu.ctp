@@ -1,12 +1,15 @@
 <?php
-App::uses('Category', 'Model');
-$categoryModel = new Category;
-$categories = $categoryModel->getCategories($this->Session->read('Site.id'));
+//App::uses('Category', 'Model');
+//$categoryModel = new Category;
+//$categories = $categoryModel->getCategories($this->Session->read('Site.id'));
+
+$catListCacheKey = $this->Session->read('CacheKeys.catList');
+$categoriesList = Cache::read($catListCacheKey, 'verylong');
 ?>
 <ul class="list-group list-group-flush">
 <?php
-if (!empty($categories)) {
-	foreach ($categories as $row) {
+if (!empty($categoriesList)) {
+	foreach ($categoriesList as $row) {
 		$categoryID = $row['Category']['id'];
 		$categoryName = Inflector::humanize($row['Category']['name']);
 		$categoryNameSlug = Inflector::slug($row['Category']['name'], '-');

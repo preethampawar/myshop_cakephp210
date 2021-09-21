@@ -53,8 +53,11 @@ class UsersController extends AppController
 
 				$this->Session->write('loginOtp', $rand);
 				$this->Session->write('loginUser', $userInfo['User']);
-				$this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
-
+				try {
+					$this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
+				} catch (Exception $e) {
+					//$this->errorMsg('User not found.');
+				}
 				$this->redirect('/users/verifyLoginOtp');
 			} else {
 				$this->errorMsg('User not found.');
@@ -65,18 +68,24 @@ class UsersController extends AppController
 
 	private function sendLoginOtp($otp, $toEmail, $mobile)
 	{
-		$this->Sms->sendOtp($mobile, $otp);
+		try {
+			$this->Sms->sendOtp($mobile, $otp);
 
-		$subject = 'Login OTP for ' . $mobile;
-		$bccEmail = Configure::read('AdminEmail');
+			$subject = 'Login OTP for ' . $mobile;
+			$bccEmail = Configure::read('AdminEmail');
 
-		$mailContent = '<p>Please use the below OTP to login.</p><p><b>' . $otp . '</b></p><p><br>*Note: The above OTP is valid only for 15mins.</p><br><br>-<br>' . $this->Session->read('Site.title');
-		$email = new CakeEmail('smtpNoReply');
-		$email->emailFormat('html');
-		$email->to([$toEmail => $toEmail]);
-		$email->bcc($bccEmail, $bccEmail);
-		$email->subject($subject);
-		$email->send($mailContent);
+			$mailContent = '<p>Please use the below OTP to login.</p><p><b>' . $otp . '</b></p><p><br>*Note: The above OTP is valid only for 15mins.</p><br><br>-<br>' . $this->Session->read('Site.title');
+			$email = new CakeEmail('smtpNoReply');
+			$email->emailFormat('html');
+			$email->to([$toEmail => $toEmail]);
+			$email->bcc($bccEmail, $bccEmail);
+			$email->subject($subject);
+			$email->send($mailContent);
+		} catch (Exception $e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function verifyLoginOtp()

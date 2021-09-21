@@ -25,7 +25,7 @@ class OrdersController extends AppController
 
 		$this->paginate = [
 			'limit' => 10,
-			'order' => ['Order.created' => 'ASC'],
+			'order' => ['Order.created' => 'DESC'],
 			'conditions' => $conditions,
 		];
 		$orders = $this->paginate();
@@ -58,7 +58,7 @@ class OrdersController extends AppController
 			case Order::ORDER_STATUS_DELIVERED:
 			case Order::ORDER_STATUS_CANCELLED:
 			case Order::ORDER_STATUS_CLOSED:
-			case Order::ORDER_STATUS_RETURNED:
+			// case Order::ORDER_STATUS_RETURNED:
 				break;
 			default:
 				$orderType = Order::ORDER_STATUS_NEW;
@@ -452,10 +452,10 @@ class OrdersController extends AppController
 				$emailTemplate = 'order_cancelled';
 				$subject = 'Cancelled - Order #'.$orderId;
 				break;
-			case Order::ORDER_STATUS_RETURNED:
-				$emailTemplate = 'order_returned';
-				$subject = 'Returned - Order #'.$orderId;
-				break;
+//			case Order::ORDER_STATUS_RETURNED:
+//				$emailTemplate = 'order_returned';
+//				$subject = 'Returned - Order #'.$orderId;
+//				break;
 			case Order::ORDER_STATUS_CLOSED:
 				$emailTemplate = 'order_closed';
 				$subject = 'Closed - Order #'.$orderId;

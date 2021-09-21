@@ -3,6 +3,7 @@
 </div>
 
 <h1>Order No. #<?= $order['Order']['id']; ?></h1>
+<h6> - <?= $order['Order']['status'] ?></h6>
 
 <?php
 $modifiedDate = date('d-m-Y', strtotime($order['Order']['modified']));

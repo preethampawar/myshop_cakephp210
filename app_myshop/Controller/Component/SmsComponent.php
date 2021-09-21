@@ -76,8 +76,13 @@ class SmsComponent extends Component {
 			$url = str_replace('{otp}', $otp, $url);
 			$url = str_replace('{template_name}', $templateName, $url);
 
-			file_get_contents($url);
-			return true;
+			if (file_exists($url)) {
+				file_get_contents($url);
+				return true;
+			} else {
+				throw new Exception('SMS end point not found.');
+			}
+
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}

@@ -26,7 +26,6 @@ foreach($ordersCountByStatus as $row) {
 			['<?= Order::ORDER_STATUS_DELIVERED ?> (<?= $ordersCountStatus[Order::ORDER_STATUS_DELIVERED] ?? 0 ?>)', <?= $ordersCountStatus[Order::ORDER_STATUS_DELIVERED] ?? 0 ?>],
 			['<?= Order::ORDER_STATUS_CLOSED ?> (<?= $ordersCountStatus[Order::ORDER_STATUS_CLOSED] ?? 0 ?>)', <?= $ordersCountStatus[Order::ORDER_STATUS_CLOSED] ?? 0 ?>],
 			['<?= Order::ORDER_STATUS_CANCELLED ?> (<?= $ordersCountStatus[Order::ORDER_STATUS_CANCELLED] ?? 0 ?>)', <?= $ordersCountStatus[Order::ORDER_STATUS_CANCELLED] ?? 0 ?>],
-			['<?= Order::ORDER_STATUS_RETURNED ?> (<?= $ordersCountStatus[Order::ORDER_STATUS_RETURNED] ?? 0 ?>)', <?= $ordersCountStatus[Order::ORDER_STATUS_RETURNED] ?? 0 ?>],
 		]);
 
 		var options = {

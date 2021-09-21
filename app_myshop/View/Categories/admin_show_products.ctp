@@ -79,7 +79,7 @@
 								<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
 							</td>
 							<td class="text-end text-nowrap">
-								<a href="'/admin/products/edit/<?= $productID ?>/<?= $categoryID ?>" class="btn btn-primary btn-sm">Edit</a>
+								<a href="/admin/products/edit/<?= $productID ?>/<?= $categoryID ?>" class="btn btn-primary btn-sm">Edit</a>
 
 								<?php
 								$confirmMessage = 'Are you sure you want to delete this product?';

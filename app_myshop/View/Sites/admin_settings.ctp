@@ -125,6 +125,10 @@ $this->set('enableTextEditor', true);
 				>
 				<label class="form-check-label" for="SiteUnderMaintenance">Enable Maintenance Mode</label>
 			</div>
+
+			<div class="mt-3">
+				<a href="/admin/sites/clearCache" class="btn btn-sm btn-outline-danger">Clear Store Info Cache</a>
+			</div>
 		</div>
 
 		<div class="mt-2">
@@ -136,6 +140,9 @@ $this->set('enableTextEditor', true);
 				</div>
 				<div class="ps-3">
 					<div class="mb-4">
+						<?php
+						if (isset($this->data['Site']['logo']) && empty(trim($this->data['Site']['logo']))) {
+						?>
 						<label for="SiteTitle" class="form-label">Upload Logo</label>
 						<input
 								type="file"
@@ -146,9 +153,20 @@ $this->set('enableTextEditor', true);
 						>
 						<span class="text-muted small">*Best Size: 125 x 75 pixels (width x height)</span>
 						<?php
+						}
+						?>
+						<?php
 						if (isset($this->data['Site']['logo']) && !empty(trim($this->data['Site']['logo']))) {
 						?>
 						<div class="mt-3">
+							<b>Store Logo</b>
+							<input
+									type="file"
+									id="SiteLogo"
+									name="data[Store][logo]"
+									class="form-control form-control-sm d-none"
+									placeholder="Upload Store Logo"
+							>
 							<img class="border d-block" src="<?= $this->Html->url('/'.$this->data['Site']['logo'], true); ?>">
 							<button
 								type="button"

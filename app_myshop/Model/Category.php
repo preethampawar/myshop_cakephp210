@@ -24,7 +24,7 @@ class Category extends AppModel
 
 	public function getCategories($siteId)
 	{
-		$conditions = ['Category.site_id' => $siteId, 'Category.active' => '1', 'Category.parent_id' => null];
+		$conditions = ['Category.site_id' => $siteId, 'Category.active' => '1', 'Category.parent_id' => null, 'Category.deleted' => '0'];
 		$this->unbindModel(['belongsTo'=>['ParentCategory']]);
 		return $this->find('all', ['conditions' => $conditions, 'recursive' => '-1', 'order' => 'Category.name ASC']);
 	}
@@ -32,14 +32,14 @@ class Category extends AppModel
 	public function admin_getCategories()
 	{
 		App::uses('CakeSession', 'Model/Datasource');
-		$conditions = ['Category.site_id' => CakeSession::read('Site.id'), 'Category.parent_id' => null];
+		$conditions = ['Category.site_id' => CakeSession::read('Site.id'), 'Category.parent_id' => null, 'Category.deleted' => '0'];
 		return $this->find('all', ['conditions' => $conditions, 'recursive' => '-1', 'order' => 'Category.name ASC']);
 	}
 
 	public function admin_getCategoryList()
 	{
 		App::uses('CakeSession', 'Model/Datasource');
-		$conditions = ['Category.site_id' => CakeSession::read('Site.id'), 'Category.parent_id' => null];
+		$conditions = ['Category.site_id' => CakeSession::read('Site.id'), 'Category.parent_id' => null, 'Category.deleted' => '0'];
 		return $this->find('list', ['conditions' => $conditions, 'recursive' => '-1', 'order' => 'Category.name ASC']);
 	}
 }

@@ -37,7 +37,7 @@
 				$btnColor = 'btn-outline-warning';
 				$bgColor = 'bg-warning';
 				break;
-			case Order::ORDER_STATUS_RETURNED:
+			// case Order::ORDER_STATUS_RETURNED:
 			case Order::ORDER_STATUS_CANCELLED:
 				$btnColor = 'btn-outline-danger';
 				$bgColor = 'bg-danger';
@@ -105,7 +105,7 @@
 					$btnColor = 'btn-outline-warning';
 					$bgColor = 'bg-warning';
 					break;
-				case Order::ORDER_STATUS_RETURNED:
+				// case Order::ORDER_STATUS_RETURNED:
 				case Order::ORDER_STATUS_CANCELLED:
 					$btnColor = 'btn-outline-danger';
 					$bgColor = 'bg-danger';

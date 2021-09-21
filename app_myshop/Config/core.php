@@ -34,7 +34,7 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-Configure::write('debug', 0);
+Configure::write('debug', 1);
 
 /**
  * Configure the Error handler used to handle errors for your application. By default
@@ -185,7 +185,7 @@ Configure::write('Routing.prefixes', ['admin']);
  * for instance. Each version can then have its own view cache namespace.
  * Note: The final cache file name will then be `prefix_cachefilename`.
  */
-//Configure::write('Cache.viewPrefix', 'prefix');
+Configure::write('Cache.viewPrefix', 'prefix');
 
 /**
  * Session configuration.
@@ -228,7 +228,7 @@ Configure::write('Routing.prefixes', ['admin']);
  */
 Configure::write('Session', [
 	'defaults' => 'php',
-	'timeout' => 1440,
+	'timeout' => 2880,
 ]);
 
 /**
@@ -473,3 +473,47 @@ Configure::write(
 );
 
 Configure::write('SmsProvider', '2Factor');
+
+Configure::write('LinkedLocations', [
+	'www' => [
+		'sangareddy' => [
+			'title' => 'Sangareddy',
+			'url' => 'www.eatmukka.com',
+		],
+		'zhb' => [
+			'title' => 'Zaheerabad',
+			'url' => 'zhb.eatmukka.com',
+		]
+	],
+	'myshop' => [
+		'sangareddy' => [
+			'title' => 'Sangareddy',
+			'url' => 'www.eatmukka.com',
+		],
+		'zahirabad' => [
+			'title' => 'Zahirabad',
+			'url' => 'farmfood.apnastores-local.com:8080',
+		],
+		'local' => [
+			'title' => 'New MIG',
+			'url' => 'myshop.apnastores-local.com:8080'
+		]
+	],
+
+	'farmfood' => [
+		'local' => [
+			'title' => 'New MIG',
+			'url' => 'myshop.apnastores-local.com:8080'
+		],
+		'sangareddy' => [
+			'title' => 'Sangareddy',
+			'url' => 'www.eatmukka.com',
+		],
+		'zahirabad' => [
+			'title' => 'Zahirabad',
+			'url' => 'farmfood.apnastores-local.com:8080',
+		],
+	]
+]);
+
+

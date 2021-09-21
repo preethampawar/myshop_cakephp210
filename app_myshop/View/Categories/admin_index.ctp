@@ -48,9 +48,7 @@
 <div class="mt-3">
 
 	<?php
-	App::uses('Category', 'Model');
-	$categoryModel = new Category;
-	$categories = $categoryModel->admin_getCategories();
+
 
 	if (!empty($categories)) {
 		?>
@@ -117,7 +115,25 @@
 							</td>
 							<td class="text-end text-nowrap">
 								<a href="/admin/categories/showProducts/<?= $categoryID ?>" class="btn btn-sm btn-primary">Manage Products</a>
-								<a href="/admin/categories/edit/<?= $categoryID ?>" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
+
+								<div class="dropdown d-inline">
+									<a class="p-2 ms-2" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+										<i class="fa fa-ellipsis-v p-2"></i>
+									</a>
+
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<li><a class="dropdown-item" href="/admin/categories/edit/<?= $categoryID ?>">Edit</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li>
+											<a
+													class="dropdown-item"
+													href="#"
+													onclick="showConfirmPopup('/admin/categories/delete/<?= $categoryID ?>', 'Delete Category', '*Note: All products in this category will also get deleted. <br><br>Are you sure you want to delete this category?'); return false;">
+												Delete
+											</a>
+										</li>
+									</ul>
+								</div>
 							</td>
 						</tr>
 					<?php

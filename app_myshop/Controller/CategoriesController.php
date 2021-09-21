@@ -11,27 +11,28 @@ class CategoriesController extends AppController
 	}
 
 
-	function getCategories()
+	public function getCategories()
 	{
-		$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.active' => '1', 'Category.parent_id' => null];
+		$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.active' => '1', 'Category.parent_id' => null, 'Category.deleted' => '0'];
 		$categories = $this->Category->find('all', ['conditions' => $conditions, 'recursive' => '-1', 'order' => 'Category.name ASC']);
 		return $categories;
 	}
 
-	function admin_getCategories()
+	public function admin_getCategories()
 	{
 		$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.parent_id' => null];
-		$categories = $this->Category->find('all', ['conditions' => $conditions, 'recursive' => '-1', 'order' => 'Category.name ASC']);
+		$categories = $this->Category->find('all', ['conditions' => $conditions, 'recursive' => '-1', 'order' => 'Category.name ASC', 'Category.deleted' => '0']);
 		return $categories;
 	}
 
-	function admin_index()
+	public function admin_index()
 	{
-		$categoryInfoLinkActive = true;
-		$this->set('categoryInfoLinkActive', $categoryInfoLinkActive);
+		$categories = $this->Category->admin_getCategories();
+
+		$this->set('categories', $categories);
 	}
 
-	function admin_add()
+	public function admin_add()
 	{
 		$errorMsg = '';
 		if ($this->request->isPost()) {
@@ -50,6 +51,7 @@ class CategoriesController extends AppController
 				} else {
 					$data['Category']['site_id'] = $this->Session->read('Site.id');
 					if ($this->Category->save($data)) {
+						$this->deleteCategoryListFromCache();
 						$this->successMsg('Category successfully added');
 					} else {
 						$errorMsg = 'An error occurred while communicating with the server';
@@ -63,7 +65,7 @@ class CategoriesController extends AppController
 		$this->redirect('/admin/categories/index');
 	}
 
-	function admin_edit($categoryID)
+	public function admin_edit($categoryID)
 	{
 		$errorMsg = [];
 		$categoryInfoLinkActive = true;
@@ -88,6 +90,7 @@ class CategoriesController extends AppController
 				} else {
 					$data['Category']['id'] = $categoryID;
 					if ($this->Category->save($data)) {
+						$this->deleteCategoryListFromCache();
 						$this->successMsg('Category successfully updated');
 						$this->redirect('/admin/categories/add');
 					} else {
@@ -106,7 +109,7 @@ class CategoriesController extends AppController
 		$this->set(compact('errorMsg', 'categoryInfo', 'categoryInfoLinkActive'));
 	}
 
-	function admin_delete($categoryID)
+	public function admin_delete($categoryID)
 	{
 		if ($categoryInfo = $this->isSiteCategory($categoryID)) {
 			$this->deleteCategory($categoryID);
@@ -118,7 +121,7 @@ class CategoriesController extends AppController
 		$this->redirect('/admin/categories/');
 	}
 
-	function admin_showProducts($categoryID)
+	public function admin_showProducts($categoryID)
 	{
 		$errorMsg = null;
 		if (!$categoryInfo = $this->isSiteCategory($categoryID)) {
@@ -144,7 +147,7 @@ class CategoriesController extends AppController
 			$categoryProducts = $tmp;
 		}
 
-		$productsLimitExceeded  = $this->productsLimitExceeded();
+		$productsLimitExceeded = $this->productsLimitExceeded();
 
 		$this->set(compact('errorMsg', 'categoryInfo', 'categoryProducts', 'productsList', 'productsLimitExceeded'));
 	}
@@ -177,6 +180,7 @@ class CategoriesController extends AppController
 				$tmp['Category']['images'] = json_encode($images);
 
 				if ($this->Category->save($tmp)) {
+					$this->deleteCategoryListFromCache();
 					$error = false;
 					$msg = 'Category image updated successfully';
 				} else {
@@ -222,6 +226,7 @@ class CategoriesController extends AppController
 			$tmp['Category']['images'] = json_encode($images);
 
 			if ($this->Category->save($tmp)) {
+				$this->deleteCategoryListFromCache();
 				$msg = 'Category image updated successfully';
 				$this->successMsg($msg);
 			} else {
@@ -257,6 +262,7 @@ class CategoriesController extends AppController
 			$tmp['Category']['id'] = $categoryId;
 			$tmp['Category']['images'] = $tmpImages ? json_encode($tmpImages) : null;
 			if ($this->Category->save($tmp)) {
+				$this->deleteCategoryListFromCache();
 				$msg = 'Category image updated successfully';
 				$this->successMsg($msg);
 			} else {
