@@ -30,7 +30,10 @@ $customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $th
 
 
 <?php
-echo $this->element('homepage_categories');
+$catListCacheKey = $this->Session->read('CacheKeys.catList');
+$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
+echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
+
 echo $this->element('featured_products');
 
 $this->set('customMeta', $customMeta);

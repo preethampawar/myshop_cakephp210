@@ -1,25 +1,28 @@
 <?php
-App::uses('Category', 'Model');
-$categoryModel = new Category();
-$categories = $categoryModel->find(
-	'all',
-	[
-		'conditions' => [
-			'Category.site_id' => $this->Session->read('Site.id'),
-			'Category.deleted' => 0,
-			'Category.active' => 1,
-			'Category.images NOT' => null
-		],
-		'order' => [
-			'Category.name'
-		]
-	]
-);
+//App::uses('Category', 'Model');
+//$categoryModel = new Category();
+//$categories = $categoryModel->find(
+//	'all',
+//	[
+//		'conditions' => [
+//			'Category.site_id' => $this->Session->read('Site.id'),
+//			'Category.deleted' => 0,
+//			'Category.active' => 1,
+//			'Category.images NOT' => null
+//		],
+//		'order' => [
+//			'Category.name'
+//		]
+//	]
+//);
+
+$catListCacheKey = $this->Session->read('CacheKeys.catList');
+$categories = Cache::read($catListCacheKey, 'verylong');
 
 if ($categories and !empty($categories)) {
 	?>
 		<div class="mb-5">
-			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
 				<?php
 				foreach($categories as $row) {
 					$categoryId = $row['Category']['id'];
@@ -40,7 +43,7 @@ if ($categories and !empty($categories)) {
 					?>
 					<div class="col text-center" id="categoryCard<?= $categoryId ?>">
 
-						<div class="card h-100 shadow-sm transition" id="category<?php echo $categoryId; ?>">
+						<div class="card h-100 shadow" id="category<?php echo $categoryId; ?>">
 
 							<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none d-block">
 								<img
@@ -53,14 +56,10 @@ if ($categories and !empty($categories)) {
 								/>
 							</a>
 
-
 							<div class="card-body text-center">
-
-									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
-										<h6><?= $categoryName ?></h6>
-									</a>
-
-
+								<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
+									<h6><?= $categoryName ?></h6>
+								</a>
 							</div>
 						</div>
 

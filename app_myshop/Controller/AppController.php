@@ -45,10 +45,12 @@ class AppController extends Controller
 		// Parse http request and load the appropriate domain
 		$this->parseURL();
 
+		$this->setCacheKeys();
+
 		/* Domain Information */
-		Configure::write('Domain', $this->request->domain());
-		Configure::write('DomainName', $this->request->host());
-		Configure::write('DomainUrl', 'http://' . $this->request->host());
+//		Configure::write('Domain', $this->request->domain());
+//		Configure::write('DomainName', $this->request->host());
+//		Configure::write('DomainUrl', 'http://' . $this->request->host());
 
 		/* Site email configuration */
 //		$supportEmail = $this->Session->read('Site.contact_email');
@@ -57,8 +59,29 @@ class AppController extends Controller
 		Configure::write('Security.salt', '');
 
 		$this->setTheme();
+
+		// get category list
+		$this->generateCategoryList();
+
+		// get featured products list
+		//$this->generateFeaturedProductsList();
+
+//		if (! $this->Session->check('categoryListMenu')) {
+//			$categoryList = $this->generateCategoryList();
+//			$this->Session->write('categoryListMenu', $categoryList);
+//		}
 	}
 
+	private function setCacheKeys()
+	{
+		$keys = [
+			'siteInfo' => $this->getCacheKey('siteInfo'),
+			'catList' => $this->getCacheKey('catList'),
+			'featuredProducts' => $this->getCacheKey('featuredProducts'),
+		];
+
+		$this->Session->write('CacheKeys', $keys);
+	}
 
 	public function setView($userType = 'buyer')
 	{
@@ -82,7 +105,7 @@ class AppController extends Controller
 		$this->redirect('/');
 	}
 
-	public function isSellerForThisSite()
+	protected function isSellerForThisSite()
 	{
 		if ($this->Session->read('User.superadmin') == 1) {
 			return true;
@@ -99,7 +122,7 @@ class AppController extends Controller
 		return false;
 	}
 
-	public function isSeller()
+	protected function isSeller()
 	{
 		if ($this->Session->read('User.superadmin') == 1) {
 			return true;
@@ -112,11 +135,10 @@ class AppController extends Controller
 	}
 
 
-
 	/**
 	 * Function to parse request URL
 	 */
-	public function parseURL()
+	protected function parseURL()
 	{
 		$baseSite = Configure::read('BaseDomainUrl');
 		$siteNotFoundUri = '/sites/notFound';
@@ -131,6 +153,7 @@ class AppController extends Controller
 		// check if default domain
 		if ($defaultDomainInfo['Domain']['name'] !== $dName) {
 			$redirectLink = '//' . $defaultDomainInfo['Domain']['name'] . $params;
+
 			$this->redirect($redirectLink);
 		}
 
@@ -180,41 +203,53 @@ class AppController extends Controller
 
 	private function getDefaultDomainInfo()
 	{
+		$siteInfo = $this->getSiteInfoFromCache();
+
+		if ($siteInfo && isset($siteInfo['Domain']) && isset($siteInfo['Site'])) {
+			return $siteInfo;
+		}
+
 		$siteInfo = [];
 		$dName = $this->request->host();
 
 		App::import('Model', 'Domain');
 		$domainModel = new Domain;
-		$domainModel->unbindModel(['belongsTo' => ['Site']]);
-		$sitedomain = $domainModel->findByName($dName, ['Domain.id', 'Domain.site_id']);
+		$sitedomain = $domainModel->findByName($dName);
 
 		if (!empty($sitedomain)) {
 
-			// find all domains related to the selected site and get the default domain
-			$sitedomains = $domainModel->findAllBySiteId($sitedomain['Domain']['site_id']);
+			if ((bool)$sitedomain['Domain']['default'] === true) {
+				$siteInfo['Domain'] = $sitedomain['Domain'];
+				$siteInfo['Site'] = $sitedomain['Site'];
+			} else {
+				// find all domains related to the selected site and get the default domain
+				$sitedomains = $domainModel->findAllBySiteId($sitedomain['Domain']['site_id']);
 
-			App::uses('User', 'Model');
-			$userModel = new User;
-			$userModel->recursive = '-1';
-			$userModel->unbindModel(['hasOne' => ['Site']]);
+				App::uses('User', 'Model');
+				$userModel = new User;
+				$userModel->recursive = '-1';
+				$userModel->unbindModel(['hasOne' => ['Site']]);
 
-			foreach ($sitedomains as $row) {
-				if ($row['Domain']['default']) {
-					$siteUser = $userModel->findById($row['Site']['user_id']);
+				foreach ($sitedomains as $row) {
+					if ($row['Domain']['default']) {
+						// $siteUser = $userModel->findById($row['Site']['user_id']);
 
-					$siteInfo['Domain'] = $row['Domain'];
-					$siteInfo['Site'] = $row['Site'];
-					$siteInfo['Site']['Account'] = $siteUser['User'] ?? null;
+						$siteInfo['Domain'] = $row['Domain'];
+						$siteInfo['Site'] = $row['Site'];
+						// $siteInfo['Site']['Account'] = $siteUser['User'] ?? null;
 
-					break;
+						break;
+					}
 				}
 			}
+
+			$this->writeSiteInfoToCache($siteInfo);
 		}
 
 		return $siteInfo;
 	}
 
-	public function setBuyerCategories()
+	protected function setBuyerCategories()
 	{
 		App::uses('Category', 'Model');
 		$categoryModel = new Category;
@@ -222,7 +257,7 @@ class AppController extends Controller
 		$this->Session->write('SiteCategories', $categories);
 	}
 
-	public function noticeMsg($msg)
+	protected function noticeMsg($msg)
 	{
 		if ($msg) {
 			$this->Session->setFlash($msg, 'Flash/notice');
@@ -230,7 +265,7 @@ class AppController extends Controller
 		return true;
 	}
 
-	public function successMsg($msg)
+	protected function successMsg($msg)
 	{
 		if ($msg) {
 			$this->Session->setFlash($msg, 'Flash/success');
@@ -239,7 +274,7 @@ class AppController extends Controller
 		return true;
 	}
 
-	public function errorMsg($msg)
+	protected function errorMsg($msg)
 	{
 		if ($msg) {
 			$this->Session->setFlash($msg, 'Flash/error');
@@ -247,7 +282,7 @@ class AppController extends Controller
 		return true;
 	}
 
-	function checkSuperAdmin()
+	protected function checkSuperAdmin()
 	{
 		if (!$this->Session->read('SuperAdmin')) {
 			$this->Session->setFlash('You are not authorized to view this page');
@@ -257,7 +292,7 @@ class AppController extends Controller
 		}
 	}
 
-	function checkAdmin()
+	protected function checkAdmin()
 	{
 		if (!$this->Session->read('User.admin')) {
 			$this->Session->setFlash('You are not authorized to view this page');
@@ -267,7 +302,7 @@ class AppController extends Controller
 		}
 	}
 
-	public function checkSeller()
+	protected function checkSeller()
 	{
 		if ($this->Session->read('User.superadmin') == 1) {
 			return true;
@@ -281,7 +316,7 @@ class AppController extends Controller
 		}
 	}
 
-	function checkLandingPage()
+	protected function checkLandingPage()
 	{
 		$contentInfo = $this->getLandingPageInfo();
 		if (isset($contentInfo['Content']['landing_page']) and !empty($contentInfo['Content']['landing_page'])) {
@@ -293,7 +328,7 @@ class AppController extends Controller
 	/**
 	 * Function to get landing page information.
 	 */
-	function getLandingPageInfo()
+	protected function getLandingPageInfo()
 	{
 		App::uses('Content', 'Model');
 		$contentModel = new Content;
@@ -315,7 +350,7 @@ class AppController extends Controller
 		return $contentInfo;
 	}
 
-	public function getHighlightImage($data)
+	protected function getHighlightImage($data)
 	{
 		$highlightImage = [];
 
@@ -338,7 +373,7 @@ class AppController extends Controller
 		return $highlightImage;
 	}
 
-	public function getRearrangedImages($data)
+	protected function getRearrangedImages($data)
 	{
 		if (!is_array($data) and !empty($data)) {
 			$data = json_decode($data);
@@ -357,7 +392,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if category is from selected site.
 	 */
-	function isSiteImage($imageID)
+	protected function isSiteImage($imageID)
 	{
 		App::uses('Image', 'Model');
 		$imageModel = new Image;
@@ -368,7 +403,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if category is from selected site.
 	 */
-	function isSiteCategory($categoryID)
+	protected function isSiteCategory($categoryID)
 	{
 		App::uses('Category', 'Model');
 		$categoryModel = new Category;
@@ -379,7 +414,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if content is from selected site.
 	 */
-	function isSiteContent($contentID)
+	protected function isSiteContent($contentID)
 	{
 		App::uses('Content', 'Model');
 		$contentModel = new Content;
@@ -391,7 +426,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if blog article is from selected site.
 	 */
-	function isSiteBlog($blogID)
+	protected function isSiteBlog($blogID)
 	{
 		App::uses('Blog', 'Model');
 		$blogModel = new Blog;
@@ -403,7 +438,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if banner is from selected site.
 	 */
-	function isSiteBanner($bannerId)
+	protected function isSiteBanner($bannerId)
 	{
 		App::uses('Banner', 'Model');
 		$bannerModel = new Banner;
@@ -415,7 +450,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if testimonial is from selected site.
 	 */
-	function isSiteTestimonial($testimonialId)
+	protected function isSiteTestimonial($testimonialId)
 	{
 		App::uses('Testimonial', 'Model');
 		$testimonialModel = new Testimonial;
@@ -423,10 +458,11 @@ class AppController extends Controller
 		$content = $testimonialModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 		return $content;
 	}
+
 	/**
 	 * Function to check if testimonial is from selected site.
 	 */
-	function isSiteSupplier($supplierId)
+	protected function isSiteSupplier($supplierId)
 	{
 		App::uses('Supplier', 'Model');
 		$supplierModel = new Supplier;
@@ -439,7 +475,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if testimonial is from selected site.
 	 */
-	function isSitePromoCode($promoCodeId)
+	protected function isSitePromoCode($promoCodeId)
 	{
 		App::uses('PromoCode', 'Model');
 		$promoCodeModel = new PromoCode;
@@ -451,7 +487,7 @@ class AppController extends Controller
 	/**
 	 * Function to check valid image size
 	 */
-	function isValidImageSize($imgSize, $maxSize = null)
+	protected function isValidImageSize($imgSize, $maxSize = null)
 	{
 		if ($imgSize > 0) {
 			if ((int)$maxSize <= 0) {
@@ -474,7 +510,7 @@ class AppController extends Controller
 	/**
 	 * Function to check a valid image
 	 */
-	function isValidImage($image)
+	protected function isValidImage($image)
 	{
 		if (isset($image['tmp_name'])) {
 			$info = getimagesize($image['tmp_name']);
@@ -510,7 +546,7 @@ class AppController extends Controller
 	/**
 	 * Function to delete a category by id
 	 */
-	function deleteCategory($categoryID)
+	protected function deleteCategory($categoryID)
 	{
 		App::uses('Category', 'Model');
 		$categoryModel = new Category;
@@ -529,6 +565,9 @@ class AppController extends Controller
 			App::uses('Image', 'Model');
 			$imageModel = new Image;
 
+			App::uses('CategoryProduct', 'Model');
+			$categoryProductModel = new CategoryProduct;
+
 			foreach ($allCategories as $row) {
 				$catId = $row['Category']['id'];
 
@@ -544,15 +583,15 @@ class AppController extends Controller
 				}
 
 				// delete category products
-				App::uses('CategoryProduct', 'Model');
-				$categoryProductModel = new CategoryProduct;
 				$categoryProductModel->recursive = '-1';
 				$categoryProducts = $categoryProductModel->findAllByCategoryId($catId);
+
 				if (!empty($categoryProducts)) {
 					foreach ($categoryProducts as $row2) {
 						$productID = $row2['CategoryProduct']['product_id'];
 						try {
-							$this->deleteProduct($productID);
+							$this->deleteProduct($productID, $catId);
+							$categoryProductModel->delete($row2['CategoryProduct']['id']);
 						} catch (Exception $e) {
 						}
 					}
@@ -571,7 +610,7 @@ class AppController extends Controller
 	/**
 	 * Function to delete image by id
 	 */
-	function deleteImage($imageID)
+	protected function deleteImage($imageID)
 	{
 		// remove from images cache folder
 		$imageCachePath = 'img/imagecache/';
@@ -604,7 +643,7 @@ class AppController extends Controller
 	/**
 	 * Function to delete product by id
 	 */
-	function deleteProduct($productID, $categoryID = null)
+	protected function deleteProduct($productID, $categoryID = null)
 	{
 		App::uses('CategoryProduct', 'Model');
 		$categoryProductModel = new CategoryProduct;
@@ -621,8 +660,8 @@ class AppController extends Controller
 			$belongsToMultipleCategories = true;
 		}
 
-		if ($categoryID && $belongsToMultipleCategories) { // delete product only from the selected category
-
+		if ($categoryID && $belongsToMultipleCategories) {
+			// delete product only from the selected category
 			$conditions = ['CategoryProduct.product_id' => $productID, 'CategoryProduct.category_id' => $categoryID];
 			$categoryProductModel->deleteAll($conditions);
 
@@ -669,7 +708,7 @@ class AppController extends Controller
 	/**
 	 * Function to check if product is from selected site.
 	 */
-	function isSiteProduct($productID)
+	protected function isSiteProduct($productID)
 	{
 		App::uses('Product', 'Model');
 		$productModel = new Product;
@@ -680,7 +719,7 @@ class AppController extends Controller
 	/**
 	 * Function to get shopping cart id for the current session
 	 */
-	function getOrderId()
+	protected function getOrderId()
 	{
 		$orderId = null;
 
@@ -710,7 +749,7 @@ class AppController extends Controller
 	/**
 	 * Function to get shopping cart id for the current session
 	 */
-	function getShoppingCartID()
+	protected function getShoppingCartID()
 	{
 		$shoppingCartID = null;
 		if ($this->Session->check('ShoppingCart.id')) {
@@ -732,7 +771,7 @@ class AppController extends Controller
 	/**
 	 * Function to get shopping cart products
 	 */
-	function getShoppingCartProducts()
+	protected function getShoppingCartProducts()
 	{
 		$shoppingCart = null;
 		if ($this->Session->check('ShoppingCart.id')) {
@@ -749,7 +788,7 @@ class AppController extends Controller
 	/**
 	 * Function to update product visits
 	 */
-	function addProductVisit($categoryID, $productID, $categoryName, $productName)
+	protected function addProductVisit($categoryID, $productID, $categoryName, $productName)
 	{
 		App::uses('ProductVisit', 'Model');
 		$productVisitModel = new ProductVisit;
@@ -784,7 +823,7 @@ class AppController extends Controller
 	/**
 	 * Function to get product visits
 	 */
-	function getProductVisits($categoryID, $productID)
+	protected function getProductVisits($categoryID, $productID)
 	{
 		App::uses('ProductVisit', 'Model');
 		$productVisitModel = new ProductVisit;
@@ -801,7 +840,7 @@ class AppController extends Controller
 	/**
 	 * Function to update product visits
 	 */
-	function getRecentProductViewsByUser()
+	protected function getRecentProductViewsByUser()
 	{
 		App::uses('ProductVisit', 'Model');
 		$productVisitModel = new ProductVisit;
@@ -825,7 +864,7 @@ class AppController extends Controller
 	/**
 	 * Function to get most viewed products on the site
 	 */
-	function getMostViewedProductsList()
+	protected function getMostViewedProductsList()
 	{
 		App::uses('ProductVisit', 'Model');
 		$productVisitModel = new ProductVisit;
@@ -849,7 +888,7 @@ class AppController extends Controller
 	/**
 	 * Function to get site category products
 	 */
-	function getSiteCategoriesProductsImages($options = [])
+	protected function getSiteCategoriesProductsImages($options = [])
 	{
 		App::uses('Product', 'Model');
 		$productModel = new Product;
@@ -858,7 +897,7 @@ class AppController extends Controller
 		return $data;
 	}
 
-	function sendSMS($toNumber, $message = null)
+	protected function sendSMS($toNumber, $message = null)
 	{
 		try {
 			$message = trim($message);
@@ -890,7 +929,7 @@ class AppController extends Controller
 		return false;
 	}
 
-	public function clearSession()
+	protected function clearSession()
 	{
 		$this->Session->delete('loginOtp');
 		$this->Session->delete('loginUser');
@@ -902,7 +941,7 @@ class AppController extends Controller
 		$this->Session->destroy();
 	}
 
-	public function productsLimitExceeded()
+	protected function productsLimitExceeded()
 	{
 		App::uses('Product', 'Model');
 		$productModel = new Product();
@@ -918,7 +957,7 @@ class AppController extends Controller
 		return true;
 	}
 
-	public function getSiteProductsCount()
+	protected function getSiteProductsCount()
 	{
 		App::uses('Product', 'Model');
 		$productModel = new Product();
@@ -1033,7 +1072,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-light bg-white ';
 
 				// secondary menu
-				$secondaryMenuBg = ' bg-light border-grey border-2 border-bottom border-top-1 border-start-0 border-end-0';
+				$secondaryMenuBg = ' bg-light border-grey border-3 border-bottom border-top-1 border-start-0 border-end-0';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				$hightlightLink = ' text-orange ';
@@ -1042,7 +1081,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-light bg-white ';
 
 				// secondary menu
-				$secondaryMenuBg = ' bg-light border-grey border-2 border-bottom border-top-1 border-start-0 border-end-0';
+				$secondaryMenuBg = ' bg-light border-grey border-3 border-bottom border-top-1 border-start-0 border-end-0';
 				$linkColor = ' link-danger ';
 				$cartBadgeBg = ' bg-orange ';
 				$hightlightLink = ' text-orange ';
@@ -1051,7 +1090,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-light bg-light bg-gradient ';
 
 				// secondary menu
-				$secondaryMenuBg = ' bg-white border-secondary border-2 border-bottom';
+				$secondaryMenuBg = ' bg-white border-grey border-3 border-bottom border-top-1 border-start-0 border-end-0';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				break;
@@ -1059,7 +1098,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-dark bg-primary bg-gradient ';
 
 				// secondary menu bg-primary-light-50
-				$secondaryMenuBg = ' bg-primary-light-50 border-primary-light border-2 border-top-0 border-start-0 border-end-0 ';
+				$secondaryMenuBg = ' bg-primary-light-50 border-primary-light border-3 border-top-0 border-start-0 border-end-0 ';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				break;
@@ -1067,7 +1106,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-dark bg-success bg-gradient ';
 
 				// secondary menu
-				$secondaryMenuBg = ' bg-success-light-50 border-success-light border-2 border-top-0 border-start-0 border-end-0 ';
+				$secondaryMenuBg = ' bg-success-light-50 border-success-light border-3 border-top-0 border-start-0 border-end-0 ';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				break;
@@ -1075,7 +1114,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-light bg-warning bg-gradient ';
 
 				// secondary menu
-				$secondaryMenuBg = ' bg-ivory-light border-warning-light border-2 border-top-0 border-start-0 border-end-0';
+				$secondaryMenuBg = ' bg-ivory-light border-warning-light border-3 border-top-0 border-start-0 border-end-0';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				$hightlightLink = ' text-dark ';
@@ -1084,7 +1123,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-dark bg-secondary bg-gradient ';
 
 				// secondary menu
-				$secondaryMenuBg = ' bg-light border-grey border-2 border-bottom';
+				$secondaryMenuBg = ' bg-light border-grey border-3 border-bottom border-top-0 border-start-0 border-end-0';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				break;
@@ -1093,7 +1132,7 @@ class AppController extends Controller
 
 				// secondary menu
 				//$secondaryMenuBg = ' border-bottom border-warning-light border-2 bg-ivory-light ';
-				$secondaryMenuBg = ' bg-ivory-light border-warning-light border-2 border-top-0 border-start-0 border-end-0';
+				$secondaryMenuBg = ' bg-ivory-light border-warning-light border-3 border-top-0 border-start-0 border-end-0';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				break;
@@ -1101,7 +1140,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-dark bg-purple bg-gradient ';
 
 				// secondary menu
-				$secondaryMenuBg = 'border-purple-light border-2 bg-purple-light-50 border-top-0 border-start-0 border-end-0';
+				$secondaryMenuBg = 'border-purple-light border-3 bg-purple-light-50 border-top-0 border-start-0 border-end-0';
 				$linkColor = ' link-primary ';
 				$cartBadgeBg = ' bg-orange ';
 				break;
@@ -1109,7 +1148,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-dark bg-danger bg-gradient ';
 
 				// secondary menu
-				$secondaryMenuBg = 'border-danger-light border-2 bg-danger-light-50 border-top-0 border-start-0 border-end-0';
+				$secondaryMenuBg = 'border-danger-light border-3 bg-danger-light-50 border-top-0 border-start-0 border-end-0';
 				$linkColor = ' link-danger ';
 				$cartBadgeBg = ' bg-orange ';
 				break;
@@ -1127,6 +1166,108 @@ class AppController extends Controller
 		];
 
 		$this->Session->write('Theme', $themeInfo);
+	}
+
+
+	protected function getCacheKey($keyOf)
+	{
+		$domain = $this->request->subdomains()[0];
+
+		return $domain.'.'.$keyOf;
+	}
+
+	protected function getSiteInfoFromCache()
+	{
+		$cacheKey = $this->getCacheKey('siteInfo');
+
+		return Cache::read($cacheKey, 'verylong');
+	}
+
+	protected function writeSiteInfoToCache($value)
+	{
+		$key = $this->getCacheKey('siteInfo');
+
+		Cache::write($key, $value, 'verylong');
+	}
+
+	protected function deleteSiteInfoFromCache()
+	{
+		$cacheKey = $this->getCacheKey('siteInfo');
+
+		return Cache::delete($cacheKey, 'verylong');
+	}
+
+	protected function getCategoryListFromCache()
+	{
+		$cacheKey = $this->getCacheKey('catList');
+
+		return Cache::read($cacheKey, 'verylong');
+	}
+
+	protected function writeCategoryListToCache($value)
+	{
+		$key = $this->getCacheKey('catList');
+
+		Cache::write($key, $value, 'verylong');
+	}
+
+	protected function deleteCategoryListFromCache()
+	{
+		$cacheKey = $this->getCacheKey('catList');
+
+		// also delete products cache
+		// $this->deleteFeaturedProductsFromCache();
+
+		return Cache::delete($cacheKey, 'verylong');
+	}
+
+	protected function generateCategoryList()
+	{
+		if ($catList = $this->getCategoryListFromCache()) {
+			return $catList;
+		}
+
+		$siteId = $this->Session->read('Site.id');
+		App::uses('Category', 'Model');
+		$categoryModel = new Category;
+
+		$categories = $categoryModel->getCategories($siteId);
+		$this->writeCategoryListToCache($categories);
+
+		return $this->getCategoryListFromCache();
+	}
+
+	protected function getFeaturedProductsFromCache()
+	{
+		$cacheKey = $this->Session->read('CacheKeys.featuredProducts');
+
+		return Cache::read($cacheKey, 'verylong');
+	}
+
+	protected function writeFeaturedProductsToCache($value)
+	{
+		$cacheKey = $this->Session->read('CacheKeys.featuredProducts');
+
+		Cache::write($cacheKey, $value, 'verylong');
+	}
+
+	protected function deleteFeaturedProductsFromCache()
+	{
+		$cacheKey = $this->Session->read('CacheKeys.featuredProducts');
+
+		return Cache::delete($cacheKey, 'verylong');
+	}
+
+	protected function generateFeaturedProductsList()
+	{
+		if ($featuredProductsList = $this->getFeaturedProductsFromCache()) {
+			return $featuredProductsList;
+		}
+
+		App::uses('Product', 'Model');
+		$productModel = new Product();
+		$allCategoryProducts = $productModel->getAllProducts($this->Session->read('Site.id'), true);
+		$this->writeFeaturedProductsToCache($allCategoryProducts);
 	}
 
 }

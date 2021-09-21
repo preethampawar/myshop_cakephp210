@@ -240,6 +240,8 @@ App::uses('Order', 'Model');
 
 		confirmPopup = new bootstrap.Modal(document.getElementById('confirmPopup'));
 		confirmPopup.show();
+
+		return false;
 	}
 
 	// show delete popup
@@ -957,6 +959,16 @@ App::uses('Order', 'Model');
 		})
 
 		return result
+	}
+
+	// show location popup
+	function showLocationPopup() {
+		let locationPopup;
+
+		locationPopup = new bootstrap.Modal(document.getElementById('locationBackdrop'));
+		locationPopup.show();
+
+		return false;
 	}
 </script>
 

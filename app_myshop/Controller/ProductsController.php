@@ -329,7 +329,7 @@ class ProductsController extends AppController
 			}
 
 			// Sanitize data
-			$data['Product']['name'] = Sanitize::paranoid($data['Product']['name'], [' ', '-']);
+			$data['Product']['name'] = Sanitize::paranoid($data['Product']['name'], [' ', '-', '.']);
 
 			if (!$errorMsg) {
 				$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.name' => $data['Product']['name']];
@@ -396,7 +396,7 @@ class ProductsController extends AppController
 				$errorMsg[] = 'Enter Product Name';
 			}
 			// Sanitize data
-			$data['Product']['name'] = Sanitize::paranoid($data['Product']['name'], [' ', '-']);
+			$data['Product']['name'] = Sanitize::paranoid($data['Product']['name'], [' ', '-', '.']);
 
 			if (!$errorMsg) {
 				$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.name' => $data['Product']['name'], 'Product.id NOT' => $productID];

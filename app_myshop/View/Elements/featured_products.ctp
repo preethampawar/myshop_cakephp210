@@ -2,6 +2,9 @@
 App::uses('Product', 'Model');
 $productModel = new Product();
 $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), true);
+
+//$featuredProductsCacheKey = $this->Session->read('CacheKeys.featuredProducts');
+//$allCategories = Cache::read($featuredProductsCacheKey, 'verylong');
 ?>
 
 <section id="ProductsInfo">

@@ -1,4 +1,5 @@
 <?php
+App::uses('Order', 'Model');
 $testimonialsEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 $theme = $this->Session->read('Theme');
 $navbarTheme = $theme['navbarTheme'];
@@ -25,6 +26,12 @@ if ($this->Session->read('Site.logo')) {
 	$logoUrl = $this->Html->url('/'.$this->Session->read('Site.logo'), true);
 }
 
+$linkedLocations = Configure::read('LinkedLocations');
+$subdomain = $this->request->subdomains()[0];
+$showLocationPopup = false;
+if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain])) {
+	$showLocationPopup = true;
+}
 ?>
 
 <!doctype html>
@@ -50,7 +57,7 @@ if ($this->Session->read('Site.logo')) {
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.1.0">
+	<link rel="stylesheet" href="/css/site.css?v=1.1.1">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -63,10 +70,54 @@ if ($this->Session->read('Site.logo')) {
 		<?php
 	}
 	?>
+
+	<script>
+		function selectLocation() {
+			let defaultLocation = localStorage.getItem('location');
+			let defaultLocationId = localStorage.getItem('locationId');
+			let defaultLocationUrl = localStorage.getItem('locationUrl');
+			if (!defaultLocation) {
+				showLocationPopup();
+			} else {
+				if (location.host !== defaultLocationUrl) {
+					goToLocation(defaultLocationId, defaultLocation, defaultLocationUrl);
+				}
+			}
+		}
+
+		function goToLocation(locationId, title, url) {
+			setLocation(locationId, title, url);
+			window.location = '//'+url+'/sites/setLocation/'+locationId;
+		}
+
+		function setLocation(locationId, title, url) {
+			localStorage.setItem('locationId', locationId);
+			localStorage.setItem('location', title);
+			localStorage.setItem('locationUrl', url);
+		}
+	</script>
 </head>
 
 <body class="bg-dark">
 	<div class="bg-white ">
+
+		<?php
+		if($showLocationPopup) {
+			?>
+			<nav class="navbar navbar-expand-lg navbar-static navbar-light bg-light">
+				<div class="container-fluid justify-content-end">
+					<div onclick="showLocationPopup()">
+						<div role="button" class="">
+							<i class="fa fa-map-marker-alt text-danger"></i> <h6 id="locationTitleSpan" class="d-inline"></h6>
+							<span class="d-inline nav-link p-1 text-danger"><i class="fa fa-caret-down"></i></span>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<?php
+		}
+		?>
+
 		<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="/">
@@ -87,68 +138,81 @@ if ($this->Session->read('Site.logo')) {
 					?>
 				</a>
 
-				<div class="navbar-toggler border-0 " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+				<div class="navbar-toggler border-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<i class="fa fa-bars"></i>
 				</div>
 
-				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav ml-auto">
-						<?php
-						if ($this->App->isSellerForThisSite()) {
-						?>
-						<li class="nav-item px-1">
-							<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="fa fa-tools"></i> Manage Store</a>
-						</li>
-						<?php
-						}
-						?>
 
-						<li class="nav-item px-1">
-							<a class="nav-link px-1" href="/sites/about">About Us</a>
-						</li>
-						<li class="nav-item px-1">
-							<a class="nav-link px-1" href="/sites/contact">Contact Us</a>
-						</li>
-						<li class="nav-item px-1">
-							<a class="nav-link px-1" href="/sites/paymentInfo">Payment Details</a>
-						</li>
-
-						<?php if ($this->Session->check('User.id') && $this->Session->read('Site.shopping_cart')): ?>
+				<div class="offcanvas offcanvas-end" id="navbarNav">
+					<div class="offcanvas-header border-bottom border-4 border-warning">
+						<h5 class="offcanvas-title" id="offcanvasNavbarLabel"><?= $this->Session->read('Site.title') ?></h5>
+						<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					</div>
+					<div class="offcanvas-body  <?= $navbarTheme ?>">
+						<ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
 							<li class="nav-item px-1">
-								<a class="nav-link fw-normal px-1" href="/orders/">My Orders</a>
+								<a class="nav-link px-1" href="/">Home</a>
 							</li>
-						<?php endif; ?>
-
-						<li class="nav-item px-1">
-							<?php if ($this->Session->check('User.id')): ?>
-								<a class="nav-link px-1" href="/users/logout">Logout</a>
-							<?php else: ?>
-								<a class="nav-link px-1" href="/users/login">Login</a>
-							<?php endif; ?>
-						</li>
-						<?php if (!$this->Session->check('User.id')): ?>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/users/customerRegistration">Register</a>
-							</li>
-						<?php endif; ?>
-						<?php if ($this->Session->check('User.id')): ?>
-							<li class="nav-item px-1">
-								<?php
-								//debug($this->Session->read('User'));
+							<?php
+							if ($this->App->isSellerForThisSite()) {
 								?>
-								<a class="nav-link <?= $hightlightLink ?>  highlight-link px-1 disabled" href="#">
+								<li class="nav-item px-1">
+									<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="fa fa-tools"></i> Manage Store</a>
+								</li>
+								<?php
+							}
+							?>
+							<li class="nav-item px-1">
+								<a class="nav-link px-1" href="/sites/about">About Us</a>
+							</li>
+							<li class="nav-item px-1">
+								<a class="nav-link px-1" href="/sites/contact">Contact Us</a>
+							</li>
+							<li class="nav-item px-1">
+								<a class="nav-link px-1" href="/sites/paymentInfo">Payment Details</a>
+							</li>
+						</ul>
+						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+							<?php if (!$this->Session->check('User.id')): ?>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/users/customerRegistration">Register</a>
+								</li>
+							<?php endif; ?>
+
+
+							<?php if ($this->Session->check('User.id')): ?>
+							<li class="nav-item dropdown px-1">
+								<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<i class="fa fa-user-circle"></i>
 									<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
 								</a>
+								<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+									<?php if ($this->Session->read('Site.shopping_cart')): ?>
+										<li>
+											<a class="dropdown-item" href="/orders/">My Orders</a>
+										</li>
+									<?php endif; ?>
+									<li>
+										<hr class="dropdown-divider">
+									</li>
+									<li><a class="dropdown-item" href="/users/logout">Logout</a></li>
+								</ul>
 							</li>
-						<?php endif; ?>
-					</ul>
+							<?php else: ?>
+							<li class="nav-item px-1">
+								<a class="nav-link px-1" href="/users/login">Login</a>
+							</li>
+							<?php endif; ?>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</nav>
 
-		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>">
-			<ul class="nav container-fluid justify-content-center pt-3 pb-3 small">
+		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>" style="z-index: 999">
+			<ul class="nav container-fluid justify-content-center pt-2 pb-2 small">
 				<li class="nav-item">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
 						<span class="fs-5"><i class="fa fa-th"></i></span> Shop By Category
@@ -168,7 +232,8 @@ if ($this->Session->read('Site.logo')) {
 			<?= $this->element('banner_slideshow') ?>
 		</div>
 
-		<div class="container mt-4" style="min-height: 400px;">
+		<div class="container mt-4" style="min-height: 500px;">
+
 			<?php echo $this->fetch('content'); ?>
 
 			<div id="storeTestimonials" class="mt-4">
@@ -222,7 +287,9 @@ if ($this->Session->read('Site.logo')) {
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="categoriesMenuBody">
-					<?php echo $this->element('categories_menu'); ?>
+					<?php
+					echo $this->element('categories_menu');
+					?>
 					<div class="mt-4 text-center">
 						<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
 					</div>
@@ -469,6 +536,40 @@ if ($this->Session->read('Site.logo')) {
 					</div>
 				</div>
 			</div>
+
+			<?php
+			if ($showLocationPopup) {
+			?>
+			<!-- Location Modal -->
+			<div class="modal fade" id="locationBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="locationBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="locationBackdropLabel">Select Location</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body pb-5">
+							<div>We currently serve in the following areas. Choose your location of interest.</div>
+
+								<div class="list-group  list-group-flush mt-3 fw-bold">
+								<?php
+								foreach($linkedLocations[$subdomain] as $id => $row) {
+								?>
+									<a href="#" onclick="goToLocation('<?= $id ?>', '<?= $row['title'] ?>', '<?= $row['url'] ?>');" class="list-group-item list-group-item-action py-3">
+										<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
+									</a>
+								<?php
+								}
+								?>
+								</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
+			}
+			?>
 		</div>
 
 		<div class="container mt-4">
@@ -512,38 +613,34 @@ if ($this->Session->read('Site.logo')) {
 <script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js"></script>
 <script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js"></script>
 
-<!--
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-		crossorigin="anonymous"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.min.js"
-		integrity="sha384-t6I8D5dJmMXjCsRLhSzCltuhNZg6P10kE0m0nAncLUjH6GeYLhRU1zfLoW3QNQDF"
-		crossorigin="anonymous"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"
-		integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ=="
-		crossorigin="anonymous" async></script>
--->
 <?= $this->element('customjs') ?>
+
 <script>
 	$(document).ready(function() {
 		$.fn.modal.Constructor.prototype.enforceFocus = function (){};
 
 		$(document).ready(function () {
+			<?php
+			if($showLocationPopup) {
+			?>
+				selectLocation();
+
+				if (localStorage.getItem('location')) {
+					$('#locationTitleSpan').text(localStorage.getItem('location'))
+				}
+			<?php
+			}
+			?>
+
 			setTimeout(function () {
 				$('.delay-loading').each(function () {
 					var imagex = $(this);
 					var imgOriginal = imagex.data('original');
 					$(imagex).attr('src', imgOriginal);
 				});
-			}, 4000);
+			}, 3000);
 		});
 	})
-
 </script>
 
 </body>

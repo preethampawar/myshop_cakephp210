@@ -167,6 +167,8 @@ App::uses('Order', 'Model');
 
 		confirmPopup = new bootstrap.Modal(document.getElementById('confirmPopup'));
 		confirmPopup.show();
+
+		return false;
 	}
 
 	// show delete popup

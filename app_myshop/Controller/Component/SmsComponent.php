@@ -78,6 +78,7 @@ class SmsComponent extends Component {
 
 			file_get_contents($url);
 			return true;
+
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}

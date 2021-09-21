@@ -380,3 +380,79 @@ h1,h2,h3,h4,h5,h6 {
 	height: 10px; /* change height */
 	border-radius: 100%; // /* add border-radius */
 }
+
+
+
+.card-progressbar {
+	z-index: 0;
+	border: none;
+	position: relative
+}
+
+#progressbar {
+	overflow: hidden;
+	color: lightgrey
+}
+
+#progressbar .active {
+	color: var(--bs-primary);
+}
+
+#progressbar li {
+	list-style-type: none;
+	width: 25%;
+	float: left;
+	position: relative;
+}
+
+#progressbar #new:before {
+	font-family: FontAwesome;
+	content: "\25C9";
+	font-size: 2rem;
+}
+
+#progressbar #confirmed:before {
+	font-family: FontAwesome;
+	content: "\1F592";
+	font-size: 2.5rem;
+}
+
+#progressbar #shipped:before {
+	font-family: FontAwesome;
+	content: "\2708";
+	font-size: 2rem;
+}
+
+#progressbar #delivered:before {
+	font-family: FontAwesome;
+	content: "\2714";
+	font-size: 2rem;
+}
+
+#progressbar li:before {
+	width: 50px;
+	height: 50px;
+	line-height: 45px;
+	display: block;
+	color: #ffffff;
+	background: lightgray;
+	border-radius: 50%;
+	margin: 0 auto 10px auto;
+	padding: 2px
+}
+
+#progressbar li:after {
+	content: '';
+	width: 100%;
+	height: 2px;
+	background: lightgray;
+	position: absolute;
+	left: 0;
+	top: 25px;
+	z-index: -1
+}
+
+#progressbar li.active:before,
+#progressbar li.active:after {
+	background: var(--bs-primary);
+}

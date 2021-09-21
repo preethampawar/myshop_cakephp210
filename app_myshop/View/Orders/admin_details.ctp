@@ -3,8 +3,9 @@
 </div>
 
 <h1>Order No. #<?= $order['Order']['id']; ?></h1>
+<h6> - <?= $order['Order']['status'] ?></h6>
 
-<div class="mt-3">
+<div class="mt-4">
 	<?php
 	$orderStatus = $order['Order']['status'];
 
@@ -29,7 +30,7 @@
 			break;
 		case Order::ORDER_STATUS_DELIVERED:
 			$orderStatusOptions = [
-					Order::ORDER_STATUS_RETURNED => Order::ORDER_STATUS_RETURNED,
+					// Order::ORDER_STATUS_RETURNED => Order::ORDER_STATUS_RETURNED,
 					Order::ORDER_STATUS_CANCELLED => Order::ORDER_STATUS_CANCELLED,
 					Order::ORDER_STATUS_CLOSED => Order::ORDER_STATUS_CLOSED,
 			];
@@ -43,18 +44,18 @@
 	<?php
 	if ($orderStatusOptions) {
 		?>
-			<div class="alert alert-warning shadow">
-				<label for="selectedOrderStatus" class="form-label">Order Status</label>
+			<div class="alert alert-secondary bg-light shadow">
+				<label for="selectedOrderStatus" class="form-label">Change Order Status</label>
 				<select
 						name="selectedOrderStatus"
 						id="selectedOrderStatus"
-						class="form-select form-select-sm"
+						class="form-select"
 						>
-					<option value="0">Select</option>
+					<option value="0" class="small text-muted">Select</option>
 					<?php
 					foreach($orderStatusOptions as $index => $option) {
 						?>
-						<option class="<?= $index ?>"><?= $option ?></option>
+						<option value="<?= $index ?>"><?= $option ?></option>
 						<?php
 					}
 					?>
@@ -68,7 +69,7 @@
 				<div class="form-check d-flex justify-content-start mt-3">
 					<input name="sendEmailToCustomer" class="form-check-input" type="checkbox" value="" id="sendEmailToCustomer" checked>
 					<label class="form-check-label ms-2 text-start" for="sendEmailToCustomer">
-						Send Notification Email to Customer
+						Send notification message to customer
 					</label>
 				</div>
 

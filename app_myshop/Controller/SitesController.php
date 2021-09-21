@@ -52,6 +52,9 @@ class SitesController extends AppController
 			$sData['Site']['contact_phone'] = $userInfo['User']['phone'];
 
 			if ($this->Site->save($sData)) {
+
+				$this->deleteSiteInfoFromCache();
+
 				$siteInfo = $this->Site->read();
 				$domainData['Domain']['name'] = $siteInfo['Site']['domain_name'];
 				$domainData['Domain']['site_id'] = $siteInfo['Site']['id'];
@@ -192,6 +195,7 @@ class SitesController extends AppController
 				}
 
 				if ($this->Site->save($data)) {
+					$this->deleteSiteInfoFromCache();
 					$this->Session->setFlash('Data saved successfully', 'default', ['class' => 'success']);
 					$this->redirect('/admin/sites/');
 				} else {
@@ -339,6 +343,7 @@ Disallow:
 		$data['Site']['id'] = $this->Session->read('Site.id');
 		$data['Site']['logo'] = null;
 		$this->Site->save($data);
+		$this->deleteSiteInfoFromCache();
 
 		if($this->deleteFile($filePath)) {
 			$this->successMsg('Logo deleted successfully.');
@@ -404,6 +409,7 @@ Disallow:
 				$data['Site']['title'] = htmlentities($this->data['Site']['title']);
 
 				if ($this->Site->save($data)) {
+					$this->deleteSiteInfoFromCache();
 					$this->successMsg('Store details updated successfully');
 					$this->redirect('/admin/sites/settings');
 				} else {
@@ -502,6 +508,19 @@ Message: ' . htmlentities($data['User']['message']) . '
 	public function privacy()
 	{
 
+	}
+
+	public function admin_clearCache()
+	{
+		$this->deleteSiteInfoFromCache();
+
+		$this->redirect($this->referer());
+	}
+
+	public function setLocation($locationId)
+	{
+		$this->layout = 'buyer';
+		$this->set('locationId', $locationId);
 	}
 }
 

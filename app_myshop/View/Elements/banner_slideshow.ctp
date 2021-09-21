@@ -80,14 +80,15 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 							$desc = $row['description'];
 							$linkUrl = $row['linkUrl'];
 							$imageUrl = $row['imageUrl'];
+							$loadingImageUrl = '/loading4.jpg';
 							?>
-							<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="3000">
+							<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="4000">
 								<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none">
 									<img
 										data-original="<?php echo $imageUrl; ?>"
 										class="delay-loading d-block w-100 bg-gradient bg-light"
 										alt=""
-										style="max-height: 500px;"
+										style="max-height: 600px;"
 										width="1080">
 								</a>
 								<div class="carousel-caption d-none d-md-block" role="button">
