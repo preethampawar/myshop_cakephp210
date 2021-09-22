@@ -10,24 +10,24 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 $loadingImageUrl = '/loading4.jpg';
 $productSlug = Inflector::slug($productTitle, '-');
 $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productID . '/' . $productSlug;
-// http://www.apnastores.com/assets/images/loading/loading.gif
 
 $avgRating = $avgRating ?? 0;
 $ratingsCount = $ratingsCount ?? 0;
 ?>
 
 <div class="col mb-3 bg-white hoverHighlightPink" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
-	<div class="card h-100 shadow p-0 mb-1 text-dark border-0 hoverHighlightPink" id="productCard<?php echo $productID; ?>">
+	<div class="card h-100 shadow p-0 mb-1 text-dark border-0" id="productCard<?php echo $productID; ?>">
 
 		<a href="<?= $productDetailsPageUrl ?>" class="text-decoration-underline">
 			<img
 				src="<?php echo $loadingImageUrl; ?>"
 				data-original="<?php echo $productImageUrl; ?>"
-				class="lazy w-100"
+				class="lazy w-100 img-fluid"
 				role="button"
 				alt="<?php echo $productName; ?>"
 				id="<?php echo $imageTagId; ?>"
 				width="200"
+				height="200"
 			/>
 		</a>
 

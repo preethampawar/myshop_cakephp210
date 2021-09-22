@@ -22,7 +22,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 
 	<div id="deliveryErrorAlert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
 		<div class="content"></div>
-		<button type="button" class="btn-close" aria-label="Close" onclick="$('#deliveryErrorAlert').addClass('d-none')"></button>
+		<button type="button" class="btn-close" aria-label="Close" onclick="hideDeliveryAlertError()"></button>
 	</div>
 
 	<div class="">
