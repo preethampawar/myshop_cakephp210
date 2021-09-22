@@ -49,10 +49,11 @@ if ($categories and !empty($categories)) {
 								<img
 										src="<?php echo $loadingImageUrl; ?>"
 										data-original="<?php echo $imageUrl; ?>"
-										class="lazy card-img-top"
+										class="lazy card-img-top img-fluid"
 										role="button"
 										alt="<?php echo $categoryName; ?>"
 										width="300"
+										height="300"
 								/>
 							</a>
 

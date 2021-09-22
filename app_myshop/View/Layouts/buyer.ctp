@@ -55,12 +55,11 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	</script>
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
+	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" media="print" onload="this.media='all'">
 	<link rel="stylesheet" href="/css/site.css?v=1.1.1">
 	<?= $this->element('customcss') ?>
 
-	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 	<?= $analyticsCode ?>
 
 	<?php
@@ -609,13 +608,17 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	<?php echo $this->element('sql_dump'); ?>
 </div>
 
+<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 <script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
-<script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js"></script>
-<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js"></script>
+
+
+<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
+<!--<script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js" defer></script>-->
+<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 
 <?= $this->element('customjs') ?>
 
-<script>
+<script defer>
 	$(document).ready(function() {
 		$.fn.modal.Constructor.prototype.enforceFocus = function (){};
 
@@ -631,14 +634,11 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 			<?php
 			}
 			?>
-
-			setTimeout(function () {
-				$('.delay-loading').each(function () {
-					var imagex = $(this);
-					var imgOriginal = imagex.data('original');
-					$(imagex).attr('src', imgOriginal);
-				});
-			}, 3000);
+			$('.delay-loading').each(function () {
+				var imagex = $(this);
+				var imgOriginal = imagex.data('original');
+				$(imagex).attr('src', imgOriginal);
+			});
 		});
 	})
 </script>

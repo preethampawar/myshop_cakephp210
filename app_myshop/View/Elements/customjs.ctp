@@ -1,7 +1,7 @@
 <?php
 App::uses('Order', 'Model');
 ?>
-<script>
+<script defer>
 	var handleError = function (err) {
 		alert('Network error. Please check the internet connection and try again.')
 		return new Response(JSON.stringify({
@@ -66,7 +66,7 @@ App::uses('Order', 'Model');
 	}
 </script>
 
-<script>
+<script defer>
 	// page reload
 	function refreshPage() {
 		location.reload();
@@ -74,11 +74,16 @@ App::uses('Order', 'Model');
 
 	// lazy load images
 	function lazyLoadImages() {
-		if ($("img.lazy").length) {
-			$("img.lazy").lazyload({
-				effect: "fadeIn"
-			});
-		}
+		$("img.lazy").Lazy({
+			attribute: "data-original",
+			threshold: 200,
+		});
+
+		// if ($("img.lazy").length) {
+		// 	$("img.lazy").lazyload({
+		// 		effect: "fadeIn"
+		// 	});
+		// }
 	}
 
 	// init bootstrap tooltips
@@ -970,9 +975,16 @@ App::uses('Order', 'Model');
 
 		return false;
 	}
+
+	function hidePaymentAlertError() {
+		$('#paymentErrorAlert').addClass('d-none')
+	}
+	function hideDeliveryAlertError() {
+		$('#deliveryErrorAlert').addClass('d-none')
+	}
 </script>
 
-<script>
+<script defer>
 	// scripts executed after the page load
 	$(document).ready(function () {
 		<?php if ($this->Session->read('Site.shopping_cart')): ?>

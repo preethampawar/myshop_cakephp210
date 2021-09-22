@@ -57,7 +57,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 
 	<div id="paymentErrorAlert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
 		<div class="content"></div>
-		<button type="button" class="btn-close" aria-label="Close" onclick="$('#paymentErrorAlert').addClass('d-none')"></button>
+		<button type="button" class="btn-close" aria-label="Close" onclick="hidePaymentAlertError()"></button>
 	</div>
 
 
