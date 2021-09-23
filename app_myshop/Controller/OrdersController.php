@@ -137,12 +137,16 @@ class OrdersController extends AppController
 
 		// if the user is not logged in then auto register user based on $autoRegister flag
 		if (!$this->Session->check('User.id')) {
-			if ($autoRegister === 1) {
-				$userEmail = $orderDetails['Order']['customer_email'];
-				$userMobile = $orderDetails['Order']['customer_phone'];
+			$userEmail = $orderDetails['Order']['customer_email'];
+			$userMobile = $orderDetails['Order']['customer_phone'];
 
+			if ($autoRegister === 1) {
 				// check if guest is already registered
-				$existingUser = $userModel->findByMobileAndSiteId($userMobile, $this->Session->read('Site.id'));
+				$conditions = [
+					'User.mobile' => (int)$userMobile,
+					'User.site_id' => $this->Session->read('Site.id'),
+				];
+				$existingUser = $userModel->find('first', ['fields' => ['User.id', 'User.email'], 'conditions' => $conditions, 'recursive' => -1]);
 
 				if ($existingUser) {
 					$userId = $existingUser['User']['id'];
@@ -156,6 +160,7 @@ class OrdersController extends AppController
 					}
 				}
 			} else {
+				$this->sendVerifyOtp($userMobile, $userEmail);
 				$error = 'Please login to place an Order';
 			}
 		} else {

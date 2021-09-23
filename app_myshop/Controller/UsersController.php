@@ -792,4 +792,55 @@ Message: ' . htmlentities($data['User']['message']) . '
 
 	}
 
+	public function sendVerificationOtp($encodedMobile, $encodedToEmail)
+	{
+		$this->layout = false;
+		$error = false;
+
+		try {
+			$mobile = base64_decode($encodedMobile);
+			$toEmail = base64_decode($encodedToEmail);
+
+			$this->sendVerifyOtp($mobile, $toEmail);
+			$msg = 'OTP sent successfully.';
+		} catch (Exception $e) {
+			$error = true;
+			$msg = $e->getMessage();
+		}
+
+		$this->response->header('Content-type', 'application/json');
+		$this->response->body(json_encode([
+				'error' => $error,
+				'msg' => $msg,
+			], JSON_THROW_ON_ERROR)
+		);
+		$this->response->send();
+		exit;
+	}
+
+	public function otpVerification()
+	{
+		//debug($this->Session->read('verifyOtp'));
+		// accepts javascript fetch post method only
+		$this->layout = false;
+		$error = false;
+		$data = $this->request->input('json_decode', true);
+
+		if (!empty($data['verifyOtp']) && $this->verifyOtp($data['verifyOtp'])) {
+			$msg = 'OTP verified successfully.';
+		} else {
+			$error = true;
+			$msg = 'Invalid OTP.';
+		}
+
+		$this->response->header('Content-type', 'application/json');
+		$this->response->body(json_encode([
+				'error' => $error,
+				'msg' => $msg,
+			], JSON_THROW_ON_ERROR)
+		);
+		$this->response->send();
+		exit;
+	}
+
 }

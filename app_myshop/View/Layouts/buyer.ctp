@@ -516,20 +516,61 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-body">
-							<div>If you are already registered, please <a href="/users/login" class="text-orange">login</a> to place an Order.</div>
+							<?php if((bool)$this->Session->read('Site.sms_notifications') === true) { ?>
+							<div>
+								<?php echo $this->Form->create('User', ['url' => '/users/otpVerification', 'onsubmit' => "verifyOtp()"]); ?>
+								<button type="submit" disabled style="display: none" aria-hidden="true"></button>
+								<h1>Verify OTP</h1>
 
-							<div class="mt-3 text-center">(OR)</div>
+								<div class="mt-5">
+									<input
+										type="number"
+										name="data[User][otp]"
+										class="form-control"
+										id="UserVerifyOtp"
+										placeholder="Enter OTP"
+										min="1000"
+										max="9999"
+										required
+										autofocus
+										autocomplete="off"
+									>
+								</div>
 
-							<div class="mt-3">
-								Click to <a href="#" id="placeOrderLinkGuest" class="text-orange" onclick="placeOrder(1)">Auto Register & Place Order</a>.
-								A new account will be created for you and order will be placed based on the contact information provided in the order details.
+								<div class="text-danger mt-2 small">
+									<?php
+									$text = "*OTP is sent to your Email Address.";
+									if((bool)$this->Session->read('Site.sms_notifications') === true) {
+										$text = "*OTP is sent to your Mobile no. and Email Address provided in Order details";
+									}
+									echo $text;
+									?>
+								</div>
+
+								<div class="mt-4">
+									<button type="button" class="btn btn-md btn-primary" id="orderVerifyOtpButton" onclick="verifyOtp()">Next - Verify OTP</button>
+								</div>
+
+								<?php echo $this->Form->end(); ?>
 							</div>
+							<?php } else { ?>
+								<div>If you are already registered, please <a href="/users/login" class="text-orange">login</a> to place an Order.</div>
 
+								<div class="mt-3 text-center">(OR)</div>
+
+								<div class="mt-3">
+									Click to <a href="#" id="placeOrderLinkGuest" class="text-orange" onclick="placeOrder(1)">Auto Register & Place Order</a>.
+									A new account will be created for you and order will be placed based on the contact information provided in the order details.
+								</div>
+							<?php
+							}
+							?>
 							<div id="confirmOrderSpinnerGuest" class="mt-4"></div>
-
 						</div>
 						<div class="modal-footer">
+							<?php if((bool)$this->Session->read('Site.sms_notifications') === false) { ?>
 							<a href="/users/login" role="button" class="btn btn-orange">Go to Login Page</a>
+							<?php } ?>
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 						</div>
 					</div>
