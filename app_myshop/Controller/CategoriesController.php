@@ -43,7 +43,7 @@ class CategoriesController extends AppController
 				$errorMsg = 'Enter Category Name';
 			}
 			// Sanitize data
-			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.']);
+			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&']);
 			if (!$errorMsg) {
 				$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.name' => $data['Category']['name']];
 				if ($this->Category->find('first', ['conditions' => $conditions])) {
@@ -82,7 +82,7 @@ class CategoriesController extends AppController
 				$errorMsg[] = 'Enter Category Name';
 			}
 			// Sanitize data
-			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.']);
+			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&']);
 			if (!$errorMsg) {
 				$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.name' => $data['Category']['name'], 'Category.id NOT' => $categoryID];
 				if ($this->Category->find('first', ['conditions' => $conditions])) {
