@@ -700,45 +700,6 @@ function updateProductQtyFromShoppingCart(categoryId, productId, quantity, shopp
 	return response;
 }
 
-// add product to cart
-function addToCart_toberemoved(categoryId, productId, quantity, shoppingCartId, showCart) {
-
-	showCart = showCart ?? true;
-
-	if (!shoppingCartId) {
-		shoppingCartId = null
-	}
-
-	const addToCartUrl = '/shopping_carts/addToCart';
-	let data = {
-		'ShoppingCartProduct': {
-			'quantity': quantity,
-			'categoryId': categoryId,
-			'productId': productId,
-			'shoppingCartId': shoppingCartId,
-		}
-	}
-
-	if (shoppingCartId) {
-		$('#updatingCartSpinner' + shoppingCartId).removeClass('d-none');
-	}
-
-	const response = postData(addToCartUrl, data);
-
-	response.then(function (data) {
-		if (data.success == 1) {
-			loadShoppingCart(showCart);
-			loadShoppingCartHeader();
-		}
-	}).finally(function () {
-		if (shoppingCartId) {
-			$('#updatingCartSpinner' + shoppingCartId).addClass('d-none');
-		}
-	})
-
-	return response
-}
-
 // load store banners in homepage
 function showSlideShowInHomePage() {
 	let slideShowUrl = '/banners/slideshow/1';
