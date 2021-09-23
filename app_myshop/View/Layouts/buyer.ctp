@@ -601,47 +601,15 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 		</footer>
 	</div>
 
+	<div class="container">
+		<?php echo $this->element('sql_dump'); ?>
+	</div>
 
-
-
-<div class="container">
-	<?php echo $this->element('sql_dump'); ?>
-</div>
-
-<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
-
-
-<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
-<!--<script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js" defer></script>-->
-<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-
-<?= $this->element('customjs') ?>
-
-<script defer>
-	$(document).ready(function() {
-		$.fn.modal.Constructor.prototype.enforceFocus = function (){};
-
-		$(document).ready(function () {
-			<?php
-			if($showLocationPopup) {
-			?>
-				selectLocation();
-
-				if (localStorage.getItem('location')) {
-					$('#locationTitleSpan').text(localStorage.getItem('location'))
-				}
-			<?php
-			}
-			?>
-			$('.delay-loading').each(function () {
-				var imagex = $(this);
-				var imgOriginal = imagex.data('original');
-				$(imagex).attr('src', imgOriginal);
-			});
-		});
-	})
-</script>
-
+	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
+	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
+	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
+	<script src="/js/site.js" defer></script>
+	<?= $this->element('customjs') ?>
 </body>
 </html>
