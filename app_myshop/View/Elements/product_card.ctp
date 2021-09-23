@@ -22,7 +22,7 @@ $ratingsCount = $ratingsCount ?? 0;
 			<img
 				src="<?php echo $loadingImageUrl; ?>"
 				data-original="<?php echo $productImageUrl; ?>"
-				class="lazy w-100 img-fluid"
+				class="lazy w-100 img-fluid card-img-top"
 				role="button"
 				alt="<?php echo $productName; ?>"
 				id="<?php echo $imageTagId; ?>"

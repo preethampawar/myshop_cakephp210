@@ -76,7 +76,13 @@ class SmsComponent extends Component {
 			$url = str_replace('{otp}', $otp, $url);
 			$url = str_replace('{template_name}', $templateName, $url);
 
-			file_get_contents($url);
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_URL, $url);
+			$result = curl_exec($curl);
+			curl_close($curl);
+
+			//file_get_contents($url);
 			return true;
 
 		} catch (Exception $e) {

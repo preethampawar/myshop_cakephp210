@@ -4,7 +4,7 @@ App::uses('AppModel', 'Model');
 class User extends AppModel
 {
 	var $name = 'User';
-	var $hasOne = ['Site'];
+	var $belongsTo = ['Site'];
 
 	public function beforeSave($params = [])
 	{

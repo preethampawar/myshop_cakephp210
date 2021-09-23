@@ -1,10 +1,24 @@
 <div>
-	<?php echo $this->Form->create(); ?>
+	<?php echo $this->Form->create('User', ['onsubmit' => "disableButton('customerRegisterButton')"]); ?>
 	<h1 class="">Customer Registration</h1>
 
-	<div class="mt-3 text-end">
-		<a href="/" class="btn btn-sm btn-outline-secondary">Cancel</a>
+	<div class="mt-3">
+		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
+			Mobile Number <span class="text-danger small">(required)</span>
+		</label>
+		<input
+				type="number"
+				name="data[User][mobile]"
+				class="form-control"
+				id="UserMobile"
+				placeholder="Enter your 10 digit mobile number ex: 9494555588."
+				min="6000000000"
+				max="9999999999"
+				value="<?= $mobile ?>"
+				required
+				autofocus>
 	</div>
+
 	<div class="mt-3">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
 			Email Address <span class="text-danger small">(required)</span>
@@ -21,28 +35,17 @@
 			autofocus>
 	</div>
 
-	<div class="mt-3">
-		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
-			Mobile Number <span class="text-danger small">(required)</span>
-		</label>
-		<input
-			type="number"
-			name="data[User][mobile]"
-			class="form-control"
-			id="UserMobile"
-			placeholder="Enter your 10 digit mobile number ex: 9494555588."
-			min="6000000000"
-			max="9999999999"
-			value="<?= $mobile ?>"
-			required
-			autofocus>
-	</div>
-
 	<div class="mt-3 small text-danger">
-		*OTP will be sent to your Email Address.
+		<?php
+		$text = "*OTP will be sent to your Email Address.";
+		if((bool)$this->Session->read('Site.sms_notifications') === true) {
+			$text = "*OTP will be sent to the specified Mobile no. and Email Address.";
+		}
+		echo $text;
+		?>
 	</div>
 	<div class="mt-4">
-		<button type="submit" class="btn btn-md btn-primary">Next - Generate OTP</button>
+		<button type="submit" class="btn btn-md btn-primary" id="customerRegisterButton">Next - Generate OTP</button>
 
 	</div>
 	<?php echo $this->Form->end(); ?>

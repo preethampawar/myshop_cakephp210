@@ -1270,4 +1270,45 @@ class AppController extends Controller
 		$this->writeFeaturedProductsToCache($allCategoryProducts);
 	}
 
+	protected function sendVerifyOtp($mobile, $toEmail, $otp = null)
+	{
+		try {
+			if (empty($otp)) {
+				$otp = random_int(1000, 9999);
+			}
+
+			$this->Session->write('verifyOtp', $otp);
+			$this->Sms->sendOtp($mobile, $otp);
+
+			$subject = 'OTP Verification for ' . $mobile;
+			$bccEmail = Configure::read('AdminEmail');
+
+			$mailContent = '<p>Below is your verfication OTP.</p><p><b>' . $otp . '</b></p><p><br>*Note: The above OTP is valid only for 15mins.</p><br><br>-<br>' . $this->Session->read('Site.title');
+			$email = new CakeEmail('smtpNoReply');
+			$email->emailFormat('html');
+			$email->to([$toEmail => $toEmail]);
+			$email->bcc($bccEmail, $bccEmail);
+			$email->subject($subject);
+			$email->send($mailContent);
+		} catch (Exception $e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function verifyOtp($userOtp)
+	{
+		if ($this->Session->check('verifyOtp') && !empty(trim($userOtp))) {
+			$otp = $this->Session->read('verifyOtp');
+
+			if ($otp == $userOtp) {
+				$this->Session->delete('verifyOtp');
+
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

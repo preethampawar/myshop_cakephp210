@@ -612,7 +612,7 @@ function placeOrder(guest) {
 		} else {
 			// alert(data.errorMsg)
 			//window.location = '/users/login'
-			orderSummary.hide()
+			//orderSummary.hide()
 			showPlaceOrderLoginPopup()
 		}
 	}).finally(function () {
@@ -851,6 +851,44 @@ function hidePaymentAlertError() {
 function hideDeliveryAlertError() {
 	$('#deliveryErrorAlert').addClass('d-none')
 }
+
+function disableButton(id) {
+	$('#'+id).addClass('disabled')
+	return false;
+}
+
+function verifyOtp() {
+	let otp = $('#UserVerifyOtp').val().trim();
+	if (otp === '' || otp.length != 4 || isNaN(otp) === true) {
+		alert('Enter valid 4 digit OTP.');
+		return false;
+	}
+
+	const url = '/users/otpVerification';
+	let data = {
+		'verifyOtp': otp,
+	}
+	let spinnerElementId = '#confirmOrderSpinnerGuest';
+	let loader = spinner + '<div class="text-center small">Please wait.<br>OTP verification is in process. Do not press back button.</div>'
+
+	const response = postData(url, data)
+
+	$(spinnerElementId).html(loader);
+	$('#orderVerifyOtpButton').addClass('disabled');
+
+	response.then(function (data) {
+		if (data.error !== true) {
+			placeOrder(1);
+		} else {
+			alert(data.msg)
+		}
+	}).finally(function () {
+		$('#UserVerifyOtp').val('');
+		$(spinnerElementId).html('');
+		$('#orderVerifyOtpButton').removeClass('disabled');
+	})
+}
+
 
 // init site wide variables
 var handleError = function (err) {
