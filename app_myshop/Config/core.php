@@ -34,7 +34,7 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-Configure::write('debug', 1);
+Configure::write('debug', 0);
 
 /**
  * Configure the Error handler used to handle errors for your application. By default
@@ -456,74 +456,74 @@ Configure::write('AssetDomainUrl', '/');
 
 
 /* SMS Configuration */
-Configure::write(
-	'Sms',
-	[
-		'2Factor' => [
-			'apiKey' => '0e09820d-0fef-11ec-a13b-0200cd936042',
-			'otpTemplateName' => 'VerifyPhoneOtp',
-			'newOrderSenderId' => 'EMUKKA',
-			'newOrderTemplate' => 'NewOrder',
-			'OrderStatusUpdateSenderId' => 'EMUKKA',
-			'OrderStatusUpdateTemplate' => 'OrderStatusUpdate',
-			'otpUrl' => 'https://2factor.in/API/V1/{api_key}/SMS/{phone_number}/{otp}/{template_name}',
-			'transactionalUrl' => 'https://2factor.in/API/V1/{api_key}/ADDON_SERVICES/SEND/TSMS',
-		]
-	]
-);
+// Configure::write(
+	// 'Sms',
+	// [
+		// '2Factor' => [
+			// 'apiKey' => '0e09820d-0fef-11ec-a13b-0200cd936042',
+			// 'otpTemplateName' => 'VerifyPhoneOtp',
+			// 'newOrderSenderId' => 'EMUKKA',
+			// 'newOrderTemplate' => 'NewOrder',
+			// 'OrderStatusUpdateSenderId' => 'EMUKKA',
+			// 'OrderStatusUpdateTemplate' => 'OrderStatusUpdate',
+			// 'otpUrl' => 'https://2factor.in/API/V1/{api_key}/SMS/{phone_number}/{otp}/{template_name}',
+			// 'transactionalUrl' => 'https://2factor.in/API/V1/{api_key}/ADDON_SERVICES/SEND/TSMS',
+		// ]
+	// ]
+// );
 
-Configure::write('SmsProvider', '2Factor');
+// Configure::write('SmsProvider', '2Factor');
 
-Configure::write('LinkedLocations', [
-	'www' => [
-		'sangareddy' => [
-			'title' => 'Sangareddy',
-			'url' => 'www.eatmukka.com',
-		],
-		'zhb' => [
-			'title' => 'Zaheerabad',
-			'url' => 'zhb.eatmukka.com',
-		]
-	],
-	'zhb' => [
-		'sangareddy' => [
-			'title' => 'Sangareddy',
-			'url' => 'www.eatmukka.com',
-		],
-		'zhb' => [
-			'title' => 'Zaheerabad',
-			'url' => 'zhb.eatmukka.com',
-		]
-	],
-	'myshop' => [
-		'sangareddy' => [
-			'title' => 'Sangareddy',
-			'url' => 'www.eatmukka.com',
-		],
-		'zahirabad' => [
-			'title' => 'Zahirabad',
-			'url' => 'farmfood.apnastores-local.com:8080',
-		],
-		'local' => [
-			'title' => 'New MIG',
-			'url' => 'myshop.apnastores-local.com:8080'
-		]
-	],
+// Configure::write('LinkedLocations', [
+	// 'www' => [
+		// 'sangareddy' => [
+			// 'title' => 'Sangareddy',
+			// 'url' => 'www.eatmukka.com',
+		// ],
+		// 'zhb' => [
+			// 'title' => 'Zaheerabad',
+			// 'url' => 'zhb.eatmukka.com',
+		// ]
+	// ],
+	// 'zhb' => [
+		// 'sangareddy' => [
+			// 'title' => 'Sangareddy',
+			// 'url' => 'www.eatmukka.com',
+		// ],
+		// 'zhb' => [
+			// 'title' => 'Zaheerabad',
+			// 'url' => 'zhb.eatmukka.com',
+		// ]
+	// ],
+	// 'myshop' => [
+		// 'sangareddy' => [
+			// 'title' => 'Sangareddy',
+			// 'url' => 'www.eatmukka.com',
+		// ],
+		// 'zahirabad' => [
+			// 'title' => 'Zahirabad',
+			// 'url' => 'farmfood.apnastores-local.com:8080',
+		// ],
+		// 'local' => [
+			// 'title' => 'New MIG',
+			// 'url' => 'myshop.apnastores-local.com:8080'
+		// ]
+	// ],
 
-	'farmfood' => [
-		'local' => [
-			'title' => 'New MIG',
-			'url' => 'myshop.apnastores-local.com:8080'
-		],
-		'sangareddy' => [
-			'title' => 'Sangareddy',
-			'url' => 'www.eatmukka.com',
-		],
-		'zahirabad' => [
-			'title' => 'Zahirabad',
-			'url' => 'farmfood.apnastores-local.com:8080',
-		],
-	]
-]);
+	// 'farmfood' => [
+		// 'local' => [
+			// 'title' => 'New MIG',
+			// 'url' => 'myshop.apnastores-local.com:8080'
+		// ],
+		// 'sangareddy' => [
+			// 'title' => 'Sangareddy',
+			// 'url' => 'www.eatmukka.com',
+		// ],
+		// 'zahirabad' => [
+			// 'title' => 'Zahirabad',
+			// 'url' => 'farmfood.apnastores-local.com:8080',
+		// ],
+	// ]
+// ]);
 
 
