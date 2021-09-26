@@ -21,8 +21,6 @@ if ($type == 'vertical') {
 	$viewportWidth = 150;
 	$viewportHeight = 200;
 }
-
-debug([$viewportWidth, $viewportHeight, $type, $width, $height]);
 ?>
 
 <link rel="stylesheet" href="/croppie/croppie.css"/>
