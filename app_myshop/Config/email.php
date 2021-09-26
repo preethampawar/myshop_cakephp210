@@ -46,19 +46,19 @@ class EmailConfig
 
 	public $default = [
 		'transport' => 'Mail',
-		'from' => 'support@letsgreenify.com',
+		'from' => 'support@eatmukka.com',
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
 	];
 
 	public $smtp = [
 		'transport' => 'Smtp',
-		'from' => ['support@letsgreenify.com' => 'LetsGreenify'],
-		'host' => 'letsgreenify.com',
+		'from' => ['support@eatmukka.com' => 'EatMukka'],
+		'host' => 'smtpout.secureserver.net',
 		'port' => 587,
 		'timeout' => 30,
-		'username' => 'support@letsgreenify.com',
-		'password' => 'preetham4662002',
+		'username' => 'support@eatmukka.com',
+		'password' => '9494203060@3950',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',
@@ -67,12 +67,12 @@ class EmailConfig
 
 	public $smtpNoReply = [
 		'transport' => 'Smtp',
-		'from' => ['no-reply@letsgreenify.com' => 'LetsGreenify'],
-		'host' => 'letsgreenify.com',
+		'from' => ['noreply@eatmukka.com' => 'EatMukka'],
+		'host' => 'smtpout.secureserver.net',
 		'port' => 587,
 		'timeout' => 30,
-		'username' => 'no-reply@letsgreenify.com',
-		'password' => 'preetham4662002',
+		'username' => 'support@eatmukka.com',
+		'password' => '9494203060@3950',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',

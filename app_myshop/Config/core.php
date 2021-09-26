@@ -423,19 +423,19 @@ Configure::write('MaxPages', '');
 Configure::write('MaxPageImages', '20');
 
 /* Domain Information */
-Configure::write('BaseDomain', 'www.apnastores.com');
-Configure::write('BaseDomainName', 'ApnaStores');
-Configure::write('BaseDomainUrl', 'http://www.apnastores.com');
+Configure::write('BaseDomain', 'www.eatmukka.com');
+Configure::write('BaseDomainName', 'EatMukka');
+Configure::write('BaseDomainUrl', '//www.eatmukka.com');
 
 /* Domain Information */
-Configure::write('Domain', 'apnastores.com');
-Configure::write('DomainName', 'ApnaStores');
-Configure::write('DomainUrl', 'http://www.apnastores.com');
+Configure::write('Domain', 'www.eatmukka.com');
+Configure::write('DomainName', 'EatMukka');
+Configure::write('DomainUrl', 'http://www.eatmukka.com');
 
 /* Site email configuration */
-Configure::write('AdminEmail', 'preetham.pawar+apnastores@gmail.com');
-Configure::write('SupportEmail', 'support@letsgreenify.com');
-Configure::write('NoReply', ['name' => 'ApnaStores', 'email' => 'no-reply@letsgreenify.com']);
+Configure::write('AdminEmail', 'preetham.pawar+eatmukka@gmail.com');
+Configure::write('SupportEmail', 'support@eatmukka.com');
+Configure::write('NoReply', ['name' => 'EatMukka', 'email' => 'noreply@eatmukka.com']);
 
 /* Product settings */
 Configure::write('Product.size', ['0.5 ft' => '0.5 ft', '1 ft' => '1 ft', '1.5 ft' => '1.5 ft', '2 ft' => '2 ft', '2.5 ft' => '2.5 ft', '3 ft' => '3 ft', '4 ft' => '4 ft', '5 ft' => '5 ft', '6 ft' => '6 ft', '7 ft' => '7 ft', '8 ft' => '8 ft', '9 ft' => '9 ft', '10 ft' => '10 ft']);
