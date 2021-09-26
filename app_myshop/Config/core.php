@@ -526,4 +526,4 @@ Configure::write('LinkedLocations', [
 	]
 ]);
 
-
+Configure::write('ShowOneProductOnSmallScreen', true);

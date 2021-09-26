@@ -50,9 +50,7 @@ $createdDate = $createdDate ?: $modifiedDate;
 		?>
 		</tbody>
 	</table>
-
-
-
+	<br>
 </div>
 <?php
 if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
@@ -154,6 +152,8 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 
 		</table>
 		<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order</div>
+		<br>
+		<br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -175,6 +175,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Special Instructions:<br>
 			<b><?= h($order['Order']['customer_message']) ?></b>
 		</div>
+		<br><br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -184,10 +185,18 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Payment Method:
 			<b><?= $order['Order']['payment_method'] ?></b>
 		</div>
-		<div class="mt-2">
-			Payment Reference No:
-			<b><?= !empty($order['Order']['payment_reference_no']) ? $order['Order']['payment_reference_no'] : '-' ?></b>
-		</div>
+
+		<?php
+		if(!empty($order['Order']['payment_reference_no'])) {
+		?>
+			<div class="mt-2">
+				Payment Reference No:
+				<b><?= $order['Order']['payment_reference_no'] ?></b>
+			</div>
+			<?php
+		}
+		?>
+		<br><br>
 	</div>
 
 	<div class="my-5 text-center">

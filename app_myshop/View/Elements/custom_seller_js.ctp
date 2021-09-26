@@ -210,10 +210,16 @@ App::uses('Order', 'Model');
 
 	function changeOrderStatus(orderId) {
 		let status = $('#selectedOrderStatus').val();
+		let paymentMethod = $('#selectedOrderPaymentMethod').val();
 		let message = btoa($('#selectedOrderStatusMessage').val());
+
+		if (message.length === 0) {
+			message = 0;
+		}
+
 		if (status != '0') {
 			let sendEmailToCustomer = $('#sendEmailToCustomer').prop('checked') ? 1 : 0
-			let url = '/admin/orders/updateStatus/' + orderId + '/' + status + '/' + sendEmailToCustomer + '/' + message
+			let url = '/admin/orders/updateStatus/' + orderId + '/' + status + '/' + sendEmailToCustomer + '/' + message + '/' + paymentMethod
 			let title = 'Update Status'
 			let content = 'Are sure you sure you want to change the order status to <b>"'+status+'"</b>?'
 			showConfirmPopup(url, title, content)

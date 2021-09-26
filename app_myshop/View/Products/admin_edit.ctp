@@ -120,12 +120,12 @@ $this->set('enableTextEditor', true);
 							?>
 							<div
 								class="me-2 mb-2 shadow-sm rounded float-start clear <?php echo $imageHighlight ? 'border border-warning' : ''; ?>">
-								<img src="<?= $imageUrl ?> " loading="lazy" width="100" height="100" class="">
+								<img src="<?= $imageUrl ?> " loading="lazy" width="150" height="150" class="img-fluid">
 								<div
 									class="text-center "
 									onclick="showDeleteImagePopup('<?= $deleteImagesUrl; ?>', '<?= $deleteImagePath; ?>', 'Delete Image', 'Are you sure you want to delete this image?')"
 								>
-									<span class="fa fa-times-circle text-danger" role="button"></span>
+									<span class="fa fa-times-circle text-danger p-2" role="button"></span>
 								</div>
 							</div>
 
