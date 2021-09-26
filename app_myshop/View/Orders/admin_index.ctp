@@ -212,7 +212,7 @@ if ($orderType) {
 						$encodedArchiveText = base64_encode(Order::ORDER_ARCHIVE);
 						$archiveUrl = '/admin/orders/archive/' . $encodedOrderId . '/' . $encodedArchiveText;
 						$archiveContent = 'Are you sure you want to archive this order #' . $orderId . '?';
-						$showEditLink = $status === Order::ORDER_STATUS_DRAFT && $offlineOrder;
+						$showEditLink = ($status === Order::ORDER_STATUS_DRAFT && $offlineOrder)  || $status === Order::ORDER_STATUS_NEW;
 						?>
 						<tr>
 							<td>

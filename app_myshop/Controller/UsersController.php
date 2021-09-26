@@ -40,7 +40,11 @@ class UsersController extends AppController
 				$this->redirect('/users/login');
 			}
 
-			$userInfo = $this->User->findByMobileAndSiteId($mobile, $this->Session->read('Site.id'));
+			$conditions = [
+				'User.mobile' => $mobile,
+				'User.site_id' => $this->Session->read('Site.id'),
+			];
+			$userInfo = $this->User->find('first', ['conditions' => $conditions]);
 
 			// If site user is not found. Check for superadmin
 			if (empty($userInfo)) {
@@ -129,7 +133,12 @@ class UsersController extends AppController
 			$error = $this->validateCustomerRegistration($mobile, $email);
 
 			if (!$error) {
-				$userInfo = $this->User->findByMobileAndSiteId($mobile, $this->Session->read('Site.id'));
+
+				$conditions = [
+					'User.mobile' => $mobile,
+					'User.site_id' => $this->Session->read('Site.id'),
+				];
+				$userInfo = $this->User->find('first', ['conditions' => $conditions]);
 				if ($userInfo) {
 					$error = "Mobile no. '$mobile' is already registered.";
 				} else {

@@ -177,7 +177,8 @@ class OrdersController extends AppController
 		$totalDiscount = 0;
 		$totalTax = 0;
 		$payableAmount = 0;
-		$shippingAmount = $this->Session->read('Site.shipping_charges');
+		$shippingAmount = (float)$this->Session->read('Site.shipping_charges');
+		$minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
 
 		$log = json_decode($orderDetails['Order']['log'], true);
 		$orderStatus = Order::ORDER_STATUS_NEW;
@@ -212,7 +213,13 @@ class OrdersController extends AppController
 				$totalDiscount += $discount * $qty;
 			}
 
-			$payableAmount = $cartValue + $this->Session->read('Site.shipping_charges');
+
+			// if minimum order for free shipping is specified then make shipping charges as 0
+			if ($minOrderForFreeShipping > 0 && $cartValue >= $minOrderForFreeShipping) {
+				$shippingAmount = 0;
+			}
+
+			$payableAmount = $cartValue + $shippingAmount;
 
 			$applyPromoDiscount = false;
 			$promoDiscountValue = 0;
@@ -293,12 +300,16 @@ class OrdersController extends AppController
 		$this->set('orderEmailUrl', $orderEmailUrl);
 	}
 
-	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null)
+	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null, $paymentMethod = null)
 	{
 		if (!in_array($orderStatus, Order::ORDER_STATUS_OPTIONS)) {
 			$this->errorMsg('Invalid request');
 			$this->redirect('/admin/orders/details/'.$encodedOrderId);
 			return;
+		}
+
+		if ($paymentMethod && !isset(Order::ORDER_PAYMENT_OPTIONS[$paymentMethod])) {
+			$paymentMethod = null;
 		}
 
 		$message = $base64_encoded_message ? base64_decode($base64_encoded_message) : '';
@@ -326,6 +337,10 @@ class OrdersController extends AppController
 				'log' => $log,
 			]
 		];
+
+		if ($paymentMethod) {
+			$orderData['Order']['payment_method'] = $paymentMethod;
+		}
 
 		if ($this->Order->save($orderData)) {
 			$this->successMsg('Order status updated successfully');
@@ -472,9 +487,6 @@ class OrdersController extends AppController
 		if (!$emailTemplate) {
 			$error = 'No template found';
 		} else {
-
-
-
 			$toName = $order['Order']['customer_name'];
 			$toEmail = $order['Order']['customer_email'];
 			$toPhone = $order['Order']['customer_phone'];

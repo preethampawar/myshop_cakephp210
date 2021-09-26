@@ -140,9 +140,7 @@ $this->set('enableTextEditor', true);
 				</div>
 				<div class="ps-3">
 					<div class="mb-4">
-						<?php
-						if (isset($this->data['Site']['logo']) && empty(trim($this->data['Site']['logo']))) {
-						?>
+
 						<label for="SiteTitle" class="form-label">Upload Logo</label>
 						<input
 								type="file"
@@ -152,9 +150,7 @@ $this->set('enableTextEditor', true);
 								placeholder="Upload Store Logo"
 						>
 						<span class="text-muted small">*Best Size: 125 x 75 pixels (width x height)</span>
-						<?php
-						}
-						?>
+
 						<?php
 						if (isset($this->data['Site']['logo']) && !empty(trim($this->data['Site']['logo']))) {
 						?>
@@ -210,6 +206,20 @@ $this->set('enableTextEditor', true);
 								placeholder="Enter Shipping/Delivery Charges"
 								min="0"
 								max="10000"
+								required
+						>
+					</div>
+					<div class="mb-4">
+						<label for="SiteFreeShippingMinAmount" class="form-label">Free Shipping On Min. Order Amount</label>
+						<input
+								type="number"
+								id="SiteFreeShippingMinAmount"
+								name="data[Site][free_shipping_min_amount]"
+								value="<?php echo $this->data['Site']['free_shipping_min_amount']; ?>"
+								class="form-control form-control-sm"
+								placeholder="Enter Free Shipping Min Order Amount"
+								min="0"
+								max="100000"
 								required
 						>
 					</div>

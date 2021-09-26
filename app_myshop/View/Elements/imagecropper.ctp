@@ -1,10 +1,34 @@
-<link rel="stylesheet" href="/croppie/croppie.css"/>
-<script src="/croppie/croppie.js"></script>
 <?php
 $assetDomainUrl = Configure::read('AssetDomainUrl');
-?>
-<script>
+$type = 'square';
+$width = 200;
+$height = 200;
 
+if ($this->Session->check('ProductImage')) {
+	$type = $this->Session->read('ProductImage.type');
+	$width = $this->Session->read('ProductImage.width');
+	$height = $this->Session->read('ProductImage.height');
+}
+
+$viewportWidth = 200;
+$viewportHeight = 200;
+
+if ($type == 'rectangle') {
+	$viewportWidth = 200;
+	$viewportHeight = 150;
+}
+if ($type == 'vertical') {
+	$viewportWidth = 150;
+	$viewportHeight = 200;
+}
+
+debug([$viewportWidth, $viewportHeight, $type, $width, $height]);
+?>
+
+<link rel="stylesheet" href="/croppie/croppie.css"/>
+<script src="/croppie/croppie.js"></script>
+
+<script>
 	$(document).ready(function () {
 		let updateProductImage;
 		const productImageUpdateUrl = '/admin/products/updateImage';
@@ -41,8 +65,8 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 			enableExif: true,
 			enableResize: false,
 			viewport: {
-				width: 200,
-				height: 200,
+				width: <?= $viewportWidth ?>,
+				height: <?= $viewportHeight ?>,
 				type: 'square' //circle
 			},
 			boundary: {
@@ -107,8 +131,9 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 
 						$image_crop.croppie('result', {
 							type: 'canvas',
-							size: {"width": 200, "height": 200},
-							format: 'webp',
+							size: {"width": <?= $width ?>, "height": <?= $height ?>},
+							format: 'png',
+							quality: 1
 						}).then(function (response) {
 							$.ajax({
 								url: imageUploadUrl,
