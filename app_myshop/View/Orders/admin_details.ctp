@@ -63,7 +63,26 @@
 
 				<div class="mt-3">
 					<label for="selectedOrderStatusMessage" class="form-label">Message</label>
-					<textarea name="message" id="selectedOrderStatusMessage" class="form-control" placeholder="Enter your message"></textarea>
+					<textarea name="message" id="selectedOrderStatusMessage" class="form-control" placeholder="Enter your message" maxlength="100"></textarea>
+				</div>
+
+				<div class="mt-3">
+					<label for="selectedOrderPaymentMethod" class="form-label">Payment Method</label>
+					<select
+							name="selectedOrderPaymentMethod"
+							id="selectedOrderPaymentMethod"
+							class="form-select"
+					>
+						<?php
+						$defaultPaymentMethod = $order['Order']['payment_method'];
+
+						foreach(Order::ORDER_PAYMENT_OPTIONS as $index => $option) {
+							?>
+							<option value="<?= $index ?>" <?= $defaultPaymentMethod === $index ? 'selected' : '' ?>><?= $option ?></option>
+							<?php
+						}
+						?>
+					</select>
 				</div>
 
 				<div class="form-check d-flex justify-content-start mt-3">
@@ -128,7 +147,7 @@ $createdDate = $createdDate ?? $modifiedDate;
 		?>
 		</tbody>
 	</table>
-
+	<br>
 </div>
 <?php
 if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
@@ -243,6 +262,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			}
 			?>
 		</div>
+		<br><br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -264,6 +284,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Special Instructions:<br>
 			<b><?= h($order['Order']['customer_message']) ?></b>
 		</div>
+		<br><br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -273,10 +294,17 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Payment Method:
 			<b><?= $order['Order']['payment_method'] ?></b>
 		</div>
-		<div class="mt-2">
-			Payment Reference No:
-			<b><?= !empty($order['Order']['payment_reference_no']) ? $order['Order']['payment_reference_no'] : '-' ?></b>
-		</div>
+		<?php
+		if(!empty($order['Order']['payment_reference_no'])) {
+			?>
+			<div class="mt-2">
+				Payment Reference No:
+				<b><?= $order['Order']['payment_reference_no'] ?></b>
+			</div>
+			<?php
+		}
+		?>
+		<br><br>
 	</div>
 
 	<div class="my-5 text-center">

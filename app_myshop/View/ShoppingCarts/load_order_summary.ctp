@@ -21,6 +21,9 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 		$cartMrpValue = 0;
 		$totalItems = 0;
 		$totalDiscount = 0;
+		$shippingAmount = (float)$this->Session->read('Site.shipping_charges');
+		$minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
+
 		foreach ($shoppingCartProducts['ShoppingCartProduct'] as $row) {
 			$i++;
 			$shoppingCartProductID = $row['id'];
@@ -74,7 +77,12 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 			<?php
 		}
 
-		$payableAmount = $cartValue + $this->Session->read('Site.shipping_charges');
+		// if minimum order for free shipping is specified then make shipping charges as 0
+		if ($minOrderForFreeShipping > 0 && $cartValue >= $minOrderForFreeShipping) {
+			$shippingAmount = 0;
+		}
+
+		$payableAmount = $cartValue + $shippingAmount;
 		?>
 
 		<?php
@@ -128,7 +136,7 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 					<td>Shipping Charges</td>
 					<td></td>
 					<td class="text-center"></td>
-					<td class="text-end"><?= $this->App->price($this->Session->read('Site.shipping_charges')) ?></td>
+					<td class="text-end"><?= $this->App->price($shippingAmount) ?></td>
 				</tr>
 
 				<tr class="fw-bold">

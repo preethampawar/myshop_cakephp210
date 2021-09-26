@@ -6,6 +6,12 @@ $imageUploadRelPath = '/site_id/' . $siteId . '/' . 'products' . '/' . $productI
 $productUploadedImages = $productInfo['Product']['images'] ? json_decode($productInfo['Product']['images']) : [];
 $assetDomainUrl = Configure::read('AssetDomainUrl');
 $productUploadedImages = $this->App->getRearrangedImages($productUploadedImages);
+$type = $this->Session->read('ProductImage.type');
+$width = $this->Session->read('ProductImage.width');
+$height = $this->Session->read('ProductImage.height');
+$squareActive = $type == 'square' ? ' active ' : '';
+$rectangleActive = $type == 'rectangle' ? ' active ' : '';
+$verticalActive = $type == 'vertical' ? ' active ' : '';
 ?>
 
 <div>
@@ -18,6 +24,22 @@ $productUploadedImages = $this->App->getRearrangedImages($productUploadedImages)
 
 	<div class="mt-3 shadow border-0 p-3 ">
 		<h6>Upload Image</h6>
+
+		<label class="form-label">Select Image Size (Width X Height)</label>
+		<div>
+			<a
+				class="btn btn-sm btn-outline-primary <?= $squareActive ?>"
+				href="/admin/images/manageProductImages/<?= $productId ?>/<?= $categoryID ?>/square/300/300">Square (1:1)</a>
+			<a
+				class="btn btn-sm btn-outline-primary ms-3 <?= $rectangleActive ?>"
+				href="/admin/images/manageProductImages/<?= $productId ?>/<?= $categoryID ?>/rectangle/300/225">Rectangle (4:3)</a>
+			<a
+				class="btn btn-sm btn-outline-primary ms-3 <?= $verticalActive ?>"
+				href="/admin/images/manageProductImages/<?= $productId ?>/<?= $categoryID ?>/vertical/225/300">Vertical (3:4)</a>
+		</div>
+
+		<br>
+
 		<input
 			type="file"
 			name="upload_image"
@@ -84,7 +106,7 @@ $productUploadedImages = $this->App->getRearrangedImages($productUploadedImages)
 
 					?>
 					<li class="list-group-item">
-						<img src="<?= $imageUrl ?> " loading="lazy" width="150" height="150">
+						<img src="<?= $imageUrl ?> " loading="lazy" width="150" height="150" class="img-fluid">
 
 						<?php
 						if (!$imageHighlight) {

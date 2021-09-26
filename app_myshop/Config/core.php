@@ -526,4 +526,4 @@ Configure::write('AssetDomainUrl', '/');
 	// ]
 // ]);
 
-
+Configure::write('ShowOneProductOnSmallScreen', true);
