@@ -138,15 +138,23 @@ class UsersController extends AppController
 					'User.mobile' => $mobile,
 					'User.site_id' => $this->Session->read('Site.id'),
 				];
+
 				$userInfo = $this->User->find('first', ['conditions' => $conditions]);
+
 				if ($userInfo) {
 					$error = "Mobile no. '$mobile' is already registered.";
 				} else {
+					// if sms notifications feature is enabled and user does not specify email then use default customer notification email address.
+					if((bool)$this->Session->read('Site.sms_notifications') === true && empty($data['User']['email'])) {
+						$data['User']['email'] = $this->Session->read('Site.default_customer_notification_email');
+					}
+
 					$rand = random_int(1000, 9999);
 					$this->Session->write('customerRegistrationOtp', $rand);
 					$this->Session->write('customerRegistrationUser', $data['User']);
+
 					if (!empty($data['User']['email']) and !empty($data['User']['mobile'])) {
-						$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['mobile']); //todo: uncomment
+						$this->sendEnrollOtp($rand, $data['User']['email'], $data['User']['mobile']);
 						$this->redirect('/users/verifyCustomerRegistrationOtp');
 					}
 				}
@@ -177,11 +185,11 @@ class UsersController extends AppController
 			return 'Enter valid Mobile no.';
 		}
 
-		if (empty($email)) {
+		if((bool)$this->Session->read('Site.sms_notifications') === false && empty($email)) {
 			return 'Enter Email Address';
 		}
 
-		if(!Validation::email($email)) {
+		if(!empty($email) && !Validation::email($email)) {
 			return 'Enter valid Email Address';
 		}
 
