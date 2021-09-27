@@ -647,7 +647,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js" defer></script>
+	<script src="/js/site.js?v=1.0.0" defer></script>
 	<?= $this->element('customjs') ?>
 </body>
 </html>
