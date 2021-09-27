@@ -593,11 +593,10 @@ function placeOrder(guest) {
 		'confirmed': 1,
 	}
 	let loader = spinner + '<div class="text-center small">Please wait.<br>Your order is in process. Do not press back button.</div>'
-
-	const response = postData(placeOrderUrl, data)
-
 	$(spinnerElementId).html(loader);
 	$(placeOrderButtonElementId).addClass('disabled');
+
+	const response = postData(placeOrderUrl, data);
 
 	response.then(function (data) {
 		if (data.error !== true) {
@@ -871,21 +870,22 @@ function verifyOtp() {
 	let spinnerElementId = '#confirmOrderSpinnerGuest';
 	let loader = spinner + '<div class="text-center small">Please wait.<br>OTP verification is in process. Do not press back button.</div>'
 
-	const response = postData(url, data)
-
 	$(spinnerElementId).html(loader);
 	$('#orderVerifyOtpButton').addClass('disabled');
+
+	const response = postData(url, data)
 
 	response.then(function (data) {
 		if (data.error !== true) {
 			placeOrder(1);
 		} else {
+			$(spinnerElementId).html('');
+			$('#orderVerifyOtpButton').removeClass('disabled');
+
 			alert(data.msg)
 		}
 	}).finally(function () {
 		$('#UserVerifyOtp').val('');
-		$(spinnerElementId).html('');
-		$('#orderVerifyOtpButton').removeClass('disabled');
 	})
 }
 
