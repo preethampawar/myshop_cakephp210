@@ -160,7 +160,9 @@ class OrdersController extends AppController
 					}
 				}
 			} else {
-				$this->sendVerifyOtp($userMobile, $userEmail);
+				if((bool)$this->Session->read('Site.sms_notifications') === true) {
+					$this->sendVerifyOtp($userMobile, $userEmail);
+				}
 				$error = 'Please login to place an Order';
 			}
 		} else {
@@ -276,14 +278,16 @@ class OrdersController extends AppController
 
 				if ($this->saveOrderProducts($shoppingCartProducts['ShoppingCartProduct'], $orderId)) {
 					// delete shopping cart details
+					$customerPhone = $orderDetails['Order']['customer_phone'];
 					$this->Session->delete('ShoppingCart');
 					$this->Session->delete('Order');
 					$shoppingCartModel->delete($shoppingCartId);
 					$shoppingCartProductModel->deleteAll(['ShoppingCartProduct.shopping_cart_id' => $shoppingCartId]);
 					$msg = 'Your order has been placed successfully. You will be notified once the order is confirmed.';
 
-					$customerPhone = $orderDetails['Order']['customer_phone'];
-					$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+					if((bool)$this->Session->read('Site.sms_notifications') === true) {
+						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+					}
 
 				} else {
 					// delete Order as OrderProducts could not be saved
@@ -555,10 +559,24 @@ class OrdersController extends AppController
 		$this->layout = false;
 
 		$data = $this->request->input('json_decode', true);
+
+		if($this->Session->check('User')) {
+			$data['customerPhone'] = $this->Session->read('User.mobile');
+			$data['customerEmail'] = $this->Session->read('User.email');
+		}
+
+		if ((bool)$this->Session->read('Site.sms_notifications') === true && empty($data['customerEmail'])) {
+			$data['customerEmail'] = $this->Session->read('Site.default_customer_notification_email');
+		}
+
 		$error = $this->validateDeliveryDetails($data);
 
 		if (!$error) {
 			$orderId = $this->getOrderId();
+
+			//remove staring char 0 from phone number(ex. 09494102030)
+			$data['customerPhone'] = ltrim($data['customerPhone'], '0');
+
 			$orderData = [
 				'Order' => [
 					'id' => $orderId,
