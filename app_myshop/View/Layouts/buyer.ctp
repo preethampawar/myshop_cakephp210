@@ -137,12 +137,9 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 					?>
 				</a>
 
-
 				<div class="navbar-toggler border-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<i class="fa fa-bars"></i>
 				</div>
-
-
 				<div class="offcanvas offcanvas-end" id="navbarNav">
 					<div class="offcanvas-header border-bottom border-4 border-warning">
 						<h5 class="offcanvas-title" id="offcanvasNavbarLabel"><?= $this->Session->read('Site.title') ?></h5>
@@ -189,14 +186,14 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
 									<?php if ($this->Session->read('Site.shopping_cart')): ?>
-										<li>
-											<a class="dropdown-item" href="/orders/">My Orders</a>
+										<li class="nav-item px-1">
+											<a class="dropdown-item nav-link px-3" href="/orders/">My Orders</a>
 										</li>
 									<?php endif; ?>
 									<li>
 										<hr class="dropdown-divider">
 									</li>
-									<li><a class="dropdown-item" href="/users/logout">Logout</a></li>
+									<li class="nav-item px-3"><a class="dropdown-item nav-link px-1" href="/users/logout">Logout</a></li>
 								</ul>
 							</li>
 							<?php else: ?>
@@ -289,8 +286,8 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 					<?php
 					echo $this->element('categories_menu');
 					?>
-					<div class="mt-4 text-center">
-						<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
+					<div class="mt-4 text-center bottom">
+						<a role="button" class="nav-link fs-3" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa fa-times-circle"></i></a>
 					</div>
 				</div>
 
@@ -650,7 +647,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js" defer></script>
+	<script src="/js/site.js?v=1.0.0" defer></script>
 	<?= $this->element('customjs') ?>
 </body>
 </html>

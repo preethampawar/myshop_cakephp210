@@ -160,7 +160,9 @@ class OrdersController extends AppController
 					}
 				}
 			} else {
-				$this->sendVerifyOtp($userMobile, $userEmail);
+				if((bool)$this->Session->read('Site.sms_notifications') === true) {
+					$this->sendVerifyOtp($userMobile, $userEmail);
+				}
 				$error = 'Please login to place an Order';
 			}
 		} else {
@@ -177,7 +179,8 @@ class OrdersController extends AppController
 		$totalDiscount = 0;
 		$totalTax = 0;
 		$payableAmount = 0;
-		$shippingAmount = $this->Session->read('Site.shipping_charges');
+		$shippingAmount = (float)$this->Session->read('Site.shipping_charges');
+		$minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
 
 		$log = json_decode($orderDetails['Order']['log'], true);
 		$orderStatus = Order::ORDER_STATUS_NEW;
@@ -212,7 +215,13 @@ class OrdersController extends AppController
 				$totalDiscount += $discount * $qty;
 			}
 
-			$payableAmount = $cartValue + $this->Session->read('Site.shipping_charges');
+
+			// if minimum order for free shipping is specified then make shipping charges as 0
+			if ($minOrderForFreeShipping > 0 && $cartValue >= $minOrderForFreeShipping) {
+				$shippingAmount = 0;
+			}
+
+			$payableAmount = $cartValue + $shippingAmount;
 
 			$applyPromoDiscount = false;
 			$promoDiscountValue = 0;
@@ -269,14 +278,16 @@ class OrdersController extends AppController
 
 				if ($this->saveOrderProducts($shoppingCartProducts['ShoppingCartProduct'], $orderId)) {
 					// delete shopping cart details
+					$customerPhone = $orderDetails['Order']['customer_phone'];
 					$this->Session->delete('ShoppingCart');
 					$this->Session->delete('Order');
 					$shoppingCartModel->delete($shoppingCartId);
 					$shoppingCartProductModel->deleteAll(['ShoppingCartProduct.shopping_cart_id' => $shoppingCartId]);
 					$msg = 'Your order has been placed successfully. You will be notified once the order is confirmed.';
 
-					$customerPhone = $orderDetails['Order']['customer_phone'];
-					$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+					if((bool)$this->Session->read('Site.sms_notifications') === true) {
+						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+					}
 
 				} else {
 					// delete Order as OrderProducts could not be saved
@@ -293,12 +304,16 @@ class OrdersController extends AppController
 		$this->set('orderEmailUrl', $orderEmailUrl);
 	}
 
-	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null)
+	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null, $paymentMethod = null)
 	{
 		if (!in_array($orderStatus, Order::ORDER_STATUS_OPTIONS)) {
 			$this->errorMsg('Invalid request');
 			$this->redirect('/admin/orders/details/'.$encodedOrderId);
 			return;
+		}
+
+		if ($paymentMethod && !isset(Order::ORDER_PAYMENT_OPTIONS[$paymentMethod])) {
+			$paymentMethod = null;
 		}
 
 		$message = $base64_encoded_message ? base64_decode($base64_encoded_message) : '';
@@ -326,6 +341,10 @@ class OrdersController extends AppController
 				'log' => $log,
 			]
 		];
+
+		if ($paymentMethod) {
+			$orderData['Order']['payment_method'] = $paymentMethod;
+		}
 
 		if ($this->Order->save($orderData)) {
 			$this->successMsg('Order status updated successfully');
@@ -472,9 +491,6 @@ class OrdersController extends AppController
 		if (!$emailTemplate) {
 			$error = 'No template found';
 		} else {
-
-
-
 			$toName = $order['Order']['customer_name'];
 			$toEmail = $order['Order']['customer_email'];
 			$toPhone = $order['Order']['customer_phone'];
@@ -543,10 +559,24 @@ class OrdersController extends AppController
 		$this->layout = false;
 
 		$data = $this->request->input('json_decode', true);
+
+		if($this->Session->check('User')) {
+			$data['customerPhone'] = $this->Session->read('User.mobile');
+			$data['customerEmail'] = $this->Session->read('User.email');
+		}
+
+		if ((bool)$this->Session->read('Site.sms_notifications') === true && empty($data['customerEmail'])) {
+			$data['customerEmail'] = $this->Session->read('Site.default_customer_notification_email');
+		}
+
 		$error = $this->validateDeliveryDetails($data);
 
 		if (!$error) {
 			$orderId = $this->getOrderId();
+
+			//remove staring char 0 from phone number(ex. 09494102030)
+			$data['customerPhone'] = ltrim($data['customerPhone'], '0');
+
 			$orderData = [
 				'Order' => [
 					'id' => $orderId,

@@ -140,9 +140,7 @@ $this->set('enableTextEditor', true);
 				</div>
 				<div class="ps-3">
 					<div class="mb-4">
-						<?php
-						if (isset($this->data['Site']['logo']) && empty(trim($this->data['Site']['logo']))) {
-						?>
+
 						<label for="SiteTitle" class="form-label">Upload Logo</label>
 						<input
 								type="file"
@@ -152,9 +150,7 @@ $this->set('enableTextEditor', true);
 								placeholder="Upload Store Logo"
 						>
 						<span class="text-muted small">*Best Size: 125 x 75 pixels (width x height)</span>
-						<?php
-						}
-						?>
+
 						<?php
 						if (isset($this->data['Site']['logo']) && !empty(trim($this->data['Site']['logo']))) {
 						?>
@@ -214,7 +210,21 @@ $this->set('enableTextEditor', true);
 						>
 					</div>
 					<div class="mb-4">
-						<label for="SiteFromEmailAddress" class="form-label">Send Notification Emails To </label>
+						<label for="SiteFreeShippingMinAmount" class="form-label">Free Shipping On Min. Order Amount</label>
+						<input
+								type="number"
+								id="SiteFreeShippingMinAmount"
+								name="data[Site][free_shipping_min_amount]"
+								value="<?php echo $this->data['Site']['free_shipping_min_amount']; ?>"
+								class="form-control form-control-sm"
+								placeholder="Enter Free Shipping Min Order Amount"
+								min="0"
+								max="100000"
+								required
+						>
+					</div>
+					<div class="mb-4">
+						<label for="SiteFromEmailAddress" class="form-label">Send Notification Emails To (Admin) </label>
 
 						<input
 								type="text"
@@ -226,6 +236,20 @@ $this->set('enableTextEditor', true);
 								required
 						>
 						<span class="text-muted small">Note: You can specify more than one email address separated by commas "<b>,</b>"</span> (<code>abc@gmail.com,xyz@gmail.com</code>).
+					</div>
+					<div class="mb-4">
+						<label for="SiteDefaultCustomerNotificationEmail" class="form-label">Default Customer Notification Email Address</label>
+
+						<input
+								type="text"
+								id="SiteDefaultCustomerNotificationEmail"
+								name="data[Site][default_customer_notification_email]"
+								value="<?php echo $this->data['Site']['default_customer_notification_email']; ?>"
+								class="form-control form-control-sm"
+								placeholder="Enter Customer Order Email Address"
+								required
+						>
+						<span class="text-muted small">Note: If the customer doesn't specify email in registration or order placement, then this email address will be used as default to receive orders or notifications on behalf of customers.</span>.
 					</div>
 
 					<div class="mb-4">

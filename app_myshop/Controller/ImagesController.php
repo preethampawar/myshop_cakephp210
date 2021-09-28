@@ -37,8 +37,18 @@ class ImagesController extends AppController
 		$this->set(compact('image_id', 'type', 'height', 'width', 'quality', 'filename'));
 	}
 
-	function admin_manageProductImages($productID, $categoryID = null)
+	function admin_manageProductImages($productID, $categoryID = null, $type = null, $width = null, $height = null)
 	{
+		if (!in_array($type, ['square', 'rectangle', 'vertical'])) {
+			$type = 'square';
+		}
+
+		if (!empty($type) && !empty($width) && !empty($height)) {
+			$this->Session->write('ProductImage', ['type' => $type, 'width' => $width, 'height' => $height]);
+		} else if (!$this->Session->check('ProductImage')) {
+			$this->Session->write('ProductImage', ['type' => $type, 'width' => 200, 'height' => 200]);
+		}
+
 		$productInfoLinkActive = true;
 		// check if product belongs to the selected site
 		if (!$productInfo = $this->isSiteProduct($productID)) {

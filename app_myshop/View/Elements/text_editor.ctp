@@ -65,5 +65,5 @@
 				// ['view', ['fullscreen', 'codeview', 'help']]
 			]
 		});
-	}
+	})
 </script>

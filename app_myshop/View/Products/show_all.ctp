@@ -27,9 +27,15 @@ $this->set('title_for_layout', 'Show All Products');
 					<hr>
 				</header>
 				<?php
+				$showOneProductOnSmallScreen = Configure::read('ShowOneProductOnSmallScreen') ?? false;
+				$productsRowClass = "row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-0";
+				if ($showOneProductOnSmallScreen) {
+					$productsRowClass = "row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-lg-x-4 p-0";
+				}
+
 				if (!empty($row['CategoryProducts'])) {
 					?>
-					<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-0">
+					<div class="<?= $productsRowClass ?>">
 						<?php
 						$z = 0;
 						foreach ($row['CategoryProducts'] as $row2) {
