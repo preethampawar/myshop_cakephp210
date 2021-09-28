@@ -9,7 +9,7 @@
   "short_name": "EatMukka",
   "start_url": "/",
   "theme_color": "#ffffff",
-  "categories": [],
+  "categories": ["food"],
   "screenshots": [
 	{
 	  "src": "/img/screenshots/Eat_mukka_320x640.png",
