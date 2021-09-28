@@ -54,7 +54,8 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 		}
 	</script>
 
-	<link rel="manifest" href="manifest.json" />
+	<meta name="theme-color" content="#317EFB"/>
+	<link rel="manifest" href="/manifest.json" />
 	<script type="module">
 		import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
 		const el = document.createElement('pwa-update');
