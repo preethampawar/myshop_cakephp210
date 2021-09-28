@@ -959,4 +959,39 @@ $(document).ready(function () {
 	} catch (err) {
 		console.log('Error - Bootstrap tooltips: ', err.message);
 	}
+
+
+	// Initialize deferredPrompt for use later to show browser install prompt.
+	let deferredPrompt;
+	const divInstall = document.getElementById('installContainer');
+	const butInstall = document.getElementById('butInstall');
+
+	window.addEventListener('beforeinstallprompt', (event) => {
+		// Stash the event so it can be triggered later.
+		window.deferredPrompt = event;
+		// Remove the 'hidden' class from the install button container
+		divInstall.classList.toggle('d-none', false);
+	});
+
+	butInstall.addEventListener('click', async () => {
+		const promptEvent = window.deferredPrompt;
+		if (!promptEvent) {
+			// The deferred prompt isn't available.
+			return;
+		}
+		// Show the install prompt.
+		promptEvent.prompt();
+		// Log the result
+		const result = await promptEvent.userChoice;
+		// Reset the deferred prompt variable, since
+		// prompt() can only be called once.
+		window.deferredPrompt = null;
+		// Hide the install button.
+		divInstall.classList.toggle('d-none', true);
+	});
+
+	window.addEventListener('appinstalled', (event) => {
+		// Clear the deferredPrompt so it can be garbage collected
+		window.deferredPrompt = null;
+	});
 });

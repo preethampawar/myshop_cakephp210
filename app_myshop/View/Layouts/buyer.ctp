@@ -65,7 +65,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.1.1">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.0">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -615,6 +615,12 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 			<?php
 			}
 			?>
+
+			<div id="installContainer" class="d-none">
+				<div class="bg-light border p-3 fixed-bottom small text-center">
+					<button id="butInstall" type="button" class="btn btn-sm btn-orange"><i class="fa fa-mobile-alt"></i> Install</button><br>Install "<?= $this->Session->read('Site.title') ?>" app for fast and easy access.
+				</div>
+			</div>
 		</div>
 
 		<div class="container mt-4">
@@ -655,7 +661,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.0.0" defer></script>
+	<script src="/js/site.js?v=1.2.0" defer></script>
 	<?= $this->element('customjs') ?>
 </body>
 </html>
