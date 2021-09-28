@@ -86,16 +86,19 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 
 						</div>
 						<div class="d-flex mt-2">
-							<img
-									src="<?php echo $thumbUrl; ?>"
-									loading="lazy"
-									class=""
-									role="button"
-									alt="<?php echo $productName; ?>"
-									id="<?php echo $imageTagId; ?>"
-									style="width: 75px; height: 75px"
-									onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
-							/>
+							<div>
+								<img
+										src="<?php echo $thumbUrl; ?>"
+										loading="lazy"
+										class="img-fluid"
+										role="button"
+										alt="<?php echo $productName; ?>"
+										id="<?php echo $imageTagId; ?>"
+										width="75"
+										height="75"
+										onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
+								/>
+							</div>
 							<div class="ms-2">
 								<div class="small text-muted">
 									Quantity: <?= $qty ?><br>
