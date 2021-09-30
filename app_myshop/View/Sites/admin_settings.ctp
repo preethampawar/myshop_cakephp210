@@ -188,7 +188,22 @@ $this->set('enableTextEditor', true);
 								name="data[Site][title]"
 								value="<?php echo $this->data['Site']['title']; ?>"
 								class="form-control form-control-sm"
-								placeholder="Enter Site Title"
+								placeholder="Enter Store Title"
+								minlength="3"
+								maxlength="50"
+								required
+						>
+					</div>
+
+					<div class="mb-4">
+						<label for="SiteCaption" class="form-label">Caption</label>
+						<input
+								type="text"
+								id="SiteCaption"
+								name="data[Site][caption]"
+								value="<?php echo $this->data['Site']['caption']; ?>"
+								class="form-control form-control-sm"
+								placeholder="Enter Store Caption"
 								minlength="3"
 								maxlength="50"
 								required
