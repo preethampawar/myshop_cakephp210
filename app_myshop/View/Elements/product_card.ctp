@@ -33,7 +33,7 @@ $ratingsCount = $ratingsCount ?? 0;
 
 		<div class="card-body p-2 pt-0 text-center">
 			<a href="<?= $productDetailsPageUrl ?>" class="text-purple text-decoration-none">
-				<h6 class="mt-3"><?php echo $productTitle; ?></h6>
+				<h6 class="mt-3 small"><?php echo $productTitle; ?></h6>
 			</a>
 
 			<div class="mt-2 small text-center d-flex justify-content-center">

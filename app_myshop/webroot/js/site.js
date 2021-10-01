@@ -245,7 +245,7 @@ function showDeleteProductFromCartPopup(shoppingCartProductId, productName) {
 			keyboard: false
 		});
 	}
-	myShoppingCart.hide()
+	// myShoppingCart.hide()
 
 	deleteProductFromCartPopup.show();
 

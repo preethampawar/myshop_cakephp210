@@ -503,9 +503,16 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 				<!-- - `.toast-container` for spacing between toasts -->
 				<!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
 				<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
-				<div class="toast-container fixed-top end-0 p-3" style="left: auto">
+				<div class="toast-container fixed-top end-0 p-2 mt-5" style="left: auto">
 					<div id="ToastMessage" class="d-none">
-						<div id="toastDiv" class="toast toast-js text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
+						<div
+							id="toastDiv"
+							class="toast toast-js text-white border-white border-2"
+							role="alert"
+							aria-live="assertive"
+							aria-atomic="true"
+							data-bs-autohide="true"
+							data-bs-delay="1500">
 							<div class="d-flex align-items-center justify-content-between">
 								<div class="toast-body"></div>
 								<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
@@ -661,7 +668,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.2.0" defer></script>
+	<script src="/js/site.js?v=1.2.1" defer></script>
 	<?= $this->element('customjs') ?>
 </body>
 </html>
