@@ -76,7 +76,7 @@ class ProductsController extends AppController
 	public function showFeatured()
 	{
 		if (!$this->Session->read('Site.featured_products')) {
-			$this->Session->setFlash('Featured products on this site have been disabled.', 'default', ['class' => 'notice']);
+			$this->noticeMsg('Best deals not available at this moment.');
 			$this->redirect($this->request->referer());
 		}
 	}

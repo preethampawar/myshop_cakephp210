@@ -1,6 +1,18 @@
 <?php
 $this->set('title_for_layout', $categoryInfo['Category']['name']);
 ?>
+<nav aria-label="breadcrumb" class="mb-4">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="/">Home</a></li>
+		<li class="breadcrumb-item" aria-current="page">
+			<a href="#" class="" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
+				Categories
+			</a>
+		</li>
+		<li class="breadcrumb-item active" aria-current="page"><?php echo ucwords($categoryInfo['Category']['name']); ?></li>
+	</ol>
+</nav>
+
 <section id="ProductInfo">
 	<article>
 		<header>

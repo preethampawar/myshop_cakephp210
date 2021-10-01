@@ -4,13 +4,21 @@ $this->set('title_for_layout', 'Show All Products');
 
 <section id="ProductsInfo">
 	<header class="featuredLabel">
-		<?php echo $this->Html->link('Best Deals', '/', ['class' => 'text-decoration-none']); ?> |
-		<b>
-		<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'active']); ?>
-		</b>
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/">Best Deals</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link fw-bold active" href="/products/showAll">Show All Products</a>
+			</li>
+		</ul>
+		<?php //echo $this->Html->link('Best Deals', '/', ['class' => 'text-decoration-none']); ?>
+
+		<?php // echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'active']); ?>
+
 	</header>
-	<hr>
-	<p class="mb-4">Showing all products by category</p>
+
+	<p class="mt-3 text-muted mb-4">Showing all products by category</p>
 	<?php
 	if (!empty($allProducts)) {
 		$k = 1;
