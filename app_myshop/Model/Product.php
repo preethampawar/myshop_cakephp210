@@ -77,7 +77,7 @@ class Product extends AppModel
 		return $allCategories;
 	}
 
-	public function getAllProducts($siteId, $featured = null)
+	public function getAllProducts($siteId, $featured = null, $limit = null)
 	{
 		App::uses('CategoryProduct', 'Model');
 		$this->CategoryProduct = new CategoryProduct;
@@ -90,6 +90,6 @@ class Product extends AppModel
 			array_push($productConditions, ['Product.featured' => '1']);
 		}
 
-		return $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => 'Category.name', 'fields' => $fields]);
+		return $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => 'Category.name', 'fields' => $fields, 'limit' => $limit]);
 	}
 }

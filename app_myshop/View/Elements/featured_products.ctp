@@ -1,7 +1,10 @@
 <?php
+$limit = $limit ?? 0;
+$homepage = $homepage ?? null;
+
 App::uses('Product', 'Model');
 $productModel = new Product();
-$allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), true);
+$allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), true, $limit);
 
 //$featuredProductsCacheKey = $this->Session->read('CacheKeys.featuredProducts');
 //$allCategories = Cache::read($featuredProductsCacheKey, 'verylong');
@@ -9,14 +12,35 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 
 <section id="ProductsInfo">
 	<article>
+		<?php
+		if ($homepage) {
+		?>
 		<header class="featuredLabel">
-			<b>
-			<?php echo $this->Html->link('Best Deals', '/', ['class' => 'active']); ?> |
-			</b>
-			<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'text-decoration-none']); ?>
-
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link fw-bold active" aria-current="page" href="/">Best Deals</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/products/showAll">Show All Products</a>
+				</li>
+			</ul>
+			<?php //echo $this->Html->link('Best Deals', '/', ['class' => 'btn btn-primary btn-sm']); ?>
+			<?php // echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'btn btn-outline-primary btn-sm ms-2']); ?>
 		</header>
-		<hr>
+		<?php
+		} else {
+			?>
+				<nav aria-label="breadcrumb" class="mb-4">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Best Deals</li>
+					</ol>
+				</nav>
+				<h1>Best Deals (<?= count($allCategories) ?> items)</h1>
+			<?php
+		}
+		?>
+
 		<?php
 		if (!empty($allCategories)) {
 			$pCount = 0;
@@ -29,7 +53,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 				$productsRowClass = "row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-lg-x-4 p-0";
 			}
 			?>
-			<div class="<?= $productsRowClass ?>">
+			<div class="<?= $productsRowClass ?> mt-3">
 				<?php
 				foreach ($allCategories as $row) {
 					$categoryID = $row['Category']['id'];
@@ -125,6 +149,18 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 				}
 				?>
 			</div>
+
+			<?php
+			if ($homepage) {
+				?>
+				<div class="mt-4 mb-5 text-center">
+					<a href="/products/showFeatured" class="btn btn-orange btn-sm">Show All Deals</a>
+				</div>
+				<hr>
+				<?php
+			}
+			?>
+
 			<?php
 		} else {
 			?>

@@ -183,9 +183,8 @@ $enableTextEditor = $enableTextEditor ?? false;
 	</div>
 </div>
 
-<div id="ToastMessage" class="fixed-top d-none"
-	 style="width:16rem; left: auto; margin-top: 8rem; margin-right: 0.5rem;">
-	<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="ToastMessage" class="toast-container fixed-top end-0 p-2 mt-5 d-none" style="left: auto">
+	<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="2000">
 		<div class="d-flex align-items-center">
 			<div class="toast-body"></div>
 			<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"

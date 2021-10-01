@@ -34,7 +34,7 @@ $catListCacheKey = $this->Session->read('CacheKeys.catList');
 $categoryListMenu = Cache::read($catListCacheKey, 'verylong');
 echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
 
-echo $this->element('featured_products');
+echo $this->element('featured_products', ['limit' => 12, 'homepage' => true]);
 
 $this->set('customMeta', $customMeta);
 ?>
