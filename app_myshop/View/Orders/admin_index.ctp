@@ -179,6 +179,9 @@ if ($orderType) {
 					<th>Order Value</th>
 					<th>Customer</th>
 					<th>Mobile</th>
+					<?php
+					echo $usersList ? '<th>Delivery Boy</th>' : '';
+					?>
 					<th>Created On</th>
 					<th></th>
 				</tr>
@@ -190,19 +193,20 @@ if ($orderType) {
 						$i++;
 						$orderId = $row['Order']['id'];
 						$status = $row['Order']['status'];
+						$deliveryUserId = $row['Order']['delivery_user_id'];
 						$offlineOrder = $row['Order']['is_offline_order'] ?? 0;
 						$mobile = $row['Order']['customer_phone'] ?: null ;
 						$customerName = $row['Order']['customer_name'] ?: null ;
 						$totalAmount = $row['Order']['total_order_amount'];
 						$totalOrderValue += (float)$totalAmount;
-						$modifiedDate = date('d-m-Y', strtotime($row['Order']['modified']));
+						$modifiedDate = date('d-m-Y h:i A', strtotime($row['Order']['modified']));
 						$createdDate = null;
 						$log = !empty($row['Order']['log']) ? json_decode($row['Order']['log'], true) : null;
 
 						if ($log) {
 							foreach($log as $row2) {
 								if ($row2['orderStatus'] == Order::ORDER_STATUS_NEW) {
-									$createdDate = date('d-m-Y', $row2['date']);
+									$createdDate = date('d-m-Y h:i A', $row2['date']);
 									break;
 								}
 							}
@@ -227,6 +231,9 @@ if ($orderType) {
 							<td><?= $this->App->price($totalAmount) ?></td>
 							<td><?= $customerName ?></td>
 							<td><?= $mobile ?></td>
+							<?php
+							echo $usersList && $deliveryUserId ? '<td>' . $usersList[$deliveryUserId] . '</td>' : '<td>&nbsp;</td>';
+							?>
 							<td><?= $createdDate ?></td>
 							<td class="text-end text-nowrap">
 
