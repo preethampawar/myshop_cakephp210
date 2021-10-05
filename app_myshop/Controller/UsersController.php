@@ -58,7 +58,7 @@ class UsersController extends AppController
 				$this->Session->write('loginOtp', $rand);
 				$this->Session->write('loginUser', $userInfo['User']);
 				try {
-					// $this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
+					$this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
 				} catch (Exception $e) {
 					//$this->errorMsg('User not found.');
 				}
