@@ -1,4 +1,10 @@
+<?php
+App::uses('AppModel', 'Model');
+?>
 <h1>Manage Users</h1>
+<div class="mt-3 text-end">
+	<a href="/admin/users/newUser" class="btn btn-sm btn-primary">Add User</a>
+</div>
 
 <div class="mt-3">
 	Showing all "<b><?= $this->Paginator->params()['count'] ?></b>" users
@@ -13,6 +19,7 @@
 				<thead>
 				<tr>
 					<th>User Id</th>
+					<th>Name</th>
 					<th>Mobile</th>
 					<th>User Type</th>
 					<th>Created On</th>
@@ -25,11 +32,11 @@
 						$i++;
 						?>
 						<tr>
-							<?php /* <td><a href="/admin/users/details/<?= base64_encode($row['User']['id'])?>"><?= $row['User']['id'] ?></a></td> */ ?>
-							<td><?= $row['User']['id'] ?></td>
+							<td><a href="/admin/users/editUser/<?= $row['User']['id'] ?>"><?= $row['User']['id'] ?></a></td>
+							<td><?= $row['User']['name'] ?></td>
 							<td><?= $row['User']['mobile'] ?></td>
-							<td><?= $row['User']['type'] ?></td>
-							<td><?= date('d/m/Y', strtotime($row['User']['created'])) ?></td>
+							<td class="<?= $row['User']['type'] != User::USER_TYPE_BUYER ? 'text-danger' : 'text-muted' ?>"><?= User::USER_TYPE_OPTIONS[$row['User']['type']] ?></td>
+							<td><?= date('d/m/Y h:i A', strtotime($row['User']['created'])) ?></td>
 						</tr>
 						<?php
 					}
