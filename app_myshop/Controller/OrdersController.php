@@ -77,6 +77,15 @@ class OrdersController extends AppController
 		];
 		$orders = $this->paginate();
 
+		App::import('Model', 'User');
+		$userModel = new User();
+		$conditions = [
+			'User.site_id' => $this->Session->read('Site.id'),
+			'User.type' => User::USER_TYPE_DELIVERY,
+		];
+		$usersList = $userModel->find('list', ['conditions' => $conditions]);
+
+		$this->set('usersList', $usersList);
 		$this->set('orderType', $orderType);
 		$this->set('orders', $orders);
 		$this->set('ordersCountByStatus', $ordersCountByStatus);
@@ -91,12 +100,45 @@ class OrdersController extends AppController
 		$this->set('order', $order);
 	}
 
+	public function admin_assignDeliveryBoy($encodedOrderId)
+	{
+		$orderId = base64_decode($encodedOrderId);
+		$order = $this->Order->findById($orderId);
+
+		if ($order) {
+			if ($this->request->isPost() || $this->request->isPut()) {
+				$data = $this->request->data;
+				$tmp['Order']['id'] = $orderId;
+				$tmp['Order']['delivery_user_id'] = $data['Order']['delivery_user_id'];
+
+				$this->Order->save($tmp);
+				$this->successMsg('Delivery boy assigned to this order.');
+			} else {
+				$this->errorMsg('Invalid request.');
+			}
+		} else {
+			$this->errorMsg('Order not found.');
+		}
+
+		$this->redirect($this->referer());
+	}
+
 	public function admin_details($encodedOrderId)
 	{
 		$orderId = base64_decode($encodedOrderId);
 		$order = $this->Order->findById($orderId);
 
+		App::import('Model', 'User');
+		$userModel = new User();
+		$conditions = [
+			'User.site_id' => $this->Session->read('Site.id'),
+			'User.active' => 1,
+			'User.type' => User::USER_TYPE_DELIVERY,
+		];
+		$usersList = $userModel->find('list', ['conditions' => $conditions]);
+
 		$this->set('order', $order);
+		$this->set('usersList', $usersList);
 	}
 
 	private function registerGuestUser($mobile, $email)
@@ -287,6 +329,13 @@ class OrdersController extends AppController
 
 					if((bool)$this->Session->read('Site.sms_notifications') === true) {
 						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+
+						// send new order sms to manager of the site
+						$adminPhone = $this->Session->read('Site.notifications_mobile_no');
+
+						if (!empty($adminPhone)) {
+							$this->Sms->sendNewOrderSms($adminPhone, '#'.$orderId, $this->Session->read('Site.title'));
+						}
 					}
 
 				} else {
@@ -448,68 +497,9 @@ class OrdersController extends AppController
 	public function sendOrderEmail($encodedOrderId, $orderStatus, $return = false, $message = null)
 	{
 		$this->layout = false;
-		$emailTemplate = null;
-		$subject = null;
-		$error = null;
+
 		$orderId = base64_decode($encodedOrderId);
-		$order = $this->Order->findById($orderId);
-		$message = htmlentities(trim($message));
-
-		switch($orderStatus) {
-			case Order::ORDER_STATUS_NEW:
-				$emailTemplate = 'order_new';
-				$subject = 'New Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_CONFIRMED:
-				$emailTemplate = 'order_confirmed';
-				$subject = 'Confirmed - Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_SHIPPED:
-				$emailTemplate = 'order_shipped';
-				$subject = 'Shipped - Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_DELIVERED:
-				$emailTemplate = 'order_delivered';
-				$subject = 'Delivered - Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_CANCELLED:
-				$emailTemplate = 'order_cancelled';
-				$subject = 'Cancelled - Order #'.$orderId;
-				break;
-//			case Order::ORDER_STATUS_RETURNED:
-//				$emailTemplate = 'order_returned';
-//				$subject = 'Returned - Order #'.$orderId;
-//				break;
-			case Order::ORDER_STATUS_CLOSED:
-				$emailTemplate = 'order_closed';
-				$subject = 'Closed - Order #'.$orderId;
-				break;
-			default:
-				break;
-		}
-
-		if (!$emailTemplate) {
-			$error = 'No template found';
-		} else {
-			$toName = $order['Order']['customer_name'];
-			$toEmail = $order['Order']['customer_email'];
-			$toPhone = $order['Order']['customer_phone'];
-			$bccEmails = $this->getBccEmails();
-
-			// send sms
-			if (!in_array($orderStatus, [Order::ORDER_STATUS_DRAFT, Order::ORDER_STATUS_NEW, Order::ORDER_STATUS_CLOSED])) {
-				$this->Sms->sendOrderUpdateSms($toPhone, '#'.$orderId, $orderStatus, $message, $this->Session->read('Site.title'));
-			}
-
-			$Email = new CakeEmail('smtpNoReply');
-			$Email->viewVars(array('order' => $order, 'message' => $message));
-			$Email->template($emailTemplate, 'default')
-				->emailFormat('html')
-				->to([$toEmail => $toName])
-				->bcc($bccEmails)
-				->subject($subject)
-				->send();
-		}
+		$error = $this->sendOrderEmailAndSms($orderId, $orderStatus, $message);
 
 		$this->set('error', $error);
 

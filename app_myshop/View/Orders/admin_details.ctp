@@ -3,8 +3,64 @@
 </div>
 
 <h1>Order No. #<?= $order['Order']['id']; ?></h1>
-<h6> - <?= $order['Order']['status'] ?></h6>
+<h6>&nbsp;Status - <?= $order['Order']['status'] ?></h6>
 
+<?php
+if($usersList) {
+	?>
+	<div class="bg-light p-3 border rounded mt-3">
+		<table class="w-100">
+			<tbody>
+			<tr>
+				<td>Delivery Boy - <span class="fw-bold"><?= $order['Order']['delivery_user_id'] ? $usersList[$order['Order']['delivery_user_id']] : ''; ?></span></td>
+				<td class="text-end">
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deliveryDropDownBackdrop">
+						Assign Delivery Boy
+					</button>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<?php
+}
+?>
+
+<!-- Modal -->
+<?php
+echo $this->Form->create('Order', ['url' => '/admin/orders/assignDeliveryBoy/'.base64_encode($order['Order']['id'])]);
+?>
+<div class="modal fade" id="deliveryDropDownBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deliveryDropDownBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deliveryDropDownBackdropLabel">Assign Delivery Boy</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<?php
+				echo $this->Form->select(
+					'delivery_user_id',
+					$usersList,
+					[
+						'class'=>'form-select',
+						'empty' => 'Select',
+						'default' => $order['Order']['delivery_user_id']
+					]
+				);
+				?>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+echo $this->Form->end();
+?>
 <div class="mt-4">
 	<?php
 	$orderStatus = $order['Order']['status'];

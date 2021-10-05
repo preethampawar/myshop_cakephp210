@@ -253,6 +253,19 @@ $this->set('enableTextEditor', true);
 						<span class="text-muted small">Note: You can specify more than one email address separated by commas "<b>,</b>"</span> (<code>abc@gmail.com,xyz@gmail.com</code>).
 					</div>
 					<div class="mb-4">
+						<label for="orderNotificationsMobileNo">Send Notification SMS To Mobile (Admin)  <span class="text-danger small">(required)</span></label>
+						<input
+								type="number"
+								name="data[Site][notifications_mobile_no]"
+								id="orderNotificationsMobileNo"
+								class="form-control form-control-sm"
+								value="<?php echo $this->data['Site']['notifications_mobile_no']; ?>"
+								min="6000000000"
+								max="9999999999"
+								placeholder="Enter 10 digit mobile no."
+								required>
+					</div>
+					<div class="mb-4">
 						<label for="SiteDefaultCustomerNotificationEmail" class="form-label">Default Customer Notification Email Address</label>
 
 						<input
