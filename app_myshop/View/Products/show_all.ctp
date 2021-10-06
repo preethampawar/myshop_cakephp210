@@ -6,7 +6,7 @@ $this->set('title_for_layout', 'Show All Products');
 	<header class="featuredLabel">
 		<ul class="nav nav-tabs">
 			<li class="nav-item">
-				<a class="nav-link" aria-current="page" href="/">Best Deals</a>
+				<a class="nav-link" aria-current="page" href="/products/showFeatured">Best Deals</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link fw-bold active" href="/products/showAll">Show All Products</a>

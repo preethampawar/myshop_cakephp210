@@ -43,7 +43,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.0">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.1">
 
 	<?= $analyticsCode ?>
 </head>

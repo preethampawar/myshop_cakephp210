@@ -139,7 +139,7 @@ $this->set('enableTextEditor', true);
 					<h5>Store Configuration</h5>
 				</div>
 				<div class="ps-3">
-					<div class="mb-4">
+					<div class="mb-4 card card-body">
 
 						<label for="SiteTitle" class="form-label">Upload Logo</label>
 						<input
@@ -178,6 +178,36 @@ $this->set('enableTextEditor', true);
 						<?php
 						}
 						?>
+						<table class="w-100">
+							<tr>
+								<td class="text-center px-5">
+									Logo Width<br>
+									<input
+										type="number"
+										id="SiteLogoWidth"
+										name="data[Site][logo_width]"
+										class="form-control form-control-sm"
+										placeholder="Enter width"
+										min="10"
+										max="800"
+										value="<?php echo $this->data['Site']['logo_width']; ?>"
+									>
+								</td>
+								<td class="text-center px-5">
+									Logo Height<br>
+									<input
+										type="number"
+										id="SiteLogoHeight"
+										name="data[Site][logo_height]"
+										class="form-control form-control-sm"
+										placeholder="Enter height"
+										min="5"
+										max="600"
+										value="<?php echo $this->data['Site']['logo_height']; ?>"
+									>
+								</td>
+							</tr>
+						</table>
 					</div>
 
 					<div class="mb-4">
@@ -223,6 +253,7 @@ $this->set('enableTextEditor', true);
 								max="10000"
 								required
 						>
+						<span class="text-muted small">Note: This amount is set as default delivery charges for all the customers.</span>
 					</div>
 					<div class="mb-4">
 						<label for="SiteFreeShippingMinAmount" class="form-label">Free Shipping On Min. Order Amount</label>
@@ -237,6 +268,7 @@ $this->set('enableTextEditor', true);
 								max="100000"
 								required
 						>
+						<span class="text-muted small">Note: Free shipping is applied to the customers when the shopping cart value exceeds this amount value.</span>
 					</div>
 					<div class="mb-4">
 						<label for="SiteFromEmailAddress" class="form-label">Send Notification Emails To (Admin) </label>
@@ -253,7 +285,7 @@ $this->set('enableTextEditor', true);
 						<span class="text-muted small">Note: You can specify more than one email address separated by commas "<b>,</b>"</span> (<code>abc@gmail.com,xyz@gmail.com</code>).
 					</div>
 					<div class="mb-4">
-						<label for="orderNotificationsMobileNo">Send Notification SMS To Mobile (Admin)  <span class="text-danger small">(required)</span></label>
+						<label for="orderNotificationsMobileNo">Send Notification SMS To Mobile (Admin)</label>
 						<input
 								type="number"
 								name="data[Site][notifications_mobile_no]"
@@ -263,19 +295,20 @@ $this->set('enableTextEditor', true);
 								min="6000000000"
 								max="9999999999"
 								placeholder="Enter 10 digit mobile no."
-								required>
+								>
+						<span class="text-muted small">Note: When SMS Notifications is enabled, all admin notification SMS will be sent to this number. Ex: When an order is created.</span>
 					</div>
 					<div class="mb-4">
 						<label for="SiteDefaultCustomerNotificationEmail" class="form-label">Default Customer Notification Email Address</label>
 
 						<input
-								type="text"
-								id="SiteDefaultCustomerNotificationEmail"
-								name="data[Site][default_customer_notification_email]"
-								value="<?php echo $this->data['Site']['default_customer_notification_email']; ?>"
-								class="form-control form-control-sm"
-								placeholder="Enter Customer Order Email Address"
-								required
+							type="text"
+							id="SiteDefaultCustomerNotificationEmail"
+							name="data[Site][default_customer_notification_email]"
+							value="<?php echo $this->data['Site']['default_customer_notification_email']; ?>"
+							class="form-control form-control-sm"
+							placeholder="Enter Customer Order Email Address"
+							required
 						>
 						<span class="text-muted small">Note: If the customer doesn't specify email in registration or order placement, then this email address will be used as default to receive orders or notifications on behalf of customers.</span>.
 					</div>

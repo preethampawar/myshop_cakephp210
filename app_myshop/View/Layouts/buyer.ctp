@@ -32,6 +32,7 @@ $showLocationPopup = false;
 if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain])) {
 	$showLocationPopup = true;
 }
+$slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 ?>
 
 <!doctype html>
@@ -126,7 +127,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 		?>
 
 		<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
-			<div class="container-fluid">
+			<div class="container">
 				<a class="navbar-brand" href="/">
 					<?php
 					if ($logoUrl) {
@@ -135,7 +136,10 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 								src="<?= $logoUrl ?>"
 								alt="<?= $this->Session->read('Site.title') ?>"
 								title="<?= $this->Session->read('Site.title') ?>"
-								style="max-width: 250px;">
+								class="img-fluid"
+								width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>"
+								height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>"
+							>
 						<?php
 					} else {
 						?>
@@ -173,9 +177,6 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 							<li class="nav-item px-1">
 								<a class="nav-link px-1" href="/sites/contact">Contact Us</a>
 							</li>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/sites/paymentInfo">Payment Details</a>
-							</li>
 						</ul>
 						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
@@ -187,27 +188,26 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 
 
 							<?php if ($this->Session->check('User.id')): ?>
-							<li class="nav-item dropdown px-1">
-								<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									<i class="fa fa-user-circle"></i>
-									<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
-								</a>
-								<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-									<?php if ($this->Session->read('Site.shopping_cart')): ?>
-										<li class="nav-item px-1">
-											<a class="dropdown-item nav-link px-3" href="/orders/">My Orders</a>
-										</li>
-									<?php endif; ?>
-									<li>
-										<hr class="dropdown-divider">
-									</li>
-									<li class="nav-item px-3"><a class="dropdown-item nav-link px-1" href="/users/logout">Logout</a></li>
-								</ul>
-							</li>
+
+								<?php if ($this->Session->read('Site.shopping_cart')): ?>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/orders/">My Orders</a>
+								</li>
+								<?php endif; ?>
+
+								<li class="nav-item dropdown px-1">
+									<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										<i class="fa fa-user-circle"></i>
+										<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+										<li class="nav-item px-1"><a class="nav-link px-1" href="/users/logout">Logout</a></li>
+									</ul>
+								</li>
 							<?php else: ?>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/users/login">Login</a>
-							</li>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/users/login">Login</a>
+								</li>
 							<?php endif; ?>
 						</ul>
 					</div>
@@ -216,16 +216,16 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 		</nav>
 
 		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>" style="z-index: 999">
-			<ul class="nav container-fluid justify-content-center pt-2 pb-2 small">
+			<ul class="nav container justify-content-center pt-2 pb-2 small">
 				<li class="nav-item">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<span class="fs-5"><i class="fa fa-th"></i></span> Shop By Category
+						<i class="fa fa-th"></i> Shop By Category
 					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-							<span class="fs-5"><i class="fa fa-shopping-cart"></i></span> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
+							<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
 						</a>
 					</li>
 				<?php endif; ?>
@@ -240,9 +240,16 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 
 			<?php echo $this->fetch('content'); ?>
 
-			<div id="storeTestimonials" class="mt-4">
-				<?= $this->element('testimonials_slideshow') ?>
-			</div>
+			<?php
+			if ($slideshowEnabled) {
+				?>
+				<div id="storeTestimonials" class="mt-4">
+					<?= $this->element('testimonials_slideshow') ?>
+				</div>
+				<?php
+			}
+			?>
+
 
 			<?php
 			$showPaymentContactInfo = false;
@@ -651,9 +658,16 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 						<li class="nav-item px-1">
 							<a class="nav-link px-1" href="/sites/privacy">Privacy Policy</a>
 						</li>
-						<li class="nav-item px-1">
-							<a class="nav-link px-1" href="/testimonials/">Testimonials</a>
-						</li>
+						<?php
+						if ($testimonialsEnabled) {
+							?>
+							<li class="nav-item px-1">
+								<a class="nav-link px-1" href="/testimonials/">Testimonials</a>
+							</li>
+							<?php
+						}
+						?>
+
 					</ul>
 				</div>
 			</nav>
