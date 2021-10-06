@@ -37,7 +37,7 @@ if ($buyerView) {
 	$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
 
 	echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
-	echo $this->element('featured_products', ['limit' => 12, 'homepage' => true]);
+	echo $this->element('featured_products', ['limit' => 42, 'homepage' => true]);
 
 	$this->set('customMeta', $customMeta);
 } else {
