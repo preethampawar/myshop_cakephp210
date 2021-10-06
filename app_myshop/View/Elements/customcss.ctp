@@ -50,7 +50,7 @@ $hightlightLink = $theme['hightlightLink'];
 		.nav-link {
 			color: var(--cus-danger-dark);
 		}
-		.nav-link:hover {
+		.nav-link:focus, .nav-link:hover {
 			color: var(--bs-danger);
 		}
 		.nav-tabs .nav-link.active {
@@ -107,7 +107,7 @@ $hightlightLink = $theme['hightlightLink'];
 		.nav-link {
 			color: var(--cus-success-dark);
 		}
-		.nav-link:hover {
+		.nav-link:focus, .nav-link:hover {
 			color: var(--bs-success);
 		}
 		.nav-tabs .nav-link.active {
@@ -130,7 +130,7 @@ $hightlightLink = $theme['hightlightLink'];
 		.nav-link {
 			color: var(--cus-danger-dark);
 		}
-		.nav-link:hover {
+		.nav-link:focus, .nav-link:hover {
 			color: var(--bs-danger);
 		}
 		.nav-tabs .nav-link.active {
@@ -138,8 +138,6 @@ $hightlightLink = $theme['hightlightLink'];
 		}
 		<?php
 	}
-
-
 ?>
 
 </style>

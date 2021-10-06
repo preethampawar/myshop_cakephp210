@@ -18,7 +18,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 		<header class="featuredLabel">
 			<ul class="nav nav-tabs">
 				<li class="nav-item">
-					<a class="nav-link fw-bold active" aria-current="page" href="/">Best Deals</a>
+					<a class="nav-link fw-bold active" aria-current="page" href="/products/showFeatured">Best Deals</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/products/showAll">Show All Products</a>
