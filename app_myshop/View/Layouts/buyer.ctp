@@ -302,7 +302,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 					echo $this->element('categories_menu');
 					?>
 					<div class="mt-4 text-center bottom">
-						<a role="button" class="nav-link fs-3" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa fa-times-circle"></i></a>
+						<a role="button" class="nav-link btn btn-sm btn-light" data-bs-dismiss="offcanvas" aria-label="Close">Close</a>
 					</div>
 				</div>
 

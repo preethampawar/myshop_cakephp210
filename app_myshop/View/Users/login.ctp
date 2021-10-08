@@ -1,5 +1,5 @@
 <div>
-	<?php echo $this->Form->create('User', ['onsubmit' => "disableButton('loginSubmitButton')"]); ?>
+	<?php echo $this->Form->create('User', ['onsubmit' => "showRequestProcessingMsg('#loginSubmitButton')"]); ?>
 	<h1 class="mb-3">Login</h1>
 
 	<div class="mb-3 d-none">

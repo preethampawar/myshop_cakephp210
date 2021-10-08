@@ -228,7 +228,9 @@ class OrdersController extends AppController
 		$orderStatus = Order::ORDER_STATUS_NEW;
 		$newLog = [
 			'orderStatus' => $orderStatus,
-			'date' => time()
+			'date' => time(),
+			'message' => '',
+			'updated_by_user_id' => $userId,
 		];
 		$log[] = $newLog;
 		$log = json_encode($log);

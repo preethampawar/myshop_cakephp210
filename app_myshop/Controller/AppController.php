@@ -1059,11 +1059,13 @@ class AppController extends Controller
 				}
 			}
 
+			$updatedByUserId = $this->Session->check('User.id') ? $this->Session->read('User.id') : '';
 			if ($orderStatusAlreadyExists === false) {
 				$log[] = [
 					'orderStatus' => $newOrderStatus,
 					'date' => time(),
 					'message' => $message,
+					'updated_by_user_id' => $updatedByUserId,
 				];
 			}
 		}
