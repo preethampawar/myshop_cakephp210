@@ -43,6 +43,7 @@ class CategoriesController extends AppController
 				$errorMsg = 'Enter Category Name';
 			}
 			// Sanitize data
+			$data['Category']['name'] = trim($data['Category']['name']);
 			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&', '(', ')', ',']);
 			if (!$errorMsg) {
 				$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.name' => $data['Category']['name']];
@@ -134,16 +135,16 @@ class CategoriesController extends AppController
 		$conditions = ['CategoryProduct.category_id' => $categoryID];
 
 		$this->CategoryProduct->unbindModel(['belongsTo' => ['Category']]);
-		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID);
+		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID, [], ['CategoryProduct.sort']);
 
 		$tmp = [];
 		$productsList = [];
 		if (!empty($categoryProducts)) {
 			foreach ($categoryProducts as $row) {
 				$tmp[$row['Product']['id']] = $row;
-				$productsList[$row['Product']['id']] = ucwords($row['Product']['name']);
+				$productsList[$row['Product']['id']] = $row['Product']['name'];
 			}
-			asort($productsList);
+			// asort($productsList);
 			$categoryProducts = $tmp;
 		}
 

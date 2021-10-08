@@ -1007,7 +1007,16 @@ class AppController extends Controller
 		$data['User']['type'] = 'buyer';
 		$data['User']['site_id'] = $this->Session->read('Site.id');
 
-		if ($userModel->save($data)) {
+		$conditions = [
+			'User.mobile' => $mobile,
+			'User.site_id' => $this->Session->read('Site.id'),
+		];
+
+		$userInfo = $userModel->find('first', ['conditions' => $conditions]);
+
+		if ($userInfo) {
+			return $userInfo;
+		} elseif ($userModel->save($data)) {
 			return $userModel->read();
 		}
 

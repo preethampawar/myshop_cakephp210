@@ -94,7 +94,11 @@ class UsersController extends AppController
 
 	public function verifyLoginOtp()
 	{
-		$this->set('hideLeftMenu', true);
+		if ($this->Session->check('User')) {
+			$this->Session->delete('loginOtp');
+			$this->Session->delete('loginUser');
+			$this->redirect('/');
+		}
 
 		if ($this->Session->check('loginOtp') && $this->Session->check('loginUser')) {
 			$otp = $this->Session->read('loginOtp');
@@ -204,6 +208,12 @@ class UsersController extends AppController
 
 	public function verifyCustomerRegistrationOtp()
 	{
+		if ($this->Session->check('User')) {
+			$this->Session->delete('customerRegistrationOtp');
+			$this->Session->delete('customerRegistrationUser');
+			$this->redirect('/');
+		}
+
 		if ($this->Session->check('customerRegistrationOtp') && $this->Session->check('customerRegistrationUser')) {
 			$otp = $this->Session->read('customerRegistrationOtp');
 			$user = $this->Session->read('customerRegistrationUser');
