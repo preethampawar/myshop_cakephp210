@@ -5,10 +5,12 @@
 </div>
 
 <div class="text-end mt-4">
+	<a href="/admin/products/sortFeatured" class="btn btn-sm btn-outline-secondary">Sort Products - Best Deals</a>
+
 	<button
 		id="addCategoryButton"
 		type="button"
-		class="btn btn-sm btn-primary"
+		class="btn btn-sm btn-primary ms-2"
 		onclick="$('#categoryForm').toggleClass('d-none'); $('#addCategoryButton').toggleClass('d-none')"
 	>
 		+ Add Category
@@ -70,7 +72,7 @@
 					$k++;
 					$categoryID = $row['Category']['id'];
 					$categoryActive = $row['Category']['active'];
-					$categoryName = Inflector::humanize($row['Category']['name']);
+					$categoryName = $row['Category']['name'];
 					$tmp = substr($categoryName, 0, 25);
 					$categoryDisplayName = (strlen($categoryName) > 28) ? $tmp . '...' : $categoryName;
 					$categoryNameSlug = Inflector::slug($categoryName, '-');

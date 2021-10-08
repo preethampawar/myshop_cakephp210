@@ -13,8 +13,10 @@
 
 
 <div class="text-end mt-3">
+	<a href="/admin/products/sort/<?php echo $categoryInfo['Category']['id'];?>" class="btn btn-sm btn-outline-secondary">Sort Products</a>
+
 	<?php if (!$productsLimitExceeded): ?>
-	<a href='/admin/products/add/<?php echo $categoryInfo['Category']['id'];?>' class="btn btn-primary btn-sm">+ Add Product</a>
+	<a href='/admin/products/add/<?php echo $categoryInfo['Category']['id'];?>' class="btn btn-primary btn-sm ms-2">+ Add Product</a>
 	<?php endif; ?>
 </div>
 

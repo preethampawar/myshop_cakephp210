@@ -1,5 +1,5 @@
 <div>
-	<?php echo $this->Form->create('User', ['onsubmit' => "disableButton('customerRegisterButton')"]); ?>
+	<?php echo $this->Form->create('User', ['onsubmit' => 'showRequestProcessingMsg("#customerRegisterButton")']); ?>
 	<h1 class="">Customer Registration</h1>
 
 	<div class="mt-4">

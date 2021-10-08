@@ -80,7 +80,7 @@ if (!$this->Session->read('Site.under_maintenance') && false) {
 						<?php
 						foreach ($categories as $row) {
 							$categoryID = $row['Category']['id'];
-							$categoryName = Inflector::humanize($row['Category']['name']);
+							$categoryName = $row['Category']['name'];
 							$categoryNameSlug = Inflector::slug($row['Category']['name'], '-');
 							?>
 							<li>

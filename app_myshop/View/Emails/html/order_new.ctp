@@ -33,8 +33,8 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			$totalItems = 0;
 			foreach ($order['OrderProduct'] as $row) {
 				$i++;
-				$categoryName = ucwords($row['category_name']);
-				$productName = ucwords($row['product_name']);
+				$categoryName = $row['category_name'];
+				$productName = $row['product_name'];
 				$qty = $row['quantity'] ?: 0;
 				$mrp = $row['mrp'];
 				$discount = $row['discount'];

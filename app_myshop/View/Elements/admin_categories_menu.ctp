@@ -14,7 +14,7 @@ if (!empty($categories)) {
 			<?php
 			foreach ($categories as $row) {
 				$categoryID = $row['Category']['id'];
-				$categoryName = Inflector::humanize($row['Category']['name']);
+				$categoryName = $row['Category']['name'];
 				$tmp = substr($categoryName, 0, 25);
 				$categoryDisplayName = (strlen($categoryName) > 28) ? $tmp . '...' : $categoryName;
 				$categoryNameSlug = Inflector::slug($categoryName, '-');

@@ -11,7 +11,7 @@ $categoriesList = Cache::read($catListCacheKey, 'verylong');
 if (!empty($categoriesList)) {
 	foreach ($categoriesList as $row) {
 		$categoryID = $row['Category']['id'];
-		$categoryName = Inflector::humanize($row['Category']['name']);
+		$categoryName = $row['Category']['name'];
 		$categoryNameSlug = Inflector::slug($row['Category']['name'], '-');
 		?>
 		<li class="list-group-item px-0 py-1">

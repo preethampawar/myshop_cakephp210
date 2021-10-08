@@ -26,7 +26,7 @@ $this->set('title_for_layout', 'Show All Products');
 
 		foreach ($allProducts as $row) {
 			$categoryID = $row['Category']['id'];
-			$categoryName = ucwords($row['Category']['name']);
+			$categoryName = $row['Category']['name'];
 			$categoryNameSlug = Inflector::slug($categoryName, '-');
 			?>
 			<article class="mb-4">
@@ -48,7 +48,7 @@ $this->set('title_for_layout', 'Show All Products');
 						$z = 0;
 						foreach ($row['CategoryProducts'] as $row2) {
 							$productID = $row2['Product']['id'];
-							$productName = ucwords($row2['Product']['name']);
+							$productName = $row2['Product']['name'];
 							$productNameSlug = Inflector::slug($productName, '-');
 							$productTitle = $productName;
 							$assetDomainUrl = Configure::read('AssetDomainUrl');

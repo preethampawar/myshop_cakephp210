@@ -38,6 +38,10 @@ $createdDate = $createdDate ?: $modifiedDate;
 			foreach($log as $row2) {
 				$updatedOn = date('d-m-Y h:i A', $row2['date']);
 				$message = $row2['message'] ?? '';
+
+				if ($row2['orderStatus'] === Order::ORDER_STATUS_DRAFT) {
+					continue;
+				}
 				?>
 					<tr>
 						<td><?=$row2['orderStatus'] ?></td>
