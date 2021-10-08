@@ -178,6 +178,7 @@ function showConfirmPopup(url, title = '', content = '', okText = '') {
 	$("#confirmPopup .modal-content .modal-header .modal-title").html(title);
 	$("#confirmPopup .modal-content .modal-body .content").html(content);
 	$("#confirmPopup .modal-footer .ok").html(okText);
+	$('#confirmPopupBuyerSpinner').addClass('d-none');
 
 	$("#confirmPopup .modal-content .modal-header").show();
 	if (title == '') {
@@ -887,6 +888,11 @@ function verifyOtp() {
 	}).finally(function () {
 		$('#UserVerifyOtp').val('');
 	})
+}
+
+function showRequestProcessingMsg(element) {
+	$(element).addClass('disabled');
+	$(element).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
 }
 
 

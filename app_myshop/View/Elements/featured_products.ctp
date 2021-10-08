@@ -57,12 +57,12 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 				<?php
 				foreach ($allCategories as $row) {
 					$categoryID = $row['Category']['id'];
-					$categoryName = ucwords($row['Category']['name']);
+					$categoryName = $row['Category']['name'];
 					$categoryNameSlug = Inflector::slug($categoryName, '-');
 
 					$pCount++;
 					$productID = $row['Product']['id'];
-					$productName = ucwords($row['Product']['name']);
+					$productName = $row['Product']['name'];
 					$productNameSlug = Inflector::slug($productName, '-');
 					$productTitle = $productName;
 
@@ -153,8 +153,8 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 			<?php
 			if ($homepage) {
 				?>
-				<div class="mt-4 mb-5 text-center">
-					<a href="/products/showFeatured" class="btn btn-orange btn-sm">Show All Deals</a>
+				<div class="mt-5 mb-5 text-center">
+					<a href="/products/showFeatured" class="btn btn-orange btn-sm">Show more deals...</a>
 				</div>
 				<hr>
 				<?php
@@ -168,6 +168,5 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 			<?php
 		}
 		?>
-		<div class='clear'></div>
 	</article>
 </section>

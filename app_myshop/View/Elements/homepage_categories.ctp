@@ -26,7 +26,7 @@ if ($categories and !empty($categories)) {
 				<?php
 				foreach($categories as $row) {
 					$categoryId = $row['Category']['id'];
-					$categoryName = Inflector::humanize($row['Category']['name']);
+					$categoryName = $row['Category']['name'];
 					$categoryNameSlug = Inflector::slug($categoryName, '-');
 
 					$categoryUploadedImages = $row['Category']['images'] ? json_decode($row['Category']['images']) : [];

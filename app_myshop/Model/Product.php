@@ -23,7 +23,7 @@ class Product extends AppModel
 
 		$categoryFields = ['Category.id', 'Category.name'];
 		$productFields = ['Product.id', 'Product.name', 'Product.request_price_quote'];
-		$categoryConditions = ['Category.site_id' => $siteID, 'Category.active' => '1'];
+		$categoryConditions = ['Category.site_id' => $siteID, 'Category.active' => '1', 'Category.deleted' => '0'];
 
 		// check if all the table fields are requested
 		if (isset($options['cols']) and !empty($options['cols'])) {
@@ -56,7 +56,7 @@ class Product extends AppModel
 				if (isset($options['productConditions']) and !empty($options['productConditions'])) {
 					$productConditions[] = $options['productConditions'];
 				}
-				$productConditions[] = ['CategoryProduct.category_id' => $categoryID, 'Product.active' => '1'];
+				$productConditions[] = ['CategoryProduct.category_id' => $categoryID, 'Product.active' => '1', 'Product.deleted' => '0'];
 
 				App::uses('CategoryProduct', 'Model');
 				$this->CategoryProduct = new CategoryProduct;
@@ -83,13 +83,29 @@ class Product extends AppModel
 		$this->CategoryProduct = new CategoryProduct;
 		$this->CategoryProduct->recursive = 0;
 
-		$fields = ['Category.id', 'Category.name', 'Product.id', 'Product.name', 'Product.images', 'Product.mrp', 'Product.discount', 'Product.no_stock', 'Product.hide_price', 'Product.avg_rating', 'Product.ratings_count'];
-		$productConditions[] = ['Category.active' => '1', 'Category.site_id' => $siteId, 'Product.active' => '1',  'Product.site_id' => $siteId];
+		$fields = [
+			'Category.id',
+			'Category.name',
+			'Product.id',
+			'Product.name',
+			'Product.images',
+			'Product.mrp',
+			'Product.discount',
+			'Product.no_stock',
+			'Product.hide_price',
+			'Product.avg_rating',
+			'Product.ratings_count',
+			'Product.sort',
+		];
+		$productConditions[] = ['Category.active' => '1', 'Category.deleted' => '0', 'Category.site_id' => $siteId, 'Product.active' => '1', 'Product.deleted' => '0', 'Product.site_id' => $siteId];
+
+		$order = ['CategoryProduct.sort', 'Category.name'];
 
 		if ($featured) {
+			$order = ['Product.sort'];
 			array_push($productConditions, ['Product.featured' => '1']);
 		}
 
-		return $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => 'Category.name', 'fields' => $fields, 'limit' => $limit]);
+		return $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => $order, 'fields' => $fields, 'limit' => $limit]);
 	}
 }

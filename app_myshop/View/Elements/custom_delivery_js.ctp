@@ -93,6 +93,7 @@ App::uses('Order', 'Model');
 		$("#confirmPopup .modal-content .modal-header .modal-title").html(title);
 		$("#confirmPopup .modal-content .modal-body .content").html(content);
 		$("#confirmPopup .modal-footer .ok").html(okText);
+		$('#confirmPopupSpinner').addClass('d-none');
 
 		$("#confirmPopup .modal-content .modal-header").show();
 		if (title == '') {

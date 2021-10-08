@@ -456,9 +456,17 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 						</div>
 						<div class="modal-body">
 							<div class="content">Are you sure?</div>
+
+							<div class="mt-4 text-center d-none" id="confirmPopupBuyerSpinner">
+								<div class="spinner-border spinner-border-sm text-primary" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</div>
+								<br>
+								Please wait. Your request is in process.
+							</div>
 						</div>
 						<div class="modal-footer mt-3 p-1">
-							<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25"><span class="ok">Ok</span></a>
+							<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25" onclick="$('#confirmPopupBuyerSpinner').removeClass('d-none')"><span class="ok">Ok</span></a>
 							<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span
 										class="ok">Ok</span></button>
 							<button type="button" class="btn btn-outline-secondary btn-sm cancelButton w-25" data-bs-dismiss="modal">
@@ -682,7 +690,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.2.1" defer></script>
+	<script src="/js/site.js?v=1.2.2" defer></script>
 	<?= $this->element('customjs') ?>
 </body>
 </html>
