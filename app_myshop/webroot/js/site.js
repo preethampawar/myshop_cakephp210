@@ -117,7 +117,9 @@ function loadShoppingCartHeader() {
 	let topNavCartHeaderUrl = '/shopping_carts/loadTopNavCartHeader';
 	const data = getPage(topNavCartHeaderUrl);
 	data.then(function (response) {
-		$("#topNavShoppingCart").html(response);
+		if(response.length > 0) {
+			$("#topNavShoppingCart").html(response);
+		}
 	});
 
 	return data;
@@ -129,7 +131,9 @@ function loadShoppingCart() {
 	const data = getPage(topNavCartUrl);
 
 	data.then(function (response) {
-		$("#myShoppingCartBody").html(response);
+		if(response.length > 0) {
+			$("#myShoppingCartBody").html(response);
+		}
 	})
 
 	return data;
