@@ -899,10 +899,11 @@ function showRequestProcessingMsg(element) {
 // init site wide variables
 var handleError = function (err) {
 	// alert('Network error. Please check the internet connection and try again.')
-	return new Response(JSON.stringify({
-		code: 400,
-		message: 'Network Error'
-	}));
+	// return new Response(JSON.stringify({
+	// 	code: 400,
+	// 	message: 'Network Error'
+	// }));
+	return new Response('');
 };
 // set default variables
 var cartInfo = null;
