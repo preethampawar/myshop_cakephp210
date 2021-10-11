@@ -62,7 +62,7 @@ class Product extends AppModel
 				$this->CategoryProduct = new CategoryProduct;
 				$this->CategoryProduct->recursive = 0;
 				$this->CategoryProduct->unbindModel(['belongsTo' => ['Category']]);
-				$categoryProducts = $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => 'Product.name', 'fields' => $productFields]);
+				$categoryProducts = $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => ['CategoryProduct.sort', 'Product.name'], 'fields' => $productFields]);
 
 				$tmp = [];
 				if (!empty($categoryProducts)) {
