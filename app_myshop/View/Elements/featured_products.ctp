@@ -12,32 +12,13 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 
 <section id="ProductsInfo">
 	<article>
+		<?= $this->element('homepage_tabmenu', ['homepage' => $homepage]) ?>
+
 		<?php
-		if ($homepage) {
+		if (!$homepage) {
 		?>
-		<header class="featuredLabel">
-			<ul class="nav nav-tabs">
-				<li class="nav-item">
-					<a class="nav-link fw-bold active" aria-current="page" href="/products/showFeatured">Best Deals</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/products/showAll">Show All Products</a>
-				</li>
-			</ul>
-			<?php //echo $this->Html->link('Best Deals', '/', ['class' => 'btn btn-primary btn-sm']); ?>
-			<?php // echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'btn btn-outline-primary btn-sm ms-2']); ?>
-		</header>
+			<h1 class="mt-4">Best Deals (<?= count($allCategories) ?> items)</h1>
 		<?php
-		} else {
-			?>
-				<nav aria-label="breadcrumb" class="mb-4">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="/">Home</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Best Deals</li>
-					</ol>
-				</nav>
-				<h1>Best Deals (<?= count($allCategories) ?> items)</h1>
-			<?php
 		}
 		?>
 
@@ -53,7 +34,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 				$productsRowClass = "row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-lg-x-4 p-0";
 			}
 			?>
-			<div class="<?= $productsRowClass ?> mt-3">
+			<div class="<?= $productsRowClass ?> mt-4">
 				<?php
 				foreach ($allCategories as $row) {
 					$categoryID = $row['Category']['id'];

@@ -320,7 +320,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			<!-- Order Summary -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderSummary" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel">Order Summary</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-info-circle"></i> Order Summary</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderSummaryBody"></div>
@@ -329,7 +329,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			<!-- Order delivery details -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderDeliveryDetails" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel">Order Delivery Details</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-shipping-fast"></i> Delivery Details</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderDeliveryDetailsBody"></div>
@@ -338,7 +338,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			<!-- Order payment details -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderPaymentDetails" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel">Order Payment Details</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-wallet"></i> Payment Details</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderPaymentDetailsBody"></div>

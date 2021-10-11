@@ -97,7 +97,9 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 		</div>
 
 		<div class="container mt-4 pb-5" style="min-height: 500px;">
-
+			<div class="my-3 text-end">
+				<a href="/deliveries/home" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i> Refresh</a>
+			</div>
 			<?php echo $this->fetch('content'); ?>
 
 			<!-- --------------------------End of visible content----------------------------- -->

@@ -15,7 +15,6 @@ class UsersController extends AppController
 
 	public function login()
 	{
-		$this->set('hideLeftMenu', true);
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
 			$mobile = (int)$data['User']['mobile'];
