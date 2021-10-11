@@ -159,13 +159,21 @@ class AppHelper extends Helper
 		return '&#8377;'. $value;
 	}
 
-	public function priceOfferInfo(int $saleValue, int $mrp)
+	public function priceOfferInfo(int $saleValue, int $mrp, $type = null)
 	{
 		$value = $mrp - $saleValue;
 		$percentage = ceil(($value * 100 / $mrp));
 
 		if ($mrp !== $value && $percentage == 100) {
 			$percentage = 99;
+		}
+
+		if ($type === 'amount') {
+			return '&#8377;'. $value;
+		}
+
+		if ($type === 'percentage') {
+			return $percentage.'%';
 		}
 
 		return '&#8377;'. $value. ' ('.$percentage.'%)';
