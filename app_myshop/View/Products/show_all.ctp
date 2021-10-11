@@ -3,22 +3,8 @@ $this->set('title_for_layout', 'Show All Products');
 ?>
 
 <section id="ProductsInfo">
-	<header class="featuredLabel">
-		<ul class="nav nav-tabs">
-			<li class="nav-item">
-				<a class="nav-link" aria-current="page" href="/products/showFeatured">Best Deals</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link fw-bold active" href="/products/showAll">Show All Products</a>
-			</li>
-		</ul>
-		<?php //echo $this->Html->link('Best Deals', '/', ['class' => 'text-decoration-none']); ?>
+	<?= $this->element('homepage_tabmenu', ['featuredPage' => true]) ?>
 
-		<?php // echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'active']); ?>
-
-	</header>
-
-	<p class="mt-3 text-muted mb-4">Showing all products by category</p>
 	<?php
 	if (!empty($allProducts)) {
 		$k = 1;
@@ -29,7 +15,7 @@ $this->set('title_for_layout', 'Show All Products');
 			$categoryName = $row['Category']['name'];
 			$categoryNameSlug = Inflector::slug($categoryName, '-');
 			?>
-			<article class="mb-4">
+			<article class="mt-4">
 				<header>
 					<h5><?php echo $categoryName; ?></h5>
 					<hr>

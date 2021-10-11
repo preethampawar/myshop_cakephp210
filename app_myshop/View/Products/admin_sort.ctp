@@ -108,5 +108,6 @@ echo $this->Form->end();
 				console.log(sortData);
 			}
 		});
+		$("#productsTable").disableSelection();
 	});
 </script>
