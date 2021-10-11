@@ -145,7 +145,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 
 
 						<?php if ($showDiscount): ?>
-							<div class="small text-left text-success">
+							<div class="small text-left text-success fw-bold">
 								Save - <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?>
 							</div>
 						<?php endif; ?>
