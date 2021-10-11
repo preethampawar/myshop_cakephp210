@@ -36,7 +36,13 @@
 			autofocus>
 	</div>
 	<div class="mb-4 small text-danger">
-		*OTP will be sent to the linked Email Address of your mobile number.
+		<?php
+		$text = "*OTP will be sent to your Email Address.";
+		if((bool)$this->Session->read('Site.sms_notifications') === true) {
+			$text = "*OTP will be sent to the specified Mobile no.";
+		}
+		echo $text;
+		?>
 	</div>
 	<div class="mb-3">
 		<button type="submit" class="btn btn-md btn-primary" id="loginSubmitButton">Next - Generate OTP</button>

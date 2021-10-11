@@ -52,7 +52,7 @@
 		<?php
 		$text = "*OTP will be sent to your Email Address.";
 		if((bool)$this->Session->read('Site.sms_notifications') === true) {
-			$text = "*OTP will be sent to the specified Mobile no. and Email Address.";
+			$text = "*OTP will be sent to the specified Mobile no.";
 		}
 		echo $text;
 		?>
