@@ -28,7 +28,7 @@ $bannerUploadedImages = $this->App->getRearrangedImages($bannerUploadedImages);
 			accept="image/*"
 		/>
 		<br/>
-		<div class="text-danger mt-3 small">Min 1080 x 360 pixels (3:1 ratio)</div>
+		<div class="text-danger mt-3 small">Min 1200 x 400 pixels (3:1 ratio)</div>
 
 		<div class="mt-3">
 			<a href="/admin/banners/edit/<?php echo $bannerInfo['Banner']['id']; ?>"
