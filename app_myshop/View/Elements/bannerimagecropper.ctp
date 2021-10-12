@@ -107,7 +107,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 
 						$image_crop.croppie('result', {
 							type: 'canvas',
-							size: {"width": 1080, "height": 360},
+							size: {"width": 1200, "height": 400},
 							format: 'webp',
 						}).then(function (response) {
 							$.ajax({
