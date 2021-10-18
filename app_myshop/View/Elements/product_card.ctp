@@ -13,6 +13,9 @@ $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productI
 
 $avgRating = $avgRating ?? 0;
 $ratingsCount = $ratingsCount ?? 0;
+
+$deliveryCharges = (float)$this->Session->read('Site.shipping_charges');
+$minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
 ?>
 
 <div class="col mb-3 bg-white hoverHighlightPink" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
@@ -48,7 +51,7 @@ $ratingsCount = $ratingsCount ?? 0;
 			</div>
 
 			<?php if (!$hideProductPrice): ?>
-				<div class="mt-3 d-flex">
+				<div class="mt-1 d-flex justify-content-between">
 					<h5>
 						<span class="text-danger"><?php echo $this->App->price($salePrice); ?></span>
 					</h5>
@@ -64,6 +67,13 @@ $ratingsCount = $ratingsCount ?? 0;
 						<span class="text-success">Save <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?></span>
 					</div>
 				<?php endif; ?>
+
+				<?php if ($deliveryCharges == 0 && $minOrderForFreeShipping == 0): ?>
+					<div class="small text-center">
+						<span class="text-orange small">+ Free Delivery</span>
+					</div>
+				<?php endif; ?>
+
 			<?php endif; ?>
 		</div>
 
