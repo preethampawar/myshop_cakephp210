@@ -39,7 +39,7 @@ if ($highlightImageDetails) {
 }
 $productImageUrl = $this->Html->url($thumbUrl, true);
 ?>
-
+<script src="/vendor/jquery/jquery-3.6.0.slim.min.js"></script>
 <div itemscope itemtype="http://schema.org/Product">
 	<?php
 	if (!$isAjax) {
@@ -244,7 +244,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 					<textarea id="productReview<?= $productID ?>" class="form-control"
 							  rows="2"><?= $userReview['ProductReview']['comments'] ?></textarea>
 				</div>
-				<script>
+				<script defer>
 					$(document).ready(function () {
 						fillProductRatingStars(<?= $userRating ?>)
 					})
