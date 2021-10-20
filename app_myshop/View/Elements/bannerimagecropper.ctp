@@ -42,7 +42,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 			enableResize: false,
 			viewport: {
 				width: 300,
-				height: 100,
+				height: 120,
 				type: 'square' //circle
 			},
 			boundary: {
@@ -107,7 +107,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 
 						$image_crop.croppie('result', {
 							type: 'canvas',
-							size: {"width": 1200, "height": 400},
+							size: {"width": 1200, "height": 480},
 							format: 'webp',
 						}).then(function (response) {
 							$.ajax({
