@@ -89,8 +89,8 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 										data-original="<?php echo $imageUrl; ?>"
 										class="lazy d-block w-100 bg-light img-fluid"
 										alt=""
-										width="1080"
-										height="360"
+										width="1200"
+										height="480"
 										border="0"
 									>
 								</a>
