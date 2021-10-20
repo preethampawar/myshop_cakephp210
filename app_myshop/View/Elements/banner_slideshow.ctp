@@ -52,7 +52,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 
 		<?php if ($slideShowImages) { ?>
 
-			<div class="mb-4">
+			<div class="mb-4 container-xl">
 				<div id="homepageSlideshow" class="carousel slide carousel-fade" data-bs-ride="carousel">
 					<div class="carousel-indicators">
 						<?php
