@@ -112,9 +112,10 @@ class DeliveriesController extends AppController
 		$this->redirect($this->referer());
 	}
 
-	public function updateOrderStatusDelivered($encodedOrderId)
+	public function updateOrderStatusDelivered($encodedOrderId, $isAjax = 0)
 	{
 		$this->layout = false;
+		$error = null;
 
 		App::import('Model', 'Order');
 		$orderModel = new Order();
@@ -145,10 +146,23 @@ class DeliveriesController extends AppController
 				$this->successMsg('Order status updated successfully');
 				$this->sendOrderEmailAndSms($orderId, $orderStatus, $message);
 			} else {
-				$this->errorMsg('Failed to update order status');
+				$error = 'Failed to update order status';
+				$this->errorMsg($error);
 			}
 		} else {
-			$this->errorMsg('Order not found');
+			$error = 'Order not found';
+			$this->errorMsg($error);
+		}
+
+		if ((int)$isAjax === 1) {
+			$this->response->header('Content-type', 'application/json');
+			$this->response->body(json_encode([
+					'error' => !empty($error),
+					'msg' => $error,
+				], JSON_THROW_ON_ERROR)
+			);
+			$this->response->send();
+			exit;
 		}
 
 		$this->redirect($this->referer());

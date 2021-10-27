@@ -135,7 +135,7 @@ class CategoriesController extends AppController
 		$conditions = ['CategoryProduct.category_id' => $categoryID];
 
 		$this->CategoryProduct->unbindModel(['belongsTo' => ['Category']]);
-		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID, [], ['CategoryProduct.sort']);
+		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID, [], ['Product.name']);
 
 		$tmp = [];
 		$productsList = [];

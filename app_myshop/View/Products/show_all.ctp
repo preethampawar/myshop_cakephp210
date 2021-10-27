@@ -1,7 +1,3 @@
-<?php
-$this->set('title_for_layout', 'Show All Products');
-?>
-
 <section id="ProductsInfo">
 	<?= $this->element('homepage_tabmenu', ['featuredPage' => true]) ?>
 

@@ -38,8 +38,18 @@ class OrdersController extends AppController
 		$this->checkSeller();
 
 		$siteId = $this->Session->read('Site.id');
+		$start_date = $this->request->query['start_date'] ?? date('Y').'-01-01';
+		$end_date = $this->request->query['end_date'] ?? date('Y-m-d');
 
-		$sql = 'select count(*) count, status from orders where site_id = '.$siteId.' and archived = 0 group by status';
+		$sql = 'select 
+					count(*) count, status 
+				from orders 
+				where 
+					site_id = '.$siteId.' 
+					and archived = 0 
+					and created >= "'.$start_date.'"
+					and created <= "'.$end_date.' 23:59:59"
+				group by status';
 		$ordersCountByStatus = $this->Order->query($sql);
 
 		$sql = 'select count(*) count from orders where site_id = '.$siteId.' and archived = 1';
@@ -66,13 +76,15 @@ class OrdersController extends AppController
 		}
 
 		$conditions['Order.status'] = $orderType;
+		$conditions['Order.created >'] = $start_date;
+		$conditions['Order.created <='] = $end_date . ' 23:59:59';
 
 		$this->Order->bindModel(['belongsTo' => ['User']]);
 		$this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
 
 		$this->paginate = [
-			'limit' => 100,
-			'order' => ['Order.created' => 'ASC'],
+			'limit' => 500,
+			'order' => ['Order.created' => 'DESC'],
 			'conditions' => $conditions,
 		];
 		$orders = $this->paginate();
@@ -90,6 +102,8 @@ class OrdersController extends AppController
 		$this->set('orders', $orders);
 		$this->set('ordersCountByStatus', $ordersCountByStatus);
 		$this->set('archivedOrdersCount', $archivedOrdersCount);
+		$this->set('start_date', $start_date);
+		$this->set('end_date', $end_date);
 	}
 
 	public function details($encodedOrderId)

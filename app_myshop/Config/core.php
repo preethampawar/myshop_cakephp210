@@ -502,18 +502,18 @@ Configure::write('LinkedLocations', [
 		],
 		'zahirabad' => [
 			'title' => 'Zahirabad',
-			'url' => 'farmfood.apnastores-local.com:8080',
+			'url' => 'farmfood.apnastores-local.com',
 		],
 		'local' => [
 			'title' => 'New MIG',
-			'url' => 'myshop.apnastores-local.com:8080'
+			'url' => 'myshop.apnastores-local.com'
 		]
 	],
 
 	'farmfood' => [
 		'local' => [
 			'title' => 'New MIG',
-			'url' => 'myshop.apnastores-local.com:8080'
+			'url' => 'myshop.apnastores-local.com'
 		],
 		'sangareddy' => [
 			'title' => 'Sangareddy',
@@ -521,7 +521,7 @@ Configure::write('LinkedLocations', [
 		],
 		'zahirabad' => [
 			'title' => 'Zahirabad',
-			'url' => 'farmfood.apnastores-local.com:8080',
+			'url' => 'farmfood.apnastores-local.com',
 		],
 	]
 ]);
