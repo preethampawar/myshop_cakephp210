@@ -33,6 +33,9 @@
 			<tr>
 				<th>#</th>
 				<th>Product Name</th>
+				<th>MRP</th>
+				<th>Discount</th>
+				<th>SalePrice</th>
 				<th></th>
 			</tr>
 			</thead>
@@ -48,6 +51,9 @@
 					$i++;
 					$productActive = $categoryProducts[$productID]['Product']['active'];
 					$productFeatured = $categoryProducts[$productID]['Product']['featured'];
+					$mrp = (float)$categoryProducts[$productID]['Product']['mrp'];
+					$discount = (float)$categoryProducts[$productID]['Product']['discount'];
+					$salePrice = $mrp - $discount;
 					?>
 						<tr>
 							<td><?= $k ?>.</td>
@@ -80,6 +86,9 @@
 
 								<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
 							</td>
+							<td class="text-muted"><?= $mrp ?></td>
+							<td class="text-muted"><?= $discount ?></td>
+							<td class="text-dark"><?= $salePrice ?></td>
 							<td class="text-end text-nowrap">
 								<a href="/admin/products/edit/<?= $productID ?>/<?= $categoryID ?>" class="btn btn-primary btn-sm">Edit</a>
 

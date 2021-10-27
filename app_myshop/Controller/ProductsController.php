@@ -46,6 +46,8 @@ class ProductsController extends AppController
 	 */
 	public function showAll()
 	{
+		$this->set('title_for_layout', 'All Products');
+
 		$allCategories = $this->Product->getAllProducts($this->Session->read('Site.id'));
 		$allProducts = [];
 		if($allCategories) {
@@ -75,6 +77,8 @@ class ProductsController extends AppController
 	 */
 	public function showFeatured()
 	{
+		$this->set('title_for_layout', 'Best Deals');
+
 		if (!$this->Session->read('Site.featured_products')) {
 			$this->noticeMsg('Best deals not available at this moment.');
 			$this->redirect($this->request->referer());
