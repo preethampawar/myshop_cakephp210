@@ -63,10 +63,10 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 		document.body.appendChild(el);
 	</script>
 
-	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.0">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.1">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -103,10 +103,14 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			localStorage.setItem('location', title);
 			localStorage.setItem('locationUrl', url);
 		}
+
+		function showLoadingBar() {
+			document.getElementById("topNavProgressBar").classList.remove('d-none')
+		}
 	</script>
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark" onbeforeunload="showLoadingBar()">
 	<div class="bg-white ">
 
 		<?php
@@ -149,8 +153,8 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 					?>
 				</a>
 
-				<div class="navbar-toggler border-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="fa fa-bars"></i>
+				<div class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<i class="fa fa-bars navbar-brand"></i>
 				</div>
 				<div class="offcanvas offcanvas-end" id="navbarNav">
 					<div class="offcanvas-header border-bottom border-4 border-warning">
@@ -230,6 +234,9 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 					</li>
 				<?php endif; ?>
 			</ul>
+			<div class="progress rounded-0 d-none" style="height:5px;" id="topNavProgressBar">
+				<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+			</div>
 		</div>
 
 		<div id="storeSlideShow">
@@ -687,7 +694,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 	</div>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 	<script src="/js/site.js?v=1.2.3" defer></script>

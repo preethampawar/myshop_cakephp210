@@ -456,3 +456,7 @@ h1,h2,h3,h4,h5,h6 {
 #progressbar li.active:after {
 	background: var(--bs-primary);
 }
+.progress-bar-animated {
+    -webkit-animation: 0.4s linear infinite progress-bar-stripes;
+    animation: 0.4s linear infinite progress-bar-stripes;
+}

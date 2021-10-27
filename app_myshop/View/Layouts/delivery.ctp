@@ -31,19 +31,23 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 		if (!window.fetch) {
 			window.location = '/pages/unsupportedbrowser'
 		}
+
+		function showLoadingBar() {
+			document.getElementById("topNavProgressBar").classList.remove('d-none')
+		}
 	</script>
 
-	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.1">
+	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.1">	
 
 	<?= $analyticsCode ?>
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark" onbeforeunload="showLoadingBar()">
 	<div class="bg-white pb-5">
 
-		<nav class="navbar navbar-expand-lg navbar-static navbar-light bg-light">
+		<nav class="navbar navbar-expand-lg navbar-static navbar-dark bg-dark">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="/deliveries/home">
 					<?= $this->Session->read('Site.title') ?>
@@ -83,6 +87,9 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 				</div>
 			</div>
 		</nav>
+		<div class="progress rounded-0 d-none" style="height:5px;" id="topNavProgressBar">
+			<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+		</div>
 
 		<div class="container">
 			<?php echo $this->Session->flash(); ?>
@@ -209,9 +216,24 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 		<?php echo $this->element('sql_dump'); ?>
 	</div>
 
-	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/jquery/jquery-3.6.0.slim.min.js"></script>
+	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
 	<?= $this->element('custom_delivery_js') ?>
+	<script>
+		var time = new Date().getTime();
+		$(document.body).bind("mousemove keypress touchmove scroll", function(e) {
+			time = new Date().getTime();
+		});
+
+		function refresh() {			
+			if(new Date().getTime() - time >= (30*1000)) //30 seconds
+				window.location.reload(true);
+			else 
+				setTimeout(refresh, 15000);
+		}
+
+		setTimeout(refresh, 15000);
+	</script>
 
 
 

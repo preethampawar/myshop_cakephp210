@@ -15,6 +15,8 @@ class UsersController extends AppController
 
 	public function login()
 	{
+		$this->set('title_for_layout', 'Login');
+
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
 			$mobile = (int)$data['User']['mobile'];
@@ -93,6 +95,8 @@ class UsersController extends AppController
 
 	public function verifyLoginOtp()
 	{
+		$this->set('title_for_layout', 'Verify LoginOTP');
+
 		if ($this->Session->check('User')) {
 			$this->Session->delete('loginOtp');
 			$this->Session->delete('loginUser');
@@ -132,6 +136,8 @@ class UsersController extends AppController
 
 	public function customerRegistration()
 	{
+		$this->set('title_for_layout', 'Customer Registration');
+
 		$mobile = null;
 		$email = null;
 		if ($this->request->is('post')) {
@@ -207,6 +213,8 @@ class UsersController extends AppController
 
 	public function verifyCustomerRegistrationOtp()
 	{
+		$this->set('title_for_layout', 'Verify Customer Registration OTP');
+
 		if ($this->Session->check('User')) {
 			$this->Session->delete('customerRegistrationOtp');
 			$this->Session->delete('customerRegistrationUser');

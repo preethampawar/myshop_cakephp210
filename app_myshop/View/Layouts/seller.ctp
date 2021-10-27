@@ -13,10 +13,10 @@ $enableTextEditor = $enableTextEditor ?? false;
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Seller</title>
 
-	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.1">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -220,7 +220,7 @@ if ($enableTextEditor) {
 ?>
 
 
-<script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js"></script>
 <script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js"></script>
 

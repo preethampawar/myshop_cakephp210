@@ -31,7 +31,7 @@
 
 												<div class="d-flex justify-content-between">
 													<div><?= $i ?>. Order No. <span class="fw-bold">#<?= $row['Order']['id'] ?></span></div>
-													<span class="small"><i class="fa fa-chevron-down ms-2 small"></i></span>
+													<span class="small"><i class="fa fa-circle-chevron-down ms-2 small"></i></span>
 												</div>
 											</a>
 										</div>
@@ -137,6 +137,7 @@
 						<?php
 						$i = 0;
 						foreach($shippedOrders as $row) {
+							//debug($row);
 							$i++;
 							?>
 							<tr>
@@ -145,8 +146,11 @@
 										<div class="fs-5">
 											<a class="text-decoration-none link-primary" data-bs-toggle="collapse" href="#orderNo<?= $row['Order']['id'] ?>" role="button" aria-expanded="false" aria-controls="collapseExample">
 												<div class="d-flex justify-content-between">
-													<div><?= $i ?>. Order No. <span class="fw-bold">#<?= $row['Order']['id'] ?></span></div>
-													<span class="small"><i class="fa fa-chevron-down ms-2 small"></i></span>
+													<div>
+														<?= $i ?>. Order No. <span class="fw-bold">#<?= $row['Order']['id'] ?></span>
+														  - <span class="text-orange"><?= $this->App->price($row['Order']['total_order_amount']) ?></span>
+													</div>
+													<span class="small"><i class="fa fa-circle-chevron-down ms-2 small"></i></span>
 												</div>
 											</a>
 										</div>
@@ -210,6 +214,14 @@
 																class="btn btn-success btn-md"
 																title="Order #<?= $row['Order']['id'] ?> - Click if you have delivered the order to customer"
 														>Delivered</button>
+
+														
+
+														<button
+																onclick="orderIsDelivered('<?= base64_encode($row['Order']['id']) ?>', '<?= $row['Order']['id'] ?>')"
+																class="btn btn-success btn-md"
+																title="Order #<?= $row['Order']['id'] ?> - Click if you have delivered the order to customer"
+														>Delivered2</button>
 													</div>
 												</div>
 												<?php

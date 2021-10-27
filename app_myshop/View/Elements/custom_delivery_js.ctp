@@ -152,6 +152,19 @@ App::uses('Order', 'Model');
 			})
 		}
 	}
+	
+	function orderIsDelivered(encodedOrderId, orderNo) {
+		let confirmed = confirm("Order No. #"+orderNo+". Click 'OK' if you have delivered this order.");
+
+		if (confirmed) {
+			let orderDeliveredUrl = '/deliveries/updateOrderStatusDelivered/' + encodedOrderId + '/1';
+			getData(orderDeliveredUrl).then(function (resp) {
+				alert('Message is sent to the customer.');
+			}).finally(function() {
+				refreshPage();
+			})
+		}
+	}
 
 	// show toast messages
 	function showToastMessages() {
