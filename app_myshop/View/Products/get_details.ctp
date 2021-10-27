@@ -40,7 +40,7 @@ if ($highlightImageDetails) {
 $productImageUrl = $this->Html->url($thumbUrl, true);
 ?>
 <script src="/vendor/jquery/jquery-3.6.0.slim.min.js"></script>
-<div itemscope itemtype="http://schema.org/Product">
+<div>
 	<?php
 	if (!$isAjax) {
 		?>
@@ -311,6 +311,34 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<?php
 	}
 	?>
+
+	<script type="application/ld+json">
+	{
+		"@context": "http://schema.org/",
+		"@type": "Product",
+		"name": "<?= $productName ?>",
+		"image": "<?= $productImageUrl ?>",
+		"description": "<?= $productDesc ?>",
+		"sku": "<?= $productID ?>",
+		<?php
+        	if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
+			?>
+			"aggregateRating": {
+				"@type": "AggregateRating",
+				"ratingValue": "<?= $ratingsInfo['avgRating'] ?>",
+				"reviewCount": "<?= $ratingsInfo['ratingsCount'] ?>"	
+			},
+			<?php
+        	}
+		?>
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "INR",
+			"price": "<?php echo $this->App->price($salePrice); ?>",
+			"availability": "http://schema.org/InStock"
+		}
+	}
+	</script>
 
 
 	<div class="mt-5">
