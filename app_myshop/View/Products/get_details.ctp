@@ -312,33 +312,34 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 	}
 	?>
 
-	<script type="application/ld+json">
-	{
-		"@context": "http://schema.org/",
-		"@type": "Product",
-		"name": "<?= $productName ?>",
-		"image": "<?= $productImageUrl ?>",
-		"description": "<?= $productDesc ?>",
-		"sku": "<?= $productID ?>",
-		<?php
-        	if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
-			?>
-			"aggregateRating": {
-				"@type": "AggregateRating",
-				"ratingValue": "<?= $ratingsInfo['avgRating'] ?>",
-				"reviewCount": "<?= $ratingsInfo['ratingsCount'] ?>"	
-			},
-			<?php
-        	}
-		?>
-		"offers": {
-			"@type": "Offer",
-			"priceCurrency": "INR",
-			"price": "<?php echo $this->App->price($salePrice); ?>",
-			"availability": "http://schema.org/InStock"
-		}
-	}
-	</script>
+	<!-- structured data -->
+	<div itemtype="https://schema.org/Product" itemscope>      
+      <meta itemprop="name" content="<?= $productName ?>" />
+      <link itemprop="image" href="<?= $productImageUrl ?>" />
+      <meta itemprop="description" content="<?= $productDesc ?>" />
+      <div itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
+        <link itemprop="url" href="<?= $pageUrl ?>" />
+        <meta itemprop="availability" content="https://schema.org/InStock" />
+        <meta itemprop="priceCurrency" content="INR" />
+        <meta itemprop="itemCondition" content="https://schema.org/NewCondition" />
+        <meta itemprop="price" content="<?= $salePrice ?>" />
+        <meta itemprop="priceValidUntil" content="<?= date('Y-m-d') ?>" />
+      </div>
+	  <?php
+        if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
+            ?>
+		<div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
+			<meta itemprop="reviewCount" content="<?= $ratingsInfo['ratingsCount'] ?>" />
+			<meta itemprop="ratingValue" content="<?= $ratingsInfo['avgRating'] ?>" />
+		</div>
+	  <?php
+        }
+	  ?>
+      <meta itemprop="sku" content="<?= $productID ?>" />
+      <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+        <meta itemprop="name" content="<?= $this->Session->read('Site.title') ?>" />
+      </div>
+    </div>
 
 
 	<div class="mt-5">
