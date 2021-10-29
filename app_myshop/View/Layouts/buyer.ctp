@@ -107,6 +107,10 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 		function showLoadingBar() {
 			document.getElementById("topNavProgressBar").classList.remove('d-none')
 		}
+		
+		function hideLoadingBar() {
+			document.getElementById("topNavProgressBar").classList.add('d-none')
+		}
 	</script>
 </head>
 
@@ -153,7 +157,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 					?>
 				</a>
 
-				<div class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<div class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<i class="fa fa-bars navbar-brand"></i>
 				</div>
 				<div class="offcanvas offcanvas-end" id="navbarNav">
@@ -220,7 +224,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 		</nav>
 
 		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>" style="z-index: 999">
-			<ul class="nav container justify-content-center pt-2 pb-2 small">
+			<ul class="nav container justify-content-between pt-2 pb-2 small">
 				<li class="nav-item">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
 						<i class="fa fa-th"></i> Shop By Category
@@ -232,10 +236,16 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 							<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
 						</a>
 					</li>
-				<?php endif; ?>
+				<?php endif; ?>				
 			</ul>
-			<div class="progress rounded-0 d-none" style="height:5px;" id="topNavProgressBar">
-				<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+			<div class="progress rounded-0 d-none" id="topNavProgressBar">
+				<div
+					class="progress-bar progress-bar-striped progress-bar-animated bg-orange small" 
+					role="progressbar" 
+					aria-valuenow="100" 
+					aria-valuemin="0" 
+					aria-valuemax="100" 
+					style="width: 100%">Loading...</div>
 			</div>
 		</div>
 
@@ -697,7 +707,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.2.3" defer></script>
+	<script src="/js/site.js?v=1.2.4" defer></script>
 	<?= $this->element('customjs') ?>
 </body>
 </html>

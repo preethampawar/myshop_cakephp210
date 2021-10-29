@@ -242,9 +242,10 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		<?php
 		if ($this->Session->check('Site.show_promo_codes') && (bool)$this->Session->read('Site.show_promo_codes') === true) {
 		?>
-		<div class="mt-4 p-3 shadow rounded small">
+		<div class="mt-4 p-3 pb-4 shadow rounded small">
 			<h6>Have Promo Code (or) Discount Code?</h6>
-			<div class="mt-3 d-flex justify-content-sm-between">
+			<hr>
+			<div class="d-flex justify-content-sm-between">
 				<input
 					type="text"
 					name="promoc"
@@ -255,10 +256,12 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				<button class="btn btn-outline-primary btn-sm ms-2" onclick="applyPromoCode()">Apply</button>
 			</div>
 
+			
+
 			<?php
 			if ($this->Session->check('PromoCode')) {
 				?>
-				<div class="mt-3 mb-0 alert alert-secondary bg-light">
+				<div class="mt-3 mb-0 alert alert-secondary bg-light text-center">
 					Applied Promo Code: <b><?= $this->Session->read('PromoCode.name') ?></b>
 
 					<div class="mt-2 text-center">
@@ -268,6 +271,8 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				<?php
 			}
 			?>
+
+			<?= $this->element('promocodes_list') ?>			
 		</div>
 		<?php
 		}

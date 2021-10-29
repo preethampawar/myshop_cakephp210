@@ -792,8 +792,12 @@ function htmlEncodeString(rawStr) {
 	});
 }
 
-function applyPromoCode() {
+function applyPromoCode(availablePromoCode) {
 	let promoCode = btoa($('#promoCodeVal').val().trim())
+
+	if (availablePromoCode && availablePromoCode.length > 0) {
+		promoCode = btoa(availablePromoCode);
+	}
 
 	if (promoCode.length < 1) {
 		showAlert('Please enter promo code')
