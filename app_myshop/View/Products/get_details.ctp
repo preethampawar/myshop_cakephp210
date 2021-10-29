@@ -56,7 +56,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<?php
 	}
 	?>
-	<h1 itemprop="name"><?= $productName; ?></h1>
+	<h1><?= $productName; ?></h1>
 
 	<?php
 	if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
@@ -65,11 +65,9 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 			<?= $this->element('show_rating_stars', ['rating' => $ratingsInfo['avgRating'], 'count' => $ratingsInfo['ratingsCount']]) ?>
 		</div>
 		<div class="mt-2 text-muted small">
-			<div itemprop="aggregateRating"
-				 itemscope itemtype="https://schema.org/AggregateRating">
-				Rated <span itemprop="ratingValue" class="fw-bold"><?= $ratingsInfo['avgRating'] ?></span> out of <span
-						class="fw-bold">5</span>
-				based on <span itemprop="reviewCount"><?= $ratingsInfo['ratingsCount'] ?></span> customer reviews.
+			<div>
+				Rated <span class="fw-bold"><?= $ratingsInfo['avgRating'] ?></span> out of <spanclass="fw-bold">5</span>
+				based on <span><?= $ratingsInfo['ratingsCount'] ?></span> customer reviews.
 			</div>
 		</div>
 		<?php
