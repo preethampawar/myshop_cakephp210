@@ -316,7 +316,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 	<div itemtype="https://schema.org/Product" itemscope>      
       <meta itemprop="name" content="<?= $productName ?>" />
       <link itemprop="image" href="<?= $productImageUrl ?>" />
-      <meta itemprop="description" content="<?= $productDesc ?>" />
+      <meta itemprop="description" content="<?= strip_tags($productDesc) ?>" />
       <div itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
         <link itemprop="url" href="<?= $pageUrl ?>" />
         <meta itemprop="availability" content="https://schema.org/InStock" />
