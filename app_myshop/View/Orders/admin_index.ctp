@@ -270,7 +270,7 @@ if ($orderType) {
 							<td><?= $customerName ?></td>
 							<td><?= $mobile ?></td>
 							<?php
-							echo $usersList && $deliveryUserId ? '<td>' . $usersList[$deliveryUserId] . '</td>' : '<td>&nbsp;</td>';
+							echo $usersList && $deliveryUserId ? '<td>' . ($usersList[$deliveryUserId] ?? '') . '</td>' : '<td>&nbsp;</td>';
 							?>
 							<td><?= $createdDate ?></td>
 							<td class="text-end text-nowrap">
