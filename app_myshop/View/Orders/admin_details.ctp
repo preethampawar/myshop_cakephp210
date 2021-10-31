@@ -207,6 +207,21 @@ $createdDate = $createdDate ?? $modifiedDate;
 </div>
 <?php
 if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
+	$i = 0;
+	$cartValue = $order['Order']['total_cart_value'];
+	$payableAmount = $order['Order']['total_order_amount'];
+	$totalDiscount = $order['Order']['total_discount'];
+	$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
+
+	$promoCodeDetails = !empty($order['Order']['promo_code_details']) ? json_decode($order['Order']['promo_code_details'], true) : [];
+	$minPurchaseValue = (float)($promoCodeDetails['min_purchase_value'] ?? 0);
+	$showPromoDiscount = false;
+	if ($cartValue >= $minPurchaseValue) {
+		$showPromoDiscount = true;
+	}
+
+	$cartMrpValue = 0;
+	$totalItems = 0;
 	?>
 
 	<div class="p-3 shadow small mt-4">
@@ -223,14 +238,6 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			</thead>
 			<tbody>
 			<?php
-			$i = 0;
-			$cartValue = $order['Order']['total_cart_value'];
-			$payableAmount = $order['Order']['total_order_amount'];
-			$totalDiscount = $order['Order']['total_discount'];
-			$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
-
-			$cartMrpValue = 0;
-			$totalItems = 0;
 			foreach ($order['OrderProduct'] as $row) {
 				$i++;
 				$categoryName = ucwords($row['category_name']);
@@ -277,7 +284,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
 			<?php
-			if ($promoCodeDiscount > 0) {
+			if ($showPromoDiscount && $promoCodeDiscount > 0) {
 				?>
 				<tr class="text-muted">
 					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
@@ -307,7 +314,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 		<div class="text-success text-center">
 			Saved <?= $this->App->price($totalDiscount) ?> on this Order
 			<?php
-			if ($order['Order']['promo_code']) {
+			if ($showPromoDiscount && $order['Order']['promo_code']) {
 			?>
 			<div class="alert alert-secondary bg-light">
 				Promo Code<br>

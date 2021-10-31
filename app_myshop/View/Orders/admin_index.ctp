@@ -16,9 +16,9 @@ if ($q_start_date && $q_end_date) {
 </div>
 
 <form method="get">
-	<div class="hstack gap-3 small">
+	<div class="hstack gap-3 small mt-3">
 		<div>
-			<label for="StartDate">From Date <span class="text-danger small">(required)</span></label>
+			<label for="StartDate">From <span class="text-danger small">(required)</span></label>
 			<input
 				type="date"
 				id ="StartDate"
@@ -29,7 +29,7 @@ if ($q_start_date && $q_end_date) {
 		</div>
 
 		<div>
-			<label for="EndDate">To Date <span class="text-danger small">(required)</span></label>
+			<label for="EndDate">To <span class="text-danger small">(required)</span></label>
 			<input
 				type="date"
 				id ="EndDate"
@@ -41,7 +41,7 @@ if ($q_start_date && $q_end_date) {
 		<div><button class="btn btn-sm btn-info mt-3" type="submit">Search</button></div>
 	</div>
 </form>
-<br>
+<hr>
 
 <div class="mt-4 d-none d-lg-block">
 	<?php
@@ -195,9 +195,9 @@ if ($q_start_date && $q_end_date) {
 if ($orderType) {
 	?>
 		<div class="bg-light p-2 mt-3 border-bottom">
-			<span class="badge bg-orange rounded-pill"><?= $this->Paginator->params()['count'] ?></span> 
+			<span class="badge bg-orange rounded-pill"><?= $this->Paginator->params()['count'] ?></span>
 			<span class="text-orange fw-bold"><?= $orderType ?></span> orders.
-			
+
 			<div class="small mt-3 text-muted">From "<?= date('d-m-Y', strtotime($start_date)) ?>" to "<?= date('d-m-Y', strtotime($end_date)) ?>"</div>
 		</div>
 	<?php
@@ -208,7 +208,7 @@ if ($orderType) {
 	if (!empty($orders)) {
 		$totalOrderValue = 0;
 	?>
-		<div class="table-responsive">			
+		<div class="table-responsive">
 			<table class="table table-sm small mt-4" style="min-height:200px;">
 				<thead>
 				<tr>
