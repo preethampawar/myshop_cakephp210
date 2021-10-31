@@ -40,6 +40,7 @@ $this->set('title_for_layout', $categoryInfo['Category']['name']);
 				foreach ($categoryProducts as $row2) {
 					$productID = $row2['Product']['id'];
 					$productName = ucwords($row2['Product']['name']);
+					$productShortDesc = $row2['Product']['short_desc'];
 					$productNameSlug = Inflector::slug($productName, '-');
 					$showRequestPriceQuote = $row2['Product']['request_price_quote'];
 					$productTitle = $productName;
@@ -66,6 +67,7 @@ $this->set('title_for_layout', $categoryInfo['Category']['name']);
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
 							'productName' => $productName,
+							'productShortDesc' => $productShortDesc,
 							'imageTagId' => $imageTagId,
 							'productTitle' => $productTitle,
 							'categoryID' => $categoryID,

@@ -22,7 +22,7 @@ class Product extends AppModel
 	{
 
 		$categoryFields = ['Category.id', 'Category.name'];
-		$productFields = ['Product.id', 'Product.name', 'Product.request_price_quote'];
+		$productFields = ['Product.id', 'Product.name', 'Product.short_desc', 'Product.request_price_quote'];
 		$categoryConditions = ['Category.site_id' => $siteID, 'Category.active' => '1', 'Category.deleted' => '0'];
 
 		// check if all the table fields are requested
@@ -88,6 +88,7 @@ class Product extends AppModel
 			'Category.name',
 			'Product.id',
 			'Product.name',
+			'Product.short_desc',
 			'Product.images',
 			'Product.mrp',
 			'Product.discount',
