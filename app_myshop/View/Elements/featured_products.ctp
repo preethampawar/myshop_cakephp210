@@ -44,6 +44,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					$pCount++;
 					$productID = $row['Product']['id'];
 					$productName = $row['Product']['name'];
+					$productShortDesc = $row['Product']['short_desc'];
 					$productNameSlug = Inflector::slug($productName, '-');
 					$productTitle = $productName;
 
@@ -70,6 +71,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
 							'productName' => $productName,
+							'productShortDesc' => $productShortDesc,
 							'imageTagId' => $imageTagId,
 							'productTitle' => $productTitle,
 							'categoryID' => $categoryID,

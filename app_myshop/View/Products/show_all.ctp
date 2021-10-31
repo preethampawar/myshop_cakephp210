@@ -31,6 +31,7 @@
 						foreach ($row['CategoryProducts'] as $row2) {
 							$productID = $row2['Product']['id'];
 							$productName = $row2['Product']['name'];
+							$productShortDesc = $row2['Product']['short_desc'];
 							$productNameSlug = Inflector::slug($productName, '-');
 							$productTitle = $productName;
 							$assetDomainUrl = Configure::read('AssetDomainUrl');
@@ -56,6 +57,7 @@
 							echo $this->element('product_card', [
 									'productImageUrl' => $productImageUrl,
 									'productName' => $productName,
+									'productShortDesc' => $productShortDesc,
 									'imageTagId' => $imageTagId,
 									'productTitle' => $productTitle,
 									'categoryID' => $categoryID,

@@ -12,6 +12,7 @@ $categoryNameSlug = Inflector::slug($categoryName, '-');
 
 $productID = $productInfo['Product']['id'];
 $productName = ucwords($productInfo['Product']['name']);
+$productShortDesc = trim($productInfo['Product']['short_desc']);
 $productNameSlug = Inflector::slug($productName, '-');
 $productDesc = $productInfo['Product']['description'];
 $showRequestPriceQuote = $productInfo['Product']['request_price_quote'];
@@ -147,6 +148,14 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 								Save - <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?>
 							</div>
 						<?php endif; ?>
+
+						<?php
+						if (!empty($productShortDesc)) {
+							?>
+							<div class="text-orange small mt-3"><?= $productShortDesc ?></div>
+							<?php
+						}
+						?>
 
 						<?php if ($cartEnabled && !$noStock): ?>
 							<form id="AddToCart<?php echo $productID; ?>"
@@ -311,7 +320,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 	?>
 
 	<!-- structured data -->
-	<div itemtype="https://schema.org/Product" itemscope>      
+	<div itemtype="https://schema.org/Product" itemscope>
       <meta itemprop="name" content="<?= $productName ?>" />
       <link itemprop="image" href="<?= $productImageUrl ?>" />
       <meta itemprop="description" content="<?= strip_tags($productDesc) ?>" />

@@ -13,6 +13,7 @@ $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productI
 
 $avgRating = $avgRating ?? 0;
 $ratingsCount = $ratingsCount ?? 0;
+$productShortDesc = $productShortDesc ?? '';
 
 $deliveryCharges = (float)$this->Session->read('Site.shipping_charges');
 $minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
@@ -74,6 +75,13 @@ $minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_a
 					</div>
 				<?php endif; ?>
 
+				<?php
+				if (trim($productShortDesc)) {
+					?>
+					<div class="x-small text-orange mt-2"><?= trim($productShortDesc) ?></div>
+					<?php
+				}
+				?>
 			<?php endif; ?>
 		</div>
 

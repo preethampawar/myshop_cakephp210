@@ -199,6 +199,17 @@ $this->set('enableTextEditor', true);
 						required
 					>
 				</div>
+
+				<div class="my-3">
+					<label for="ProductShortDesc" class="form-label">Short Description</label>
+					<textarea
+							id="ProductShortDesc"
+							name="data[Product][short_desc]"
+							class="form-control form-control-sm tinymce"
+							placeholder="Enter short description"
+					><?php echo $this->data['Product']['short_desc']; ?></textarea>
+					<div class="small text-muted">Note: Short description will be displayed in Product tiles below the product name.</div>
+				</div>
 				<div class="mb-3">
 					<label for="ProductDescription" class="form-label">Description</label>
 					<textarea
