@@ -29,6 +29,13 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			$totalDiscount = $order['Order']['total_discount'];
 			$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
 
+			$promoCodeDetails = !empty($order['Order']['promo_code_details']) ? json_decode($order['Order']['promo_code_details'], true) : [];
+			$minPurchaseValue = (float)($promoCodeDetails['min_purchase_value'] ?? 0);
+			$showPromoDiscount = false;
+			if ($cartValue >= $minPurchaseValue) {
+				$showPromoDiscount = true;
+			}
+
 			$cartMrpValue = 0;
 			$totalItems = 0;
 			foreach ($order['OrderProduct'] as $row) {
@@ -81,7 +88,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			*/
 			?>
 			<?php
-			if ($promoCodeDiscount > 0) {
+			if ($showPromoDiscount && $promoCodeDiscount > 0) {
 				?>
 				<tr class="text-muted">
 					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
