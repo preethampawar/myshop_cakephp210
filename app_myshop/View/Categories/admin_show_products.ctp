@@ -33,6 +33,7 @@
 			<tr>
 				<th>#</th>
 				<th>Product Name</th>
+				<th>Relative Price<br><span class="small text-orange"><?php echo $categoryInfo['Category']['products_base_price']; ?></span></th>
 				<th>MRP</th>
 				<th>Discount</th>
 				<th>SalePrice</th>
@@ -54,6 +55,8 @@
 					$mrp = (float)$categoryProducts[$productID]['Product']['mrp'];
 					$discount = (float)$categoryProducts[$productID]['Product']['discount'];
 					$salePrice = $mrp - $discount;
+					$productRelativePrice = (float)$categoryProducts[$productID]['Product']['relative_base_price'];
+					$allowRelativePriceUpdate = (float)$categoryProducts[$productID]['Product']['allow_relative_price_update'];
 					?>
 						<tr>
 							<td><?= $k ?>.</td>
@@ -65,20 +68,20 @@
 										$url = '/admin/products/setInactive/' . $productID;
 										$confirmMessage = 'Are you sure you want to deactivate this product? Deactivating will hide this product from public.';
 										?>
-										<i class="fa fa-circle text-success"></i>
-										<!-- <span
-										class="small fa fa-circle text-success"
-										onclick="showConfirmPopup('<?php echo $url;?>//', '<?php echo $title;?>//', '<?php echo $confirmMessage;?>//')"></span> -->
+
+										<span
+										class="fa fa-circle text-success"
+										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 										<?php
 									} else {
 										$title = "Set Active - $productName";
 										$url = '/admin/products/setActive/' . $productID;
 										$confirmMessage = 'Are you sure you want to activate this product? Activating will make this product available to public.';
 										?>
-										<i class="fa fa-circle text-danger"></i>
-										<!-- <span
-										class="small fa fa-circle text-danger"
-										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span> -->
+
+										<span
+										class="fa fa-circle text-danger"
+										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 										<?php
 									}
 									?>
@@ -86,6 +89,7 @@
 
 								<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
 							</td>
+							<td class="text-muted"><?= $allowRelativePriceUpdate ? $productRelativePrice : '' ?></td>
 							<td class="text-muted"><?= $mrp ?></td>
 							<td class="text-muted"><?= $discount ?></td>
 							<td class="text-dark"><?= $salePrice ?></td>
