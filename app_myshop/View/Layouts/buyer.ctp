@@ -112,7 +112,6 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			document.getElementById("topNavProgressBar").classList.add('d-none')
 		}
 	</script>
-	<script charset="UTF-8" src="//web.webpushs.com/js/push/786b89c98020dddfbb09c24aaaa847f6_1.js" async></script>
 </head>
 
 <body class="bg-dark" onbeforeunload="showLoadingBar()">
