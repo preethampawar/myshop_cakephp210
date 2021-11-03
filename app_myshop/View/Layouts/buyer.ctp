@@ -107,7 +107,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 		function showLoadingBar() {
 			document.getElementById("topNavProgressBar").classList.remove('d-none')
 		}
-		
+
 		function hideLoadingBar() {
 			document.getElementById("topNavProgressBar").classList.add('d-none')
 		}
@@ -236,15 +236,15 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 							<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
 						</a>
 					</li>
-				<?php endif; ?>				
+				<?php endif; ?>
 			</ul>
 			<div class="progress rounded-0 d-none" id="topNavProgressBar">
 				<div
-					class="progress-bar progress-bar-striped progress-bar-animated bg-orange small" 
-					role="progressbar" 
-					aria-valuenow="100" 
-					aria-valuemin="0" 
-					aria-valuemax="100" 
+					class="progress-bar progress-bar-striped progress-bar-animated bg-orange small"
+					role="progressbar"
+					aria-valuenow="100"
+					aria-valuemin="0"
+					aria-valuemax="100"
 					style="width: 100%">Loading...</div>
 			</div>
 		</div>
@@ -709,5 +709,6 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 	<script src="/js/site.js?v=1.2.4" defer></script>
 	<?= $this->element('customjs') ?>
+	<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BMfWKDJnzlndtyhBryNbMmDWM3mjiS4WOcJWCbSxfv8t8Mf37IJnC2_cH22zbIO4pf4DZ3ZAq149NwMQ6uGabLo' });</script><!-- end webpushr code -->
 </body>
 </html>
