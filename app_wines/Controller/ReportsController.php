@@ -32,6 +32,7 @@ class ReportsController extends AppController
         $hideHeader = false;
         $hideSideBar = false;
         $viewType = '';
+		$result = null;
 
         App::uses('Product', 'Model');
         $this->Product = new Product;
@@ -201,26 +202,26 @@ class ReportsController extends AppController
     function getStoreStockReport($store_id, $fromDate, $toDate)
     {
         /** Query to get stock report */
-        $query = "	
-#find (opening stock) (stock purchases,  stock sale in the date range) (closing stock) 
+        $query = "
+#find (opening stock) (stock purchases,  stock sale in the date range) (closing stock)
 
 #opening stock
-SELECT p.id,p.name,p.product_category_id,p.unit_selling_price,p.box_buying_price,p.box_qty, c.name, (COALESCE(os_purchases.pu_qty,0)-COALESCE(os_sales.s_qty,0)-COALESCE(os_breakages.b_qty,0)) opening_stock, 
+SELECT p.id,p.name,p.product_category_id,p.unit_selling_price,p.box_buying_price,p.box_qty, c.name, (COALESCE(os_purchases.pu_qty,0)-COALESCE(os_sales.s_qty,0)-COALESCE(os_breakages.b_qty,0)) opening_stock,
 	COALESCE(rs_purchases.pu_qty,0) stock_added, COALESCE(rs_sales.s_qty,0) stock_sale,
 	COALESCE(rs_breakages.b_qty,0) stock_breakage,
 	(COALESCE(cs_purchases.pu_qty,0)-COALESCE(cs_sales.s_qty,0)-COALESCE(cs_breakages.b_qty,0)) closing_stock,
-	pu_total_amt as total_purchase_value, s_total_amt as total_sale_value, b_total_amt as total_breakage_value	
-FROM products p 
+	pu_total_amt as total_purchase_value, s_total_amt as total_sale_value, b_total_amt as total_breakage_value
+FROM products p
   LEFT JOIN
 	#get product category info
 	product_categories c ON c.id=p.product_category_id
   LEFT JOIN
 	#get opening sales
 	(SELECT s.product_id, SUM(total_units) s_qty FROM sales s WHERE s.store_id=@store_id AND s.sale_date<@from_date GROUP BY s.product_id) os_sales ON os_sales.product_id=p.id
-  LEFT JOIN 	
+  LEFT JOIN
 	#get opening purchases
 	(SELECT pu.product_id, SUM(total_units) pu_qty FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date<@from_date GROUP BY pu.product_id) os_purchases ON os_purchases.product_id=p.id
-  LEFT JOIN 	
+  LEFT JOIN
 	#get opening breakages
 	(SELECT b.product_id, SUM(total_units) b_qty FROM breakages b WHERE b.store_id=@store_id AND b.breakage_date<@from_date GROUP BY b.product_id) os_breakages ON os_breakages.product_id=p.id
 
@@ -228,24 +229,24 @@ FROM products p
   LEFT JOIN
 	#get closing sales
 	(SELECT s.product_id, SUM(total_units) s_qty FROM sales s WHERE s.store_id=@store_id AND s.sale_date<=@to_date GROUP BY s.product_id) cs_sales ON cs_sales.product_id=p.id
-  LEFT JOIN 	
+  LEFT JOIN
 	#get closing purchases
-	(SELECT pu.product_id, SUM(total_units) pu_qty FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date<=@to_date GROUP BY pu.product_id) cs_purchases ON cs_purchases.product_id=p.id	
+	(SELECT pu.product_id, SUM(total_units) pu_qty FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date<=@to_date GROUP BY pu.product_id) cs_purchases ON cs_purchases.product_id=p.id
 	#get closing breakages
   LEFT JOIN
 	(SELECT b.product_id, SUM(total_units) b_qty FROM breakages b WHERE b.store_id=@store_id AND b.breakage_date<=@to_date GROUP BY b.product_id) cs_breakages ON cs_breakages.product_id=p.id
-	
-#purchase and sales stock in date range	
+
+#purchase and sales stock in date range
   LEFT JOIN
 	#get purchases in date range
 	(SELECT pu.product_id, SUM(total_units) pu_qty, SUM(pu.total_amount) pu_total_amt FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date BETWEEN @from_date AND @to_date GROUP BY pu.product_id) rs_purchases ON rs_purchases.product_id=p.id
-  LEFT JOIN 
+  LEFT JOIN
 	#get sales in date range
 	(SELECT s.product_id, SUM(s.total_units) s_qty, SUM(s.total_amount) s_total_amt FROM sales s WHERE s.store_id=@store_id AND s.sale_date BETWEEN @from_date AND @to_date GROUP BY s.product_id) rs_sales ON rs_sales.product_id=p.id
   LEFT JOIN
 	#get breakages in date range
 	(SELECT b.product_id, SUM(total_units) b_qty, SUM(b.total_amount) b_total_amt FROM breakages b WHERE b.store_id=@store_id AND b.breakage_date BETWEEN @from_date AND @to_date GROUP BY b.product_id) rs_breakages ON rs_breakages.product_id=p.id
-WHERE p.store_id=@store_id 	
+WHERE p.store_id=@store_id
 ORDER BY p.name";
 
         $this->Report->query("SET @store_id='$store_id'");
@@ -259,26 +260,26 @@ ORDER BY p.name";
     function getProductStockReport($store_id, $fromDate, $toDate, $productID)
     {
         /** Query to get stock report */
-        $query = "				
-#find (opening stock) (stock purchases,  stock sale in the date range) (closing stock) 
+        $query = "
+#find (opening stock) (stock purchases,  stock sale in the date range) (closing stock)
 
 #opening stock
-SELECT p.id,p.name,p.product_category_id,p.unit_selling_price,p.box_buying_price,p.box_qty, c.name, (COALESCE(os_purchases.pu_qty,0)-COALESCE(os_sales.s_qty,0)-COALESCE(os_breakages.b_qty,0)) opening_stock, 
+SELECT p.id,p.name,p.product_category_id,p.unit_selling_price,p.box_buying_price,p.box_qty, c.name, (COALESCE(os_purchases.pu_qty,0)-COALESCE(os_sales.s_qty,0)-COALESCE(os_breakages.b_qty,0)) opening_stock,
 	COALESCE(rs_purchases.pu_qty,0) stock_added, COALESCE(rs_sales.s_qty,0) stock_sale,
 	COALESCE(rs_breakages.b_qty,0) stock_breakage,
 	(COALESCE(cs_purchases.pu_qty,0)-COALESCE(cs_sales.s_qty,0)-COALESCE(cs_breakages.b_qty,0)) closing_stock,
-	pu_total_amt as total_purchase_value, s_total_amt as total_sale_value, b_total_amt as total_breakage_value	
-FROM products p 
+	pu_total_amt as total_purchase_value, s_total_amt as total_sale_value, b_total_amt as total_breakage_value
+FROM products p
   LEFT JOIN
 	#get product category info
 	product_categories c ON c.id=p.product_category_id
   LEFT JOIN
 	#get opening sales
 	(SELECT s.product_id, SUM(total_units) s_qty FROM sales s WHERE s.store_id=@store_id AND s.sale_date<@from_date GROUP BY s.product_id) os_sales ON os_sales.product_id=p.id
-  LEFT JOIN 	
+  LEFT JOIN
 	#get opening purchases
 	(SELECT pu.product_id, SUM(total_units) pu_qty FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date<@from_date GROUP BY pu.product_id) os_purchases ON os_purchases.product_id=p.id
-  LEFT JOIN 	
+  LEFT JOIN
 	#get opening breakages
 	(SELECT b.product_id, SUM(total_units) b_qty FROM breakages b WHERE b.store_id=@store_id AND b.breakage_date<@from_date GROUP BY b.product_id) os_breakages ON os_breakages.product_id=p.id
 
@@ -286,24 +287,24 @@ FROM products p
   LEFT JOIN
 	#get closing sales
 	(SELECT s.product_id, SUM(total_units) s_qty FROM sales s WHERE s.store_id=@store_id AND s.sale_date<=@to_date GROUP BY s.product_id) cs_sales ON cs_sales.product_id=p.id
-  LEFT JOIN 	
+  LEFT JOIN
 	#get closing purchases
-	(SELECT pu.product_id, SUM(total_units) pu_qty FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date<=@to_date GROUP BY pu.product_id) cs_purchases ON cs_purchases.product_id=p.id	
+	(SELECT pu.product_id, SUM(total_units) pu_qty FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date<=@to_date GROUP BY pu.product_id) cs_purchases ON cs_purchases.product_id=p.id
 	#get closing breakages
   LEFT JOIN
 	(SELECT b.product_id, SUM(total_units) b_qty FROM breakages b WHERE b.store_id=@store_id AND b.breakage_date<=@to_date GROUP BY b.product_id) cs_breakages ON cs_breakages.product_id=p.id
-	
-#purchase and sales stock in date range	
+
+#purchase and sales stock in date range
   LEFT JOIN
 	#get purchases in date range
 	(SELECT pu.product_id, SUM(total_units) pu_qty, SUM(pu.total_amount) pu_total_amt FROM purchases pu WHERE pu.store_id=@store_id AND pu.purchase_date BETWEEN @from_date AND @to_date GROUP BY pu.product_id) rs_purchases ON rs_purchases.product_id=p.id
-  LEFT JOIN 
+  LEFT JOIN
 	#get sales in date range
 	(SELECT s.product_id, SUM(total_units) s_qty, SUM(s.total_amount) s_total_amt FROM sales s WHERE s.store_id=@store_id AND s.sale_date BETWEEN @from_date AND @to_date GROUP BY s.product_id) rs_sales ON rs_sales.product_id=p.id
   LEFT JOIN
 	#get breakages in date range
 	(SELECT b.product_id, SUM(total_units) b_qty, SUM(b.total_amount) b_total_amt FROM breakages b WHERE b.store_id=@store_id AND b.breakage_date BETWEEN @from_date AND @to_date GROUP BY b.product_id) rs_breakages ON rs_breakages.product_id=p.id
-WHERE p.id=@product_id AND p.store_id=@store_id 	 
+WHERE p.id=@product_id AND p.store_id=@store_id
 ORDER BY p.name";
 
         $this->Report->query("SET @store_id='$store_id'");
@@ -643,7 +644,8 @@ ORDER BY p.name";
 
     function invoiceReport()
     {
-
+		$invoices = null;
+		$invoiceAmount = [];
         if ($this->request->isPost()) {
             $data = $this->request->data;
 
@@ -714,6 +716,8 @@ ORDER BY p.name";
         $viewType = "";
         $showForm = true;
         $hideHeader = false;
+		$fromDate = null;
+		$toDate = null;
         if ($this->request->isPost()) {
             $data = $this->request->data;
             $viewType = $data['Report']['view_type'];
@@ -912,7 +916,7 @@ ORDER BY p.name";
 				where d.store_id=$store_id
 
 				group by pu.store_id, d.id, b.id, pu.product_id
-				$having_condition 
+				$having_condition
 				order by d.name, b.name, p.name
 			";
 
