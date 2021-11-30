@@ -166,6 +166,7 @@ $this->Html->meta('description', $desc, ['inline' => false]);
 		<div style="clear:both;"></div>
 	</div>
 	<?php
+	$canonical = '/products/getDetails/'.$categoryID.'/'.$productID;
 	$customMeta = '';
 	$customMeta .= $this->Html->meta(['property' => 'og:url', 'content' => $url, 'inline' => false]);
 	$customMeta .= $this->Html->meta(['property' => 'og:type', 'content' => 'product', 'inline' => false]);
@@ -175,6 +176,7 @@ $this->Html->meta('description', $desc, ['inline' => false]);
 	$customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $this->Session->read('Site.title'), 'inline' => false]);
 	//$customMeta.=$this->Html->meta(array('property' => 'fb:admins', 'content' => '530846121', 'inline'=>false));
 	$this->set('customMeta', $customMeta);
+	$this->set('canonical', $canonical);
 	?>
 
 	<div class="fb-comments" data-href="<?php echo $url; ?>" data-num-posts="10" data-width="600"></div>

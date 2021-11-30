@@ -1,6 +1,7 @@
 <div id="content">
 	<div class="text-end">
-		<a href='/admin/categories/' class="btn btn-warning btn-sm">Go Back</a>
+		<a href="/admin/categories/showProducts/<?= $categoryInfo['Category']['id'] ?>" class="btn btn-sm btn-outline-primary">Manage Products</a>
+		<a href='/admin/categories/' class="btn btn-warning btn-sm ms-2">Go Back</a>
 	</div>
 	<section>
 		<h2>Edit Category: <?php echo $categoryInfo['Category']['name']; ?></h2>

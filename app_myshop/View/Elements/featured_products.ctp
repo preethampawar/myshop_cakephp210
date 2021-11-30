@@ -17,7 +17,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 		<?php
 		if (!$homepage) {
 		?>
-			<h1 class="mt-4">Best Deals (<?= count($allCategories) ?> items)</h1>
+			<h1 class="mt-4"><i class="fa fa-fire text-orange"></i> Hot Deals (<?= count($allCategories) ?> items)</h1>
 		<?php
 		}
 		?>

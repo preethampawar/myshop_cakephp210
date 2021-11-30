@@ -7,6 +7,7 @@ $secondaryMenuBg = $theme['secondaryMenuBg'];
 $linkColor = $theme['linkColor'];
 $cartBadgeBg = $theme['cartBadgeBg'];
 $hightlightLink = $theme['hightlightLink'];
+$canonical = $canonical ?? null;
 
 if (!empty($title_for_layout)) {
 	$title_for_layout = $title_for_layout . ' - ' . $this->Session->read('Site.title');
@@ -63,10 +64,17 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 		document.body.appendChild(el);
 	</script>
 
+	<?php
+	if (!empty($canonical)) {
+		$canonicalUrl = $this->Html->url($canonical, true);
+		echo '<link rel="canonical" href="'. $canonicalUrl .'">';
+	}
+	?>
+
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.1">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.2">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -654,12 +662,6 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			<?php
 			}
 			?>
-
-			<div id="installContainer" class="d-none">
-				<div class="bg-light border p-3 fixed-bottom small text-center">
-					<button id="butInstall" type="button" class="btn btn-sm btn-orange"><i class="fa fa-mobile-alt"></i> Install</button><br>Install "<?= $this->Session->read('Site.title') ?>" app for fast and easy access.
-				</div>
-			</div>
 		</div>
 
 		<div class="container mt-4">
@@ -707,7 +709,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.2.4" defer></script>
+	<script src="/js/site.js?v=1.2.5" defer></script>
 	<?= $this->element('customjs') ?>
 	<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BMfWKDJnzlndtyhBryNbMmDWM3mjiS4WOcJWCbSxfv8t8Mf37IJnC2_cH22zbIO4pf4DZ3ZAq149NwMQ6uGabLo' });</script><!-- end webpushr code -->
 </body>
