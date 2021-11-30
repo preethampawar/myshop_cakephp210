@@ -24,7 +24,7 @@ if ($categories and !empty($categories)) {
 	foreach ($categories as $row) {
         $categoryUploadedImages = $row['Category']['images'] ? json_decode($row['Category']['images']) : [];
         $categoryHighlightImage = $this->App->getHighlightImage($categoryUploadedImages);
-        
+
         if ($categoryHighlightImage) {
             $showCategoriesDiv = true;
         }
@@ -32,7 +32,7 @@ if ($categories and !empty($categories)) {
 
     if ($showCategoriesDiv) {
         ?>
-		
+
 			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 mb-5">
 				<?php
                 foreach ($categories as $row) {
@@ -80,7 +80,7 @@ if ($categories and !empty($categories)) {
                     }
                 } ?>
 			</div>
-		
+
 	<?php
     }
 }
