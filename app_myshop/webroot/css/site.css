@@ -32,7 +32,7 @@
     --cus-success-dark: rgb(1, 88, 57);
     --cus-danger-light: rgb(255, 201, 206);
     --cus-danger-light-50: rgb(253, 243, 243);
-    --cus-danger-dark: #85020e;
+    --cus-danger-dark: #62010c;
 	--cus-pink-light: #fcf5ef;
 	--cus-dark: #333333;
 }
@@ -455,4 +455,8 @@ h1,h2,h3,h4,h5,h6 {
 #progressbar li.active:before,
 #progressbar li.active:after {
 	background: var(--bs-primary);
+}
+.progress-bar-animated {
+    -webkit-animation: 0.4s linear infinite progress-bar-stripes;
+    animation: 0.4s linear infinite progress-bar-stripes;
 }

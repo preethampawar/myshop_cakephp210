@@ -1,5 +1,5 @@
 <div>
-	<?php echo $this->Form->create('User', ['onsubmit' => "disableButton('customerRegisterButton')"]); ?>
+	<?php echo $this->Form->create('User', ['onsubmit' => 'showRequestProcessingMsg("#customerRegisterButton")']); ?>
 	<h1 class="">Customer Registration</h1>
 
 	<div class="mt-4">
@@ -52,7 +52,7 @@
 		<?php
 		$text = "*OTP will be sent to your Email Address.";
 		if((bool)$this->Session->read('Site.sms_notifications') === true) {
-			$text = "*OTP will be sent to the specified Mobile no. and Email Address.";
+			$text = "*OTP will be sent to the specified Mobile no.";
 		}
 		echo $text;
 		?>

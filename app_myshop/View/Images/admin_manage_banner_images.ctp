@@ -28,7 +28,7 @@ $bannerUploadedImages = $this->App->getRearrangedImages($bannerUploadedImages);
 			accept="image/*"
 		/>
 		<br/>
-		<div class="text-danger mt-3 small">Min 1080 x 360 pixels (3:1 ratio)</div>
+		<div class="text-danger mt-3 small">Min 1200 x 480 pixels (2.5:1 ratio)</div>
 
 		<div class="mt-3">
 			<a href="/admin/banners/edit/<?php echo $bannerInfo['Banner']['id']; ?>"
@@ -86,7 +86,7 @@ $bannerUploadedImages = $this->App->getRearrangedImages($bannerUploadedImages);
 
 					?>
 					<li class="list-group-item">
-						<img src="<?= $imageUrl ?> " loading="lazy" width="200" height="80" class="mb-2">
+						<img src="<?= $imageUrl ?> " loading="lazy" width="250" height="100" class="mb-2">
 
 						<?php
 						if (!$imageHighlight) {

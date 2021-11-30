@@ -492,22 +492,22 @@ Message: ' . htmlentities($data['User']['message']) . '
 
 	public function paymentInfo()
 	{
-
+		$this->set('title_for_layout', 'Payment Information');
 	}
 
 	public function tos()
 	{
-
+		$this->set('title_for_layout', 'Terms of Service');
 	}
 
 	public function about()
 	{
-
+		$this->set('title_for_layout', 'About Us');
 	}
 
 	public function privacy()
 	{
-
+		$this->set('title_for_layout', 'Privacy Policy');
 	}
 
 	public function admin_clearCache()

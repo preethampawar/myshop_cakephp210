@@ -30,11 +30,11 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				$shoppingCartProductID = $row['id'];
 
 				$categoryID = $row['category_id'];
-				$categoryName = ucwords($row['category_name']);
+				$categoryName = $row['category_name'];
 				$categoryNameSlug = Inflector::slug($categoryName, '-');
 
 				$productID = $row['product_id'];
-				$productName = ucwords($row['product_name']);
+				$productName = $row['product_name'];
 				$productNameSlug = Inflector::slug($productName, '-');
 
 				$age = ($row['age']) ? $row['age'] : '-';

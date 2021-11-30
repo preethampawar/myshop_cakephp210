@@ -15,7 +15,8 @@ class UsersController extends AppController
 
 	public function login()
 	{
-		$this->set('hideLeftMenu', true);
+		$this->set('title_for_layout', 'Login');
+
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
 			$mobile = (int)$data['User']['mobile'];
@@ -58,7 +59,7 @@ class UsersController extends AppController
 				$this->Session->write('loginOtp', $rand);
 				$this->Session->write('loginUser', $userInfo['User']);
 				try {
-					$this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
+					//$this->sendLoginOtp($rand, $email, $mobile); //todo: uncomment
 				} catch (Exception $e) {
 					//$this->errorMsg('User not found.');
 				}
@@ -94,7 +95,13 @@ class UsersController extends AppController
 
 	public function verifyLoginOtp()
 	{
-		$this->set('hideLeftMenu', true);
+		$this->set('title_for_layout', 'Verify LoginOTP');
+
+		if ($this->Session->check('User')) {
+			$this->Session->delete('loginOtp');
+			$this->Session->delete('loginUser');
+			$this->redirect('/');
+		}
 
 		if ($this->Session->check('loginOtp') && $this->Session->check('loginUser')) {
 			$otp = $this->Session->read('loginOtp');
@@ -105,11 +112,17 @@ class UsersController extends AppController
 
 				if ($otp == $userOtp || $userOtp == '0987') {
 					$this->successMsg('You are successfully logged in.');
+
 					$this->Session->write('User', $user);
 					$this->Session->write('inBuyerView', true);
 
 					$this->Session->delete('loginUser');
 					$this->Session->delete('loginOtp');
+
+					if ($user['type'] === 'delivery') {
+						$this->Session->write('inDeliveryView', true);
+						$this->redirect('/deliveries/home');
+					}
 
 					$this->redirect('/');
 				} else {
@@ -123,6 +136,8 @@ class UsersController extends AppController
 
 	public function customerRegistration()
 	{
+		$this->set('title_for_layout', 'Customer Registration');
+
 		$mobile = null;
 		$email = null;
 		if ($this->request->is('post')) {
@@ -198,6 +213,14 @@ class UsersController extends AppController
 
 	public function verifyCustomerRegistrationOtp()
 	{
+		$this->set('title_for_layout', 'Verify Customer Registration OTP');
+
+		if ($this->Session->check('User')) {
+			$this->Session->delete('customerRegistrationOtp');
+			$this->Session->delete('customerRegistrationUser');
+			$this->redirect('/');
+		}
+
 		if ($this->Session->check('customerRegistrationOtp') && $this->Session->check('customerRegistrationUser')) {
 			$otp = $this->Session->read('customerRegistrationOtp');
 			$user = $this->Session->read('customerRegistrationUser');
@@ -858,6 +881,105 @@ Message: ' . htmlentities($data['User']['message']) . '
 		);
 		$this->response->send();
 		exit;
+	}
+
+	public function admin_newUser()
+	{
+		$mobile = null;
+		$email = null;
+		$name = null;
+		if ($this->request->is('post')) {
+			$data = $this->request->data;
+			$mobile = (int)$data['User']['mobile'];
+			$email = $data['User']['email'];
+			$name = $data['User']['name'];
+
+			$error = $this->validateCustomerRegistration($mobile, $email);
+
+			if (!$error) {
+
+				$conditions = [
+					'User.mobile' => $mobile,
+					'User.site_id' => $this->Session->read('Site.id'),
+				];
+
+				$userInfo = $this->User->find('first', ['conditions' => $conditions]);
+
+				if ($userInfo) {
+					$error = "Mobile no. '$mobile' is already registered.";
+				} else {
+					// if sms notifications feature is enabled and user does not specify email then use default customer notification email address.
+					if((bool)$this->Session->read('Site.sms_notifications') === true && empty($data['User']['email'])) {
+						$data['User']['email'] = $this->Session->read('Site.default_customer_notification_email');
+					}
+
+					$data['User']['site_id'] = $this->Session->read('Site.id');
+					$data['User']['password'] = md5($mobile);
+					$data['User']['id'] = null;
+
+					$this->User->save($data);
+
+					$this->successMsg("User added successfully");
+					$this->redirect('/admin/users/manage');
+				}
+			}
+
+			if ($error) {
+				$this->errorMsg($error);
+			}
+		}
+
+		$this->set('mobile', $mobile);
+		$this->set('email', $email);
+		$this->set('name', $name);
+	}
+
+	public function admin_editUser($userId)
+	{
+		$mobile = null;
+		$email = null;
+
+		if ($this->request->is('post') || $this->request->is('put')) {
+			$data = $this->request->data;
+			$mobile = (int)$data['User']['mobile'];
+			$email = $data['User']['email'];
+
+			$error = $this->validateCustomerRegistration($mobile, $email);
+
+			if (!$error) {
+
+				$conditions = [
+					'User.mobile' => $mobile,
+					'User.site_id' => $this->Session->read('Site.id'),
+					'User.id NOT' => $userId,
+				];
+
+				$userInfo = $this->User->find('first', ['conditions' => $conditions]);
+
+				if ($userInfo) {
+					$error = "Mobile no. '$mobile' is already registered.";
+				} else {
+					// if sms notifications feature is enabled and user does not specify email then use default customer notification email address.
+					if((bool)$this->Session->read('Site.sms_notifications') === true && empty($data['User']['email'])) {
+						$data['User']['email'] = $this->Session->read('Site.default_customer_notification_email');
+					}
+					$data['User']['id'] = $userId;
+
+					$this->User->save($data);
+
+					$this->successMsg("User data updated successfully");
+					$this->redirect('/admin/users/manage');
+				}
+			}
+
+			if ($error) {
+				$this->errorMsg($error);
+			}
+		}
+
+		$userInfo = $this->User->findById($userId);
+
+		$this->set('userInfo', $userInfo);
 	}
 
 }

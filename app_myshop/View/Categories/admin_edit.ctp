@@ -1,6 +1,7 @@
 <div id="content">
 	<div class="text-end">
-		<a href='/admin/categories/' class="btn btn-warning btn-sm">Go Back</a>
+		<a href="/admin/categories/showProducts/<?= $categoryInfo['Category']['id'] ?>" class="btn btn-sm btn-outline-primary">Manage Products</a>
+		<a href='/admin/categories/' class="btn btn-warning btn-sm ms-2">Go Back</a>
 	</div>
 	<section>
 		<h2>Edit Category: <?php echo $categoryInfo['Category']['name']; ?></h2>
@@ -34,6 +35,7 @@
 			>
 			<div class='text-muted small'>Note*: Only alphanumeric characters are accepted. Special characters will be removed.</div>
 		</div>
+
 		<div class="my-3">
 			<label for="CategoryMetaKeywords" class="form-label">Meta Keywords (SEO)</label>
 			<textarea
@@ -69,6 +71,40 @@
 
 	</section>
 </div>
+
+<?php
+echo $this->Form->create(null, ['url' => '/admin/categories/updateBasePrice/'.$categoryInfo['Category']['id'], 'id' => 'CategoryUpdateProductsBasePrice']);
+?>
+<div class="mt-5 card card-body bg-light">
+	<label for="CategoryName" class="form-label">Update Products Base Price</label>
+	<input
+			type="number"
+			id="CategoryProductsBasePrice"
+			name="data[Category][products_base_price]"
+			value="<?php echo $this->data['Category']['products_base_price']; ?>"
+			class="form-control form-control-sm"
+			placeholder="Enter Products Base Price"
+			max="9999999"
+	>
+	<div class='text-muted small'>Note*: This will be the base price for all the products in this category.</div>
+
+	<div class="mt-3">
+		<button type="button" class="btn btn-sm btn-primary" onclick="updateProductsBasePrice()">Apply Base Price</button>
+	</div>
+</div>
+
+<script>
+	function updateProductsBasePrice() {
+		if (confirm("This action will update MRP prices of all the products in this category w.r.t their relative prices.\n\nProduct MRP = Products Base Price + Product Relative Price\n\nAre you sure you want to continue?")) {
+			document.getElementById('CategoryUpdateProductsBasePrice').submit()
+		}
+	}
+</script>
+
+<?php
+echo $this->Form->end();
+?>
+
 
 
 <br><br>

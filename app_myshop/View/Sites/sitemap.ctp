@@ -2,7 +2,7 @@
 	<!-- home page -->
 	<url>
 		<loc><?php echo $this->Html->url('/', true); ?></loc>
-		<changefreq>weekly</changefreq>
+		<changefreq>daily</changefreq>
 	</url>
 	<!-- categories and products list -->
 	<?php
@@ -14,8 +14,8 @@
 			$categoryNameSlug = Inflector::slug($categoryName, '-');
 			?>
 			<url>
-				<loc><?php echo $this->Html->url('/products/show/' . $categoryID . '/' . $categoryNameSlug, true); ?></loc>
-				<changefreq>weekly</changefreq>
+				<loc><?php echo $this->Html->url('/products/show/' . $categoryID, true); ?></loc>
+				<changefreq>daily</changefreq>
 			</url>
 			<?php
 			if (!empty($row['CategoryProducts'])) {
@@ -30,8 +30,8 @@
 					}
 					?>
 					<url>
-						<loc><?php echo $this->Html->url('/products/details/' . $categoryID . '/' . $productID . '/' . $categoryNameSlug . '/' . $productNameSlug, true); ?></loc>
-						<changefreq>weekly</changefreq>
+						<loc><?php echo $this->Html->url('/products/getDetails/' . $categoryID . '/' . $productID . '/' . $productNameSlug, true); ?></loc>
+						<changefreq>daily</changefreq>
 					</url>
 					<?php
 				}
@@ -53,7 +53,7 @@
 			?>
 			<url>
 				<loc><?php echo $this->Html->url('/contents/show/' . $contentID . '/' . $contentTitleSlug, true); ?></loc>
-				<changefreq>weekly</changefreq>
+				<changefreq>daily</changefreq>
 			</url>
 			<?php
 		}
@@ -77,15 +77,39 @@
 			?>
 			<url>
 				<loc><?php echo $this->Html->url('/blog/show/' . $blogID . '/' . $blogTitleSlug, true); ?></loc>
-				<changefreq>weekly</changefreq>
+				<changefreq>daily</changefreq>
 			</url>
 			<?php
 		}
 	}
 	?>
-	<!-- Product Photo Gallery page -->
+	
 	<url>
-		<loc><?php echo $this->Html->url('/ImageGallery/productsGallery', true); ?></loc>
+		<loc><?php echo $this->Html->url('/products/showFeatured', true); ?></loc>
 		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc><?php echo $this->Html->url('/products/showAll', true); ?></loc>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc><?php echo $this->Html->url('/sites/about', true); ?></loc>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc><?php echo $this->Html->url('/sites/contact', true); ?></loc>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc><?php echo $this->Html->url('/sites/tos', true); ?></loc>
+		<changefreq>monthly</changefreq>
+	</url>	
+	<url>
+		<loc><?php echo $this->Html->url('/sites/privacy', true); ?></loc>
+		<changefreq>monthly</changefreq>
+	</url>	
+	<url>
+		<loc><?php echo $this->Html->url('/testimonials', true); ?></loc>
+		<changefreq>monthly</changefreq>
 	</url>
 </urlset>

@@ -80,7 +80,19 @@ $this->set('enableTextEditor', true);
 					class="form-check-input"
 					<?php echo $this->data['Product']['hide_price'] ? 'checked' : null; ?>
 				>
-				<label class="form-check-label" for="ProductHidePrice">Hide Price Information</label>
+				<label class="form-check-label" for="ProductAllowRelativePriceUpdate">Hide Price Information</label>
+			</div>
+			<div class="form-check form-switch">
+				<input type="hidden" name="data[Product][allow_relative_price_update]" value="0">
+				<input
+					type="checkbox"
+					id="ProductAllowRelativePriceUpdate"
+					name="data[Product][allow_relative_price_update]"
+					value="1"
+					class="form-check-input"
+					<?php echo $this->data['Product']['allow_relative_price_update'] ? 'checked' : null; ?>
+				>
+				<label class="form-check-label" for="ProductAllowRelativePriceUpdate">Allow Relative Price Update</label>
 			</div>
 		</div>
 
@@ -199,6 +211,17 @@ $this->set('enableTextEditor', true);
 						required
 					>
 				</div>
+
+				<div class="my-3">
+					<label for="ProductShortDesc" class="form-label">Short Description</label>
+					<textarea
+							id="ProductShortDesc"
+							name="data[Product][short_desc]"
+							class="form-control form-control-sm tinymce"
+							placeholder="Enter short description"
+					><?php echo $this->data['Product']['short_desc']; ?></textarea>
+					<div class="small text-muted">Note: Short description will be displayed in Product tiles below the product name.</div>
+				</div>
 				<div class="mb-3">
 					<label for="ProductDescription" class="form-label">Description</label>
 					<textarea
@@ -207,6 +230,24 @@ $this->set('enableTextEditor', true);
 						class="form-control form-control-sm tinymce"
 						placeholder="Enter product description"
 					><?php echo $this->data['Product']['description']; ?></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="ProductRelativeBasePrice" class="form-label">Relative Price w.r.t Category Base Price</label>
+					<input
+							type="number"
+							id="ProductRelativeBasePrice"
+							name="data[Product][relative_base_price]"
+							value="<?php echo $this->data['Product']['relative_base_price']; ?>"
+							class="form-control form-control-sm"
+							placeholder="Enter Relative Price w.r.t Category Base Price"
+							max="9999999"
+					>
+					<div class='text-muted small'>
+						Note*: When Category base price gets updated, this product's MRP will also get updated w.r.t Relative Price.
+						<br>
+						Product MRP = Product Relative Price + Category Base Price<br>
+						Ex: Product Relative Price = 50, Category Base Price = 200, then Product MRP will become = 250
+					</div>
 				</div>
 				<div class="my-3">
 					<label for="ProductMrp" class="form-label">MRP (<?= $this->App->price('') ?>)</label>

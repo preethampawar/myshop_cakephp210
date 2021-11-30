@@ -6,7 +6,7 @@
 	</div>
 	<div class="col-md-12 col-lg-6 mb-3">
 		<div class="alert alert-primary small">
-			<?php echo $this->Form->create(null, ['encoding' => false]); ?>
+			<?php echo $this->Form->create(null, ['encoding' => false, 'onsubmit' => 'return checkIfHuman(event)']); ?>
 
 			<h3>Send us a message</h3>
 

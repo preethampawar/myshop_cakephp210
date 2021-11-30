@@ -423,14 +423,14 @@ Configure::write('MaxPages', '');
 Configure::write('MaxPageImages', '20');
 
 /* Domain Information */
-Configure::write('BaseDomain', 'www.apnastores.com');
-Configure::write('BaseDomainName', 'ApnaStores');
-Configure::write('BaseDomainUrl', 'http://www.apnastores.com');
+Configure::write('BaseDomain', 'www.herbsandnaturals.com');
+Configure::write('BaseDomainName', 'Herbs And Naturals');
+Configure::write('BaseDomainUrl', 'https://www.herbsandnaturals.com');
 
 /* Domain Information */
-Configure::write('Domain', 'apnastores.com');
-Configure::write('DomainName', 'ApnaStores');
-Configure::write('DomainUrl', 'http://www.apnastores.com');
+Configure::write('Domain', 'www.herbsandnaturals.com');
+Configure::write('DomainName', 'Herbs And Naturals');
+Configure::write('DomainUrl', 'https://www.herbsandnaturals.com');
 
 /* Site email configuration */
 Configure::write('AdminEmail', 'preetham.pawar+apnastores@gmail.com');
@@ -451,7 +451,7 @@ Configure::write('Product.quantity', $productQty);
 
 /* Asset domain url */
 //Configure::write('AssetDomainUrl', 'http://assets.apnaaccounts.com/');
-Configure::write('AssetDomainUrl', 'http://www.apnastores.com/');
+Configure::write('AssetDomainUrl', 'https://www.herbsandnaturals.com/');
 Configure::write('AssetDomainUrl', '/');
 
 
@@ -526,4 +526,4 @@ Configure::write('AssetDomainUrl', '/');
 	// ]
 // ]);
 
-Configure::write('ShowOneProductOnSmallScreen', true);
+Configure::write('ShowOneProductOnSmallScreen', false);

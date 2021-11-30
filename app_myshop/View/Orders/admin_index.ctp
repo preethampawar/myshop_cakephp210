@@ -1,6 +1,47 @@
+<?php
+$q_start_date = isset($this->request->query['start_date']) ? 'start_date='.$this->request->query['start_date'] : '';
+$q_end_date = isset($this->request->query['end_date']) ? 'end_date='.$this->request->query['end_date'] : '';
+
+$q = '';
+if ($q_start_date && $q_end_date) {
+	$q = '?'.$q_start_date.'&'.$q_end_date;
+}
+?>
+
 <h1>Manage Orders</h1>
 
+<div class="mt-3 text-end">
+	<a href="/admin/orders/createOrder" class="btn btn-sm btn-primary">+ Create Offline Order</a>
+	<a href="/admin/orders/archived" class="btn btn-sm btn-secondary disabled ms-2 d-none">Archived Orders</a>
+</div>
 
+<form method="get">
+	<div class="hstack gap-3 small mt-3">
+		<div>
+			<label for="StartDate">From <span class="text-danger small">(required)</span></label>
+			<input
+				type="date"
+				id ="StartDate"
+				name = "start_date"
+				value="<?= $start_date ?? date('Y-m-d') ?>"
+				class="form-control form-control-sm"
+			>
+		</div>
+
+		<div>
+			<label for="EndDate">To <span class="text-danger small">(required)</span></label>
+			<input
+				type="date"
+				id ="EndDate"
+				name = "end_date"
+				value="<?= $end_date ?? date('Y-m-d') ?>"
+				class="form-control form-control-sm"
+			>
+		</div>
+		<div><button class="btn btn-sm btn-info mt-3" type="submit">Search</button></div>
+	</div>
+</form>
+<hr>
 
 <div class="mt-4 d-none d-lg-block">
 	<?php
@@ -54,7 +95,7 @@
 //			continue;
 //		}
 		?>
-		<a href="/admin/orders/index/<?= $option ?>" role="button" class="btn <?= $btnColor ?> btn-sm position-relative me-3 mb-3">
+		<a href="/admin/orders/index/<?= $option . $q ?>" role="button" class="btn <?= $btnColor ?> btn-sm position-relative me-3 mb-3">
 			<span class="small"><?= $option ?></span>
 			<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill <?= $bgColor ?> small">
 				<?= $ordersCountStatus[$option] ?? 0 ?>
@@ -121,7 +162,7 @@
 //				continue;
 //			}
 			?>
-			<a href="/admin/orders/index/<?= $option ?>" class="list-group-item list-group-item-action ">
+			<a href="/admin/orders/index/<?= $option . $q ?>" class="list-group-item list-group-item-action ">
 				<span class="text-primary"><?= $option ?></span>
 				<span class="badge <?= $bgColor ?> rounded-pill ms-1"><?= $ordersCountStatus[$option] ?? 0 ?></span>
 			</a>
@@ -138,40 +179,37 @@
 			Filter By Status - <?= $orderType ?>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_NEW ?>"><?= Order::ORDER_STATUS_NEW ?></a></li>
-			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CONFIRMED ?>"><?= Order::ORDER_STATUS_CONFIRMED ?></a></li>
-			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_SHIPPED ?>"><?= Order::ORDER_STATUS_SHIPPED ?></a></li>
-			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_DELIVERED ?>"><?= Order::ORDER_STATUS_DELIVERED ?></a></li>
-			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CLOSED ?>"><?= Order::ORDER_STATUS_CLOSED ?></a></li>
-			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_DRAFT ?>"><?= Order::ORDER_STATUS_DRAFT ?></a></li>
-			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CANCELLED ?>"><?= Order::ORDER_STATUS_CANCELLED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_NEW . $q ?>"><?= Order::ORDER_STATUS_NEW ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CONFIRMED . $q ?>"><?= Order::ORDER_STATUS_CONFIRMED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_SHIPPED . $q ?>"><?= Order::ORDER_STATUS_SHIPPED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_DELIVERED . $q ?>"><?= Order::ORDER_STATUS_DELIVERED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CLOSED . $q ?>"><?= Order::ORDER_STATUS_CLOSED ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_DRAFT . $q ?>"><?= Order::ORDER_STATUS_DRAFT ?></a></li>
+			<li><a class="dropdown-item" href="/admin/orders/index/<?= Order::ORDER_STATUS_CANCELLED . $q ?>"><?= Order::ORDER_STATUS_CANCELLED ?></a></li>
 		</ul>
 	</div>
 </div>
 
 
-<div class="mt-4 text-end">
-	<a href="/admin/orders/createOrder" class="btn btn-sm btn-primary">+ Create Offline Order</a>
-	<a href="/admin/orders/archived" class="btn btn-sm btn-secondary disabled ms-2 d-none">Archived Orders</a>
-</div>
-
 <?php
 if ($orderType) {
 	?>
-		<div class="mt-3">
-			<b><?= $this->Paginator->params()['count'] ?></b> '<span class="text-orange fw-bold"><?= $orderType ?></span>' orders.
+		<div class="bg-light p-2 mt-3 border-bottom">
+			<span class="badge bg-orange rounded-pill"><?= $this->Paginator->params()['count'] ?></span>
+			<span class="text-orange fw-bold"><?= $orderType ?></span> orders.
+
+			<div class="small mt-3 text-muted">From "<?= date('d-m-Y', strtotime($start_date)) ?>" to "<?= date('d-m-Y', strtotime($end_date)) ?>"</div>
 		</div>
 	<?php
 }
 ?>
-
-<div class="mt-3">
+<div class="">
 	<?php
 	if (!empty($orders)) {
 		$totalOrderValue = 0;
 	?>
 		<div class="table-responsive">
-			<table class="table table-sm small" style="min-height:200px;">
+			<table class="table table-sm small mt-4" style="min-height:200px;">
 				<thead>
 				<tr>
 					<th>Order No.</th>
@@ -179,6 +217,9 @@ if ($orderType) {
 					<th>Order Value</th>
 					<th>Customer</th>
 					<th>Mobile</th>
+					<?php
+					echo $usersList ? '<th>Delivery Boy</th>' : '';
+					?>
 					<th>Created On</th>
 					<th></th>
 				</tr>
@@ -190,19 +231,20 @@ if ($orderType) {
 						$i++;
 						$orderId = $row['Order']['id'];
 						$status = $row['Order']['status'];
+						$deliveryUserId = $row['Order']['delivery_user_id'];
 						$offlineOrder = $row['Order']['is_offline_order'] ?? 0;
 						$mobile = $row['Order']['customer_phone'] ?: null ;
 						$customerName = $row['Order']['customer_name'] ?: null ;
 						$totalAmount = $row['Order']['total_order_amount'];
 						$totalOrderValue += (float)$totalAmount;
-						$modifiedDate = date('d-m-Y', strtotime($row['Order']['modified']));
+						$modifiedDate = date('d-m-Y h:i A', strtotime($row['Order']['modified']));
 						$createdDate = null;
 						$log = !empty($row['Order']['log']) ? json_decode($row['Order']['log'], true) : null;
 
 						if ($log) {
 							foreach($log as $row2) {
 								if ($row2['orderStatus'] == Order::ORDER_STATUS_NEW) {
-									$createdDate = date('d-m-Y', $row2['date']);
+									$createdDate = date('d-m-Y h:i A', $row2['date']);
 									break;
 								}
 							}
@@ -227,6 +269,9 @@ if ($orderType) {
 							<td><?= $this->App->price($totalAmount) ?></td>
 							<td><?= $customerName ?></td>
 							<td><?= $mobile ?></td>
+							<?php
+							echo $usersList && $deliveryUserId ? '<td>' . ($usersList[$deliveryUserId] ?? '') . '</td>' : '<td>&nbsp;</td>';
+							?>
 							<td><?= $createdDate ?></td>
 							<td class="text-end text-nowrap">
 

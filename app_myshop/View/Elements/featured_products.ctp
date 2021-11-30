@@ -1,7 +1,10 @@
 <?php
+$limit = $limit ?? 0;
+$homepage = $homepage ?? null;
+
 App::uses('Product', 'Model');
 $productModel = new Product();
-$allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), true);
+$allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), true, $limit);
 
 //$featuredProductsCacheKey = $this->Session->read('CacheKeys.featuredProducts');
 //$allCategories = Cache::read($featuredProductsCacheKey, 'verylong');
@@ -9,14 +12,16 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 
 <section id="ProductsInfo">
 	<article>
-		<header class="featuredLabel">
-			<b>
-			<?php echo $this->Html->link('Best Deals', '/', ['class' => 'active']); ?> |
-			</b>
-			<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'text-decoration-none']); ?>
+		<?= $this->element('homepage_tabmenu', ['homepage' => $homepage]) ?>
 
-		</header>
-		<hr>
+		<?php
+		if (!$homepage) {
+		?>
+			<h1 class="mt-4"><i class="fa fa-fire text-orange"></i> Hot Deals (<?= count($allCategories) ?> items)</h1>
+		<?php
+		}
+		?>
+
 		<?php
 		if (!empty($allCategories)) {
 			$pCount = 0;
@@ -29,16 +34,17 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 				$productsRowClass = "row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-lg-x-4 p-0";
 			}
 			?>
-			<div class="<?= $productsRowClass ?>">
+			<div class="<?= $productsRowClass ?> mt-4">
 				<?php
 				foreach ($allCategories as $row) {
 					$categoryID = $row['Category']['id'];
-					$categoryName = ucwords($row['Category']['name']);
+					$categoryName = $row['Category']['name'];
 					$categoryNameSlug = Inflector::slug($categoryName, '-');
 
 					$pCount++;
 					$productID = $row['Product']['id'];
-					$productName = ucwords($row['Product']['name']);
+					$productName = $row['Product']['name'];
+					$productShortDesc = $row['Product']['short_desc'];
 					$productNameSlug = Inflector::slug($productName, '-');
 					$productTitle = $productName;
 
@@ -65,6 +71,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					echo $this->element('product_card', [
 							'productImageUrl' => $productImageUrl,
 							'productName' => $productName,
+							'productShortDesc' => $productShortDesc,
 							'imageTagId' => $imageTagId,
 							'productTitle' => $productTitle,
 							'categoryID' => $categoryID,
@@ -125,6 +132,18 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 				}
 				?>
 			</div>
+
+			<?php
+			if ($homepage) {
+				?>
+				<div class="mt-5 mb-5 text-center">
+					<a href="/products/showFeatured" class="btn btn-orange btn-sm">Show more deals...</a>
+				</div>
+				<hr>
+				<?php
+			}
+			?>
+
 			<?php
 		} else {
 			?>
@@ -132,6 +151,5 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 			<?php
 		}
 		?>
-		<div class='clear'></div>
 	</article>
 </section>

@@ -3,18 +3,18 @@ App::uses('Validation', 'Utility');
 class SalesController extends AppController {
 
 	var $name = 'Sales';
-	
+
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->checkStoreInfo();
 		$this->cacheAction = true;
 	}
-		
+
 	/**
 	 * Function to show list of category products
 	 */
-	 public function index() {		
-		$conditions = array('Sale.store_id'=>$this->Session->read('Store.id'));					
+	 public function index() {
+		$conditions = array('Sale.store_id'=>$this->Session->read('Store.id'));
 		$this->paginate = array(
 							'conditions' => $conditions,
 							'order' => array('Sale.sale_date' => 'DESC', 'Sale.created' => 'DESC'),
@@ -22,13 +22,13 @@ class SalesController extends AppController {
 							'recursive' => '-1'
 							);
 		$sales = $this->paginate();
-		
+
 		$this->set(compact('sales'));
-    } 
-	
+    }
+
 	function addSaleFormValidation($data=null) {
 		$error = null;
-		
+
 		if($data) {
 			if(!isset($data['Sale']['product_id'])) {
 				$error = 'Product not found';
@@ -41,46 +41,47 @@ class SalesController extends AppController {
 			}
 		}
 		else {
-			$error = 'Empty product details';					
+			$error = 'Empty product details';
 		}
 		return $error;
 	}
-	
+
 	function add() {
 		$error = null;
-		
+
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
 		$this->Product->unbindModel(array('belongsTo'=>array('ProductCategory')));
 		$this->Product->bindModel(array('hasOne'=>array('ProductStockReport')));
-		$conditions = array('Product.store_id'=>$this->Session->read('Store.id'));		
+		$conditions = array('Product.store_id'=>$this->Session->read('Store.id'));
 		$productsInfo = $this->Product->find('all', array('conditions'=>$conditions, 'order'=>'Product.name', 'recursive'=>'1'));
 		$productsList = $this->Product->find('list', array('conditions'=>$conditions, 'order'=>'Product.name', 'recursive'=>'-1'));
-		
+
 		if(!empty($productsInfo)) {
 			foreach($productsInfo as $row) {
 				$bal_qty = $row['ProductStockReport']['balance_qty'];
-				$productsList[$row['Product']['id']] = $row['Product']['name'].' &nbsp;&nbsp;&nbsp;['.$bal_qty.']';
+				$productCode = !empty(trim($row['Product']['product_code'])) ? ' ['.trim($row['Product']['product_code']).']' : '';
+				$productsList[$row['Product']['id']] = $row['Product']['name'].' ['.$bal_qty.']' . $productCode;
 			}
 		}
-		
+
 		if($this->request->isPost() or $this->request->isPut()) {
 			$data = $this->request->data;
 			$saleDate = $data['Sale']['sale_date']['year'].'-'.$data['Sale']['sale_date']['month'].'-'.$data['Sale']['sale_date']['day'];
 			$data['Sale']['sale_date'] = $saleDate;
 			$this->Session->delete('selectedProductID');
-			
+
 			$error = $this->addSaleFormValidation($data);
 			// check if product is available
 			if(!$error) {
-				$this->Product->bindModel(array('belongsTo'=>array('ProductCategory')));				
+				$this->Product->bindModel(array('belongsTo'=>array('ProductCategory')));
 				if(!$productInfo = $this->Product->findById($data['Sale']['product_id'])) {
 					$error = 'Product not found.';
 				}
-			}			
-			
+			}
+
 			// check if stock is available for the selected product
-			if(!$error) {			
+			if(!$error) {
 				App::uses('ProductStockReport', 'Model');
 				$this->ProductStockReport = new ProductStockReport;
 				$conditions = array('ProductStockReport.product_id'=>$data['Sale']['product_id']);
@@ -88,15 +89,15 @@ class SalesController extends AppController {
 					$bal_qty = $tmp['ProductStockReport']['balance_qty'];
 					$input_qty = $data['Sale']['total_units'];
 					if($bal_qty<=0) {
-						$error = '"'.$productInfo['Product']['name'].'" is out of stock';						
+						$error = '"'.$productInfo['Product']['name'].'" is out of stock';
 					}
 					elseif($input_qty>$bal_qty) {
-						$error = 'No. of Units cannot be greater than '.$bal_qty;											
-					}					
+						$error = 'No. of Units cannot be greater than '.$bal_qty;
+					}
 				}
-			}			
-			
-			if(!$error) {				
+			}
+
+			if(!$error) {
 				$data['Sale']['id'] = null;
 				$data['Sale']['product_code'] = $productInfo['Product']['product_code'];
 				$data['Sale']['product_category_id'] = $productInfo['ProductCategory']['id'];
@@ -105,7 +106,7 @@ class SalesController extends AppController {
 				$data['Sale']['product_name'] = $productInfo['Product']['name'];
 				$data['Sale']['category_name'] = $productInfo['ProductCategory']['name'];
 				$data['Sale']['store_name'] = $this->Session->read('Store.name');
-								
+
 				if($this->Sale->save($data)) {
 					$this->Session->write('selectedProductID', $productInfo['Product']['id']);
 					$this->Session->write('saleDate', $saleDate);
@@ -122,50 +123,50 @@ class SalesController extends AppController {
 				$this->data = $data;
 			}
 		}
-		
+
 		// find recent sale products
 		$conditions = array('Sale.store_id'=>$this->Session->read('Store.id'));
 		$saleProducts = $this->Sale->find('all', array('conditions'=>$conditions, 'order'=>'Sale.created DESC', 'recursive'=>'-1', 'limit'=>'10'));
-		
+
 		if($error) {$this->Session->setFlash($error);}
 		$this->set(compact('productsInfo', 'productsList', 'saleProducts'));
 	}
-	
+
 	function addAllProducts() {
 		$error = null;
-		
+
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
 		$this->Product->unbindModel(array('belongsTo'=>array('ProductCategory')));
 		$this->Product->bindModel(array('hasOne'=>array('ProductStockReport')));
-		$conditions = array('Product.store_id'=>$this->Session->read('Store.id'));		
+		$conditions = array('Product.store_id'=>$this->Session->read('Store.id'));
 		$productsInfo = $this->Product->find('all', array('conditions'=>$conditions, 'order'=>'Product.name', 'recursive'=>'1'));
 		$productsList = $this->Product->find('list', array('conditions'=>$conditions, 'order'=>'Product.name', 'recursive'=>'-1'));
-		
+
 		if(!empty($productsInfo)) {
 			foreach($productsInfo as $row) {
 				$bal_qty = $row['ProductStockReport']['balance_qty'];
 				$productsList[$row['Product']['id']] = $row['Product']['name'].' &nbsp;&nbsp;&nbsp;['.$bal_qty.']';
 			}
 		}
-		
+
 		if($this->request->isPost() or $this->request->isPut()) {
 			$data = $this->request->data;
 			$saleDate = $data['Sale']['sale_date']['year'].'-'.$data['Sale']['sale_date']['month'].'-'.$data['Sale']['sale_date']['day'];
 			$data['Sale']['sale_date'] = $saleDate;
 			$this->Session->delete('selectedProductID');
-			
+
 			$error = $this->addSaleFormValidation($data);
 			// check if product is available
 			if(!$error) {
-				$this->Product->bindModel(array('belongsTo'=>array('ProductCategory')));				
+				$this->Product->bindModel(array('belongsTo'=>array('ProductCategory')));
 				if(!$productInfo = $this->Product->findById($data['Sale']['product_id'])) {
 					$error = 'Product not found.';
 				}
-			}			
-			
+			}
+
 			// check if stock is available for the selected product
-			if(!$error) {			
+			if(!$error) {
 				App::uses('ProductStockReport', 'Model');
 				$this->ProductStockReport = new ProductStockReport;
 				$conditions = array('ProductStockReport.product_id'=>$data['Sale']['product_id']);
@@ -173,15 +174,15 @@ class SalesController extends AppController {
 					$bal_qty = $tmp['ProductStockReport']['balance_qty'];
 					$input_qty = $data['Sale']['total_units'];
 					if($bal_qty<=0) {
-						$error = '"'.$productInfo['Product']['name'].'" is out of stock';						
+						$error = '"'.$productInfo['Product']['name'].'" is out of stock';
 					}
 					elseif($input_qty>$bal_qty) {
-						$error = 'No. of Units cannot be greater than '.$bal_qty;											
-					}					
+						$error = 'No. of Units cannot be greater than '.$bal_qty;
+					}
 				}
-			}			
-			
-			if(!$error) {				
+			}
+
+			if(!$error) {
 				$data['Sale']['id'] = null;
 				$data['Sale']['product_code'] = $productInfo['Product']['product_code'];
 				$data['Sale']['product_category_id'] = $productInfo['ProductCategory']['id'];
@@ -190,7 +191,7 @@ class SalesController extends AppController {
 				$data['Sale']['product_name'] = $productInfo['Product']['name'];
 				$data['Sale']['category_name'] = $productInfo['ProductCategory']['name'];
 				$data['Sale']['store_name'] = $this->Session->read('Store.name');
-								
+
 				if($this->Sale->save($data)) {
 					$this->Session->write('selectedProductID', $productInfo['Product']['id']);
 					$this->Session->write('saleDate', $saleDate);
@@ -207,13 +208,13 @@ class SalesController extends AppController {
 				$this->data = $data;
 			}
 		}
-		
-		
+
+
 		if($error) {$this->Session->setFlash($error);}
 		$this->set(compact('productsInfo', 'productsList'));
 	}
-	
-	
+
+
 	public function removeProduct($purchaseID=null) {
 		if($this->request->isPost()) {
 			if($purchaseInfo = $this->CommonFunctions->getSaleInfo($purchaseID)) {
@@ -225,13 +226,13 @@ class SalesController extends AppController {
 			}
 		}
 		else {
-				$this->Session->setFlash('Invalid request');		
-		}		
-		
+				$this->Session->setFlash('Invalid request');
+		}
+
 		$this->redirect($this->request->referer());
 	}
-	
-	
+
+
 	/**
 	 * Function to show list of category products
 	 */
@@ -247,11 +248,11 @@ class SalesController extends AppController {
          $sales = $this->paginate();
 		 $this->set(compact('sales'));
     }
-	
+
 	/**
 	 * Function to add closing stock
 	 */
-	public function addClosingStock() {		
+	public function addClosingStock() {
 		$error = null;
 		$dateChange = false;
 		$saleDate = Date('Y-m-d');
@@ -275,8 +276,8 @@ class SalesController extends AppController {
 
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
-		//$conditions = array('Product.store_id'=>$this->Session->read('Store.id'));
-		
+		$conditions = array('Product.store_id'=>$this->Session->read('Store.id'));
+
 		//$this->Product->unbindModel(array('belongsTo'=>array('ProductCategory')));
 		//$this->Product->bindModel(array('hasOne'=>array('ProductStockReport')));
 		//$productsInfo = $this->Product->find('all', array('conditions'=>$conditions, 'order'=>'Product.name', 'recursive'=>'1'));
@@ -286,50 +287,54 @@ class SalesController extends AppController {
 
 		$productsInfo = $this->Product->getProductStockReport($this->Session->read('Store.id'));
 		//$productsInfo = $this->Product->getDatewiseProductStockReport($this->Session->read('Store.id'), $fromDate, $saleDate);
-		// $productsList = $this->Product->find('list', array('conditions'=>$conditions, 'order'=>'Product.name', 'recursive'=>'-1'));
+		$productCodeList = $this->Product->find('list', array('conditions'=>$conditions, 'fields' => ['Product.id', 'Product.product_code'], 'order'=>'Product.name', 'recursive'=>'-1'));
+
 		$productsList = [];
 		if(!empty($productsInfo)) {
 			foreach($productsInfo as $productId => $row) {
 				$bal_qty = $row['balance_qty'];
+				$productCode = $productCodeList[$productId] ?? '';
+				$productCode = $productCode ? ' ['.$productCode.']' : '';
 				if($this->Session->read('Store.show_brands_in_products')) {
 					$brandName = ($row['brand_name']) ? $row['brand_name'].' - ' : '';
-					$productsList[$productId] = $brandName.$row['product_name'].' *['.$bal_qty.']';
+					$productsList[$productId] = $brandName.$row['product_name'].' *['.$bal_qty.']' . $productCode;
 				} else {
-					$productsList[$productId] = $row['product_name'].' *['.$bal_qty.']';
+					$productsList[$productId] = $row['product_name'].' *['.$bal_qty.']' . $productCode;
 				}
+
 			}
 		}
-		
+
 		if(!$dateChange and $this->request->isPost() or $this->request->isPut()) {
 			$data = $this->request->data;
 			$saleDate = $data['Sale']['sale_date']['year'].'-'.$data['Sale']['sale_date']['month'].'-'.$data['Sale']['sale_date']['day'];
 			$data['Sale']['sale_date'] = $saleDate;
 			$this->Session->delete('selectedProductID');
-			
+
 			$error = $this->addSaleFormValidation($data);
 			// check if product is available
 			if(!$error) {
-				$this->Product->bindModel(array('belongsTo'=>array('ProductCategory')));				
+				$this->Product->bindModel(array('belongsTo'=>array('ProductCategory')));
 				if(!$productInfo = $this->Product->findById($data['Sale']['product_id'])) {
 					$error = 'Product not found.';
 				}
-			}			
-			
+			}
+
 			// check if stock is available for the selected product
-			if(!$error) {			
+			if(!$error) {
 				App::uses('ProductStockReport', 'Model');
 				$this->ProductStockReport = new ProductStockReport;
 				$conditions = array('ProductStockReport.product_id'=>$data['Sale']['product_id'], 'ProductStockReport.store_id'=>$this->Session->read('Store.id'));
-				
+
 				if($tmp = $this->ProductStockReport->find('first', array('conditions'=>$conditions))) {
 					$bal_qty = $tmp['ProductStockReport']['balance_qty'];
 					$input_qty = $data['Sale']['total_units'];
 					if($bal_qty<=0) {
-						$error = '"'.$productInfo['Product']['name'].'" is out of stock';						
+						$error = '"'.$productInfo['Product']['name'].'" is out of stock';
 					}
 					elseif($input_qty>$bal_qty) {
-						$error = 'No. of Units cannot be greater than '.$bal_qty;											
-					}					
+						$error = 'No. of Units cannot be greater than '.$bal_qty;
+					}
 				}
 			}
 
@@ -339,8 +344,8 @@ class SalesController extends AppController {
 				$futureSaleDate = Date('d-m-Y', strtotime($productAlreadyAddedInFutureDate['Sale']['sale_date']));
 				$error = 'Closing stock / sale has already been entered for "' . $productInfo['Product']['name'] . '" on "'.$futureSaleDate.'". ';
 			}
-			
-			if(!$error) {				
+
+			if(!$error) {
 				$data['Sale']['id'] = null;
 				$data['Sale']['product_code'] = $productInfo['Product']['product_code'];
 				$data['Sale']['product_category_id'] = $productInfo['ProductCategory']['id'];
@@ -349,7 +354,7 @@ class SalesController extends AppController {
 				$data['Sale']['product_name'] = $productInfo['Product']['name'];
 				$data['Sale']['category_name'] = $productInfo['ProductCategory']['name'];
 				$data['Sale']['store_name'] = $this->Session->read('Store.name');
-				
+
 				if($this->Sale->save($data)) {
 					$this->Session->write('selectedProductID', $productInfo['Product']['id']);
 					$this->Session->write('saleDate', $saleDate);
@@ -359,15 +364,15 @@ class SalesController extends AppController {
 				}
 			}
 		}
-		
+
 		// find recent sale(closing stock) products
 		$conditions = array('Sale.store_id'=>$this->Session->read('Store.id'), 'Sale.reference'=>'#ClosingStock');
 		$saleProducts = $this->Sale->find('all', array('conditions'=>$conditions, 'order'=>'Sale.created DESC', 'recursive'=>'2', 'limit'=>'5'));
-		
+
 		if($error) {$this->Session->setFlash($error);}
 		$this->set(compact('productsInfo', 'productsList', 'saleProducts'));
 	}
-	
+
 	/**
 	 * Function to add all products closing stock
 	 */
@@ -375,35 +380,35 @@ class SalesController extends AppController {
 		$error = null;
 		$store_id = $this->Session->read('Store.id');
 		$store_name = $this->Session->read('Store.name');
-		
+
 		$query = "SELECT p.id, p.name, sum(pu.total_units) purchase_qty
 			FROM products p
 			left join purchases pu on pu.product_id = p.id
 			where p.store_id=$store_id
 			group by p.id;
 		";
-		$product_purchases = $this->Sale->query($query);		
+		$product_purchases = $this->Sale->query($query);
 		$purchases = null;
 		if($product_purchases) {
-			foreach($product_purchases as $row) {				
+			foreach($product_purchases as $row) {
 				$purchases[$row['p']['id']] = (int)$row[0]['purchase_qty'];
 			}
 		}
-		
+
 		$query = "SELECT p.id, p.name, sum(s.total_units) sale_qty
 			FROM products p
 			left join sales s on s.product_id = p.id
 			where p.store_id=$store_id
 			group by p.id;
 		";
-		$product_sales = $this->Sale->query($query);		
+		$product_sales = $this->Sale->query($query);
 		$sales = null;
 		if($product_sales) {
-			foreach($product_sales as $row) {				
+			foreach($product_sales as $row) {
 				$sales[$row['p']['id']] = (int)$row[0]['sale_qty'];
 			}
 		}
-		
+
 		$query = "SELECT p.id, p.name, sum(b.total_units) breakage_qty
 			FROM products p
 			left join breakages b on b.product_id = p.id
@@ -413,11 +418,11 @@ class SalesController extends AppController {
 		$product_breakages = $this->Sale->query($query);
 		$breakages = null;
 		if($product_breakages) {
-			foreach($product_breakages as $row) {				
+			foreach($product_breakages as $row) {
 				$breakages[$row['p']['id']] = (int)$row[0]['breakage_qty'];
 			}
 		}
-		
+
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
 		$conditions = array('Product.store_id'=>$this->Session->read('Store.id'));
@@ -430,7 +435,7 @@ class SalesController extends AppController {
 				$productsInfo[$row['Product']['id']] = $row;
 			}
 		}
-		
+
 		$products_stock = null;
 		if($productsList) {
 			foreach($productsList as $p_id => $p_name) {
@@ -438,98 +443,98 @@ class SalesController extends AppController {
 				$sale_qty = (isset($sales[$p_id])) ? $sales[$p_id] : 0;
 				$breakage_qty = (isset($breakages[$p_id])) ? $breakages[$p_id] : 0;
 				$stock = $purchase_qty - $sale_qty - $breakage_qty;
-				
+
 				$products_stock[$p_id] = $stock;
 			}
 		}
-		
+
 		$success = 0;
 		$salesData = null;
 		if($this->request->isPost() or $this->request->isPut()) {
 			$data = $this->request->data;
 			$saleDate = $data['Sale']['sale_date']['year'].'-'.$data['Sale']['sale_date']['month'].'-'.$data['Sale']['sale_date']['day'];
 			$data['Sale']['sale_date'] = $saleDate;
-			
+
 			if(!empty($data['closing_stock_qty'])) {
-				foreach($data['closing_stock_qty'] as $product_id => $closing_stock_qty) {				
+				foreach($data['closing_stock_qty'] as $product_id => $closing_stock_qty) {
 					$available_qty = $products_stock[$product_id];
 					$product_info = $productsInfo[$product_id];
-					
+
 					$tmp = null;
 					$tmp['Sale']['id'] = null;
-					$tmp['Sale']['product_code'] = $product_info['Product']['product_code'];					
-					$tmp['Sale']['product_id'] = $product_info['Product']['id'];					
-					$tmp['Sale']['product_category_id'] = $product_info['Product']['product_category_id'];					
+					$tmp['Sale']['product_code'] = $product_info['Product']['product_code'];
+					$tmp['Sale']['product_id'] = $product_info['Product']['id'];
+					$tmp['Sale']['product_category_id'] = $product_info['Product']['product_category_id'];
 					$tmp['Sale']['store_id'] = $store_id;
 					$tmp['Sale']['unit_price'] = $product_info['Product']['unit_selling_price'];
-					
+
 					$tmp['Sale']['sale_date'] = $saleDate;
 					$tmp['Sale']['product_name'] = $product_info['Product']['name'];
 					$tmp['Sale']['category_name'] = $product_info['ProductCategory']['name'];
 					$tmp['Sale']['store_name'] = $store_name;
 					$tmp['Sale']['closing_stock_qty'] = $closing_stock_qty;
 					$tmp['Sale']['reference'] = '#ClosingStock';
-					
+
 					// update products whose qty is >=0
 					// neglect ' ' values
 					if($closing_stock_qty != '') {
 						if($closing_stock_qty > $available_qty) {
 							$error[] = $tmp['Sale']['product_name'].": Quantity cannot be greater than ".$available_qty;
-						} elseif($closing_stock_qty < $available_qty) {							 
+						} elseif($closing_stock_qty < $available_qty) {
 							$tmp['Sale']['total_units'] = (int)($available_qty - $closing_stock_qty);
 							$tmp['Sale']['total_amount'] = ($tmp['Sale']['unit_price'] * $tmp['Sale']['total_units']);
-							
-							$salesData[] = $tmp;		
-						}						
+
+							$salesData[] = $tmp;
+						}
 					}
 
 				}
-				
+
 				if($error) {
-					$error = implode('<br>', $error);					
+					$error = implode('<br>', $error);
 				} else {
 					if($salesData) {
 						foreach($salesData as $row) {
 							if($this->Sale->save($row)) {
 								$success++;
 							} else {
-								$error[] = $row['Sale']['product_name']. ": Update failed";								
+								$error[] = $row['Sale']['product_name']. ": Update failed";
 							}
 						}
 						if($error) {
 							$error = implode('<br>', $error);
 						}
 					}
-				}				
+				}
 			}
 		}
-		
+
 		if($success) {
 			$success_msg = $success.' products updated successfully';
 			$this->Session->setFlash($success_msg, 'default', array('class'=>'success'));
 			$this->redirect('/sales/viewClosingStock');
 		}
-		
+
 		if($error) {
 			$this->Session->setFlash($error, 'default', array('class'=>'error'));
 		}
-		
+
 		$this->set(compact('purchases', 'sales', 'breakages', 'products_stock', 'productsList', 'productsSellingPrice'));
 	}
-	
-	
+
+
 	function uploadCsv() {
-		$hideSideBar = true;				
-		
+		$hideSideBar = true;
+
 		ini_set('max_execution_time', '10000');
-		ini_set('memory_limit', '256M');	
-		
+		ini_set('memory_limit', '256M');
+
 		if($this->request->isPost()) {
-			$data = $this->request->data;			
-			
+			$data = $this->request->data;
+
 			if(isset($data['Sale']['csv']['error']) and (!$data['Sale']['csv']['error'])) {
 				$mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv', 'application/octet-stream');
-				if(in_array($data['Sale']['csv']['type'],$mimes)){					
+				if(in_array($data['Sale']['csv']['type'],$mimes)){
 					$fileSize = $data['Sale']['csv']['size'];
 					if($fileSize > 0) {
 						$maxSize = 4;
@@ -538,17 +543,17 @@ class SalesController extends AppController {
 						}
 						else {
 							// valid file
-							$response = $this->checkValidCsvData($data);								
-								
+							$response = $this->checkValidCsvData($data);
+
 							if($response['error']) {
 								$this->Session->setFlash($response['msg'], 'default', array('class'=>'error'));
-							}	
+							}
 							else {
 								$updateResponse = $this->updateCsvData($response['fileData']);
-								
+
 								if($updateResponse['error']) {
 									$this->Session->setFlash($updateResponse['msg'], 'default', array('class'=>'error'));
-								}								
+								}
 								else {
 									$this->Session->setFlash('File uploaded successfully', 'default', array('class'=>'success'));
 								}
@@ -558,38 +563,38 @@ class SalesController extends AppController {
 					else {
 						$this->Session->setFlash('Invalid File Size', 'default', array('class'=>'error'));
 					}
-				} 
+				}
 				else {
 					$this->Session->setFlash('Invalid CSV File', 'default', array('class'=>'error'));
-				}				
+				}
 			}
 			else {
 				$this->Session->setFlash('Unknown File Type', 'default', array('class'=>'error'));
 			}
 		}
-				
+
 		$this->set(compact('hideSideBar', 'response', 'updateResponse'));
 	}
-	
+
 	private function checkValidCsvData($fileInfo) {
-		App::uses('Validation', 'Utility');		
-		$response = array('success'=>false, 'error'=>false, 'msg'=>'', 'fileData'=>array());	
-		
+		App::uses('Validation', 'Utility');
+		$response = array('success'=>false, 'error'=>false, 'msg'=>'', 'fileData'=>array());
+
 		$file = '"'.$fileInfo['Sale']['csv']['name'].'"';
 		$handle = fopen($fileInfo['Sale']['csv']['tmp_name'], 'r');
 		$fileData = array();
-		
+
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
 		$this->Product->displayField = 'unit_selling_price';
 		$productsSellingPrice = $this->Product->find('list', array('conditions'=>array('Product.store_id'=>$this->Session->read('Store.id'))));
-				
+
 		App::uses('ProductStockReport', 'Model');
 		$this->ProductStockReport = new ProductStockReport;
 		$conditions = array('ProductStockReport.store_id'=>$this->Session->read('Store.id'));
 		$fields = array('ProductStockReport.store_id', 'ProductStockReport.category_id', 'ProductStockReport.product_id', 'ProductStockReport.balance_qty', 'ProductStockReport.product_name', 'ProductStockReport.category_name');
 		$storeProducts = $this->ProductStockReport->find('all', array('conditions'=>$conditions, 'fields'=>$fields));
-				
+
 		$i=1;
 		$updateSalesContent = array();
 		while ( ($data = fgetcsv($handle) ) !== FALSE ) {
@@ -602,21 +607,21 @@ class SalesController extends AppController {
 				}
 				else {
 					$dataHeader = array('CategoryName', 'ProductName', 'ClosingStock', 'ClosingDate');
-					if($dataHeader != $data) {		
+					if($dataHeader != $data) {
 						// validate column data type
-						
+
 						// category name
 						if(!Validation::notBlank($data[0])) {
 							$response['error'] = true;
 							$response['msg'] = 'File '.$file.', Line No '.$i.': Category name cannot be empty';
 						}
-						
+
 						// product name
 						if(!Validation::notBlank($data[1])) {
 							$response['error'] = true;
 							$response['msg'] = 'File '.$file.', Line No '.$i.': Product name cannot be empty';
 						}
-						
+
 						// closing quantity
 						if(!Validation::numeric($data[2])) {
 							$response['error'] = true;
@@ -630,7 +635,7 @@ class SalesController extends AppController {
 								}
 							}
 						}
-						
+
 						// closing date
 						if(Validation::notBlank($data[3])) {
 							if (date('d-m-Y', strtotime($data[3])) != $data[3]) {
@@ -642,11 +647,11 @@ class SalesController extends AppController {
 							$response['error'] = true;
 							$response['msg'] = 'File '.$file.', Line No '.$i.': Date column cannot be empty';
 						}
-						
+
 						// check if category & product exists for the selected store.
-						$tmpCategoryName = htmlentities($data[0], ENT_QUOTES);		
-						$tmpProductName = htmlentities($data[1], ENT_QUOTES);		
-						$tmpQty = $data[2];		
+						$tmpCategoryName = htmlentities($data[0], ENT_QUOTES);
+						$tmpProductName = htmlentities($data[1], ENT_QUOTES);
+						$tmpQty = $data[2];
 						if(!empty($storeProducts)) {
 							$category_product_found = false;
 							foreach($storeProducts as $row) {
@@ -654,7 +659,7 @@ class SalesController extends AppController {
 									$category_product_found = true;
 									$productID = $row['ProductStockReport']['product_id'];
 									$categoryID = $row['ProductStockReport']['category_id'];
-									
+
 									// validate product balance stock and closing stock
 									if($row['ProductStockReport']['balance_qty'] < $tmpQty) {
 										$response['error'] = true;
@@ -667,7 +672,7 @@ class SalesController extends AppController {
 												$totalUnits = $row['ProductStockReport']['balance_qty']-$tmpQty;
 												$totalAmount = $totalUnits*$productsSellingPrice[$productID];
 												$saleDate = date('Y-m-d', strtotime($data[3]));
-												
+
 												$updateSalesContent[$i]['id'] = null;
 												$updateSalesContent[$i]['product_id'] = $productID;
 												$updateSalesContent[$i]['product_category_id'] = $categoryID;
@@ -686,14 +691,14 @@ class SalesController extends AppController {
 												$response['error'] = true;
 												$response['msg'] = 'File '.$file.', Line No '.$i.': Unit Selling Price not defined for the product "'.$tmpProductName.'"';
 											}
-											
+
 										}
 									}
-									
+
 									break;
 								}
 							}
-							
+
 							if(!$category_product_found) {
 								$response['error'] = true;
 								$response['msg'] = 'File '.$file.', Line No '.$i.': Category/Product not found';
@@ -703,7 +708,7 @@ class SalesController extends AppController {
 							$response['error'] = true;
 							$response['msg'] = 'No products found';
 						}
-						
+
 						//set data
 						if(!$response['error']) {
 							$fileData = $updateSalesContent;
@@ -711,18 +716,18 @@ class SalesController extends AppController {
 					}
 				}
 			}
-			
+
 			if($response['error'] == true) {
 				break;
 			}
-				
+
 			$i++;
 		}
 		$response['fileData'] = $fileData;
-		
+
 		return $response;
 	}
-	
+
 	private function updateCsvData($fileData) {
 		$response = array('success'=>false, 'error'=>false, 'msg'=>'', 'info'=>array());
 		$errorMsg = array();
@@ -740,10 +745,10 @@ class SalesController extends AppController {
 				else {
 					$errorMsg[] = 'Failed to add closing stock for: Category: "'.$row['Sale']['category_name'].'", Product: "'.$row['Sale']['product_name'].'"';
 					$failedRecords++;
-				}				
+				}
 			}
-		}			
-		
+		}
+
 		if($errorMsg) {
 			$response['error'] = true;
 			$response['msg'] = implode($errorMsg, '<br>');
@@ -751,9 +756,9 @@ class SalesController extends AppController {
 		$response['info']['totalRecords'] = $totalRecords;
 		$response['info']['savedRecords'] = $savedRecords;
 		$response['info']['failedRecords'] = $failedRecords;
-		
+
 		return $response;
 	}
-	
+
 }
 ?>

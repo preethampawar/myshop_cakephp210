@@ -1,16 +1,6 @@
-<?php
-$this->set('title_for_layout', 'Show All Products');
-?>
-
 <section id="ProductsInfo">
-	<header class="featuredLabel">
-		<?php echo $this->Html->link('Best Deals', '/', ['class' => 'text-decoration-none']); ?> |
-		<b>
-		<?php echo $this->Html->link('Show All Products', '/products/showAll', ['class' => 'active']); ?>
-		</b>
-	</header>
-	<hr>
-	<p class="mb-4">Showing all products by category</p>
+	<?= $this->element('homepage_tabmenu', ['featuredPage' => true]) ?>
+
 	<?php
 	if (!empty($allProducts)) {
 		$k = 1;
@@ -18,10 +8,10 @@ $this->set('title_for_layout', 'Show All Products');
 
 		foreach ($allProducts as $row) {
 			$categoryID = $row['Category']['id'];
-			$categoryName = ucwords($row['Category']['name']);
+			$categoryName = $row['Category']['name'];
 			$categoryNameSlug = Inflector::slug($categoryName, '-');
 			?>
-			<article class="mb-4">
+			<article class="mt-4">
 				<header>
 					<h5><?php echo $categoryName; ?></h5>
 					<hr>
@@ -40,7 +30,8 @@ $this->set('title_for_layout', 'Show All Products');
 						$z = 0;
 						foreach ($row['CategoryProducts'] as $row2) {
 							$productID = $row2['Product']['id'];
-							$productName = ucwords($row2['Product']['name']);
+							$productName = $row2['Product']['name'];
+							$productShortDesc = $row2['Product']['short_desc'];
 							$productNameSlug = Inflector::slug($productName, '-');
 							$productTitle = $productName;
 							$assetDomainUrl = Configure::read('AssetDomainUrl');
@@ -66,6 +57,7 @@ $this->set('title_for_layout', 'Show All Products');
 							echo $this->element('product_card', [
 									'productImageUrl' => $productImageUrl,
 									'productName' => $productName,
+									'productShortDesc' => $productShortDesc,
 									'imageTagId' => $imageTagId,
 									'productTitle' => $productTitle,
 									'categoryID' => $categoryID,

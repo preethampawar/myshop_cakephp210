@@ -32,204 +32,210 @@ App::uses('Helper', 'View');
  */
 class AppHelper extends Helper
 {
-	const DELETE_BTN_CLASS = "text-danger text-decoration-none";
-	const EDIT_BTN_CLASS = "text-warning text-decoration-none";
-	const DEFAULT_BTN_CLASS = 'text-primary text-decoration-none';
-	const DELETE_CLASS = "text-danger";
-	const EDIT_CLASS = "text-warning";
-	const DEFAULT_CLASS = 'text-primary';
+    const DELETE_BTN_CLASS = "text-danger text-decoration-none";
+    const EDIT_BTN_CLASS = "text-warning text-decoration-none";
+    const DEFAULT_BTN_CLASS = 'text-primary text-decoration-none';
+    const DELETE_CLASS = "text-danger";
+    const EDIT_CLASS = "text-warning";
+    const DEFAULT_CLASS = 'text-primary';
 
-	public $helpers = ['Session', 'Html'];
+    public $helpers = ['Session', 'Html'];
 
-	/**
-	 * @return bool
-	 */
-	public function isSeller()
-	{
-		if ($this->Session->read('User.type') == 'seller') {
-			return true;
-		}
+    /**
+     * @return bool
+     */
+    public function isSeller()
+    {
+        if ($this->Session->read('User.type') == 'seller') {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isSellerForThisSite()
-	{
-		if ($this->Session->read('User.superadmin') == 1) {
-			return true;
-		}
+    /**
+     * @return bool
+     */
+    public function isSellerForThisSite()
+    {
+        if ($this->Session->read('User.superadmin') == 1) {
+            return true;
+        }
 
-		if ($this->isSeller()) {
-			return true;
-		}
+        if ($this->isSeller()) {
+            return true;
+        }
 
-		if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {
-			return true;
-		}
+        if ($this->Session->read('User.id') == $this->Session->read('Site.user_id')) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isSellerView()
-	{
-		if ($this->Session->check('inSellerView') && $this->Session->read('inSellerView') == true) {
-			return true;
-		}
+    /**
+     * @return bool
+     */
+    public function isSellerView()
+    {
+        if ($this->Session->check('inSellerView') && $this->Session->read('inSellerView') == true) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isBuyerView()
-	{
-		if ($this->Session->check('inBuyerView') && $this->Session->read('inBuyerView') == true) {
-			return true;
-		}
+    /**
+     * @return bool
+     */
+    public function isBuyerView()
+    {
+        if ($this->Session->check('inBuyerView') && $this->Session->read('inBuyerView') == true) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @param string $title
-	 * @param string $url
-	 * @param string $type
-	 * @param null $confirmationMessage
-	 *
-	 * @return string
-	 */
-	public function getLinkButton($title, $url, $type = 'normal', $confirmationMessage = null)
-	{
-		switch ($type) {
-			case 'edit':
-				$class = self::EDIT_BTN_CLASS;
-				break;
-			case 'delete':
-				$class = self::DELETE_BTN_CLASS;
-				break;
-			default:
-				$class = self::DEFAULT_BTN_CLASS;
-				break;
-		}
+    /**
+     * @param string $title
+     * @param string $url
+     * @param string $type
+     * @param null $confirmationMessage
+     *
+     * @return string
+     */
+    public function getLinkButton($title, $url, $type = 'normal', $confirmationMessage = null)
+    {
+        switch ($type) {
+            case 'edit':
+                $class = self::EDIT_BTN_CLASS;
+                break;
+            case 'delete':
+                $class = self::DELETE_BTN_CLASS;
+                break;
+            default:
+                $class = self::DEFAULT_BTN_CLASS;
+                break;
+        }
 
-		return $this->Html->link($title, $url, ['class' => $class, 'escape' => false], $confirmationMessage);
+        return $this->Html->link($title, $url, ['class' => $class, 'escape' => false], $confirmationMessage);
+    }
 
-	}
+    /**
+     * @param $title
+     * @param $url
+     * @param string $type
+     * @param null $confirmationMessage
+     *
+     * @return string
+     */
+    public function getLink($title, $url, $type = 'normal', $confirmationMessage = null)
+    {
+        switch ($type) {
+            case 'edit':
+                $class = self::EDIT_CLASS;
+                break;
+            case 'delete':
+                $class = self::DELETE_CLASS;
+                break;
+            default:
+                $class = self::DEFAULT_CLASS;
+                break;
+        }
 
-	/**
-	 * @param $title
-	 * @param $url
-	 * @param string $type
-	 * @param null $confirmationMessage
-	 *
-	 * @return string
-	 */
-	public function getLink($title, $url, $type = 'normal', $confirmationMessage = null)
-	{
-		switch ($type) {
-			case 'edit':
-				$class = self::EDIT_CLASS;
-				break;
-			case 'delete':
-				$class = self::DELETE_CLASS;
-				break;
-			default:
-				$class = self::DEFAULT_CLASS;
-				break;
-		}
+        return $this->Html->link($title, $url, ['class' => $class, 'escape' => false], $confirmationMessage);
+    }
 
-		return $this->Html->link($title, $url, ['class' => $class, 'escape' => false], $confirmationMessage);
-	}
+    public function price($value)
+    {
+        $tmp = explode('.', $value);
 
-	public function price($value)
-	{
-		$tmp = explode('.', $value);
+        if (isset($tmp[1]) && $tmp[1] == 0) {
+            $value = $tmp[0];
+        }
 
-		if (isset($tmp[1]) && $tmp[1] == 0) {
-			$value = $tmp[0];
-		}
+        return '&#8377;'. $value;
+    }
 
-		return '&#8377;'. $value;
-	}
+    public function priceOfferInfo(int $saleValue, int $mrp, $type = null)
+    {
+        $value = $mrp - $saleValue;
+        $percentage = ceil(($value * 100 / $mrp));
 
-	public function priceOfferInfo(int $saleValue, int $mrp)
-	{
-		$value = $mrp - $saleValue;
-		$percentage = ceil(($value * 100 / $mrp));
+        if ($mrp !== $value && $percentage == 100) {
+            $percentage = 99;
+        }
 
-		if ($mrp !== $value && $percentage == 100) {
-			$percentage = 99;
-		}
+        if ($type === 'amount') {
+            return '&#8377;'. $value;
+        }
 
-		return '&#8377;'. $value. ' ('.$percentage.'%)';
-	}
+        if ($type === 'percentage') {
+            return $percentage.'%';
+        }
 
-	public function getRearrangedImages($data)
-	{
-		if (!is_array($data) and !empty($data)) {
-			$data = json_decode($data);
-		}
+        return '&#8377;'. $value. ' ('.$percentage.'%)';
+    }
 
-		$images = [];
-		if($data) {
-			foreach ($data as $row) {
-				$images[$row->commonId][$row->type] = $row;
-			}
-		}
+    public function getRearrangedImages($data)
+    {
+        if (!is_array($data) and !empty($data)) {
+            $data = json_decode($data);
+        }
 
-		return $images;
-	}
+        $images = [];
+        if ($data) {
+            foreach ($data as $row) {
+                $images[$row->commonId][$row->type] = $row;
+            }
+        }
 
-	public function getHighlightImage($data)
-	{
-		$highlightImage = [];
+        return $images;
+    }
 
-		if ($data) {
-			$data = $this->getRearrangedImages($data);
+    public function getHighlightImage($data)
+    {
+        $highlightImage = [];
 
-			foreach ($data as $row) {
-				$image = $row['thumb'];
-				if ($image->highlight) {
-					$highlightImage = $row;
-					break;
-				}
-			}
+        if ($data) {
+            $data = $this->getRearrangedImages($data);
 
-			if (!$highlightImage) {
-				$highlightImage = $data[array_key_last($data)];
-			}
-		}
+            foreach ($data as $row) {
+                $image = $row['thumb'];
+                if ($image->highlight) {
+                    $highlightImage = $row;
+                    break;
+                }
+            }
 
-		return $highlightImage;
-	}
+            if (!$highlightImage) {
+                $highlightImage = $data[array_key_last($data)];
+            }
+        }
 
-	public function convertTimeToDays($date) {
-		$current_date = date("Y-m-d H:m:s");
-		$time = array();
-		$day = floor((strtotime($current_date) - strtotime($date)) / (60 * 60 * 24));
+        return $highlightImage;
+    }
 
-		if ($day == 0) {
-			$hour = floor((strtotime($current_date) - strtotime($date)) / (60 * 60));
+    public function convertTimeToDays($date)
+    {
+        $current_date = date("Y-m-d H:m:s");
+        $time = array();
+        $day = floor((strtotime($current_date) - strtotime($date)) / (60 * 60 * 24));
 
-			if ($hour == 0) {
-				$minute = floor((strtotime($current_date) - strtotime($date)) / (60));
-				$time = $minute . __d('course', " min(s) ago");
+        if ($day == 0) {
+            $hour = floor((strtotime($current_date) - strtotime($date)) / (60 * 60));
 
-			} else {
-				$time = $hour . __d('course', " hour(s) ago");
-			}
+            if ($hour == 0) {
+                $minute = floor((strtotime($current_date) - strtotime($date)) / (60));
+                $time = $minute . __d('course', " min(s) ago");
+            } else {
+                $time = $hour . __d('course', " hour(s) ago");
+            }
+        } else {
+            $time = $day . __d('course', " day(s) ago");
+        }
 
-		} else {
-			$time = $day . __d('course', " day(s) ago");
-		}
-
-		return $time;
-	}
+        return $time;
+    }
 }

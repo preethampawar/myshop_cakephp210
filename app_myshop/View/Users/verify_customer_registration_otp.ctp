@@ -1,5 +1,5 @@
 <div>
-	<?php echo $this->Form->create(); ?>
+	<?php echo $this->Form->create('User', ['onsubmit' => 'showRequestProcessingMsg("#registrationVerifyOtpButton")']); ?>
 	<h1 class="mb-3">Verify OTP</h1>
 
 	<div class="mb-3">
@@ -20,7 +20,7 @@
 	</div>
 
 	<div class="mb-3">
-		<button type="submit" class="btn btn-md btn-primary">Next - Verify OTP</button>
+		<button type="submit" class="btn btn-md btn-primary" id="registrationVerifyOtpButton">Next - Verify OTP</button>
 	</div>
 	<?php echo $this->Form->end(); ?>
 

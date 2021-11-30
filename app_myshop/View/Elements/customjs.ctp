@@ -8,7 +8,23 @@ $showLocationPopup = false;
 if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain])) {
 	$showLocationPopup = true;
 }
+
+$defaultLat = 17.6140;
+$defaultLng = 78.0816;
+$defaultAddress = 'Sangareddy';
+$zoomLevel = 15;
 ?>
+
+<script>
+	var map;
+	var geocoder;
+	var infoWindow;
+	var defaultLat = <?= !empty($defaultLat) ? $defaultLat : 17.6140 ?>;
+	var defaultLng =  <?= !empty($defaultLng) ? $defaultLng : 78.0816 ?>;
+	var defaultAddress = '<?= !empty($defaultAddress) ? $defaultAddress : 'Sangareddy' ?>';
+	var zoomLevel = <?= !empty($zoomLevel) ? $zoomLevel : 15 ?>;
+</script>
+
 <script defer>
 	// check payment method
 	function checkPaymentMethod(element) {

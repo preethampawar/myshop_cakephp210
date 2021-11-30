@@ -43,6 +43,7 @@ class CategoriesController extends AppController
 				$errorMsg = 'Enter Category Name';
 			}
 			// Sanitize data
+			$data['Category']['name'] = trim($data['Category']['name']);
 			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&', '(', ')', ',']);
 			if (!$errorMsg) {
 				$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.name' => $data['Category']['name']];
@@ -134,16 +135,16 @@ class CategoriesController extends AppController
 		$conditions = ['CategoryProduct.category_id' => $categoryID];
 
 		$this->CategoryProduct->unbindModel(['belongsTo' => ['Category']]);
-		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID);
+		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID, [], ['Product.name']);
 
 		$tmp = [];
 		$productsList = [];
 		if (!empty($categoryProducts)) {
 			foreach ($categoryProducts as $row) {
 				$tmp[$row['Product']['id']] = $row;
-				$productsList[$row['Product']['id']] = ucwords($row['Product']['name']);
+				$productsList[$row['Product']['id']] = $row['Product']['name'];
 			}
-			asort($productsList);
+			// asort($productsList);
 			$categoryProducts = $tmp;
 		}
 
@@ -274,7 +275,78 @@ class CategoriesController extends AppController
 		$this->redirect($redirectURL);
 	}
 
+	public function admin_activate($categoryId, $type)
+	{
+		$this->layout = false;
+		if (!$categoryInfo = $this->isSiteCategory($categoryId)) {
+			$this->errorMsg('Category Not Found');
+			$this->redirect('/admin/categories/');
+		}
+
+		$data['Category']['id'] = $categoryId;
+		$data['Category']['active'] = ($type == 'true') ? '1' : '0';
+
+		if ($this->Category->save($data)) {
+			$this->successMsg('PromoCode modified successfully');
+		} else {
+			$this->errorMsg('An error occurred while updating data');
+		}
+		$this->redirect('/admin/categories/');
+	}
+
+	public function admin_updateBasePrice($categoryId)
+	{
+		$this->layout = false;
+		if (!$categoryInfo = $this->isSiteCategory($categoryId)) {
+			$this->errorMsg('Category Not Found');
+			$this->redirect('/admin/categories/');
+		}
+
+		if ($this->request->isPost() or $this->request->isPut()) {
+			$updated = 0;
+			$data = $this->request->data;
+
+			$productsBasePrice = (float)($data['Category']['products_base_price'] ?? 0);
+
+			if ($productsBasePrice > 0) {
+				App::uses('Product', 'Model');
+				$productModel = new Product;
+
+				App::uses('CategoryProduct', 'Model');
+				$categoryProductModel = new CategoryProduct;
+				$conditions = ['CategoryProduct.category_id' => $categoryId];
+
+				$categoryProductModel->unbindModel(['belongsTo' => ['Category']]);
+				$categoryProducts = $categoryProductModel->findAllByCategoryId($categoryId, ['Product.id', 'Product.mrp', 'Product.relative_base_price', 'Product.allow_relative_price_update'], ['Product.name']);
+
+				if ($categoryProducts) {
+					foreach($categoryProducts as $row) {
+						if ((bool)$row['Product']['allow_relative_price_update'] === true) {
+							$tmp = [];
+							$tmp['Product']['id'] = $row['Product']['id'];
+							$tmp['Product']['mrp'] = (float)$row['Product']['relative_base_price'] + $productsBasePrice;
+
+							$productModel->save($tmp);
+							$updated++;
+						}
+					}
+				}
+
+				// update category products base price
+				$tmp = [];
+				$tmp['Category']['id'] = $categoryId;
+				$tmp['Category']['products_base_price'] = $productsBasePrice;
+				$this->Category->save($tmp);
+
+				$this->successMsg('Updated ' . $updated . ' product(s).');
+			} else {
+				$this->errorMsg('Products Base Price should be greater than 0.');
+			}
+		} else {
+			$this->errorMsg('Invalid request');
+		}
+
+		$this->redirect($this->referer());
+	}
 
 }
-
-?>

@@ -46,6 +46,8 @@ class ProductsController extends AppController
 	 */
 	public function showAll()
 	{
+		$this->set('title_for_layout', 'All Products');
+
 		$allCategories = $this->Product->getAllProducts($this->Session->read('Site.id'));
 		$allProducts = [];
 		if($allCategories) {
@@ -75,8 +77,10 @@ class ProductsController extends AppController
 	 */
 	public function showFeatured()
 	{
+		$this->set('title_for_layout', 'Best Deals');
+
 		if (!$this->Session->read('Site.featured_products')) {
-			$this->Session->setFlash('Featured products on this site have been disabled.', 'default', ['class' => 'notice']);
+			$this->noticeMsg('Best deals not available at this moment.');
 			$this->redirect($this->request->referer());
 		}
 	}
@@ -680,6 +684,67 @@ class ProductsController extends AppController
 		$this->redirect($redirectURL);
 	}
 
-}
+	public function admin_sort($categoryId)
+	{
+		App::uses('CategoryProduct', 'Model');
+		$this->CategoryProduct = new CategoryProduct;
 
-?>
+		if (!$categoryInfo = $this->isSiteCategory($categoryId)) {
+			$this->errorMsg('Category Not Found');
+			$this->redirect('/admin/categories/');
+		}
+
+		if ($this->request->isPost()) {
+			$data = $this->request->data;
+
+			$sortInfo = $this->data['sortinfo'] ?? '';
+			$sortInfo = json_decode($sortInfo, true);
+
+			foreach($sortInfo as $row) {
+				$categoryProductId = $row['catproductId'];
+				$sort = $row['sort'];
+
+				$data['CategoryProduct']['id'] = $categoryProductId;
+				$data['CategoryProduct']['sort'] = $sort;
+
+				$this->CategoryProduct->save($data);
+			}
+		}
+
+		$this->CategoryProduct->unbindModel(['belongsTo' => ['Category']]);
+		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryId, [], ['CategoryProduct.sort']);
+
+		$this->set('categoryInfo', $categoryInfo);
+		$this->set('categoryProducts', $categoryProducts);
+	}
+
+	public function admin_sortFeatured()
+	{
+		if ($this->request->isPost()) {
+			$data = $this->request->data;
+
+			$sortInfo = $this->data['sortinfo'] ?? '';
+			$sortInfo = json_decode($sortInfo, true);
+
+			foreach($sortInfo as $row) {
+				$productId = $row['productId'];
+				$sort = $row['sort'];
+
+				$data['Product']['id'] = $productId;
+				$data['Product']['sort'] = $sort;
+
+				$this->Product->save($data);
+			}
+		}
+
+		$conditions = [
+			'Product.site_id' => $this->Session->read('Site.id'),
+			'Product.deleted' => 0,
+		];
+
+		$products = $this->Product->find('all', ['conditions' => $conditions, 'order' => 'Product.sort']);
+
+		$this->set('products', $products);
+
+	}
+}
