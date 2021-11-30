@@ -124,6 +124,7 @@ $customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $th
 
 $this->set('customMeta', $customMeta);
 $this->set('title_for_layout', $categoryName);
+$this->set('canonical', '/products/show/'.$categoryID);
 
 $metaKeywords = trim($categoryInfo['Category']['meta_keywords']) != '' ? $categoryInfo['Category']['meta_keywords'] : $categoryName;
 $metaDesc = trim($categoryInfo['Category']['meta_description']) != '' ? $categoryInfo['Category']['meta_description'] : $categoryDesc;

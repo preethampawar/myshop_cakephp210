@@ -30,6 +30,7 @@ $cartEnabled = $this->Session->read('Site.shopping_cart');
 $hideProductPrice = $productInfo['Product']['hide_price'];
 
 // SEO data
+$canonical = '/products/getDetails/'.$categoryID.'/'.$productID;
 $pageUrl = $this->Html->url($this->request->here, true);
 $pageUniqueIdentifier = $categoryID . '-' . $productID;
 $highlightImageDetails = $this->App->getHighlightImage($productUploadedImages);
@@ -394,6 +395,7 @@ $customMeta .= $this->Html->meta(['property' => 'og:description', 'content' => s
 $customMeta .= ($productImageUrl) ? $this->Html->meta(['property' => 'og:image', 'content' => $productImageUrl, 'inline' => false]) : '';
 $customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $this->Session->read('Site.title'), 'inline' => false]);
 
+$this->set('canonical', $canonical);
 $this->set('customMeta', $customMeta);
 $this->set('title_for_layout', $productName);
 

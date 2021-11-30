@@ -10,7 +10,7 @@ if ($homepageActive === false && $featuredPageActive === false) {
 <header>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
-			<a class="nav-link <?= $homepageActive ? ' fw-bold active' : '' ?>" aria-current="page" href="/products/showFeatured"><span class="text-orange"><i class="fa fa-bahai"></i></span> Best Deals</a>
+			<a class="nav-link <?= $homepageActive ? ' fw-bold active' : '' ?>" aria-current="page" href="/products/showFeatured"><span class="text-orange"><i class="fa fa-fire"></i></span> Hot Deals</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link <?= $featuredPageActive ? ' fw-bold active' : '' ?>" href="/products/showAll">Show All Products</a>

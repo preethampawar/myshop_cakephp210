@@ -16,8 +16,8 @@ if ($buyerView) {
 	$siteCaption = $this->Session->read('Site.caption');
 	$title_for_layout = $this->Session->read('Site.title');
 	$title_for_layout .= (!empty($siteCaption)) ? ' - ' . $siteCaption : '';
-
 	$this->set('title_for_layout', '');
+	$this->set('canonical', '/');
 
 	$this->Html->meta('keywords', $keywords, ['inline' => false]);
 	$this->Html->meta('description', $description, ['inline' => false]);

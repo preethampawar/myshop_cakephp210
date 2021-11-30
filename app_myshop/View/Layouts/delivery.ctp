@@ -39,7 +39,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.1">	
+	<link rel="stylesheet" href="/css/site.css?v=1.2.2">
 
 	<?= $analyticsCode ?>
 </head>
@@ -194,12 +194,6 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 				</div>
 			</div>
 
-			<div id="installContainer" class="d-none">
-				<div class="bg-light border p-3 fixed-bottom small text-center">
-					<button id="butInstall" type="button" class="btn btn-sm btn-orange"><i class="fa fa-mobile-alt"></i> Install</button><br>Install "<?= $this->Session->read('Site.title') ?>" app for fast and easy access.
-				</div>
-			</div>
-
 			<div id="ToastMessage" class="toast-container fixed-top end-0 p-2 mt-5 d-none" style="left: auto">
 				<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="2000">
 					<div class="d-flex align-items-center">
@@ -225,10 +219,10 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 			time = new Date().getTime();
 		});
 
-		function refresh() {			
+		function refresh() {
 			if(new Date().getTime() - time >= (30*1000)) //30 seconds
 				window.location.reload(true);
-			else 
+			else
 				setTimeout(refresh, 15000);
 		}
 
