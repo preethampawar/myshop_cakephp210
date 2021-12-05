@@ -33,7 +33,9 @@
 			<tr>
 				<th>#</th>
 				<th>Product Name</th>
-				<th>Relative Price<br><span class="small text-orange"><?php echo $categoryInfo['Category']['products_base_price']; ?></span></th>
+				<th>Group</th>
+				<th>Base Price</th>
+				<th>Relative Price</th>
 				<th>MRP</th>
 				<th>Discount</th>
 				<th>SalePrice</th>
@@ -55,8 +57,12 @@
 					$mrp = (float)$categoryProducts[$productID]['Product']['mrp'];
 					$discount = (float)$categoryProducts[$productID]['Product']['discount'];
 					$salePrice = $mrp - $discount;
-					$productRelativePrice = (float)$categoryProducts[$productID]['Product']['relative_base_price'];
+					$productRelativePrice = $categoryProducts[$productID]['Product']['relative_base_price'];
 					$allowRelativePriceUpdate = (float)$categoryProducts[$productID]['Product']['allow_relative_price_update'];
+					$productRelativePriceRelation = $categoryProducts[$productID]['Product']['relative_price_relation'];
+					$productGroupId = $categoryProducts[$productID]['Product']['group_id'];
+					$baseRate = (float)($groupRates[$productGroupId] ?? 0);
+					$groupName = $groups[$productGroupId] ?? '';
 					?>
 						<tr>
 							<td><?= $k ?>.</td>
@@ -89,7 +95,21 @@
 
 								<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
 							</td>
-							<td class="text-muted"><?= $allowRelativePriceUpdate ? $productRelativePrice : '' ?></td>
+							<td class="text-muted">
+								<?php
+								if ($productGroupId) {
+								?>
+									<a href="/admin/groups/products/<?= $productGroupId ?>"><?= $groupName ?></a>
+								<?php
+								} else {
+									?>
+									<a href="/admin/groups/products/">+Assign</a>
+									<?php
+								}
+								?>
+							</td>
+							<td class="text-muted"><?= $baseRate ?: '' ?></td>
+							<td class="text-muted"><?= $allowRelativePriceUpdate && $productGroupId ? $productRelativePriceRelation.$productRelativePrice : '' ?></td>
 							<td class="text-muted"><?= $mrp ?></td>
 							<td class="text-muted"><?= $discount ?></td>
 							<td class="text-dark"><?= $salePrice ?></td>

@@ -61,7 +61,6 @@
 					<th>#</th>
 					<th>Image</th>
 					<th>Category</th>
-					<th>Base Price</th>
 					<th></th>
 				</tr>
 				</thead>
@@ -122,9 +121,6 @@
 
 								<a href="/admin/categories/edit/<?= $categoryID ?>" class="ms-1"><?= $categoryDisplayName ?></a>
 
-							</td>
-							<td>
-								<?= $categoryProductsBasePrice ?>
 							</td>
 							<td>
 								<div class="text-end text-nowrap">
