@@ -464,7 +464,11 @@ class ProductsController extends AppController
 		$categoryModel->recursive = -1;
 		$categoryInfo = $categoryModel->findById($categoryID);
 
-		$this->set(compact('errorMsg', 'productInfo', 'categoryID', 'productInfoLinkActive', 'selectedCategories', 'categoryInfo'));
+		App::uses('Group', 'Model');
+		$groupModel = new Group;
+		$groups = $groupModel->find('list', ['conditions' => ['Group.site_id' => $this->Session->read('Site.id'), 'Group.deleted' => 0]]);
+
+		$this->set(compact('errorMsg', 'productInfo', 'categoryID', 'productInfoLinkActive', 'selectedCategories', 'categoryInfo', 'groups'));
 	}
 
 	public function admin_deleteProduct($productID, $categoryID = null)

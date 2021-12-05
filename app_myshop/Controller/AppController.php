@@ -483,6 +483,16 @@ class AppController extends Controller
 		return $content;
 	}
 
+	protected function isSiteGroup($groupId)
+	{
+		App::uses('Group', 'Model');
+		$groupModel = new Group;
+		$conditions = ['Group.site_id' => $this->Session->read('Site.id'), 'Group.id' => $groupId];
+		$content = $groupModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+
+		return $content;
+	}
+
 	/**
 	 * Function to check if testimonial is from selected site.
 	 */
