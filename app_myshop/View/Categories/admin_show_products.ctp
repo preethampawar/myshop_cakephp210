@@ -13,8 +13,10 @@
 
 
 <div class="text-end mt-3">
+	<a href="/admin/products/sort/<?php echo $categoryInfo['Category']['id'];?>" class="btn btn-sm btn-outline-secondary">Sort Products</a>
+
 	<?php if (!$productsLimitExceeded): ?>
-	<a href='/admin/products/add/<?php echo $categoryInfo['Category']['id'];?>' class="btn btn-primary btn-sm">+ Add Product</a>
+	<a href='/admin/products/add/<?php echo $categoryInfo['Category']['id'];?>' class="btn btn-primary btn-sm ms-2">+ Add Product</a>
 	<?php endif; ?>
 </div>
 
@@ -31,6 +33,12 @@
 			<tr>
 				<th>#</th>
 				<th>Product Name</th>
+				<th>Group</th>
+				<th>Base Price</th>
+				<th>Relative Price</th>
+				<th>MRP</th>
+				<th>Discount</th>
+				<th>SalePrice</th>
 				<th></th>
 			</tr>
 			</thead>
@@ -46,6 +54,15 @@
 					$i++;
 					$productActive = $categoryProducts[$productID]['Product']['active'];
 					$productFeatured = $categoryProducts[$productID]['Product']['featured'];
+					$mrp = (float)$categoryProducts[$productID]['Product']['mrp'];
+					$discount = (float)$categoryProducts[$productID]['Product']['discount'];
+					$salePrice = $mrp - $discount;
+					$productRelativePrice = $categoryProducts[$productID]['Product']['relative_base_price'];
+					$allowRelativePriceUpdate = (float)$categoryProducts[$productID]['Product']['allow_relative_price_update'];
+					$productRelativePriceRelation = $categoryProducts[$productID]['Product']['relative_price_relation'];
+					$productGroupId = $categoryProducts[$productID]['Product']['group_id'];
+					$baseRate = (float)($groupRates[$productGroupId] ?? 0);
+					$groupName = $groups[$productGroupId] ?? '';
 					?>
 						<tr>
 							<td><?= $k ?>.</td>
@@ -57,20 +74,20 @@
 										$url = '/admin/products/setInactive/' . $productID;
 										$confirmMessage = 'Are you sure you want to deactivate this product? Deactivating will hide this product from public.';
 										?>
-										<i class="fa fa-circle text-success"></i>
-										<!-- <span
-										class="small fa fa-circle text-success"
-										onclick="showConfirmPopup('<?php echo $url;?>//', '<?php echo $title;?>//', '<?php echo $confirmMessage;?>//')"></span> -->
+
+										<span
+										class="fa fa-circle text-success"
+										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 										<?php
 									} else {
 										$title = "Set Active - $productName";
 										$url = '/admin/products/setActive/' . $productID;
 										$confirmMessage = 'Are you sure you want to activate this product? Activating will make this product available to public.';
 										?>
-										<i class="fa fa-circle text-danger"></i>
-										<!-- <span
-										class="small fa fa-circle text-danger"
-										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span> -->
+
+										<span
+										class="fa fa-circle text-danger"
+										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 										<?php
 									}
 									?>
@@ -78,6 +95,24 @@
 
 								<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
 							</td>
+							<td class="text-muted">
+								<?php
+								if ($productGroupId) {
+								?>
+									<a href="/admin/groups/products/<?= $productGroupId ?>"><?= $groupName ?></a>
+								<?php
+								} else {
+									?>
+									<a href="/admin/groups/products/">+Assign</a>
+									<?php
+								}
+								?>
+							</td>
+							<td class="text-muted"><?= $baseRate ?: '' ?></td>
+							<td class="text-muted"><?= $allowRelativePriceUpdate && $productGroupId ? $productRelativePriceRelation.$productRelativePrice : '' ?></td>
+							<td class="text-muted"><?= $mrp ?></td>
+							<td class="text-muted"><?= $discount ?></td>
+							<td class="text-dark"><?= $salePrice ?></td>
 							<td class="text-end text-nowrap">
 								<a href="/admin/products/edit/<?= $productID ?>/<?= $categoryID ?>" class="btn btn-primary btn-sm">Edit</a>
 

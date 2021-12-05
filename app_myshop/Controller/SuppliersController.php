@@ -200,6 +200,40 @@ class SuppliersController extends AppController
 		}
 		$this->redirect('/admin/suppliers/');
 	}
+
+	function admin_products($supplierId = null)
+	{
+		$errorMsg = null;
+
+
+		if ($this->request->isPost()) {
+			$data = $this->request->data;
+
+
+		}
+
+
+		$suppliers = $this->Supplier->find('list', ['conditions' => ['Supplier.site_id' => $this->Session->read('Site.id'), 'Supplier.deleted' => 0]]);
+		//debug($suppliers);
+
+		App::uses('SupplierProduct', 'Model');
+		$supplierProductModel = new SupplierProduct();
+		$supplierProducts = $supplierProductModel->find('all', ['conditions' => ['SupplierProduct.supplier_id' => $supplierId]]);
+		debug($supplierProducts);
+
+		App::uses('Product', 'Model');
+		$productModel = new Product();
+		$productModel->unbindModel(['hasMany' => 'CategoryProduct']);
+
+		$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.deleted' => 0];
+		$products = $productModel->find('all', ['conditions' => $conditions, 'fields' => ['Product.id', 'Product.name', 'Product.mrp', 'Product.allow_relative_price_update']]);
+		debug($products);
+
+
+		($errorMsg) ? $this->errorMsg($errorMsg) : '';
+
+		$this->set(compact('errorMsg', 'products', 'suppliers', 'supplierId'));
+	}
 }
 
 ?>

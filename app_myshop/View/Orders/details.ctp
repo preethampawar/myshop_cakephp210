@@ -9,7 +9,7 @@
 $modifiedDate = date('d-m-Y', strtotime($order['Order']['modified']));
 $log = !empty($order['Order']['log']) ? json_decode($order['Order']['log'], true) : null;
 if ($log) {
-	foreach($log as $row2) {
+	foreach ($log as $row2) {
 		if ($row2['orderStatus'] == Order::ORDER_STATUS_NEW) {
 			$createdDate = date('d-m-Y', $row2['date']);
 			break;
@@ -35,27 +35,44 @@ $createdDate = $createdDate ?: $modifiedDate;
 		<tbody>
 		<?php
 		if ($log) {
-			foreach($log as $row2) {
+			foreach ($log as $row2) {
 				$updatedOn = date('d-m-Y h:i A', $row2['date']);
 				$message = $row2['message'] ?? '';
+
+				if ($row2['orderStatus'] === Order::ORDER_STATUS_DRAFT) {
+					continue;
+				}
 				?>
-					<tr>
-						<td><?=$row2['orderStatus'] ?></td>
-						<td><?=$updatedOn ?></td>
-						<td><?=html_entity_decode($message) ?></td>
-					</tr>
+				<tr>
+					<td><?= $row2['orderStatus'] ?></td>
+					<td><?= $updatedOn ?></td>
+					<td><?= html_entity_decode($message) ?></td>
+				</tr>
 				<?php
 			}
 		}
 		?>
 		</tbody>
 	</table>
-
-
-
+	<br>
 </div>
 <?php
 if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
+	$i = 0;
+	$cartValue = $order['Order']['total_cart_value'];
+	$payableAmount = $order['Order']['total_order_amount'];
+	$totalDiscount = $order['Order']['total_discount'];
+	$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
+
+	$promoCodeDetails = !empty($order['Order']['promo_code_details']) ? json_decode($order['Order']['promo_code_details'], true) : [];
+	$minPurchaseValue = (float)($promoCodeDetails['min_purchase_value'] ?? 0);
+	$showPromoDiscount = false;
+	if ($cartValue >= $minPurchaseValue) {
+		$showPromoDiscount = true;
+	}
+
+	$cartMrpValue = 0;
+	$totalItems = 0;
 	?>
 
 	<div class="p-3 shadow small mt-4">
@@ -72,14 +89,6 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			</thead>
 			<tbody>
 			<?php
-			$i = 0;
-			$cartValue = $order['Order']['total_cart_value'];
-			$payableAmount = $order['Order']['total_order_amount'];
-			$totalDiscount = $order['Order']['total_discount'];
-			$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
-
-			$cartMrpValue = 0;
-			$totalItems = 0;
 			foreach ($order['OrderProduct'] as $row) {
 				$i++;
 				$categoryName = ucwords($row['category_name']);
@@ -106,7 +115,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 						<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
 					</td>
 					<td class="text-center">
-						<?=  $qty ?>
+						<?= $qty ?>
 					</td>
 					<td class="text-center">
 						<?= $this->App->price($productCartValue) ?>
@@ -126,10 +135,10 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
 			<?php
-			if ($promoCodeDiscount > 0) {
+			if ($showPromoDiscount && $promoCodeDiscount > 0) {
 				?>
 				<tr class="text-muted">
-					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
+					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>)</td>
 					<td></td>
 					<td class="text-center"></td>
 					<td class="text-center">-<?= $this->App->price($promoCodeDiscount) ?></td>
@@ -153,7 +162,10 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			</tfoot>
 
 		</table>
-		<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order</div>
+		<div class="text-success text-center">You have saved <?= $this->App->price($totalDiscount) ?> on this Order
+		</div>
+		<br>
+		<br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -175,6 +187,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Special Instructions:<br>
 			<b><?= h($order['Order']['customer_message']) ?></b>
 		</div>
+		<br><br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -184,10 +197,18 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Payment Method:
 			<b><?= $order['Order']['payment_method'] ?></b>
 		</div>
-		<div class="mt-2">
-			Payment Reference No:
-			<b><?= !empty($order['Order']['payment_reference_no']) ? $order['Order']['payment_reference_no'] : '-' ?></b>
-		</div>
+
+		<?php
+		if (!empty($order['Order']['payment_reference_no'])) {
+			?>
+			<div class="mt-2">
+				Payment Reference No:
+				<b><?= $order['Order']['payment_reference_no'] ?></b>
+			</div>
+			<?php
+		}
+		?>
+		<br><br>
 	</div>
 
 	<div class="my-5 text-center">

@@ -18,4 +18,22 @@ class PromoCode extends AppModel
 		self::PROMO_CODE_REDEEM_TYPE_MULTIPLE => self::PROMO_CODE_REDEEM_TYPE_MULTIPLE,
 	];
 
+	public function getActivePromoCodes($siteId)
+	{
+		$todaysDate = date('Y-m-d');
+		$conditions = [
+			'PromoCode.active' => 1,
+			'PromoCode.deleted' => 0,
+			'PromoCode.site_id' => $siteId,
+			'PromoCode.start_date <= ' => $todaysDate,
+			'PromoCode.end_date >= ' => $todaysDate,
+		];
+
+		$this->unbindModel(['belongsTo' => 'Site']);
+
+		$promoCodes = $this->find('all', ['conditions' => $conditions, 'order' => ['PromoCode.discount_value' => 'DESC']]);		
+
+		return $promoCodes;
+	}
+
 }

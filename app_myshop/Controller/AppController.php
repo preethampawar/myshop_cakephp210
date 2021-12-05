@@ -41,6 +41,11 @@ class AppController extends Controller
 		if ($this->Session->read('inSellerView')) {
 			$this->layout = 'seller';
 		}
+		if ($this->Session->read('inDeliveryView')) {
+			$this->layout = 'delivery';
+		}
+
+
 
 		// Parse http request and load the appropriate domain
 		$this->parseURL();
@@ -88,6 +93,7 @@ class AppController extends Controller
 		$this->Session->write('inBuyerView', false);
 		$this->Session->write('inSellerView', false);
 		$this->Session->write('inAdminView', false);
+		$this->Session->write('inDeliveryView', false);
 
 		switch ($userType) {
 			case 'seller':
@@ -96,6 +102,11 @@ class AppController extends Controller
 				break;
 			case 'admin':
 				$this->Session->write('inAdminView', true);
+				break;
+			case 'delivery':
+				$this->Session->write('inDeliveryView', true);
+				$this->redirect('/deliveries/home');
+				break;
 				break;
 			default:
 				$this->Session->write('inBuyerView', true);
@@ -468,6 +479,16 @@ class AppController extends Controller
 		$supplierModel = new Supplier;
 		$conditions = ['Supplier.site_id' => $this->Session->read('Site.id'), 'Supplier.id' => $supplierId];
 		$content = $supplierModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
+
+		return $content;
+	}
+
+	protected function isSiteGroup($groupId)
+	{
+		App::uses('Group', 'Model');
+		$groupModel = new Group;
+		$conditions = ['Group.site_id' => $this->Session->read('Site.id'), 'Group.id' => $groupId];
+		$content = $groupModel->find('first', ['conditions' => $conditions, 'recursive' => '-1']);
 
 		return $content;
 	}
@@ -996,7 +1017,16 @@ class AppController extends Controller
 		$data['User']['type'] = 'buyer';
 		$data['User']['site_id'] = $this->Session->read('Site.id');
 
-		if ($userModel->save($data)) {
+		$conditions = [
+			'User.mobile' => $mobile,
+			'User.site_id' => $this->Session->read('Site.id'),
+		];
+
+		$userInfo = $userModel->find('first', ['conditions' => $conditions]);
+
+		if ($userInfo) {
+			return $userInfo;
+		} elseif ($userModel->save($data)) {
 			return $userModel->read();
 		}
 
@@ -1039,11 +1069,13 @@ class AppController extends Controller
 				}
 			}
 
+			$updatedByUserId = $this->Session->check('User.id') ? $this->Session->read('User.id') : '';
 			if ($orderStatusAlreadyExists === false) {
 				$log[] = [
 					'orderStatus' => $newOrderStatus,
 					'date' => time(),
 					'message' => $message,
+					'updated_by_user_id' => $updatedByUserId,
 				];
 			}
 		}
@@ -1310,5 +1342,96 @@ class AppController extends Controller
 		}
 
 		return false;
+	}
+
+	protected function sendOrderEmailAndSms($orderId, $orderStatus, $message = null)
+	{
+		App::uses('Order', 'Model');
+		$orderModel = new Order();
+
+		$emailTemplate = null;
+		$subject = null;
+		$error = null;
+		$order = $orderModel->findById($orderId);
+		$message = htmlentities(trim($message));
+		$smsNotificationEnabled = (bool) $this->Session->read('Site.sms_notifications') === true;
+
+		switch($orderStatus) {
+			case Order::ORDER_STATUS_NEW:
+				$emailTemplate = 'order_new';
+				$subject = 'New Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_CONFIRMED:
+				$emailTemplate = 'order_confirmed';
+				$subject = 'Confirmed - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_SHIPPED:
+				$emailTemplate = 'order_shipped';
+				$subject = 'Shipped - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_DELIVERED:
+				$emailTemplate = 'order_delivered';
+				$subject = 'Delivered - Order #'.$orderId;
+				break;
+			case Order::ORDER_STATUS_CANCELLED:
+				$emailTemplate = 'order_cancelled';
+				$subject = 'Cancelled - Order #'.$orderId;
+				break;
+//			case Order::ORDER_STATUS_RETURNED:
+//				$emailTemplate = 'order_returned';
+//				$subject = 'Returned - Order #'.$orderId;
+//				break;
+			case Order::ORDER_STATUS_CLOSED:
+				$emailTemplate = 'order_closed';
+				$subject = 'Closed - Order #'.$orderId;
+				break;
+			default:
+				break;
+		}
+
+		if (!$emailTemplate) {
+			$error = 'No template found';
+		} else {
+			$toName = $order['Order']['customer_name'];
+			$toEmail = $order['Order']['customer_email'];
+			$toPhone = $order['Order']['customer_phone'];
+			$toDeliveryUserId = $order['Order']['delivery_user_id'];
+			$deliveryPersonPhone = null;
+
+			if ($smsNotificationEnabled && $toDeliveryUserId) {
+				App::uses('User', 'Model');
+				$userModel = new User();
+
+				$deliveryPersonInfo = $userModel->findById($toDeliveryUserId);
+				if ($deliveryPersonInfo) {
+					$deliveryPersonPhone = $deliveryPersonInfo['User']['mobile'];
+				}
+			}
+
+			$bccEmails = $this->getBccEmails();
+
+			// send sms
+			if (!in_array($orderStatus, [Order::ORDER_STATUS_DRAFT, Order::ORDER_STATUS_NEW, Order::ORDER_STATUS_CLOSED])) {
+				$this->Sms->sendOrderUpdateSms($toPhone, '#'.$orderId, $orderStatus, $message, $this->Session->read('Site.title'));
+
+				if ($deliveryPersonPhone && $orderStatus === Order::ORDER_STATUS_CONFIRMED) {
+					// send confirmed order sms to delivery person
+					$this->Sms->sendOrderUpdateSms($deliveryPersonPhone, '#'.$orderId, $orderStatus, $message, $this->Session->read('Site.title'));
+				}
+			}
+
+			if (!empty(trim($toEmail))) {
+				$Email = new CakeEmail('smtpNoReply');
+				$Email->viewVars(array('order' => $order, 'message' => $message));
+				$Email->template($emailTemplate, 'default')
+					->emailFormat('html')
+					->to([$toEmail => $toName])
+					->bcc($bccEmails)
+					->subject($subject)
+					->send();
+			}
+		}
+
+		return $error;
 	}
 }

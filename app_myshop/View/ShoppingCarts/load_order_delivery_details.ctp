@@ -41,6 +41,9 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				required>
 		</div>
 
+		<?php
+		if (!$this->Session->check('User')) {
+		?>
 		<div class="mt-3">
 			<label for="orderCustomerPhone">Phone No. (10 digits)  <span class="text-danger small">(required)</span></label>
 			<input
@@ -54,18 +57,33 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 				placeholder="Enter 10 digit mobile no."
 				required>
 		</div>
+		<?php
+		}
+ 		?>
 
-		<div class="mt-3">
-			<label for="orderCustomerEmail">Email <span class="text-danger small">(required)</span></label>
-			<input
-				type="email"
-				name="data[customer_email]"
-				id="orderCustomerEmail"
-				class="form-control form-control-sm"
-				value="<?= $orderDetails['Order']['customer_email'] ?>"
-				placeholder="Enter Email Address"
-				required>
-		</div>
+		<?php
+		if (!$this->Session->check('User')) {
+			$required = (bool)$this->Session->read('Site.sms_notifications') === true ? null : 'required';
+
+			$email = $orderDetails['Order']['customer_email'];
+			if ((bool)$this->Session->read('Site.sms_notifications') === true) {
+				$email = $email === $this->Session->read('Site.default_customer_notification_email') ? '' : $email;
+			}
+		?>
+			<div class="mt-3">
+				<label for="orderCustomerEmail">Email <?php if($required) { ?><span class="text-danger small">(required)</span><?php } ?></label>
+				<input
+					type="email"
+					name="data[customer_email]"
+					id="orderCustomerEmail"
+					class="form-control form-control-sm"
+					value="<?= $email ?>"
+					placeholder="Enter Email Address"
+					<?= $required ?>>
+			</div>
+		<?php
+		}
+		?>
 
 		<div class="mt-3">
 			<label for="orderCustomerAddress">Delivery Address <span class="text-danger small">(required)</span></label>

@@ -3,8 +3,64 @@
 </div>
 
 <h1>Order No. #<?= $order['Order']['id']; ?></h1>
-<h6> - <?= $order['Order']['status'] ?></h6>
+<h6>&nbsp;Status - <?= $order['Order']['status'] ?></h6>
 
+<?php
+if($usersList) {
+	?>
+	<div class="bg-light p-3 border rounded mt-3">
+		<table class="w-100">
+			<tbody>
+			<tr>
+				<td>Delivery Boy - <span class="fw-bold"><?= $order['Order']['delivery_user_id'] ? $usersList[$order['Order']['delivery_user_id']] : ''; ?></span></td>
+				<td class="text-end">
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deliveryDropDownBackdrop">
+						Assign Delivery Boy
+					</button>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<?php
+}
+?>
+
+<!-- Modal -->
+<?php
+echo $this->Form->create('Order', ['url' => '/admin/orders/assignDeliveryBoy/'.base64_encode($order['Order']['id'])]);
+?>
+<div class="modal fade" id="deliveryDropDownBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deliveryDropDownBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deliveryDropDownBackdropLabel">Assign Delivery Boy</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<?php
+				echo $this->Form->select(
+					'delivery_user_id',
+					$usersList,
+					[
+						'class'=>'form-select',
+						'empty' => 'Select',
+						'default' => $order['Order']['delivery_user_id']
+					]
+				);
+				?>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+echo $this->Form->end();
+?>
 <div class="mt-4">
 	<?php
 	$orderStatus = $order['Order']['status'];
@@ -63,7 +119,26 @@
 
 				<div class="mt-3">
 					<label for="selectedOrderStatusMessage" class="form-label">Message</label>
-					<textarea name="message" id="selectedOrderStatusMessage" class="form-control" placeholder="Enter your message"></textarea>
+					<textarea name="message" id="selectedOrderStatusMessage" class="form-control" placeholder="Enter your message" maxlength="100"></textarea>
+				</div>
+
+				<div class="mt-3">
+					<label for="selectedOrderPaymentMethod" class="form-label">Payment Method</label>
+					<select
+							name="selectedOrderPaymentMethod"
+							id="selectedOrderPaymentMethod"
+							class="form-select"
+					>
+						<?php
+						$defaultPaymentMethod = $order['Order']['payment_method'];
+
+						foreach(Order::ORDER_PAYMENT_OPTIONS as $index => $option) {
+							?>
+							<option value="<?= $index ?>" <?= $defaultPaymentMethod === $index ? 'selected' : '' ?>><?= $option ?></option>
+							<?php
+						}
+						?>
+					</select>
 				</div>
 
 				<div class="form-check d-flex justify-content-start mt-3">
@@ -128,10 +203,25 @@ $createdDate = $createdDate ?? $modifiedDate;
 		?>
 		</tbody>
 	</table>
-
+	<br>
 </div>
 <?php
 if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
+	$i = 0;
+	$cartValue = $order['Order']['total_cart_value'];
+	$payableAmount = $order['Order']['total_order_amount'];
+	$totalDiscount = $order['Order']['total_discount'];
+	$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
+
+	$promoCodeDetails = !empty($order['Order']['promo_code_details']) ? json_decode($order['Order']['promo_code_details'], true) : [];
+	$minPurchaseValue = (float)($promoCodeDetails['min_purchase_value'] ?? 0);
+	$showPromoDiscount = false;
+	if ($cartValue >= $minPurchaseValue) {
+		$showPromoDiscount = true;
+	}
+
+	$cartMrpValue = 0;
+	$totalItems = 0;
 	?>
 
 	<div class="p-3 shadow small mt-4">
@@ -148,14 +238,6 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			</thead>
 			<tbody>
 			<?php
-			$i = 0;
-			$cartValue = $order['Order']['total_cart_value'];
-			$payableAmount = $order['Order']['total_order_amount'];
-			$totalDiscount = $order['Order']['total_discount'];
-			$promoCodeDiscount = (float)$order['Order']['promo_code_discount'];
-
-			$cartMrpValue = 0;
-			$totalItems = 0;
 			foreach ($order['OrderProduct'] as $row) {
 				$i++;
 				$categoryName = ucwords($row['category_name']);
@@ -202,7 +284,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
 			<?php
-			if ($promoCodeDiscount > 0) {
+			if ($showPromoDiscount && $promoCodeDiscount > 0) {
 				?>
 				<tr class="text-muted">
 					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
@@ -232,7 +314,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 		<div class="text-success text-center">
 			Saved <?= $this->App->price($totalDiscount) ?> on this Order
 			<?php
-			if ($order['Order']['promo_code']) {
+			if ($showPromoDiscount && $order['Order']['promo_code']) {
 			?>
 			<div class="alert alert-secondary bg-light">
 				Promo Code<br>
@@ -243,6 +325,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			}
 			?>
 		</div>
+		<br><br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -264,6 +347,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Special Instructions:<br>
 			<b><?= h($order['Order']['customer_message']) ?></b>
 		</div>
+		<br><br>
 	</div>
 
 	<div class="p-3 mt-4 shadow small">
@@ -273,10 +357,17 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			Payment Method:
 			<b><?= $order['Order']['payment_method'] ?></b>
 		</div>
-		<div class="mt-2">
-			Payment Reference No:
-			<b><?= !empty($order['Order']['payment_reference_no']) ? $order['Order']['payment_reference_no'] : '-' ?></b>
-		</div>
+		<?php
+		if(!empty($order['Order']['payment_reference_no'])) {
+			?>
+			<div class="mt-2">
+				Payment Reference No:
+				<b><?= $order['Order']['payment_reference_no'] ?></b>
+			</div>
+			<?php
+		}
+		?>
+		<br><br>
 	</div>
 
 	<div class="my-5 text-center">

@@ -25,6 +25,9 @@ $hightlightLink = $theme['hightlightLink'];
 	.navbar-light .navbar-nav .nav-link {
 		color: var(--cus-dark);
 	}
+	.nav-tabs .nav-link.active {
+		color: var(--cus-dark);
+	}
 
 	<?php
 	if ($theme['name'] == Site::THEME_WHITE_AND_RED) {
@@ -47,8 +50,11 @@ $hightlightLink = $theme['hightlightLink'];
 		.nav-link {
 			color: var(--cus-danger-dark);
 		}
-		.nav-link:hover {
+		.nav-link:focus, .nav-link:hover {
 			color: var(--bs-danger);
+		}
+		.nav-tabs .nav-link.active {
+			color: var(--cus-danger-dark);
 		}
 		.navbar-light .navbar-nav .nav-link {
 			color: var(--cus-danger-dark);
@@ -101,8 +107,11 @@ $hightlightLink = $theme['hightlightLink'];
 		.nav-link {
 			color: var(--cus-success-dark);
 		}
-		.nav-link:hover {
+		.nav-link:focus, .nav-link:hover {
 			color: var(--bs-success);
+		}
+		.nav-tabs .nav-link.active {
+			color: var(--cus-success-dark);
 		}
 		<?php
 	}
@@ -121,13 +130,14 @@ $hightlightLink = $theme['hightlightLink'];
 		.nav-link {
 			color: var(--cus-danger-dark);
 		}
-		.nav-link:hover {
+		.nav-link:focus, .nav-link:hover {
 			color: var(--bs-danger);
+		}
+		.nav-tabs .nav-link.active {
+			color: var(--cus-danger-dark);
 		}
 		<?php
 	}
-
-
 ?>
 
 </style>

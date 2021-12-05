@@ -22,17 +22,19 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		$cartValue = 0;
 		$cartMrpValue = 0;
 		$totalDiscount = 0;
-		$deliveryCharges = $this->Session->read('Site.shipping_charges');
+		$deliveryCharges = (float)$this->Session->read('Site.shipping_charges');
+		$minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
+
 
 		foreach ($shoppingCart['ShoppingCartProduct'] as $row) {
 			$i++;
 			$shoppingCartProductID = $row['id'];
 			$categoryID = $row['category_id'];
-			$categoryName = ucwords($row['category_name']);
+			$categoryName = $row['category_name'];
 			$categoryNameSlug = Inflector::slug($categoryName, '-');
 
 			$productID = $row['product_id'];
-			$productName = ucwords($row['product_name']);
+			$productName = $row['product_name'];
 			$productNameSlug = Inflector::slug($productName, '-');
 			$qty = $row['quantity'] ?: 0;
 			$mrp = $row['mrp'];
@@ -52,7 +54,6 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			$productCartMRPValue = $qty * $mrp;
 			$totalDiscount += $qty * $discount;
 			$cartMrpValue += $productCartMRPValue;
-			$payableAmount = $cartValue + $deliveryCharges;
 
 			if ($imageDetails) {
 				$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
@@ -85,16 +86,19 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 
 						</div>
 						<div class="d-flex mt-2">
-							<img
-									src="<?php echo $thumbUrl; ?>"
-									loading="lazy"
-									class=""
-									role="button"
-									alt="<?php echo $productName; ?>"
-									id="<?php echo $imageTagId; ?>"
-									style="width: 75px; height: 75px"
-									onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
-							/>
+							<div>
+								<img
+										src="<?php echo $thumbUrl; ?>"
+										loading="lazy"
+										class="img-fluid"
+										role="button"
+										alt="<?php echo $productName; ?>"
+										id="<?php echo $imageTagId; ?>"
+										width="75"
+										height="75"
+										onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
+								/>
+							</div>
 							<div class="ms-2">
 								<div class="small text-muted">
 									Quantity: <?= $qty ?><br>
@@ -156,6 +160,12 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 
 		<div class="mt-3 p-3 shadow rounded small">
 			<?php
+			if ($minOrderForFreeShipping > 0 && $cartValue >= $minOrderForFreeShipping) {
+				$deliveryCharges = 0;
+			}
+
+			$payableAmount = $cartValue + $deliveryCharges;
+
 			$applyPromoDiscount = false;
 			$promoDiscountValue = 0;
 			$purchaseThisMuchToAvailPromoCode = 0;
@@ -179,7 +189,6 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				$payableAmount = $payableAmount - $promoDiscountValue;
 			}
 			?>
-
 
 			<h5>Price Details</h5>
 			<hr>
@@ -212,6 +221,15 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				<span>Delivery Charges</span>
 				<span><?= $deliveryCharges > 0 ? $this->App->price($deliveryCharges) : '<span class="text-success">FREE</span>' ?></span>
 			</div>
+			<div>
+				<?php
+				if ($deliveryCharges > 0 && $minOrderForFreeShipping > $payableAmount) {
+					?>
+					<span class="text-danger small">Free delivery on Orders above <?= $this->App->price($minOrderForFreeShipping) ?></span>
+					<?php
+				}
+				?>
+			</div>
 
 			<hr class="my-2">
 			<div class="d-flex justify-content-between mt-2 fw-bold fs-6">
@@ -224,9 +242,10 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		<?php
 		if ($this->Session->check('Site.show_promo_codes') && (bool)$this->Session->read('Site.show_promo_codes') === true) {
 		?>
-		<div class="mt-4 p-3 shadow rounded small">
+		<div class="mt-4 p-3 pb-4 shadow rounded small">
 			<h6>Have Promo Code (or) Discount Code?</h6>
-			<div class="mt-3 d-flex justify-content-sm-between">
+			<hr>
+			<div class="d-flex justify-content-sm-between">
 				<input
 					type="text"
 					name="promoc"
@@ -237,10 +256,12 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				<button class="btn btn-outline-primary btn-sm ms-2" onclick="applyPromoCode()">Apply</button>
 			</div>
 
+			
+
 			<?php
 			if ($this->Session->check('PromoCode')) {
 				?>
-				<div class="mt-3 mb-0 alert alert-secondary bg-light">
+				<div class="mt-3 mb-0 alert alert-secondary bg-light text-center">
 					Applied Promo Code: <b><?= $this->Session->read('PromoCode.name') ?></b>
 
 					<div class="mt-2 text-center">
@@ -250,6 +271,8 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				<?php
 			}
 			?>
+
+			<?= $this->element('promocodes_list') ?>			
 		</div>
 		<?php
 		}

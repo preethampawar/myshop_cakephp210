@@ -1,6 +1,7 @@
 <div id="content">
 	<div class="text-end">
-		<a href='/admin/categories/' class="btn btn-warning btn-sm">Go Back</a>
+		<a href="/admin/categories/showProducts/<?= $categoryInfo['Category']['id'] ?>" class="btn btn-sm btn-outline-primary">Manage Products</a>
+		<a href='/admin/categories/' class="btn btn-warning btn-sm ms-2">Go Back</a>
 	</div>
 	<section>
 		<h2>Edit Category: <?php echo $categoryInfo['Category']['name']; ?></h2>
@@ -34,6 +35,7 @@
 			>
 			<div class='text-muted small'>Note*: Only alphanumeric characters are accepted. Special characters will be removed.</div>
 		</div>
+
 		<div class="my-3">
 			<label for="CategoryMetaKeywords" class="form-label">Meta Keywords (SEO)</label>
 			<textarea
@@ -70,8 +72,7 @@
 	</section>
 </div>
 
-
-<br><br>
+<br>
 <hr>
 <div class="">
 

@@ -52,18 +52,17 @@
 		$('textarea.tinymce').summernote({
 			placeholder: 'Enter text here',
 			tabsize: 2,
-			height: 150,
+			height: 200,
 			toolbar: [
 				['style', ['style']],
 				['font', ['bold', 'italic', 'underline', 'clear']],
-				// ['fontsize', ['fontsize']],
-				// ['color', ['color']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
 				['para', ['ul', 'ol', 'paragraph']],
-				// ['table', ['table']],
-				['insert', ['link', 'video', 'picture']],
-				// ['insert', ['link', 'picture', 'video']],
-				// ['view', ['fullscreen', 'codeview', 'help']]
+				['table', ['table']],
+				['insert', ['link', 'video', 'picture']],				
+				['view', ['fullscreen', 'codeview', 'help']]
 			]
 		});
-	}
+	})
 </script>

@@ -13,10 +13,10 @@ $enableTextEditor = $enableTextEditor ?? false;
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Seller</title>
 
-	<link rel="stylesheet" href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.0.0">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.1">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -115,6 +115,12 @@ $enableTextEditor = $enableTextEditor ?? false;
 			<a class="nav-link" href="/admin/promo_codes/">PromoCodes</a>
 		</li>
 		<li class="nav-item">
+			<a class="nav-link" href="/admin/groups/">Groups</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/admin/suppliers/">Suppliers</a>
+		</li>
+		<li class="nav-item">
 			<a class="nav-link" href="/admin/sites/settings">Store Settings</a>
 		</li>
 	</ul>
@@ -183,9 +189,8 @@ $enableTextEditor = $enableTextEditor ?? false;
 	</div>
 </div>
 
-<div id="ToastMessage" class="fixed-top d-none"
-	 style="width:16rem; left: auto; margin-top: 8rem; margin-right: 0.5rem;">
-	<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="ToastMessage" class="toast-container fixed-top end-0 p-2 mt-5 d-none" style="left: auto">
+	<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="2000">
 		<div class="d-flex align-items-center">
 			<div class="toast-body"></div>
 			<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
@@ -221,7 +226,7 @@ if ($enableTextEditor) {
 ?>
 
 
-<script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/jquery-lazy-load/jquery.lazyload.min.js"></script>
 <script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js"></script>
 

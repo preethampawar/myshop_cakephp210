@@ -117,7 +117,9 @@ function loadShoppingCartHeader() {
 	let topNavCartHeaderUrl = '/shopping_carts/loadTopNavCartHeader';
 	const data = getPage(topNavCartHeaderUrl);
 	data.then(function (response) {
-		$("#topNavShoppingCart").html(response);
+		if(response.length > 0) {
+			$("#topNavShoppingCart").html(response);
+		}
 	});
 
 	return data;
@@ -129,7 +131,9 @@ function loadShoppingCart() {
 	const data = getPage(topNavCartUrl);
 
 	data.then(function (response) {
-		$("#myShoppingCartBody").html(response);
+		if(response.length > 0) {
+			$("#myShoppingCartBody").html(response);
+		}
 	})
 
 	return data;
@@ -178,6 +182,7 @@ function showConfirmPopup(url, title = '', content = '', okText = '') {
 	$("#confirmPopup .modal-content .modal-header .modal-title").html(title);
 	$("#confirmPopup .modal-content .modal-body .content").html(content);
 	$("#confirmPopup .modal-footer .ok").html(okText);
+	$('#confirmPopupBuyerSpinner').addClass('d-none');
 
 	$("#confirmPopup .modal-content .modal-header").show();
 	if (title == '') {
@@ -245,7 +250,7 @@ function showDeleteProductFromCartPopup(shoppingCartProductId, productName) {
 			keyboard: false
 		});
 	}
-	myShoppingCart.hide()
+	// myShoppingCart.hide()
 
 	deleteProductFromCartPopup.show();
 
@@ -593,11 +598,10 @@ function placeOrder(guest) {
 		'confirmed': 1,
 	}
 	let loader = spinner + '<div class="text-center small">Please wait.<br>Your order is in process. Do not press back button.</div>'
-
-	const response = postData(placeOrderUrl, data)
-
 	$(spinnerElementId).html(loader);
 	$(placeOrderButtonElementId).addClass('disabled');
+
+	const response = postData(placeOrderUrl, data);
 
 	response.then(function (data) {
 		if (data.error !== true) {
@@ -788,8 +792,12 @@ function htmlEncodeString(rawStr) {
 	});
 }
 
-function applyPromoCode() {
+function applyPromoCode(availablePromoCode) {
 	let promoCode = btoa($('#promoCodeVal').val().trim())
+
+	if (availablePromoCode && availablePromoCode.length > 0) {
+		promoCode = btoa(availablePromoCode);
+	}
 
 	if (promoCode.length < 1) {
 		showAlert('Please enter promo code')
@@ -871,32 +879,54 @@ function verifyOtp() {
 	let spinnerElementId = '#confirmOrderSpinnerGuest';
 	let loader = spinner + '<div class="text-center small">Please wait.<br>OTP verification is in process. Do not press back button.</div>'
 
-	const response = postData(url, data)
-
 	$(spinnerElementId).html(loader);
 	$('#orderVerifyOtpButton').addClass('disabled');
+
+	const response = postData(url, data)
 
 	response.then(function (data) {
 		if (data.error !== true) {
 			placeOrder(1);
 		} else {
+			$(spinnerElementId).html('');
+			$('#orderVerifyOtpButton').removeClass('disabled');
+
 			alert(data.msg)
 		}
 	}).finally(function () {
 		$('#UserVerifyOtp').val('');
-		$(spinnerElementId).html('');
-		$('#orderVerifyOtpButton').removeClass('disabled');
 	})
 }
 
+function showRequestProcessingMsg(element) {
+	$(element).addClass('disabled');
+	$(element).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+}
+
+function checkIfHuman(e) {
+
+	let int1 = Math.floor((Math.random() * 10) + 1);
+	let int2 = Math.floor((Math.random() * 10) + 1);
+
+	var answer = prompt('What is ' + int1 + '+' + int2 + ' = ?', "");
+	if (answer == (int1+int2)) {
+		return true;
+	} else {
+		e.preventDefault();
+		alert('Invalid answer. Please try again.')
+	}
+
+	return false;
+}
 
 // init site wide variables
 var handleError = function (err) {
-	alert('Network error. Please check the internet connection and try again.')
-	return new Response(JSON.stringify({
-		code: 400,
-		message: 'Network Error'
-	}));
+	// alert('Network error. Please check the internet connection and try again.')
+	// return new Response(JSON.stringify({
+	// 	code: 400,
+	// 	message: 'Network Error'
+	// }));
+	return new Response('');
 };
 // set default variables
 var cartInfo = null;

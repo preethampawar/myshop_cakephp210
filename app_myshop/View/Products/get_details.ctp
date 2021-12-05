@@ -12,6 +12,7 @@ $categoryNameSlug = Inflector::slug($categoryName, '-');
 
 $productID = $productInfo['Product']['id'];
 $productName = ucwords($productInfo['Product']['name']);
+$productShortDesc = trim($productInfo['Product']['short_desc']);
 $productNameSlug = Inflector::slug($productName, '-');
 $productDesc = $productInfo['Product']['description'];
 $showRequestPriceQuote = $productInfo['Product']['request_price_quote'];
@@ -29,6 +30,7 @@ $cartEnabled = $this->Session->read('Site.shopping_cart');
 $hideProductPrice = $productInfo['Product']['hide_price'];
 
 // SEO data
+$canonical = '/products/getDetails/'.$categoryID.'/'.$productID;
 $pageUrl = $this->Html->url($this->request->here, true);
 $pageUniqueIdentifier = $categoryID . '-' . $productID;
 $highlightImageDetails = $this->App->getHighlightImage($productUploadedImages);
@@ -39,8 +41,8 @@ if ($highlightImageDetails) {
 }
 $productImageUrl = $this->Html->url($thumbUrl, true);
 ?>
-
-<div itemscope itemtype="http://schema.org/Product">
+<script src="/vendor/jquery/jquery-3.6.0.slim.min.js"></script>
+<div>
 	<?php
 	if (!$isAjax) {
 		?>
@@ -56,7 +58,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<?php
 	}
 	?>
-	<h1 itemprop="name"><?= $productName; ?></h1>
+	<h1><?= $productName; ?></h1>
 
 	<?php
 	if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
@@ -65,11 +67,9 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 			<?= $this->element('show_rating_stars', ['rating' => $ratingsInfo['avgRating'], 'count' => $ratingsInfo['ratingsCount']]) ?>
 		</div>
 		<div class="mt-2 text-muted small">
-			<div itemprop="aggregateRating"
-				 itemscope itemtype="https://schema.org/AggregateRating">
-				Rated <span itemprop="ratingValue" class="fw-bold"><?= $ratingsInfo['avgRating'] ?></span> out of <span
-						class="fw-bold">5</span>
-				based on <span itemprop="reviewCount"><?= $ratingsInfo['ratingsCount'] ?></span> customer reviews.
+			<div>
+				Rated <span class="fw-bold"><?= $ratingsInfo['avgRating'] ?></span> out of <spanclass="fw-bold">5</span>
+				based on <span><?= $ratingsInfo['ratingsCount'] ?></span> customer reviews.
 			</div>
 		</div>
 		<?php
@@ -145,10 +145,18 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 
 
 						<?php if ($showDiscount): ?>
-							<div class="small text-left text-success">
+							<div class="small text-left text-success fw-bold">
 								Save - <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?>
 							</div>
 						<?php endif; ?>
+
+						<?php
+						if (!empty($productShortDesc)) {
+							?>
+							<div class="text-orange small mt-3"><?= $productShortDesc ?></div>
+							<?php
+						}
+						?>
 
 						<?php if ($cartEnabled && !$noStock): ?>
 							<form id="AddToCart<?php echo $productID; ?>"
@@ -244,7 +252,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 					<textarea id="productReview<?= $productID ?>" class="form-control"
 							  rows="2"><?= $userReview['ProductReview']['comments'] ?></textarea>
 				</div>
-				<script>
+				<script defer>
 					$(document).ready(function () {
 						fillProductRatingStars(<?= $userRating ?>)
 					})
@@ -312,6 +320,35 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 	}
 	?>
 
+	<!-- structured data -->
+	<div itemtype="https://schema.org/Product" itemscope>
+      <meta itemprop="name" content="<?= $productName ?>" />
+      <link itemprop="image" href="<?= $productImageUrl ?>" />
+      <meta itemprop="description" content="<?= strip_tags($productDesc) ?>" />
+      <div itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
+        <link itemprop="url" href="<?= $pageUrl ?>" />
+        <meta itemprop="availability" content="https://schema.org/InStock" />
+        <meta itemprop="priceCurrency" content="INR" />
+        <meta itemprop="itemCondition" content="https://schema.org/NewCondition" />
+        <meta itemprop="price" content="<?= $salePrice ?>" />
+        <meta itemprop="priceValidUntil" content="<?= date('Y-m-d') ?>" />
+      </div>
+	  <?php
+        if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
+            ?>
+		<div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
+			<meta itemprop="reviewCount" content="<?= $ratingsInfo['ratingsCount'] ?>" />
+			<meta itemprop="ratingValue" content="<?= $ratingsInfo['avgRating'] ?>" />
+		</div>
+	  <?php
+        }
+	  ?>
+      <meta itemprop="sku" content="<?= $productID ?>" />
+      <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+        <meta itemprop="name" content="<?= $this->Session->read('Site.title') ?>" />
+      </div>
+    </div>
+
 
 	<div class="mt-5">
 		<?php
@@ -358,6 +395,7 @@ $customMeta .= $this->Html->meta(['property' => 'og:description', 'content' => s
 $customMeta .= ($productImageUrl) ? $this->Html->meta(['property' => 'og:image', 'content' => $productImageUrl, 'inline' => false]) : '';
 $customMeta .= $this->Html->meta(['property' => 'og:site_name', 'content' => $this->Session->read('Site.title'), 'inline' => false]);
 
+$this->set('canonical', $canonical);
 $this->set('customMeta', $customMeta);
 $this->set('title_for_layout', $productName);
 

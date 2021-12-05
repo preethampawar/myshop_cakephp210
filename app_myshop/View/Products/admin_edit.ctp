@@ -80,7 +80,19 @@ $this->set('enableTextEditor', true);
 					class="form-check-input"
 					<?php echo $this->data['Product']['hide_price'] ? 'checked' : null; ?>
 				>
-				<label class="form-check-label" for="ProductHidePrice">Hide Price Information</label>
+				<label class="form-check-label" for="ProductAllowRelativePriceUpdate">Hide Price Information</label>
+			</div>
+			<div class="form-check form-switch">
+				<input type="hidden" name="data[Product][allow_relative_price_update]" value="0">
+				<input
+					type="checkbox"
+					id="ProductAllowRelativePriceUpdate"
+					name="data[Product][allow_relative_price_update]"
+					value="1"
+					class="form-check-input"
+					<?php echo $this->data['Product']['allow_relative_price_update'] ? 'checked' : null; ?>
+				>
+				<label class="form-check-label" for="ProductAllowRelativePriceUpdate">Allow Relative Price Update</label>
 			</div>
 		</div>
 
@@ -120,12 +132,12 @@ $this->set('enableTextEditor', true);
 							?>
 							<div
 								class="me-2 mb-2 shadow-sm rounded float-start clear <?php echo $imageHighlight ? 'border border-warning' : ''; ?>">
-								<img src="<?= $imageUrl ?> " loading="lazy" width="100" height="100" class="">
+								<img src="<?= $imageUrl ?> " loading="lazy" width="150" height="150" class="img-fluid">
 								<div
 									class="text-center "
 									onclick="showDeleteImagePopup('<?= $deleteImagesUrl; ?>', '<?= $deleteImagePath; ?>', 'Delete Image', 'Are you sure you want to delete this image?')"
 								>
-									<span class="fa fa-times-circle text-danger" role="button"></span>
+									<span class="fa fa-times-circle text-danger p-2" role="button"></span>
 								</div>
 							</div>
 
@@ -200,6 +212,15 @@ $this->set('enableTextEditor', true);
 					>
 				</div>
 				<div class="mb-3">
+					<label for="ProductDescription" class="form-label">Group</label>
+					<?php
+					echo $this->Form->select('Product.group_id', $groups, [
+							'empty' => '- Select Group -',
+							'class' => 'form-select form-select-sm'
+					]);
+					?>
+				</div>
+				<div class="mb-3">
 					<label for="ProductDescription" class="form-label">Description</label>
 					<textarea
 						id="ProductDescription"
@@ -207,6 +228,16 @@ $this->set('enableTextEditor', true);
 						class="form-control form-control-sm tinymce"
 						placeholder="Enter product description"
 					><?php echo $this->data['Product']['description']; ?></textarea>
+				</div>
+				<div class="my-3">
+					<label for="ProductShortDesc" class="form-label">Short information in Product Card</label>
+					<textarea
+							id="ProductShortDesc"
+							name="data[Product][short_desc]"
+							class="form-control form-control-sm tinymce"
+							placeholder="Enter short description"
+					><?php echo $this->data['Product']['short_desc']; ?></textarea>
+					<div class="small text-muted">Note: Short description will be displayed in Product tiles below the product name.</div>
 				</div>
 				<div class="my-3">
 					<label for="ProductMrp" class="form-label">MRP (<?= $this->App->price('') ?>)</label>

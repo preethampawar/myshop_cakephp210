@@ -69,7 +69,7 @@ class StoresController extends AppController
 
         ($errorMsg) ? $this->Session->setFlash($errorMsg, 'default', array('class' => 'error')) : null;
 
-        $this->set(compact('userInfo', 'storeInfo'));
+        $this->set(compact('userInfo'));
     }
 
     public function access()
@@ -90,8 +90,8 @@ class StoresController extends AppController
                     $this->Session->write('storeAccess.isAdmin', true);
                 }
             } elseif ($userType == 'user') {
-                $query = "select s.id 
-                    from users u 
+                $query = "select s.id
+                    from users u
                         left join stores s on s.user_id = u.id
                         left join store_passwords sp on sp.store_id = s.id
                     where u.id = $userId and sp.password = '$storePassword' ";
@@ -476,11 +476,11 @@ class StoresController extends AppController
                 $whereCondition = "";
             }
 
-            $query = "select s.name, s.id as store_id, sp.id, sp.password, u.id, u.email, u.name, u.store_password  
+            $query = "select s.name, s.id as store_id, sp.id, sp.password, u.id, u.email, u.name, u.store_password
                     from stores s
                         left join users u on u.id = s.user_id
                         left join store_passwords sp on sp.store_id = s.id
-                    $whereCondition     
+                    $whereCondition
                     order by u.email, s.name";
 
             $result = $this->Store->query($query);

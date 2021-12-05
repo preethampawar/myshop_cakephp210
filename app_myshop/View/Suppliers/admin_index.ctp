@@ -2,7 +2,7 @@
 	<article>
 		<header><h1>Suppliers</h1></header>
 		<div class="text-end mt-3">
-			<a href="/admin/suppliers/add/" class="btn btn-primary btn-sm">+ Add New Supplier</a>
+			<a href="/admin/suppliers/add/" class="btn btn-primary btn-sm ms-2">+ Add New Supplier</a>
 		</div>
 		<div class="table-responsive mt-3">
 			<?php
@@ -16,7 +16,7 @@
 						<th>Supplier</th>
 						<th>Status</th>
 						<th>Phone</th>
-						<th>Created</th>
+						<th>Address</th>
 						<th></th>
 					</tr>
 					</thead>
@@ -29,6 +29,7 @@
 						$supplierCreatedOn = date('d/m/Y', strtotime($row['Supplier']['created']));
 						$supplierActive = $row['Supplier']['active'];
 						$supplierPhone = $row['Supplier']['phone'];
+						$supplierAddress = $row['Supplier']['address'];
 						?>
 						<tr>
 							<td><?php echo $i; ?>.</td>
@@ -63,7 +64,7 @@
 							<td>
 								<?= $supplierPhone ?>
 							</td>
-							<td><?php echo $supplierCreatedOn; ?></td>
+							<td><?php echo $supplierAddress; ?></td>
 
 							<td class="text-nowrap text-end">
 								<a href="/admin/suppliers/edit/<?= $supplierId ?>" class="btn btn-sm btn-primary">Edit</a>

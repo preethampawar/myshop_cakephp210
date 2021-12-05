@@ -38,8 +38,18 @@ class OrdersController extends AppController
 		$this->checkSeller();
 
 		$siteId = $this->Session->read('Site.id');
+		$start_date = $this->request->query['start_date'] ?? date('Y').'-01-01';
+		$end_date = $this->request->query['end_date'] ?? date('Y-m-d');
 
-		$sql = 'select count(*) count, status from orders where site_id = '.$siteId.' and archived = 0 group by status';
+		$sql = 'select 
+					count(*) count, status 
+				from orders 
+				where 
+					site_id = '.$siteId.' 
+					and archived = 0 
+					and created >= "'.$start_date.'"
+					and created <= "'.$end_date.' 23:59:59"
+				group by status';
 		$ordersCountByStatus = $this->Order->query($sql);
 
 		$sql = 'select count(*) count from orders where site_id = '.$siteId.' and archived = 1';
@@ -66,21 +76,34 @@ class OrdersController extends AppController
 		}
 
 		$conditions['Order.status'] = $orderType;
+		$conditions['Order.created >'] = $start_date;
+		$conditions['Order.created <='] = $end_date . ' 23:59:59';
 
 		$this->Order->bindModel(['belongsTo' => ['User']]);
 		$this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
 
 		$this->paginate = [
-			'limit' => 100,
-			'order' => ['Order.created' => 'ASC'],
+			'limit' => 500,
+			'order' => ['Order.created' => 'DESC'],
 			'conditions' => $conditions,
 		];
 		$orders = $this->paginate();
 
+		App::import('Model', 'User');
+		$userModel = new User();
+		$conditions = [
+			'User.site_id' => $this->Session->read('Site.id'),
+			'User.type' => User::USER_TYPE_DELIVERY,
+		];
+		$usersList = $userModel->find('list', ['conditions' => $conditions]);
+
+		$this->set('usersList', $usersList);
 		$this->set('orderType', $orderType);
 		$this->set('orders', $orders);
 		$this->set('ordersCountByStatus', $ordersCountByStatus);
 		$this->set('archivedOrdersCount', $archivedOrdersCount);
+		$this->set('start_date', $start_date);
+		$this->set('end_date', $end_date);
 	}
 
 	public function details($encodedOrderId)
@@ -91,12 +114,45 @@ class OrdersController extends AppController
 		$this->set('order', $order);
 	}
 
+	public function admin_assignDeliveryBoy($encodedOrderId)
+	{
+		$orderId = base64_decode($encodedOrderId);
+		$order = $this->Order->findById($orderId);
+
+		if ($order) {
+			if ($this->request->isPost() || $this->request->isPut()) {
+				$data = $this->request->data;
+				$tmp['Order']['id'] = $orderId;
+				$tmp['Order']['delivery_user_id'] = $data['Order']['delivery_user_id'];
+
+				$this->Order->save($tmp);
+				$this->successMsg('Delivery boy assigned to this order.');
+			} else {
+				$this->errorMsg('Invalid request.');
+			}
+		} else {
+			$this->errorMsg('Order not found.');
+		}
+
+		$this->redirect($this->referer());
+	}
+
 	public function admin_details($encodedOrderId)
 	{
 		$orderId = base64_decode($encodedOrderId);
 		$order = $this->Order->findById($orderId);
 
+		App::import('Model', 'User');
+		$userModel = new User();
+		$conditions = [
+			'User.site_id' => $this->Session->read('Site.id'),
+			'User.active' => 1,
+			'User.type' => User::USER_TYPE_DELIVERY,
+		];
+		$usersList = $userModel->find('list', ['conditions' => $conditions]);
+
 		$this->set('order', $order);
+		$this->set('usersList', $usersList);
 	}
 
 	private function registerGuestUser($mobile, $email)
@@ -160,7 +216,9 @@ class OrdersController extends AppController
 					}
 				}
 			} else {
-				$this->sendVerifyOtp($userMobile, $userEmail);
+				if((bool)$this->Session->read('Site.sms_notifications') === true) {
+					$this->sendVerifyOtp($userMobile, $userEmail);
+				}
 				$error = 'Please login to place an Order';
 			}
 		} else {
@@ -177,13 +235,16 @@ class OrdersController extends AppController
 		$totalDiscount = 0;
 		$totalTax = 0;
 		$payableAmount = 0;
-		$shippingAmount = $this->Session->read('Site.shipping_charges');
+		$shippingAmount = (float)$this->Session->read('Site.shipping_charges');
+		$minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
 
 		$log = json_decode($orderDetails['Order']['log'], true);
 		$orderStatus = Order::ORDER_STATUS_NEW;
 		$newLog = [
 			'orderStatus' => $orderStatus,
-			'date' => time()
+			'date' => time(),
+			'message' => '',
+			'updated_by_user_id' => $userId,
 		];
 		$log[] = $newLog;
 		$log = json_encode($log);
@@ -212,7 +273,13 @@ class OrdersController extends AppController
 				$totalDiscount += $discount * $qty;
 			}
 
-			$payableAmount = $cartValue + $this->Session->read('Site.shipping_charges');
+
+			// if minimum order for free shipping is specified then make shipping charges as 0
+			if ($minOrderForFreeShipping > 0 && $cartValue >= $minOrderForFreeShipping) {
+				$shippingAmount = 0;
+			}
+
+			$payableAmount = $cartValue + $shippingAmount;
 
 			$applyPromoDiscount = false;
 			$promoDiscountValue = 0;
@@ -269,14 +336,23 @@ class OrdersController extends AppController
 
 				if ($this->saveOrderProducts($shoppingCartProducts['ShoppingCartProduct'], $orderId)) {
 					// delete shopping cart details
+					$customerPhone = $orderDetails['Order']['customer_phone'];
 					$this->Session->delete('ShoppingCart');
 					$this->Session->delete('Order');
 					$shoppingCartModel->delete($shoppingCartId);
 					$shoppingCartProductModel->deleteAll(['ShoppingCartProduct.shopping_cart_id' => $shoppingCartId]);
 					$msg = 'Your order has been placed successfully. You will be notified once the order is confirmed.';
 
-					$customerPhone = $orderDetails['Order']['customer_phone'];
-					$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+					if((bool)$this->Session->read('Site.sms_notifications') === true) {
+						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+
+						// send new order sms to manager of the site
+						$adminPhone = $this->Session->read('Site.notifications_mobile_no');
+
+						if (!empty($adminPhone)) {
+							$this->Sms->sendNewOrderSms($adminPhone, '#'.$orderId, $this->Session->read('Site.title'));
+						}
+					}
 
 				} else {
 					// delete Order as OrderProducts could not be saved
@@ -293,12 +369,16 @@ class OrdersController extends AppController
 		$this->set('orderEmailUrl', $orderEmailUrl);
 	}
 
-	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null)
+	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null, $paymentMethod = null)
 	{
 		if (!in_array($orderStatus, Order::ORDER_STATUS_OPTIONS)) {
 			$this->errorMsg('Invalid request');
 			$this->redirect('/admin/orders/details/'.$encodedOrderId);
 			return;
+		}
+
+		if ($paymentMethod && !isset(Order::ORDER_PAYMENT_OPTIONS[$paymentMethod])) {
+			$paymentMethod = null;
 		}
 
 		$message = $base64_encoded_message ? base64_decode($base64_encoded_message) : '';
@@ -326,6 +406,10 @@ class OrdersController extends AppController
 				'log' => $log,
 			]
 		];
+
+		if ($paymentMethod) {
+			$orderData['Order']['payment_method'] = $paymentMethod;
+		}
 
 		if ($this->Order->save($orderData)) {
 			$this->successMsg('Order status updated successfully');
@@ -429,71 +513,9 @@ class OrdersController extends AppController
 	public function sendOrderEmail($encodedOrderId, $orderStatus, $return = false, $message = null)
 	{
 		$this->layout = false;
-		$emailTemplate = null;
-		$subject = null;
-		$error = null;
+
 		$orderId = base64_decode($encodedOrderId);
-		$order = $this->Order->findById($orderId);
-		$message = htmlentities(trim($message));
-
-		switch($orderStatus) {
-			case Order::ORDER_STATUS_NEW:
-				$emailTemplate = 'order_new';
-				$subject = 'New Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_CONFIRMED:
-				$emailTemplate = 'order_confirmed';
-				$subject = 'Confirmed - Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_SHIPPED:
-				$emailTemplate = 'order_shipped';
-				$subject = 'Shipped - Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_DELIVERED:
-				$emailTemplate = 'order_delivered';
-				$subject = 'Delivered - Order #'.$orderId;
-				break;
-			case Order::ORDER_STATUS_CANCELLED:
-				$emailTemplate = 'order_cancelled';
-				$subject = 'Cancelled - Order #'.$orderId;
-				break;
-//			case Order::ORDER_STATUS_RETURNED:
-//				$emailTemplate = 'order_returned';
-//				$subject = 'Returned - Order #'.$orderId;
-//				break;
-			case Order::ORDER_STATUS_CLOSED:
-				$emailTemplate = 'order_closed';
-				$subject = 'Closed - Order #'.$orderId;
-				break;
-			default:
-				break;
-		}
-
-		if (!$emailTemplate) {
-			$error = 'No template found';
-		} else {
-
-
-
-			$toName = $order['Order']['customer_name'];
-			$toEmail = $order['Order']['customer_email'];
-			$toPhone = $order['Order']['customer_phone'];
-			$bccEmails = $this->getBccEmails();
-
-			// send sms
-			if (!in_array($orderStatus, [Order::ORDER_STATUS_DRAFT, Order::ORDER_STATUS_NEW, Order::ORDER_STATUS_CLOSED])) {
-				$this->Sms->sendOrderUpdateSms($toPhone, '#'.$orderId, $orderStatus, $message, $this->Session->read('Site.title'));
-			}
-
-			$Email = new CakeEmail('smtpNoReply');
-			$Email->viewVars(array('order' => $order, 'message' => $message));
-			$Email->template($emailTemplate, 'default')
-				->emailFormat('html')
-				->to([$toEmail => $toName])
-				->bcc($bccEmails)
-				->subject($subject)
-				->send();
-		}
+		$error = $this->sendOrderEmailAndSms($orderId, $orderStatus, $message);
 
 		$this->set('error', $error);
 
@@ -543,10 +565,24 @@ class OrdersController extends AppController
 		$this->layout = false;
 
 		$data = $this->request->input('json_decode', true);
+
+		if($this->Session->check('User')) {
+			$data['customerPhone'] = $this->Session->read('User.mobile');
+			$data['customerEmail'] = $this->Session->read('User.email');
+		}
+
+		if ((bool)$this->Session->read('Site.sms_notifications') === true && empty($data['customerEmail'])) {
+			$data['customerEmail'] = $this->Session->read('Site.default_customer_notification_email');
+		}
+
 		$error = $this->validateDeliveryDetails($data);
 
 		if (!$error) {
 			$orderId = $this->getOrderId();
+
+			//remove staring char 0 from phone number(ex. 09494102030)
+			$data['customerPhone'] = ltrim($data['customerPhone'], '0');
+
 			$orderData = [
 				'Order' => [
 					'id' => $orderId,

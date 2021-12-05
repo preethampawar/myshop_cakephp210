@@ -7,6 +7,7 @@ $secondaryMenuBg = $theme['secondaryMenuBg'];
 $linkColor = $theme['linkColor'];
 $cartBadgeBg = $theme['cartBadgeBg'];
 $hightlightLink = $theme['hightlightLink'];
+$canonical = $canonical ?? null;
 
 if (!empty($title_for_layout)) {
 	$title_for_layout = $title_for_layout . ' - ' . $this->Session->read('Site.title');
@@ -32,6 +33,7 @@ $showLocationPopup = false;
 if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain])) {
 	$showLocationPopup = true;
 }
+$slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 ?>
 
 <!doctype html>
@@ -54,10 +56,25 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 		}
 	</script>
 
-	<link rel="stylesheet" href="/vendor/bootstrap-5.1.0-dist/css/bootstrap.min.css">
+	<meta name="theme-color" content="#317EFB"/>
+	<link rel="manifest" href="/manifest.json" />
+	<script type="module">
+		import '/pwaupdate.js';
+		const el = document.createElement('pwa-update');
+		document.body.appendChild(el);
+	</script>
+
+	<?php
+	if (!empty($canonical)) {
+		$canonicalUrl = $this->Html->url($canonical, true);
+		echo '<link rel="canonical" href="'. $canonicalUrl .'">';
+	}
+	?>
+
+	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.1.1">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.2">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -94,10 +111,18 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 			localStorage.setItem('location', title);
 			localStorage.setItem('locationUrl', url);
 		}
+
+		function showLoadingBar() {
+			document.getElementById("topNavProgressBar").classList.remove('d-none')
+		}
+
+		function hideLoadingBar() {
+			document.getElementById("topNavProgressBar").classList.add('d-none')
+		}
 	</script>
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark" onbeforeunload="showLoadingBar()">
 	<div class="bg-white ">
 
 		<?php
@@ -118,7 +143,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 		?>
 
 		<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
-			<div class="container-fluid">
+			<div class="container">
 				<a class="navbar-brand" href="/">
 					<?php
 					if ($logoUrl) {
@@ -127,7 +152,10 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 								src="<?= $logoUrl ?>"
 								alt="<?= $this->Session->read('Site.title') ?>"
 								title="<?= $this->Session->read('Site.title') ?>"
-								style="max-width: 250px;">
+								class="img-fluid"
+								width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>"
+								height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>"
+							>
 						<?php
 					} else {
 						?>
@@ -137,12 +165,9 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 					?>
 				</a>
 
-
-				<div class="navbar-toggler border-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="fa fa-bars"></i>
+				<div class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<i class="fa fa-bars navbar-brand"></i>
 				</div>
-
-
 				<div class="offcanvas offcanvas-end" id="navbarNav">
 					<div class="offcanvas-header border-bottom border-4 border-warning">
 						<h5 class="offcanvas-title" id="offcanvasNavbarLabel"><?= $this->Session->read('Site.title') ?></h5>
@@ -168,9 +193,6 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 							<li class="nav-item px-1">
 								<a class="nav-link px-1" href="/sites/contact">Contact Us</a>
 							</li>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/sites/paymentInfo">Payment Details</a>
-							</li>
 						</ul>
 						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
@@ -182,27 +204,26 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 
 
 							<?php if ($this->Session->check('User.id')): ?>
-							<li class="nav-item dropdown px-1">
-								<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									<i class="fa fa-user-circle"></i>
-									<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
-								</a>
-								<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-									<?php if ($this->Session->read('Site.shopping_cart')): ?>
-										<li>
-											<a class="dropdown-item" href="/orders/">My Orders</a>
-										</li>
-									<?php endif; ?>
-									<li>
-										<hr class="dropdown-divider">
-									</li>
-									<li><a class="dropdown-item" href="/users/logout">Logout</a></li>
-								</ul>
-							</li>
+
+								<?php if ($this->Session->read('Site.shopping_cart')): ?>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/orders/">My Orders</a>
+								</li>
+								<?php endif; ?>
+
+								<li class="nav-item dropdown px-1">
+									<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										<i class="fa fa-user-circle"></i>
+										<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+										<li class="nav-item px-1"><a class="nav-link px-1" href="/users/logout">Logout</a></li>
+									</ul>
+								</li>
 							<?php else: ?>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/users/login">Login</a>
-							</li>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/users/login">Login</a>
+								</li>
 							<?php endif; ?>
 						</ul>
 					</div>
@@ -211,20 +232,29 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 		</nav>
 
 		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>" style="z-index: 999">
-			<ul class="nav container-fluid justify-content-center pt-2 pb-2 small">
+			<ul class="nav container justify-content-between pt-2 pb-2 small">
 				<li class="nav-item">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<span class="fs-5"><i class="fa fa-th"></i></span> Shop By Category
+						<i class="fa fa-th"></i> Shop By Category
 					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-							<span class="fs-5"><i class="fa fa-shopping-cart"></i></span> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
+							<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
 						</a>
 					</li>
 				<?php endif; ?>
 			</ul>
+			<div class="progress rounded-0 d-none" id="topNavProgressBar">
+				<div
+					class="progress-bar progress-bar-striped progress-bar-animated bg-orange small"
+					role="progressbar"
+					aria-valuenow="100"
+					aria-valuemin="0"
+					aria-valuemax="100"
+					style="width: 100%">Loading...</div>
+			</div>
 		</div>
 
 		<div id="storeSlideShow">
@@ -235,9 +265,16 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 
 			<?php echo $this->fetch('content'); ?>
 
-			<div id="storeTestimonials" class="mt-4">
-				<?= $this->element('testimonials_slideshow') ?>
-			</div>
+			<?php
+			if ($slideshowEnabled) {
+				?>
+				<div id="storeTestimonials" class="mt-4">
+					<?= $this->element('testimonials_slideshow') ?>
+				</div>
+				<?php
+			}
+			?>
+
 
 			<?php
 			$showPaymentContactInfo = false;
@@ -289,8 +326,8 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 					<?php
 					echo $this->element('categories_menu');
 					?>
-					<div class="mt-4 text-center">
-						<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
+					<div class="mt-4 text-center bottom">
+						<a role="button" class="nav-link btn btn-sm btn-light" data-bs-dismiss="offcanvas" aria-label="Close">Close</a>
 					</div>
 				</div>
 
@@ -308,7 +345,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 			<!-- Order Summary -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderSummary" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel">Order Summary</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-info-circle"></i> Order Summary</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderSummaryBody"></div>
@@ -317,7 +354,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 			<!-- Order delivery details -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderDeliveryDetails" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel">Order Delivery Details</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-shipping-fast"></i> Delivery Details</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderDeliveryDetailsBody"></div>
@@ -326,7 +363,7 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 			<!-- Order payment details -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderPaymentDetails" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel">Order Payment Details</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-wallet"></i> Payment Details</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderPaymentDetailsBody"></div>
@@ -444,9 +481,17 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 						</div>
 						<div class="modal-body">
 							<div class="content">Are you sure?</div>
+
+							<div class="mt-4 text-center d-none" id="confirmPopupBuyerSpinner">
+								<div class="spinner-border spinner-border-sm text-primary" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</div>
+								<br>
+								Please wait. Your request is in process.
+							</div>
 						</div>
 						<div class="modal-footer mt-3 p-1">
-							<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25"><span class="ok">Ok</span></a>
+							<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25" onclick="$('#confirmPopupBuyerSpinner').removeClass('d-none')"><span class="ok">Ok</span></a>
 							<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span
 										class="ok">Ok</span></button>
 							<button type="button" class="btn btn-outline-secondary btn-sm cancelButton w-25" data-bs-dismiss="modal">
@@ -498,9 +543,16 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 				<!-- - `.toast-container` for spacing between toasts -->
 				<!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
 				<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
-				<div class="toast-container fixed-top end-0 p-3" style="left: auto">
+				<div class="toast-container fixed-top end-0 p-2 mt-5" style="left: auto">
 					<div id="ToastMessage" class="d-none">
-						<div id="toastDiv" class="toast toast-js text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true">
+						<div
+							id="toastDiv"
+							class="toast toast-js text-white border-white border-2"
+							role="alert"
+							aria-live="assertive"
+							aria-atomic="true"
+							data-bs-autohide="true"
+							data-bs-delay="1500">
 							<div class="d-flex align-items-center justify-content-between">
 								<div class="toast-body"></div>
 								<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
@@ -633,9 +685,16 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 						<li class="nav-item px-1">
 							<a class="nav-link px-1" href="/sites/privacy">Privacy Policy</a>
 						</li>
-						<li class="nav-item px-1">
-							<a class="nav-link px-1" href="/testimonials/">Testimonials</a>
-						</li>
+						<?php
+						if ($testimonialsEnabled) {
+							?>
+							<li class="nav-item px-1">
+								<a class="nav-link px-1" href="/testimonials/">Testimonials</a>
+							</li>
+							<?php
+						}
+						?>
+
 					</ul>
 				</div>
 			</nav>
@@ -647,10 +706,11 @@ if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain]))
 	</div>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-	<script src="/vendor/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js" defer></script>
+	<script src="/js/site.js?v=1.2.5" defer></script>
 	<?= $this->element('customjs') ?>
+	<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BMfWKDJnzlndtyhBryNbMmDWM3mjiS4WOcJWCbSxfv8t8Mf37IJnC2_cH22zbIO4pf4DZ3ZAq149NwMQ6uGabLo' });</script><!-- end webpushr code -->
 </body>
 </html>

@@ -43,7 +43,8 @@ class CategoriesController extends AppController
 				$errorMsg = 'Enter Category Name';
 			}
 			// Sanitize data
-			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&']);
+			$data['Category']['name'] = trim($data['Category']['name']);
+			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&', '(', ')', ',']);
 			if (!$errorMsg) {
 				$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.name' => $data['Category']['name']];
 				if ($this->Category->find('first', ['conditions' => $conditions])) {
@@ -82,7 +83,7 @@ class CategoriesController extends AppController
 				$errorMsg[] = 'Enter Category Name';
 			}
 			// Sanitize data
-			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&']);
+			$data['Category']['name'] = Sanitize::paranoid($data['Category']['name'], [' ', '-', '.', '&', '(', ')', ',']);
 			if (!$errorMsg) {
 				$conditions = ['Category.site_id' => $this->Session->read('Site.id'), 'Category.name' => $data['Category']['name'], 'Category.id NOT' => $categoryID];
 				if ($this->Category->find('first', ['conditions' => $conditions])) {
@@ -134,22 +135,27 @@ class CategoriesController extends AppController
 		$conditions = ['CategoryProduct.category_id' => $categoryID];
 
 		$this->CategoryProduct->unbindModel(['belongsTo' => ['Category']]);
-		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID);
+		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryID, [], ['Product.name']);
 
 		$tmp = [];
 		$productsList = [];
 		if (!empty($categoryProducts)) {
 			foreach ($categoryProducts as $row) {
 				$tmp[$row['Product']['id']] = $row;
-				$productsList[$row['Product']['id']] = ucwords($row['Product']['name']);
+				$productsList[$row['Product']['id']] = $row['Product']['name'];
 			}
-			asort($productsList);
+			// asort($productsList);
 			$categoryProducts = $tmp;
 		}
 
 		$productsLimitExceeded = $this->productsLimitExceeded();
 
-		$this->set(compact('errorMsg', 'categoryInfo', 'categoryProducts', 'productsList', 'productsLimitExceeded'));
+		App::uses('Group', 'Model');
+		$groupModel = new Group;
+		$groupRates = $groupModel->find('list', ['fields' => ['Group.id', 'Group.rate'], 'conditions' => ['Group.site_id' => $this->Session->read('Site.id'), 'Group.deleted' => 0]]);
+		$groups = $groupModel->find('list', ['conditions' => ['Group.site_id' => $this->Session->read('Site.id'), 'Group.deleted' => 0]]);
+
+		$this->set(compact('errorMsg', 'categoryInfo', 'categoryProducts', 'productsList', 'productsLimitExceeded', 'groupRates', 'groups'));
 	}
 
 
@@ -274,7 +280,22 @@ class CategoriesController extends AppController
 		$this->redirect($redirectURL);
 	}
 
+	public function admin_activate($categoryId, $type)
+	{
+		$this->layout = false;
+		if (!$categoryInfo = $this->isSiteCategory($categoryId)) {
+			$this->errorMsg('Category Not Found');
+			$this->redirect('/admin/categories/');
+		}
 
+		$data['Category']['id'] = $categoryId;
+		$data['Category']['active'] = ($type == 'true') ? '1' : '0';
+
+		if ($this->Category->save($data)) {
+			$this->successMsg('PromoCode modified successfully');
+		} else {
+			$this->errorMsg('An error occurred while updating data');
+		}
+		$this->redirect('/admin/categories/');
+	}
 }
-
-?>

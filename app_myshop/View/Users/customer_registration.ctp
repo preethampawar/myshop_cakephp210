@@ -1,8 +1,8 @@
 <div>
-	<?php echo $this->Form->create('User', ['onsubmit' => "disableButton('customerRegisterButton')"]); ?>
+	<?php echo $this->Form->create('User', ['onsubmit' => 'showRequestProcessingMsg("#customerRegisterButton")']); ?>
 	<h1 class="">Customer Registration</h1>
 
-	<div class="mt-3">
+	<div class="mt-4">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
 			Mobile Number <span class="text-danger small">(required)</span>
 		</label>
@@ -21,7 +21,14 @@
 
 	<div class="mt-3">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
-			Email Address <span class="text-danger small">(required)</span>
+			Email Address
+			<?php
+			if((bool)$this->Session->read('Site.sms_notifications') === false) {
+			?>
+				<span class="text-danger small">(required)</span>
+			<?php
+			}
+			?>
 		</label>
 		<input
 			type="email"
@@ -31,7 +38,13 @@
 			placeholder="Enter your email address"
 			maxlength="55"
 			value="<?= $email ?>"
-			required
+			<?php
+			if((bool)$this->Session->read('Site.sms_notifications') === false) {
+				?>
+				required
+				<?php
+			}
+			?>
 			autofocus>
 	</div>
 
@@ -39,7 +52,7 @@
 		<?php
 		$text = "*OTP will be sent to your Email Address.";
 		if((bool)$this->Session->read('Site.sms_notifications') === true) {
-			$text = "*OTP will be sent to the specified Mobile no. and Email Address.";
+			$text = "*OTP will be sent to the specified Mobile no.";
 		}
 		echo $text;
 		?>

@@ -4,7 +4,7 @@
 	}
 </style>
 <div>
-	<?php echo $this->Form->create('User', ['onsubmit' => "disableButton('loginVerifyOtp')"]); ?>
+	<?php echo $this->Form->create('User', ['onsubmit' => "showRequestProcessingMsg('#loginVerifyOtp')", "id" =>"loginVerifyOtpForm"]); ?>
 	<h1 class="mb-3">Verify OTP</h1>
 
 	<div class="mb-3">

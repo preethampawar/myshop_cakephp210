@@ -13,10 +13,21 @@ $productDetailsPageUrl = '/products/getDetails/' . $categoryID . '/' . $productI
 
 $avgRating = $avgRating ?? 0;
 $ratingsCount = $ratingsCount ?? 0;
+$productShortDesc = $productShortDesc ?? '';
+
+$deliveryCharges = (float)$this->Session->read('Site.shipping_charges');
+$minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_amount');
 ?>
 
 <div class="col mb-3 bg-white hoverHighlightPink" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
 	<div class="card h-100 shadow p-0 mb-1 text-dark border-0" id="productCard<?php echo $productID; ?>">
+		<?php if ($showDiscount): ?>
+		<div class="position-relative">
+			<div class="position-absolute top-0 start-0 small">
+				<span class="small bg-orange p-1 fw-bold border border-start-0 border-top-0 border-white"><?php echo $this->App->priceOfferInfo($salePrice, $mrp, 'amount'); ?> OFF</span>
+			</div>
+		</div>
+		<?php endif; ?>
 
 		<a href="<?= $productDetailsPageUrl ?>" class="text-decoration-underline">
 			<img
@@ -33,7 +44,7 @@ $ratingsCount = $ratingsCount ?? 0;
 
 		<div class="card-body p-2 pt-0 text-center">
 			<a href="<?= $productDetailsPageUrl ?>" class="text-purple text-decoration-none">
-				<h6 class="mt-3"><?php echo $productTitle; ?></h6>
+				<h6 class="mt-3 small"><?php echo $productTitle; ?></h6>
 			</a>
 
 			<div class="mt-2 small text-center d-flex justify-content-center">
@@ -41,24 +52,36 @@ $ratingsCount = $ratingsCount ?? 0;
 			</div>
 
 			<?php if (!$hideProductPrice): ?>
-				<div class="mt-3 d-flex justify-content-between">
+				<div class="mt-1 d-flex justify-content-between">
 					<h5>
 						<span class="text-danger"><?php echo $this->App->price($salePrice); ?></span>
 					</h5>
 					<?php if ($showDiscount): ?>
-						<div class="ps-2">
-							<span
-								class="small text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
+						<div class="ms-3 small mt-1">
+							<span class="text-muted text-decoration-line-through">MRP <?php echo $this->App->price($mrp); ?></span>
 						</div>
 					<?php endif; ?>
 				</div>
 
-
 				<?php if ($showDiscount): ?>
-					<div class="small text-center">
+					<div class="small fw-bold text-center">
 						<span class="text-success">Save <?php echo $this->App->priceOfferInfo($salePrice, $mrp); ?></span>
 					</div>
 				<?php endif; ?>
+
+				<?php if ($deliveryCharges == 0 && $minOrderForFreeShipping == 0): ?>
+					<div class="small text-center">
+						<span class="text-orange small">+ Free Delivery</span>
+					</div>
+				<?php endif; ?>
+
+				<?php
+				if (trim($productShortDesc)) {
+					?>
+					<div class="x-small text-orange mt-2"><?= trim($productShortDesc) ?></div>
+					<?php
+				}
+				?>
 			<?php endif; ?>
 		</div>
 
