@@ -150,7 +150,12 @@ class CategoriesController extends AppController
 
 		$productsLimitExceeded = $this->productsLimitExceeded();
 
-		$this->set(compact('errorMsg', 'categoryInfo', 'categoryProducts', 'productsList', 'productsLimitExceeded'));
+		App::uses('Group', 'Model');
+		$groupModel = new Group;
+		$groupRates = $groupModel->find('list', ['fields' => ['Group.id', 'Group.rate'], 'conditions' => ['Group.site_id' => $this->Session->read('Site.id'), 'Group.deleted' => 0]]);
+		$groups = $groupModel->find('list', ['conditions' => ['Group.site_id' => $this->Session->read('Site.id'), 'Group.deleted' => 0]]);
+
+		$this->set(compact('errorMsg', 'categoryInfo', 'categoryProducts', 'productsList', 'productsLimitExceeded', 'groupRates', 'groups'));
 	}
 
 
@@ -293,60 +298,4 @@ class CategoriesController extends AppController
 		}
 		$this->redirect('/admin/categories/');
 	}
-
-	public function admin_updateBasePrice($categoryId)
-	{
-		$this->layout = false;
-		if (!$categoryInfo = $this->isSiteCategory($categoryId)) {
-			$this->errorMsg('Category Not Found');
-			$this->redirect('/admin/categories/');
-		}
-
-		if ($this->request->isPost() or $this->request->isPut()) {
-			$updated = 0;
-			$data = $this->request->data;
-
-			$productsBasePrice = (float)($data['Category']['products_base_price'] ?? 0);
-
-			if ($productsBasePrice > 0) {
-				App::uses('Product', 'Model');
-				$productModel = new Product;
-
-				App::uses('CategoryProduct', 'Model');
-				$categoryProductModel = new CategoryProduct;
-				$conditions = ['CategoryProduct.category_id' => $categoryId];
-
-				$categoryProductModel->unbindModel(['belongsTo' => ['Category']]);
-				$categoryProducts = $categoryProductModel->findAllByCategoryId($categoryId, ['Product.id', 'Product.mrp', 'Product.relative_base_price', 'Product.allow_relative_price_update'], ['Product.name']);
-
-				if ($categoryProducts) {
-					foreach($categoryProducts as $row) {
-						if ((bool)$row['Product']['allow_relative_price_update'] === true) {
-							$tmp = [];
-							$tmp['Product']['id'] = $row['Product']['id'];
-							$tmp['Product']['mrp'] = (float)$row['Product']['relative_base_price'] + $productsBasePrice;
-
-							$productModel->save($tmp);
-							$updated++;
-						}
-					}
-				}
-
-				// update category products base price
-				$tmp = [];
-				$tmp['Category']['id'] = $categoryId;
-				$tmp['Category']['products_base_price'] = $productsBasePrice;
-				$this->Category->save($tmp);
-
-				$this->successMsg('Updated ' . $updated . ' product(s).');
-			} else {
-				$this->errorMsg('Products Base Price should be greater than 0.');
-			}
-		} else {
-			$this->errorMsg('Invalid request');
-		}
-
-		$this->redirect($this->referer());
-	}
-
 }
