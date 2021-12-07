@@ -41,12 +41,12 @@ class OrdersController extends AppController
 		$start_date = $this->request->query['start_date'] ?? date('Y').'-01-01';
 		$end_date = $this->request->query['end_date'] ?? date('Y-m-d');
 
-		$sql = 'select 
-					count(*) count, status 
-				from orders 
-				where 
-					site_id = '.$siteId.' 
-					and archived = 0 
+		$sql = 'select
+					count(*) count, status
+				from orders
+				where
+					site_id = '.$siteId.'
+					and archived = 0
 					and created >= "'.$start_date.'"
 					and created <= "'.$end_date.' 23:59:59"
 				group by status';
@@ -151,8 +151,19 @@ class OrdersController extends AppController
 		];
 		$usersList = $userModel->find('list', ['conditions' => $conditions]);
 
+
+		App::uses('Supplier', 'Model');
+		$supplierModel = new Supplier();
+		$conditions = [
+			'Supplier.site_id' => $this->Session->read('Site.id'),
+			'Supplier.active' => 1,
+		];
+
+		$suppliers = $supplierModel->find('list', ['conditions' => $conditions]);
+
 		$this->set('order', $order);
 		$this->set('usersList', $usersList);
+		$this->set('suppliers', $suppliers);
 	}
 
 	private function registerGuestUser($mobile, $email)
@@ -836,7 +847,6 @@ class OrdersController extends AppController
 	{
 		if ($this->request->isPost() || $this->request->isPut()) {
 			$data = $this->request->data;
-			debug($data);
 
 			foreach($data as $orderProductId => $row) {
 
@@ -885,5 +895,122 @@ class OrdersController extends AppController
 		$this->redirect($this->request->referer());
 	}
 
+	public function admin_updateOrderProductSupplier()
+	{
+		if ($this->request->isPost() || $this->request->isPut()) {
+			$data = $this->request->data;
+
+			$orderProductId = $data['OrderProduct']['id'] ?? null;
+			$orderProductSupplierId = $data['OrderProduct']['supplier_id'] ?? null;
+
+			if (empty($orderProductId)) {
+				$this->errorMsg('Invalid request.');
+				$this->redirect($this->request->referer());
+			}
+
+			$tmpData['OrderProduct'] = [
+				'id' => $orderProductId,
+				'supplier_id' => $orderProductSupplierId,
+			];
+
+			App::uses('OrderProduct', 'Model');
+			$orderProductModel = new OrderProduct;
+			$orderProductModel->save($tmpData);
+
+			$this->successMsg('Supplier updated successfully.');
+		} else {
+			$this->errorMsg('Invalid request.');
+		}
+
+		$this->redirect($this->request->referer());
+	}
+
+	public function admin_reports($orderType = null, $download = false)
+	{
+		$download = (bool)$download;
+		$this->checkSeller();
+
+		$siteId = $this->Session->read('Site.id');
+		$start_date = $this->request->query['start_date'] ?? date('Y').'-01-01';
+		$end_date = $this->request->query['end_date'] ?? date('Y-m-d');
+
+		$sql = 'select
+					count(*) count, status
+				from orders
+				where
+					site_id = '.$siteId.'
+					and archived = 0
+					and created >= "'.$start_date.'"
+					and created <= "'.$end_date.' 23:59:59"
+				group by status';
+		$ordersCountByStatus = $this->Order->query($sql);
+
+		$sql = 'select count(*) count from orders where site_id = '.$siteId.' and archived = 1';
+		$archivedOrdersCount = $this->Order->query($sql);
+
+		$conditions = [
+			'Order.site_id' => $siteId,
+			'Order.archived' => 0,
+		];
+
+		switch ($orderType) {
+			case Order::ORDER_STATUS_NEW:
+			case Order::ORDER_STATUS_CONFIRMED:
+			case Order::ORDER_STATUS_SHIPPED:
+			case Order::ORDER_STATUS_DELIVERED:
+			case Order::ORDER_STATUS_CANCELLED:
+			case Order::ORDER_STATUS_CLOSED:
+				// case Order::ORDER_STATUS_RETURNED:
+				break;
+			default:
+				$orderType = null;
+				break;
+		}
+
+		if ($orderType) {
+			$conditions['Order.status'] = $orderType;
+		}
+		$conditions['Order.created >'] = $start_date;
+		$conditions['Order.created <='] = $end_date . ' 23:59:59';
+		$conditions['Order.status NOT'] = Order::ORDER_STATUS_DRAFT;
+		$conditions['Order.archived'] = 0;
+
+		$this->Order->bindModel(['belongsTo' => ['User']]);
+		// $this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
+
+
+		$orders = $this->Order->find('all', [
+			'conditions' => $conditions,
+			'order' => [
+				'Order.created' => 'ASC'
+			],
+		]);
+
+		App::import('Model', 'User');
+		$userModel = new User();
+		$conditions = [
+			'User.site_id' => $this->Session->read('Site.id'),
+			'User.type' => User::USER_TYPE_DELIVERY,
+		];
+		$usersList = $userModel->find('list', ['conditions' => $conditions]);
+
+		App::uses('Supplier', 'Model');
+		$supplierModel = new Supplier();
+		$conditions = [
+			'Supplier.site_id' => $this->Session->read('Site.id'),
+			'Supplier.active' => 1,
+		];
+
+		$suppliers = $supplierModel->find('list', ['conditions' => $conditions]);
+
+		$this->set('usersList', $usersList);
+		$this->set('orderType', $orderType);
+		$this->set('orders', $orders);
+		$this->set('ordersCountByStatus', $ordersCountByStatus);
+		$this->set('archivedOrdersCount', $archivedOrdersCount);
+		$this->set('start_date', $start_date);
+		$this->set('end_date', $end_date);
+		$this->set('suppliers', $suppliers);
+		$this->set('download', $download);
+	}
 }
-?>

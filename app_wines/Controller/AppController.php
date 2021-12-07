@@ -125,7 +125,7 @@ class AppController extends Controller
 	public function errorMsg($msg)
 	{
 		if ($msg) {
-			$this->Session->setFlash($msg, 'default', array('class' => 'error'));
+			$this->Session->setFlash($msg, 'default', array('class' => 'error alert alert-danger'));
 		}
 		return true;
 	}
@@ -133,7 +133,7 @@ class AppController extends Controller
 	public function noticeMsg($msg)
 	{
 		if ($msg) {
-			$this->Session->setFlash($msg, 'default', array('class' => 'notice'));
+			$this->Session->setFlash($msg, 'default', array('class' => 'notice  alert alert-warning'));
 		}
 		return true;
 	}
@@ -141,7 +141,7 @@ class AppController extends Controller
 	public function successMsg($msg)
 	{
 		if ($msg) {
-			$this->Session->setFlash($msg, 'default', array('class' => 'success'));
+			$this->Session->setFlash($msg, 'default', array('class' => 'success alert alert-success'));
 		}
 		return true;
 	}
@@ -161,9 +161,10 @@ class AppController extends Controller
 			$purchase_products = $this->Purchase->findAllByInvoiceId($invoiceID);
 			if ($purchase_products) {
 				$invoice_value = 0;
-				$tcs_value = $invoice_info['Invoice']['tcs_value'];
-				$retail_shop_excise_turnover_tax = $invoice_info['Invoice']['retail_shop_excise_turnover_tax'];
-				$special_excise_cess = $invoice_info['Invoice']['special_excise_cess'];
+				$tcs_value = (float)$invoice_info['Invoice']['tcs_value'];
+				$retail_shop_excise_turnover_tax = (float)$invoice_info['Invoice']['retail_shop_excise_turnover_tax'];
+				$special_excise_cess = (float)$invoice_info['Invoice']['special_excise_cess'];
+				$newRetailerProfessionalTax = (float)$invoice_info['Invoice']['new_retailer_prof_tax'];
 				$special_margin = 0;
 
 				foreach ($purchase_products as $row) {
@@ -187,6 +188,7 @@ class AppController extends Controller
 					- $retail_shop_excise_turnover_tax
 					- $special_excise_cess
 					- $invoice_info['Invoice']['mrp_rounding_off']
+					- $newRetailerProfessionalTax
 				);
 				$this->Invoice->save($invoice_data);
 			}
