@@ -6,26 +6,26 @@ class UsersController extends AppController {
         $this->Auth->allow('login', 'index');
 		$this->set('hideSideBar', true);
     }
-	
-	public function login() {		
+
+	public function login() {
 		$hideSideBar = true;
 		$title_for_layout = 'Log In';
-				
+
 		if($this->Auth->loggedIn()) {
 			$this->redirect($this->Auth->redirectUrl());
 		}
 		$showErrors = false;
 		if ($this->request->is('post')) {
-			$showErrors = false;	
-			if ($this->Auth->login()) {				
+			$showErrors = false;
+			if ($this->Auth->login()) {
 				// check for admin
 				if(Configure::read('Access.admin') == $this->request->data['User']['email']) {
 					if(Configure::read('Access.key') == (md5($this->request->data['User']['email']))) {
-						$this->Session->write('manager', 1);						
+						$this->Session->write('manager', 1);
 					}
 				}
 				else {
-					$this->Session->write('manager', 0);					
+					$this->Session->write('manager', 0);
 				}
 
 				debug($this->Session->read());
@@ -61,10 +61,10 @@ class UsersController extends AppController {
         $this->onlyManagerCanAccess();
 
         $hideSideBar = true;
-		
+
         if ($this->request->is('post')) {
             $this->User->create();
-            if ($this->User->save($this->request->data)) {                
+            if ($this->User->save($this->request->data)) {
 				$msg = 'User has been created successfully';
                 $this->successMsg($msg);
                 $this->redirect(array('controller' => 'users', 'action'=>'index'));
@@ -80,7 +80,7 @@ class UsersController extends AppController {
         $this->onlyManagerCanAccess();
 
 		$hideSideBar = true;
-		
+
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
@@ -132,10 +132,60 @@ class UsersController extends AppController {
             $this->Session->setFlash(__('User deleted'));
 			$msg = 'User has been deleted successfully';
 			$this->Session->setFlash($msg, 'default', array('class'=>'success'));
-			
+
             $this->redirect(array('controller' => 'stores', 'action'=>'index'));
         }
         $this->Session->setFlash(__('User was not deleted'));
         $this->redirect(array('controller' => 'stores', 'action'=>'index'));
     }
+
+	public function changePassword($id = null) {
+		$hideSideBar = true;
+
+		$this->User->id = $id;
+		$password = null;
+		$confirmPassword = null;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException(__('Invalid user'));
+		} elseif(!$this->userIsManager() && $this->Session->read('Auth.User.id') != $id) {
+			throw new NotFoundException(__('Unauthorized access.'));
+		}
+
+		if ($this->request->is('post') || $this->request->is('put')) {
+			$data['User']['id'] = $id;
+
+			if($this->request->data['User']['password']) {
+				$password = trim($this->request->data['User']['password']);
+			}
+			if($this->request->data['User']['confirmPassword']) {
+				$confirmPassword = trim($this->request->data['User']['confirmPassword']);
+			}
+
+			if (empty($password) || empty($confirmPassword)) {
+				$msg = 'Password and Re-enter Passwords fields cannot be empty.';
+				$this->errorMsg($msg);
+			} elseif($password != $confirmPassword) {
+				$msg = 'Password and Re-enter New Password values do not match.';
+				$this->errorMsg($msg);
+			} else {
+				$tmp['User']['id'] =  $id;
+				$tmp['User']['password'] =  $password;
+
+				if ($this->User->save($tmp)) {
+					$msg = 'Password updated successfully';
+					$this->successMsg($msg);
+					$this->redirect(array('controller' => 'stores', 'action'=>'index'));
+				} else {
+					$msg = 'New Password could not be saved. Please, try again.';
+					$this->errorMsg($msg);
+				}
+			}
+		} else {
+			$this->request->data = $this->User->read(null, $id);
+			unset($this->request->data['User']['password']);
+		}
+
+		$this->set(compact('hideSideBar'));
+	}
 }

@@ -1,9 +1,13 @@
+<?php
+$this->set('enableTextEditor', true);
+?>
+
 <h1>Edit Store - <?php echo $storeInfo['Store']['name'];?></h1><br>
 
 <?php
 echo $this->Form->create();
 ?>
-<table class="table table-striped table-condensed" style="width: 500px;">
+<table class="table table-sm">
     <thead>
     <tr>
         <th colspan="2"><?php echo $storeInfo['Store']['name'];?></th>
@@ -26,6 +30,28 @@ echo $this->Form->create();
         <td>Expiry Date</td>
         <td><?php echo $this->Form->input('Store.expiry_date', array('label'=>false, 'required'=>true, 'type'=>'date')); ?></td>
     </tr>
+	<tr>
+		<td>Print Header</td>
+		<td>
+			<textarea
+					id="StorePrintHeader"
+					name="data[Store][print_header]"
+					class="form-control form-control-sm tinymce"
+					placeholder="Set print page header"
+			><?php echo $this->data['Store']['print_header']; ?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td>Print Footer</td>
+		<td>
+			<textarea
+					id="StorePrintFooter"
+					name="data[Store][print_footer]"
+					class="form-control form-control-sm tinymce"
+					placeholder="Set print page footer"
+			><?php echo $this->data['Store']['print_footer']; ?></textarea>
+		</td>
+	</tr>
     <tr>
         <td></td>
         <td style="text-align: center;">
