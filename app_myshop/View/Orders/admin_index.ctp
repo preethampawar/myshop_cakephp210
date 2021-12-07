@@ -11,7 +11,8 @@ if ($q_start_date && $q_end_date) {
 <h1>Manage Orders</h1>
 
 <div class="mt-3 text-end">
-	<a href="/admin/orders/createOrder" class="btn btn-sm btn-primary">+ Create Offline Order</a>
+	<a href="/admin/orders/reports" class="btn btn-sm btn-outline-primary">Reports</a>
+	<a href="/admin/orders/createOrder" class="btn btn-sm btn-primary ms-2">+ Create Offline Order</a>
 	<a href="/admin/orders/archived" class="btn btn-sm btn-secondary disabled ms-2 d-none">Archived Orders</a>
 </div>
 
@@ -290,6 +291,7 @@ if ($orderType) {
 				<tr>
 					<th colspan="2" class="text-start">Total Order Value</th>
 					<th><?= $this->App->price($totalOrderValue) ?></th>
+					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>
