@@ -3,45 +3,12 @@
 <?php echo $this->element('sales_purchases_report_menu');?>
 <?php $this->end();?>
 
-<p style="text-align:left;"><?php echo $this->Html->link('&laquo; Back to Invoice List', array('controller'=>'invoices', 'action'=>'index'), array('title'=>'Go back to Invoices list', 'style'=>'font-weight:bold;', 'escape'=>false));?></p>
-<h1>Invoice: <?php echo $this->Session->read('Invoice.name');?></h1>
-
-<table class="table table-striped" style="width:100%">
-	<tbody>
-		<tr class="bold">
-			<td width="80">Invoice No:</td>
-			<td width="120"><?php echo $invoiceInfo['Invoice']['name'];?></td>		
-			<td width="110">Invoice Date:</td>
-			<td width="120"><?php echo date('d-m-Y', strtotime($invoiceInfo['Invoice']['invoice_date']));?></td>			
-			<td width="110">DD Amount:</td>
-			<td width="120"><?php echo $invoiceInfo['Invoice']['dd_amount'];?></td>
-		</tr>
-		<tr>
-			<td>Invoice Value:</td>
-			<td><?php echo $invoiceInfo['Invoice']['invoice_value'];?></td>			
-			<td>MRP Rounding Up:</td>
-			<td><?php echo $invoiceInfo['Invoice']['mrp_rounding_off'];?></td>						
-			<td>Net Invoice Value:</td>
-			<td><?php echo $invoiceInfo['Invoice']['invoice_value']+$invoiceInfo['Invoice']['mrp_rounding_off']+$invoiceInfo['Invoice']['special_margin'];?></td>
-		</tr>
-        <tr>
-            <td>Retail Shop Excise Turnover Tax:</td>
-            <td><?php echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax'];?></td>
-            <td>Special Excise Cess:</td>
-            <td><?php echo $invoiceInfo['Invoice']['special_excise_cess'];?></td>
-            <td></td>
-            <td></td>
-        </tr>
-		<tr>
-			<td>TCS Value:</td>
-			<td><?php echo $invoiceInfo['Invoice']['tcs_value'];?></td>			
-			<td>Prev Credit:</td>
-			<td><?php echo $invoiceInfo['Invoice']['prev_credit'];?></td>		
-			<td>Credit Balance:</td>
-			<td><?php echo $invoiceInfo['Invoice']['credit_balance'];?></td>
-		</tr>		
-	</tbody>
-</table>	
+<p class="text-left">
+	<?php echo $this->Html->link('&laquo; Back to Invoice List', array('controller'=>'invoices', 'action'=>'index'), array('title'=>'Go back to Invoices list', 'class'=>'btn btn-warning btn-sm', 'escape'=>false));?>
+</p>
+<br>
+<h1>Add or Remove Products in Invoice</h1>
+<h2>Invoice: <?php echo $this->Session->read('Invoice.name');?></h2>
 
 <?php
 //debug($productsInfo);
@@ -49,33 +16,33 @@ if($productsInfo) {
 $boxQuantity = 0;
 ?>
 	<script type="text/javascript">
-		var unitsInBox = new Array();	
-		var unitBoxPrice = new Array();	
-		var specialMargin = new Array();	
-		<?php	
+		var unitsInBox = new Array();
+		var unitBoxPrice = new Array();
+		var specialMargin = new Array();
+		<?php
 		foreach($productsInfo as $row) {
 		?>
-			unitsInBox['<?php echo $row['Product']['id'];?>'] = '<?php echo $row['Product']['box_qty'];?>'; 
+			unitsInBox['<?php echo $row['Product']['id'];?>'] = '<?php echo $row['Product']['box_qty'];?>';
 			unitBoxPrice['<?php echo $row['Product']['id'];?>'] = '<?php echo $row['Product']['box_buying_price'];?>';
 			specialMargin['<?php echo $row['Product']['id'];?>'] = '<?php echo $row['Product']['special_margin'];?>';
 		<?php
 			$boxQuantity = $row['Product']['box_qty'];
 		}
 		?>
-		
+
 		function setExtraUnits() {
 			var productID = $('#PurchaseProductId').val();
 			var extra_units = parseInt(unitsInBox[productID]);
 			var select_options = '';
-			if(extra_units) {				
+			if(extra_units) {
 				for(var i=0; i< extra_units; i++) {
 					select_options = select_options+'<option value="'+i+'">'+i+'</option>';
 				}
 			}
 			$('#PurchaseExtraUnits').html(select_options);
-			
+
 		}
-		
+
 		function setTotalPrice() {
 			var productID = $('#PurchaseProductId').val();
 			var productName = $('#PurchaseProductId option:selected').text();
@@ -105,13 +72,13 @@ $boxQuantity = 0;
 				var extraUnitsPrice = parseFloat(pricePerUnit*extraUnits);
 				oTotalPrice = parseFloat(oTotalPrice)+parseFloat(extraUnitsPrice);
 				oTotalPrice = oTotalPrice.toFixed(2);
-				
+
 			}
 			var oTotalUnitsString = ' ['+oTotalUnits+' units] ';
 			var oTotalSpecialMargin = ((oTotalUnits*oSpecialMargin)>0) ? (oTotalUnits*oSpecialMargin).toFixed(2) : 0;
-			
+
 			// set hidden variables
-			
+
 			$('#PurchaseBoxBuyingPrice').val(oBoxPrice);
 			$('#PurchaseUnitsInBox').val(oUnitsInBox);
 			$('#PurchaseUnitPrice').val(unitPrice);
@@ -119,29 +86,29 @@ $boxQuantity = 0;
 			$('#PurchaseTotalUnits').val(oTotalUnits);
 			$('#PurchaseTotalAmount').val(oTotalPrice);
 			$('#PurchaseTotalSpecialMargin').val(oTotalSpecialMargin);
-			
-			
+
+
 			if(oTotalPrice <= 0) {
 				$('#SubmitForm').attr('title', 'Total amount should be greater than 0');
 			}
-			else {				
+			else {
 				$('#SubmitForm').attr('title', '');
 			}
-			
+
 			// set output
 			$('#oTotalBoxQty').text(iBoxQtyText);
 			$('#oOneBoxQty').text(oUnitsInBox);
 			$('#oBoxPrice').text(oBoxPrice);
 			$('#oUnitPrice').text(unitPrice);
 			$('#oTotalUnits').text(oTotalUnitsString);
-			$('#oTotalPrice').text(oTotalPrice);			
-			$('#oSpecialMargin').text(oSpecialMargin);			
-			$('#oTotalSpecialMargin').text(oTotalSpecialMargin);			
-			$('#oProductName').text(productName);			
+			$('#oTotalPrice').text(oTotalPrice);
+			$('#oSpecialMargin').text(oSpecialMargin);
+			$('#oTotalSpecialMargin').text(oTotalSpecialMargin);
+			$('#oProductName').text(productName);
 		}
-		
+
 		function submitButtonMsg() {
-			setTotalPrice();						
+			setTotalPrice();
 			if(parseInt($('#SubmitForm').attr('title').length) > 0) {
 				alert($('#SubmitForm').attr('title'));
 				return false;
@@ -150,18 +117,17 @@ $boxQuantity = 0;
 		}
 	</script>
 	<br>
-	<h2>Add Products</h2>
 	<div id="AddInvoiceProductDiv" class="well">
-		<?php 
+		<?php
 		echo $this->Form->create();
 		?>
 		<div id="paramsDiv">
 			<div style="float:left; clear:none;">
 				<?php echo $this->Form->input('product_id', array('empty'=>false, 'label'=>'Select Product', 'required'=>true, 'type'=>'select', 'options'=>$productsList, 'onchange'=>'setExtraUnits(); setTotalPrice()', 'autofocus'=>true, 'class'=>'autoSuggest'));?>
 			</div>
-			
+
 			<div style="float:left; clear:none;">
-				<?php 
+				<?php
 				echo $this->Form->input('box_qty', array('type'=>'number', 'value'=>1, 'min'=>'0', 'max'=>'99999', 'label'=>'No. of Boxes', 'required'=>true, 'oninput'=>'setTotalPrice()', 'title'=>'Values should be between 1 to 99999'));
 				echo $this->Form->input('box_buying_price', array('type'=>'hidden'));
 				echo $this->Form->input('units_in_box', array('type'=>'hidden'));
@@ -182,12 +148,10 @@ $boxQuantity = 0;
 			<div style="float:left; clear:none;" id="ExtraUnitsDiv">
 				<?php echo $this->Form->input('extra_units', array('empty'=>false, 'label'=>'No.of Units', 'type'=>'select', 'options'=>$extraUnitArray, 'onchange'=>'setTotalPrice()', 'autofocus'=>true));?>
 			</div>
-			<div style="float:left; clear:none; padding-top:10px;">
-				<br>
-				&nbsp;
-				<?php echo $this->Form->submit('Add Product', array('id'=>'SubmitForm', 'title'=>'', 'type'=>'submit', 'onclick'=>'return submitButtonMsg()', 'div'=>false));?>
+			<div style="float:left; clear:none; padding-top: 25px;">
+				<?php echo $this->Form->submit('Add Product', array('id'=>'SubmitForm', 'title'=>'', 'type'=>'submit', 'onclick'=>'return submitButtonMsg()', 'div'=>false, 'class' => 'btn btn-primary btn-sm'));?>
 			</div>
-			
+
 			<div style="float:left; clear:both; padding-top:10px;">
 				<table class="table">
 					<thead>
@@ -195,7 +159,7 @@ $boxQuantity = 0;
 							<th>Product</th>
 							<th>Box Price</th>
 							<th>Unit Price</th>
-							<th>No. of Boxes</th>					
+							<th>No. of Boxes</th>
 							<th class="hidden">Special Margin Per Unit</th>
 							<th class="hidden">Total Special Margin</th>
 							<th>Total Amount</th>
@@ -214,20 +178,20 @@ $boxQuantity = 0;
 			</div>
 		</div>
 		<div style="clear:both;"></div>
-		<?php		
+		<?php
 		echo $this->Form->end();
-		?>		
+		?>
 	</div>
-		
+
 	<script type="text/javascript">
 		setExtraUnits();
 		setTotalPrice();
 	</script>
-	
+
 	<h2>Invoice Products</h2>
-	<?php 
+	<?php
 	//debug($invoiceProducts);
-	if($invoiceProducts) { 
+	if($invoiceProducts) {
 	?>
 	<table class="table" style="width:100%;">
 		<thead>
@@ -237,7 +201,7 @@ $boxQuantity = 0;
 				<?php echo $this->Session->read('Store.show_brands_in_products') ? "<th>Brand</th>" : ""; ?>
 				<th>Product Name</th>
 				<th>No. of Boxes</th>
-				
+
 				<th>Unit Box Price</th>
 				<th>Total Amount</th>
 				<th>Actions</th>
@@ -279,18 +243,18 @@ $boxQuantity = 0;
 					echo "&nbsp;($noOfUnits)";
 				}
 				?></td>
-				
+
 				<td style="text-align:center;"><?php echo $row['Purchase']['box_buying_price'];?></td>
 				<td style="text-align:right;"><?php echo $row['Purchase']['total_amount'];?></td>
 				<td>
-					<form method="post" style="" name="invoice_remove_product_<?php echo $row['Purchase']['id'];?>" id="invoice_remove_product_<?php echo $row['Purchase']['id'];?>" action="<?php echo $this->Html->url("/purchases/removeProduct/".$row['Purchase']['id']);?>">						
+					<form method="post" style="" name="invoice_remove_product_<?php echo $row['Purchase']['id'];?>" id="invoice_remove_product_<?php echo $row['Purchase']['id'];?>" action="<?php echo $this->Html->url("/purchases/removeProduct/".$row['Purchase']['id']);?>">
 						<a href="#" name="Remove" onclick="if (confirm('Are you sure you want to delete this product - <?php echo $row['Purchase']['product_name'];?> from the list?')) { $('#invoice_remove_product_<?php echo $row['Purchase']['id'];?>').submit(); } event.returnValue = false; return false;" class="btn btn-danger btn-xs">
 							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 						</a>
 					</form>
-					<?php 						
+					<?php
 					//echo $this->Form->postLink('Remove', array('controller'=>'purchases', 'action'=>'removeProduct', $row['Purchase']['id']), array('title'=>'Remove product from invoice - '.$row['Purchase']['product_name'], 'class'=>'small button link red'), 'Are you sure you want to delete this product "'.$row['Purchase']['product_name'].'" from the list?');
-					?>				
+					?>
 				</td>
 			</tr>
 			<?php
@@ -298,63 +262,63 @@ $boxQuantity = 0;
 			?>
 			<tfoot style="font-weight:bold;">
 				<tr>
-					<td colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 4 : 3;?>'></td>					
+					<td colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 4 : 3;?>'></td>
 					<td style="text-align:center;"><?php echo $totalBoxes;
 					if($totalNoOfUnits){
 						echo "&nbsp;($totalNoOfUnits)";
 					}
-					?> Boxes</td>					
+					?> Boxes</td>
 					<td style="text-align:right;" colspan='2'><?php echo number_format($totalAmount, '2', '.', '');?></td>
 					<td>&nbsp;</td>
 				</tr>
-				<tr>					
+				<tr>
 					<td style="text-align:right; color:red;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 8 : 7;?>'>&nbsp;</td>
 				</tr>
-				
-				<tr>					
+
+				<tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>
 						Invoice Value: <br>
-						
+
 						MRP Rounding Off: <br>
 						Net Invoice Value: <br>
 					</td>
 					<td style="text-align:right;">
-						<?php echo number_format($totalAmount, '2', '.', '');?> <br>						
+						<?php echo number_format($totalAmount, '2', '.', '');?> <br>
 						<?php echo $invoiceInfo['Invoice']['mrp_rounding_off']; ?> <br>
 						<?php echo $invoiceInfo['Invoice']['invoice_value']+$invoiceInfo['Invoice']['special_margin']+$invoiceInfo['Invoice']['mrp_rounding_off'];?> <br>
 					</td>
 					<td>&nbsp;</td>
 				</tr>
-				<tr>					
+				<tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 8 : 7;?>'>&nbsp;</td>
 				</tr>
-				<tr>					
+				<tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>e-challan / DD Amount:</td>
-					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['dd_amount'];?></td>	
-					<td>&nbsp;</td>					
-				</tr>	
-				<tr>					
+					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['dd_amount'];?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>Previous Credit:</td>
-					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['prev_credit'];?></td>		
-					<td>&nbsp;</td>		
-				</tr>	
-				<tr>					
+					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['prev_credit'];?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>Sub Total:</td>
-					<td style="text-align:right;"><?php echo number_format($invoiceInfo['Invoice']['dd_amount']+$invoiceInfo['Invoice']['prev_credit'], '2', '.', '');?></td>	
-					<td>&nbsp;</td>				
-				</tr>	
-				<tr>					
+					<td style="text-align:right;"><?php echo number_format($invoiceInfo['Invoice']['dd_amount']+$invoiceInfo['Invoice']['prev_credit'], '2', '.', '');?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>(-) Less this Invoice Value:</td>
-					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['invoice_value']+$invoiceInfo['Invoice']['special_margin']+$invoiceInfo['Invoice']['mrp_rounding_off'];?></td>	
+					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['invoice_value']+$invoiceInfo['Invoice']['special_margin']+$invoiceInfo['Invoice']['mrp_rounding_off'];?></td>
 					<td>&nbsp;</td>
 				</tr>
 
-
-                <tr>
-                    <td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>Retail Shop Excise Turnover Tax:</td>
-                    <td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax'];?></td>
-                    <td>&nbsp;</td>
-                </tr>
+<!---->
+<!--                <tr>-->
+<!--                    <td style="text-align:right;" colspan='--><?php //echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?><!--'>Retail Shop Excise Turnover Tax:</td>-->
+<!--                    <td style="text-align:right;">--><?php //echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax'];?><!--</td>-->
+<!--                    <td>&nbsp;</td>-->
+<!--                </tr>-->
                 <tr>
                     <td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>Special Excise Cess:</td>
                     <td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['special_excise_cess'];?></td>
@@ -364,25 +328,32 @@ $boxQuantity = 0;
 
                 <tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>TCS:</td>
-					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['tcs_value'];?></td>	
-					<td>&nbsp;</td>				
+					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['tcs_value'];?></td>
+					<td>&nbsp;</td>
 				</tr>
-				<tr>					
+
+                <tr>
+					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>New Retailer Professional Tax:</td>
+					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['new_retailer_prof_tax'];?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
 					<td style="text-align:right;" colspan='<?php echo $this->Session->read('Store.show_brands_in_products') ? 6 : 5;?>'>Retailer Credit Balance:</td>
-					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['credit_balance'];?></td>	
-					<td>&nbsp;</td>				
-				</tr>	
+					<td style="text-align:right;"><?php echo $invoiceInfo['Invoice']['credit_balance'];?></td>
+					<td>&nbsp;</td>
+				</tr>
 			</tfoot>
 		</tbody>
 	</table>
-	
+
 	<?php } else { ?>
 	<p>No products found in Invoice "<?php echo $this->Session->read('Invoice.name');?>".</p>
 	<?php } ?>
-	
+
 <?php
-} 
+}
 else {
 	echo 'No products found. You need to add products to continue.';
 }
 ?>
+<br><br>
