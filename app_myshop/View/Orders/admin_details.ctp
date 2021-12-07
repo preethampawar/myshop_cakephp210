@@ -1,3 +1,15 @@
+<script>
+	function updateSupplier(supplierId, orderProductId) {
+		if (supplierId != "" && confirm("Are you sure you want to update the supplier?")) {
+			document.getElementById("OrderProductAdminDetailsForm"+orderProductId).submit()
+		}
+
+		if (supplierId == "" && confirm("Are you sure you want to remove the supplier?")) {
+			document.getElementById("OrderProductAdminDetailsForm"+orderProductId).submit()
+		}
+	}
+</script>
+
 <div class="text-end">
 	<a href="/admin/orders/" type="button" class="btn btn-secondary btn-sm me-4">&laquo; BACK</a>
 </div>
@@ -231,6 +243,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			<thead>
 			<tr>
 				<th>Product</th>
+				<th class="text-danger">Assign Supplier</th>
 				<th class="text-center">Price</th>
 				<th class="text-center">Qty</th>
 				<th class="text-center">Amount</th>
@@ -240,6 +253,8 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			<?php
 			foreach ($order['OrderProduct'] as $row) {
 				$i++;
+				$orderProductId = $row['id'];
+				$orderProductSupplierId = $row['supplier_id'];
 				$categoryName = ucwords($row['category_name']);
 				$productName = ucwords($row['product_name']);
 				$qty = $row['quantity'] ?: 0;
@@ -258,6 +273,19 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 
 				<tr>
 					<td><?= $productName ?></td>
+					<td>
+						<?php
+						echo $this->Form->create('OrderProduct', ['url' => '/admin/orders/updateOrderProductSupplier', 'id' => 'OrderProductAdminDetailsForm'.$orderProductId]);
+						echo $this->Form->hidden('id', ['value' => $orderProductId]);
+						echo $this->Form->select('supplier_id', $suppliers, [
+								'empty' => '- Select Supplier -',
+							 	'class' => 'form-select form-select-sm text-danger border-danger',
+								'onchange' => 'updateSupplier(this.value, "'.$orderProductId.'")',
+								'default' => $orderProductSupplierId,
+						]);
+						echo $this->Form->end();
+						?>
+					</td>
 					<td class="text-center">
 						<?= $this->App->price($salePrice) ?>
 						<br>
@@ -281,6 +309,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				<td>Total Cart Value</td>
 				<td class="text-decoration-line-through text-center">MRP <?= $this->App->price($cartMrpValue) ?></td>
 				<td class="text-center"></td>
+				<td class="text-center"></td>
 				<td class="text-center"><?= $this->App->price($cartValue) ?></td>
 			</tr>
 			<?php
@@ -288,6 +317,7 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 				?>
 				<tr class="text-muted">
 					<td>Promo Code (<b><?= $order['Order']['promo_code'] ?></b>) </td>
+					<td></td>
 					<td></td>
 					<td class="text-center"></td>
 					<td class="text-center">-<?= $this->App->price($promoCodeDiscount) ?></td>
@@ -298,11 +328,13 @@ if (isset($order['OrderProduct']) and !empty($order['OrderProduct'])) {
 			<tr class="text-muted">
 				<td>Shipping Charges</td>
 				<td></td>
+				<td></td>
 				<td class="text-center"></td>
 				<td class="text-center"><?= $this->App->price($order['Order']['shipping_amount']) ?></td>
 			</tr>
 			<tr class="fw-bold">
 				<td>Total</td>
+				<td></td>
 				<td></td>
 				<td class="text-center"><?= $totalItems ?></td>
 				<td class="text-center"><?= $this->App->price($payableAmount) ?></td>
