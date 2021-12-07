@@ -2,12 +2,12 @@
 App::uses('Component', 'Controller');
 class CommonFunctionsComponent extends Component {
     var $components = array('Session', 'Auth');
-	
+
 	/** Function to get Product Category info **/
-	public function getProductCategoryInfo($productCategoryID=null) {	
+	public function getProductCategoryInfo($productCategoryID=null) {
 		App::uses('ProductCategory', 'Model');
 		$this->ProductCategory = new ProductCategory;
-		
+
 		if(!$productCategoryID) {
 			return array();
 		}
@@ -19,12 +19,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Product info **/
 	public function getProductInfo($productID=null, $categoryID=null) {
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
-		
+
 		if(!$productID) {
 			return array();
 		}
@@ -33,9 +33,9 @@ class CommonFunctionsComponent extends Component {
 				$conditions = array('Product.id'=>$productID, 'Product.product_category_id'=>$categoryID, 'Product.store_id'=>$this->Session->read('Store.id'));
 			}
 			else {
-				$conditions = array('Product.id'=>$productID, 'Product.store_id'=>$this->Session->read('Store.id'));			
+				$conditions = array('Product.id'=>$productID, 'Product.store_id'=>$this->Session->read('Store.id'));
 			}
-			
+
 			$this->Product->bindModel(array('belongsTo'=>array('Brand')));
 			if($productInfo = $this->Product->find('first', array('conditions'=>$conditions))) {
 				return $productInfo;
@@ -43,12 +43,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Purchase info **/
-	public function getPurchaseInfo($purchaseID=null) {	
+	public function getPurchaseInfo($purchaseID=null) {
 		App::uses('Purchase', 'Model');
 		$this->Purchase = new Purchase;
-		
+
 		if(!$purchaseID) {
 			return array();
 		}
@@ -60,12 +60,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Sale info **/
-	public function getSaleInfo($saleID=null) {	
+	public function getSaleInfo($saleID=null) {
 		App::uses('Sale', 'Model');
 		$this->Sale = new Sale;
-		
+
 		if(!$saleID) {
 			return array();
 		}
@@ -77,12 +77,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Breakage info **/
-	public function getBreakageInfo($breakageID=null) {	
+	public function getBreakageInfo($breakageID=null) {
 		App::uses('Breakage', 'Model');
 		$this->Breakage = new Breakage;
-		
+
 		if(!$breakageID) {
 			return array();
 		}
@@ -94,12 +94,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Employee info **/
-	public function getEmployeeInfo($employeeID=null) {	
+	public function getEmployeeInfo($employeeID=null) {
 		App::uses('Employee', 'Model');
 		$this->Employee = new Employee;
-		
+
 		if(!$employeeID) {
 			return array();
 		}
@@ -111,12 +111,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Category info **/
-	public function getCategoryInfo($categoryID=null) {	
+	public function getCategoryInfo($categoryID=null) {
 		App::uses('Category', 'Model');
 		$this->Category = new Category;
-		
+
 		if(!$categoryID) {
 			return array();
 		}
@@ -128,12 +128,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Dd info **/
-	public function getDdInfo($ddID=null) {	
+	public function getDdInfo($ddID=null) {
 		App::uses('Dd', 'Model');
 		$this->Dd = new Dd;
-		
+
 		if(!$ddID) {
 			return array();
 		}
@@ -145,105 +145,105 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to remove category and its products from the list */
 	public function removeProductCategory($categoryID) {
 		if(!$this->getProductCategoryInfo($categoryID)) {
 			return false;
 		}
-		
+
 		App::uses('ProductCategory', 'Model');
 		$this->ProductCategory = new ProductCategory;
 		// remove category info
 		$this->ProductCategory->delete($categoryID);
-		
+
 		// App::uses('Product', 'Model');
-		// $this->Product = new Product;		
+		// $this->Product = new Product;
 		// // remove category products
 		// $conditions = array('Product.product_category_id'=>$categoryID, 'Product.store_id'=>$this->Session->read('Store.id'));
 		// $this->Product->deleteAll($conditions);
-		
+
 		return true;
 	}
-	
+
 	/** Function to delete category and its products from the list, sales and purchases */
 	public function deleteProductCategory($categoryID) {
 		if(!$this->getProductCategoryInfo($categoryID)) {
 			return false;
 		}
-		
+
 		App::uses('ProductCategory', 'Model');
 		$this->ProductCategory = new ProductCategory;
-		
+
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
-		
+
 		App::uses('Purchase', 'Model');
 		$this->Purchase = new Purchase;
-		
+
 		App::uses('Sale', 'Model');
 		$this->Sale = new Sale;
-		
+
 		// remove category products
 		$conditions = array('Product.product_category_id'=>$categoryID, 'Product.store_id'=>$this->Session->read('Store.id'));
 		$this->Product->deleteAll($conditions);
-		
+
 		// remove from purchases
 		$conditions = array('Purchase.product_category_id'=>$categoryID, 'Purchase.store_id'=>$this->Session->read('Store.id'));
 		$this->Purchase->deleteAll($conditions);
-		
+
 		// remove from sales
 		$conditions = array('Sale.product_category_id'=>$categoryID, 'Sale.store_id'=>$this->Session->read('Store.id'));
 		$this->Sale->deleteAll($conditions);
-		
+
 		// remove category info
 		$this->ProductCategory->delete($categoryID);
-		
+
 		return true;
 	}
-	
+
 	/** Function to delete products sales and purchases and product info */
 	public function deleteProduct($productID) {
 		if(!$this->getProductInfo($productID)) {
 			return false;
 		}
-		
+
 		App::uses('Product', 'Model');
 		$this->Product = new Product;
-		
+
 		App::uses('Purchase', 'Model');
 		$this->Purchase = new Purchase;
-		
+
 		App::uses('Sale', 'Model');
 		$this->Sale = new Sale;
-		
+
 		App::uses('Breakage', 'Model');
 		$this->Breakage = new Breakage;
-		
-				
+
+
 		// remove from purchases
 		$conditions = array('Purchase.product_id'=>$productID, 'Purchase.store_id'=>$this->Session->read('Store.id'));
 		$this->Purchase->deleteAll($conditions);
-		
+
 		// remove from sales
 		$conditions = array('Sale.product_id'=>$productID, 'Sale.store_id'=>$this->Session->read('Store.id'));
 		$this->Sale->deleteAll($conditions);
-		
+
 		// remove from breakages
 		$conditions = array('Breakage.product_id'=>$productID, 'Breakage.store_id'=>$this->Session->read('Store.id'));
 		$this->Breakage->deleteAll($conditions);
-				
+
 		// remove product info
 		$this->Product->delete($productID);
-		
+
 		return true;
 	}
-		
+
 	/** Function to get Dealer info **/
-	public function getDealerInfo($dealerID=null) {	
+	public function getDealerInfo($dealerID=null) {
 		App::uses('Dealer', 'Model');
 		$this->Dealer = new Dealer;
-		
+
 		if(!$dealerID) {
 			return array();
 		}
@@ -255,12 +255,12 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 	/** Function to get Brand info **/
-	public function getBrandInfo($dealerID=null) {	
+	public function getBrandInfo($dealerID=null) {
 		App::uses('Brand', 'Model');
 		$this->Brand = new Brand;
-		
+
 		if(!$dealerID) {
 			return array();
 		}
@@ -272,5 +272,5 @@ class CommonFunctionsComponent extends Component {
 		}
 		return array();
 	}
-	
+
 }

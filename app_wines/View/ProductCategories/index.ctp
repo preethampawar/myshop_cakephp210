@@ -76,7 +76,7 @@
 			<?php
 			echo $categoryID ? 'Products in '.$category['ProductCategory']['name'] : 'All Products';
 
-			echo $categoryID ? ' - '.$this->Html->link('+ Add Product', array('controller'=>'products', 'action'=>'add', $category['ProductCategory']['id']), array('title'=>$category['ProductCategory']['name'].' - Add Product', 'escape'=>false, 'class'=>'btn btn-primary btn-xs')) : '';
+			echo $categoryID ? ' - '.$this->Html->link('+ Add Product', array('controller'=>'products', 'action'=>'add', $category['ProductCategory']['id']), array('title'=>$category['ProductCategory']['name'].' - Add Product', 'escape'=>false, 'class'=>'btn btn-primary btn-sm')) : '';
 			?>
 		</h2>
 
