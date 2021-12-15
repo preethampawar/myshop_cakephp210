@@ -40,9 +40,9 @@
 				<td><?php echo $this->Html->link($row['Brand']['name'], ['controller' => 'brands', 'action' => 'view', $row['Brand']['id']], ['title' => 'View Brand Details - ' . $row['Brand']['name']]); ?></td>
 				<td><?php echo date('d-m-Y', strtotime($row['Brand']['created'])); ?></td>
 				<td>
-					<?php echo $this->Html->link('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['controller' => 'brands', 'action' => 'edit', $row['Brand']['id']], ['title' => 'Edit Brand - ' . $row['Brand']['name'], 'class' => 'btn btn-xs btn-warning', 'escape' => false]); ?>
+					<?php echo $this->Html->link('<span class="fa fa-pencil" aria-hidden="true"></span>', ['controller' => 'brands', 'action' => 'edit', $row['Brand']['id']], ['title' => 'Edit Brand - ' . $row['Brand']['name'], 'class' => 'btn btn-xs btn-warning', 'escape' => false]); ?>
 					&nbsp;|&nbsp;
-					<?php echo $this->Html->link('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>', ['controller' => 'brands', 'action' => 'remove', $row['Brand']['id']], ['title' => 'Remove Brand - ' . $row['Brand']['name'], 'escape' => false, 'class' => 'btn btn-danger btn-xs'], ' Brand - ' . $row['Brand']['name'] . ':  Deleting this brand will remove all the associated records. Are you sure you want to delete this brand?'); ?>
+					<?php echo $this->Html->link('<span class="fa fa-trash-can" aria-hidden="true"></span>', ['controller' => 'brands', 'action' => 'remove', $row['Brand']['id']], ['title' => 'Remove Brand - ' . $row['Brand']['name'], 'escape' => false, 'class' => 'btn btn-danger btn-xs'], ' Brand - ' . $row['Brand']['name'] . ':  Deleting this brand will remove all the associated records. Are you sure you want to delete this brand?'); ?>
 				</td>
 			</tr>
 			<?php

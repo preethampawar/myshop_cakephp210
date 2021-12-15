@@ -48,11 +48,11 @@
 						<td style="text-align:center;">
 							<?php echo $this->Html->link('Add Product', ['controller' => 'products', 'action' => 'add', $row['ProductCategory']['id']], ['title' => $row['ProductCategory']['name'] . ' - Add Product', 'escape' => false, 'class' => 'btn btn-default btn-xs']); ?>
 							&nbsp;
-							<?php echo $this->Html->link('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['controller' => 'product_categories', 'action' => 'edit', $row['ProductCategory']['id']], ['title' => 'Edit Category - ' . $row['ProductCategory']['name'], 'escape' => false, 'class' => 'btn btn-warning btn-xs']); ?>
+							<?php echo $this->Html->link('<span class="fa fa-pencil" aria-hidden="true"></span>', ['controller' => 'product_categories', 'action' => 'edit', $row['ProductCategory']['id']], ['title' => 'Edit Category - ' . $row['ProductCategory']['name'], 'escape' => false, 'class' => 'btn btn-warning btn-xs']); ?>
 
 							<?php // echo $this->Html->link('Remove from list', array('controller'=>'product_categories', 'action'=>'remove', $row['ProductCategory']['id']), array('title'=>'Remove Category from list - '.$row['ProductCategory']['name']), 'Category - '.$row['ProductCategory']['name'].'\nProducts associated with the category, Sales and Purchase records will not be removed.\n\nAre you sure you want to remove this category from the list?');?>
 							&nbsp;
-							<?php echo $this->Html->link('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>', ['controller' => 'product_categories', 'action' => 'delete', $row['ProductCategory']['id']], ['title' => 'Delete Category - ' . $row['ProductCategory']['name'], 'escape' => false, 'class' => 'btn btn-danger btn-xs'], ' Category - ' . $row['ProductCategory']['name'] . "\n Deleting this category will remove all the products associated with it.\n All Sales & Purchase records will be deleted.\n\n Are you sure you want to delete this category?"); ?>
+							<?php echo $this->Html->link('<span class="fa fa-trash-can" aria-hidden="true"></span>', ['controller' => 'product_categories', 'action' => 'delete', $row['ProductCategory']['id']], ['title' => 'Delete Category - ' . $row['ProductCategory']['name'], 'escape' => false, 'class' => 'btn btn-danger btn-xs'], ' Category - ' . $row['ProductCategory']['name'] . "\n Deleting this category will remove all the products associated with it.\n All Sales & Purchase records will be deleted.\n\n Are you sure you want to delete this category?"); ?>
 						</td>
 					</tr>
 					<?php

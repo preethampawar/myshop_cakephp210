@@ -52,9 +52,9 @@
 				<td><?php echo $product_name; ?></td>
 				<td><?php echo $dealer_created_date; ?></td>
 				<td>
-					<?php echo $this->Html->link('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['controller' => 'dealers', 'action' => 'edit', $dealer_id], ['title' => 'Edit Dealer - ' . $dealer_name, 'class' => 'btn btn-xs btn-warning', 'escape' => false]); ?>
+					<?php echo $this->Html->link('<span class="fa fa-pencil" aria-hidden="true"></span>', ['controller' => 'dealers', 'action' => 'edit', $dealer_id], ['title' => 'Edit Dealer - ' . $dealer_name, 'class' => 'btn btn-xs btn-warning', 'escape' => false]); ?>
 					&nbsp;|&nbsp;
-					<?php echo $this->Html->link('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>', ['controller' => 'dealers', 'action' => 'remove', $dealer_id], ['title' => 'Remove Dealer - ' . $dealer_name, 'escape' => false, 'class' => 'btn btn-danger btn-xs'], ' Dealer - ' . $dealer_name . ':  Deleting this dealer will remove all the associated records. Are you sure you want to delete this dealer?'); ?>
+					<?php echo $this->Html->link('<span class="fa fa-trash-can" aria-hidden="true"></span>', ['controller' => 'dealers', 'action' => 'remove', $dealer_id], ['title' => 'Remove Dealer - ' . $dealer_name, 'escape' => false, 'class' => 'btn btn-danger btn-xs'], ' Dealer - ' . $dealer_name . ':  Deleting this dealer will remove all the associated records. Are you sure you want to delete this dealer?'); ?>
 				</td>
 			</tr>
 			<?php

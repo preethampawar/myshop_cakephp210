@@ -64,7 +64,7 @@ if ($purchases) {
 						<a href="#" name="Remove"
 						   onclick="if (confirm('Are you sure you want to delete this product - <?php echo $row['Purchase']['product_name']; ?> from the list?')) { $('#purchase_product_<?php echo $row['Purchase']['id']; ?>').submit(); } event.returnValue = false; return false;"
 						   class="btn btn-danger btn-xs">
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							<span class="fa fa-trash-can" aria-hidden="true"></span>
 						</a>
 					</form>
 

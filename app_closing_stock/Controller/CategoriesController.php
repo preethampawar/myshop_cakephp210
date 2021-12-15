@@ -54,14 +54,15 @@ class CategoriesController extends AppController
 				$data['Category']['id'] = null;
 				$data['Category']['store_id'] = $this->Session->read('Store.id');
 				if ($this->Category->save($data)) {
-					$this->Session->setFlash('Category "' . $data['Category']['name'] . '" Created Successfully', 'default', ['class' => 'success']);
+					$msg = 'Category "' . $data['Category']['name'] . '" Created Successfully';
+					$this->successMsg($msg);
 				} else {
 					$error = 'An error occurred while creating a new category';
 				}
 			}
 		}
 		if ($error) {
-			$this->Session->setFlash($error, 'default', ['class' => 'error']);
+			$this->errorMsg($error);
 		}
 		$this->redirect('/categories/');
 	}

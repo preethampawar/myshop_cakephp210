@@ -1,50 +1,11 @@
+<p class="text-end">
+	<a href="/categories/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add New Category</a>
+</p>
+
 <div class="row">
-	<div class="col-xs-5 col-sm-5 col-lg-3 panel">
-		<br>
-		<p><?php echo $this->Html->link('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Category', ['controller' => 'categories', 'action' => 'index'], ['title' => 'Add (or) Edit (or) Remove Category', 'class' => 'btn btn-default btn-xs', 'escape' => false]); ?></p>
-		<br>
-		<?php
-		App::uses('Category', 'Model');
-		$this->Category = new Category();
-		$categoriesList = $this->Category->find('list', ['conditions' => ['Category.store_id' => $this->Session->read('Store.id')]]);
-		if (!empty($categoriesList)) {
-
-			foreach ($categoriesList as $categoryID => $categoryName) {
-				?>
-				<div style="margin-bottom:10px; border-bottom:1px dotted #ddd; padding-bottom: 2px;">
-
-					<form method="post" style="" name="category_product_<?php echo $categoryID; ?>"
-						  id="category_product_<?php echo $categoryID; ?>"
-						  action="<?php echo $this->Html->url("/categories/delete/" . $categoryID); ?>">
-						<?php echo $this->Html->link($categoryName, ['controller' => 'cashbook', 'action' => 'index', $categoryID], ['title' => $categoryName . ' - Add new record in this category', 'class' => 'floatLeft']); ?>
-
-						<a href="#" name="Remove"
-						   onclick="if (confirm('Are you sure you want to delete category - <?php echo $categoryName; ?>? This action will remove all the records related to <?php echo $categoryName; ?> from the Cashbook.')) { $('#category_product_<?php echo $categoryID; ?>').submit(); } event.returnValue = false; return false;"
-						   class="floatRight btn btn-danger btn-xs">
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-						</a>
-
-
-						<span class="floatRight">&nbsp;|&nbsp;</span>
-						<?php echo $this->Html->link('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['controller' => 'categories', 'action' => 'edit', $categoryID], ['title' => 'Edit Category - ' . $categoryName, 'class' => 'floatRight btn btn-warning btn-xs', 'escape' => false]); ?>
-					</form>
-					<?php //echo $this->Form->postLink('Remove', array('controller'=>'categories', 'action'=>'delete', $categoryID), array('title'=>'Remove Category - '.$categoryName, 'class'=>'floatRight small button link red'), 'Are you sure you want to delete this category "'.$categoryName.'"');?>
-
-					<div style="clear:both;"></div>
-				</div>
-				<?php
-			}
-			?>
-			<?php
-			echo '<p style="clear:both; padding:2px 0px; border-bottom:1px dotted #ddd; font-weight:bold;" >' . $this->Html->link('Show all cash book records', ['controller' => 'cashbook', 'action' => 'index'], ['title' => 'Show all category records', 'style' => 'font-weight:bold;']) . '</p>';
-		} else {
-			echo 'No category found';
-		}
-		?>
-	</div>
 	<div class="col-xs-7 col-sm-7 col-lg-9">
 		<h1>Cashbook</h1>
-		<div>
+		<div class="" >
 			<h2>Select category to add records</h2>
 			<?php
 			if (!empty($categoriesList)) {
@@ -198,7 +159,7 @@
 								<a href="#" name="Remove"
 								   onclick="if (confirm('Are you sure you want to delete this record from the list?')) { $('#invoice_cashbook_product_<?php echo $row['Cashbook']['id']; ?>').submit(); } event.returnValue = false; return false;"
 								   class="btn btn-danger btn-xs">
-									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									<span class="fa fa-trash-can" aria-hidden="true"></span>
 								</a>
 							</form>
 

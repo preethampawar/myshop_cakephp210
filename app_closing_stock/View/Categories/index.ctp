@@ -56,10 +56,10 @@
 						<a href="#" name="Remove"
 						   onclick="if (confirm('Are you sure you want to delete this category - <?php echo $row['Category']['name']; ?>?')) { $('#categories_form_<?php echo $row['Category']['id']; ?>').submit(); } event.returnValue = false; return false;"
 						   class="btn btn-danger btn-xs">
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							<span class="fa fa-trash-can" aria-hidden="true"></span>
 						</a>
 						&nbsp;&nbsp;
-						<?php echo $this->Html->link('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['controller' => 'categories', 'action' => 'edit', $row['Category']['id']], ['title' => 'Edit Category - ' . $row['Category']['name'], 'class' => 'btn btn-warning btn-xs', 'escape' => false]); ?>
+						<?php echo $this->Html->link('<span class="fa fa-pencil" aria-hidden="true"></span>', ['controller' => 'categories', 'action' => 'edit', $row['Category']['id']], ['title' => 'Edit Category - ' . $row['Category']['name'], 'class' => 'btn btn-warning btn-xs', 'escape' => false]); ?>
 
 
 						<?php //echo $this->Form->postLink('Remove', array('controller'=>'categories', 'action'=>'delete', $row['Category']['id']), array('title'=>'Remove Category - '.$row['Category']['name'], 'class'=>'small button link red'), 'Are you sure you want to delete this category "'.$row['Category']['name'].'"');?>
