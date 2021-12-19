@@ -22,13 +22,13 @@
 
 						<a href="#" name="Remove"
 						   onclick="if (confirm('Are you sure you want to delete category - <?php echo $categoryName; ?>? This action will remove all the records related to <?php echo $categoryName; ?> from the Cashbook.')) { $('#category_product_<?php echo $categoryID; ?>').submit(); } event.returnValue = false; return false;"
-						   class="floatRight btn btn-danger btn-xs">
+						   class="floatRight btn btn-danger btn-sm">
 							<span class="fa fa-trash-can" aria-hidden="true"></span>
 						</a>
 
 
 						<span class="floatRight">&nbsp;|&nbsp;</span>
-						<?php echo $this->Html->link('<span class="fa fa-pencil" aria-hidden="true"></span>', ['controller' => 'categories', 'action' => 'edit', $categoryID], ['title' => 'Edit Category - ' . $categoryName, 'class' => 'floatRight btn btn-warning btn-xs', 'escape' => false]); ?>
+						<?php echo $this->Html->link('<span class="fa fa-pencil" aria-hidden="true"></span>', ['controller' => 'categories', 'action' => 'edit', $categoryID], ['title' => 'Edit Category - ' . $categoryName, 'class' => 'floatRight btn btn-warning btn-sm', 'escape' => false]); ?>
 					</form>
 					<?php //echo $this->Form->postLink('Remove', array('controller'=>'categories', 'action'=>'delete', $categoryID), array('title'=>'Remove Category - '.$categoryName, 'class'=>'floatRight small button link red'), 'Are you sure you want to delete this category "'.$categoryName.'"');?>
 
@@ -199,7 +199,7 @@
 								  action="<?php echo $this->Html->url("/cashbook/remove/" . $row['Cashbook']['id']); ?>">
 								<a href="#" name="Remove"
 								   onclick="if (confirm('Are you sure you want to delete this record from the list?')) { $('#invoice_cashbook_product_<?php echo $row['Cashbook']['id']; ?>').submit(); } event.returnValue = false; return false;"
-								   class="btn btn-danger btn-xs">
+								   class="btn btn-danger btn-sm">
 									<span class="fa fa-trash-can" aria-hidden="true"></span>
 								</a>
 							</form>

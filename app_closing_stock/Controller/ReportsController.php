@@ -391,11 +391,11 @@ ORDER BY p.name";
 
 		if ($this->request->isPost()) {
 			$data = $this->request->data;
-			$printView = ($data['Report']['view_type'] == 'print') ? true : false;
+			$printView = false;
 			$categoryID = $data['Report']['category_id'];
 			$paymentType = ($data['Report']['payment_type']) ? $data['Report']['payment_type'] : null;
-			$fromDate = $data['Report']['from_date']['year'] . '-' . $data['Report']['from_date']['month'] . '-' . $data['Report']['from_date']['day'];
-			$toDate = $data['Report']['to_date']['year'] . '-' . $data['Report']['to_date']['month'] . '-' . $data['Report']['to_date']['day'];
+			$fromDate = $data['Report']['from_date'];
+			$toDate = $data['Report']['to_date'];
 
 			if ($printView) {
 				$this->layout = 'print_view';

@@ -175,7 +175,7 @@ if ($productsInfo) {
 							  action="<?php echo $this->Html->url("/breakages/removeProduct/" . $row['Breakage']['id']); ?>">
 							<a href="#" name="Remove"
 							   onclick="if (confirm('Are you sure you want to delete this product <?php echo $row['Breakage']['product_name']; ?> from the list?')) { $('#invoice_remove_product_<?php echo $row['Breakage']['id']; ?>').submit(); } event.returnValue = false; return false;"
-							   class="btn btn-danger btn-xs">
+							   class="btn btn-danger btn-sm">
 								<span class="fa fa-trash-can" aria-hidden="true"></span>
 							</a>
 						</form>

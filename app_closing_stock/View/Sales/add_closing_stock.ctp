@@ -219,7 +219,7 @@ if ($productsInfo) {
 							  action="<?php echo $this->Html->url("/sales/removeProduct/" . $row['Sale']['id']); ?>">
 							<a href="#" name="Remove"
 							   onclick="if (confirm('Are you sure you want to delete this product - <?php echo $row['Sale']['product_name']; ?> from the list?')) { $('#sales_<?php echo $row['Sale']['id']; ?>').submit(); } event.returnValue = false; return false;"
-							   class="btn btn-danger btn-xs">
+							   class="btn btn-danger btn-sm">
 								<span class="fa fa-trash-can" aria-hidden="true"></span>
 							</a>
 						</form>

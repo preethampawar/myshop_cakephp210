@@ -72,9 +72,12 @@ $storeTitle = $this->Session->check('Store.name') ? $this->Session->read('Store.
 								<li class="nav-item">
 									<a class="nav-link" href="/invoices/"><i class="fa fa-list-alt"></i> Show Invoice List</a>
 								</li>
-								<li class="nav-item border-top d-none">
+								<li class="nav-item border-top">
 									<a class="nav-link" href="/cashbook/"><i class="fas fa-clipboard-list"></i> Manage Expenses
 									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/reports/cashbookReport"><i class="fa fa-list-alt"></i> Expenses Report</a>
 								</li>
 								<li class="nav-item border-top">
 									<a class="nav-link" href="/reports/dayWiseStockReport"><i class="fas fa-clipboard-list"></i> Show

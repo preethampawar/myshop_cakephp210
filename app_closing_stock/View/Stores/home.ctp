@@ -31,13 +31,14 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default mt-4 d-none">
+			<div class="panel panel-default mt-4">
 				<div class="panel-heading">
 					<h4>Cash Book</h4>
 				</div>
 				<div class="panel-body">
 					<div class="list-group">
 						<a href="/cashbook/" class="list-group-item"><i class="fa fa-indian-rupee"></i> Manage Expenses</a>
+						<a href="/reports/cashbookReport" class="list-group-item"><i class="fas fa-clipboard-list"></i> Expenses Report</a>
 					</div>
 				</div>
 			</div>
