@@ -1,11 +1,11 @@
-<h1>Cashbook Report</h1>
+<h1>Transactions Report</h1>
 
-<?php echo $this->Form->create('Report', ['url' => '/reports/generateCashbookReport/', 'id' => 'IncomeExpensesReport']); ?>
+<?php echo $this->Form->create('Report', ['url' => '/reports/generateTransactionsReport/', 'id' => 'IncomeExpensesReport']); ?>
 
 	<div class="mt-3">
 		<?php
-		$options = ['income' => 'Income', 'expense' => 'Expense'];
-		echo $this->Form->input('payment_type', ['empty' => 'Income & Expenses', 'label' => 'Report Type', 'type' => 'select', 'options' => $options, 'escape' => false, 'class' => 'form-select form-select-sm', 'onchange' => '$("#IncomeExpensesReport").removeAttr("target"); $("#IncomeExpensesReport").removeAttr("action"); $("#IncomeExpensesReport").submit();']);
+		$options = ['income' => 'Credit', 'expense' => 'Debit'];
+		echo $this->Form->input('payment_type', ['empty' => 'Show All', 'label' => 'Report Type (Credit/Debit)', 'type' => 'select', 'options' => $options, 'escape' => false, 'class' => 'form-select form-select-sm', 'onchange' => '$("#IncomeExpensesReport").removeAttr("target"); $("#IncomeExpensesReport").removeAttr("action"); $("#IncomeExpensesReport").submit();']);
 		?>
 	</div>
 	<div class="mt-3">

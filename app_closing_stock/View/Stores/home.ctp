@@ -45,6 +45,18 @@
 
 			<div class="panel panel-default mt-4">
 				<div class="panel-heading">
+					<h4>Transactions</h4>
+				</div>
+				<div class="panel-body">
+					<div class="list-group">
+						<a href="/transactions/" class="list-group-item"><i class="fa fa-indian-rupee"></i> Manage Transactions</a>
+						<a href="/reports/transactionsReport" class="list-group-item"><i class="fas fa-clipboard-list"></i> Transactions Report</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default mt-4">
+				<div class="panel-heading">
 					<h4>Products</h4>
 				</div>
 				<div class="panel-body">
