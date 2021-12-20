@@ -6,9 +6,6 @@
 <br>
 
 <div class="mt-3">
-
-
-
 	<?php
 	if (!empty($categoriesList)) {
 	?>

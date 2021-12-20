@@ -2,6 +2,7 @@
 
 <div class="text-end mt-3">
 	<a href="/transactions/add" class="btn btn-primary btn-sm">+ Add New Record</a>
+	<a href="/transactions/add" class="btn btn-primary btn-sm">+ Add New Record</a>
 </div>
 
 <div class="mt-3">

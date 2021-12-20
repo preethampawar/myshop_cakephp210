@@ -16,7 +16,7 @@ class TransactionCategoriesController extends AppController
 	 */
 	public function index()
 	{
-		$hideSideBar = true;
+		$hideSideBar = false;
 		$conditions = ['TransactionCategory.store_id' => $this->Session->read('Store.id')];
 		$categories = $this->TransactionCategory->find('all', [
 			'order' => ['TransactionCategory.name' => 'ASC'],
@@ -69,7 +69,7 @@ class TransactionCategoriesController extends AppController
 
 	public function edit($transactionCategoryId = null)
 	{
-		$hideSideBar = true;
+		$hideSideBar = false;
 
 		if (!$pCatInfo = $this->getTransactionCategoryInfo($transactionCategoryId)) {
 			$this->errorMsg('TransactionCategory not found.');

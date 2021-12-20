@@ -6,6 +6,12 @@
 
 	</ul>
 
+	<h4>Transactions Category</h4>
+	<ul>
+		<li><?php echo $this->Html->link('Manage Transaction Categories', array('controller'=>'TransactionCategories', 'action'=>'add'));?></li>
+
+	</ul>
+
 	<h4>Transactions Report</h4>
 	<ul>
 		<li><?php echo $this->Html->link('Transactions Report', array('controller'=>'reports', 'action'=>'transactionsReport'));?></li>

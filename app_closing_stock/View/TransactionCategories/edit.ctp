@@ -1,4 +1,4 @@
-<p class="text-end"><a href="/categories/" class="btn btn-warning btn-sm">Cancel</a></p>
+<p class="text-end"><a href="/TransactionCategories/" class="btn btn-warning btn-sm">Cancel</a></p>
 <h1>Edit Category</h1>
 
 <div id="AddCategoryDiv">

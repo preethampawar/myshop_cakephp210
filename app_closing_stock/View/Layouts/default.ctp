@@ -84,6 +84,9 @@ $storeTitle = $this->Session->check('Store.name') ? $this->Session->read('Store.
 									</a>
 								</li>
 								<li class="nav-item">
+									<a class="nav-link" href="/TransactionCategories/"><i class="fa fa-clipboard-list"></i> Transaction Categories</a>
+								</li>
+								<li class="nav-item">
 									<a class="nav-link" href="/reports/transactionsReport"><i class="fa fa-list-alt"></i> Transactions Report</a>
 								</li>
 								<li class="nav-item border-top">
