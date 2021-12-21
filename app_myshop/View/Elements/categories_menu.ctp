@@ -13,6 +13,7 @@ if (!empty($categoriesList)) {
 		$categoryID = $row['Category']['id'];
 		$categoryName = $row['Category']['name'];
 		$categoryNameSlug = Inflector::slug($row['Category']['name'], '-');
+		$productsCount = $row['Category']['products_count'] ?? 0;
 		?>
 		<li class="list-group-item px-0 py-1">
 			<a
@@ -20,7 +21,7 @@ if (!empty($categoriesList)) {
 				href="/products/show/<?php echo $categoryID; ?>/<?php echo $categoryNameSlug; ?>"
 				title="<?php echo $categoryName; ?>"
 			>
-				<span><?php echo $categoryName; ?></span>
+				<span><?php echo $categoryName; ?> (<?= $productsCount ?>)</span>
 				<span>
 					<i class="fa fa-chevron-right"></i>
 				</span>

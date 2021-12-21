@@ -37,8 +37,18 @@ class DeliveriesController extends AppController
 		];
 		$shippedOrders = $orderModel->find('all', ['conditions' => $conditions, 'order' => 'Order.created desc']);
 
+		App::uses('Supplier', 'Model');
+		$supplierModel = new Supplier();
+		$conditions = [
+			'Supplier.site_id' => $this->Session->read('Site.id'),
+			'Supplier.active' => 1,
+		];
+
+		$suppliers = $supplierModel->find('list', ['conditions' => $conditions]);
+
 		$this->set('confirmedOrders', $confirmedOrders);
 		$this->set('shippedOrders', $shippedOrders);
+		$this->set('suppliers', $suppliers);
 	}
 
 	public function dashboard()
@@ -166,6 +176,36 @@ class DeliveriesController extends AppController
 		}
 
 		$this->redirect($this->referer());
+	}
+
+	public function updateOrderProductSupplier()
+	{
+		if ($this->request->isPost() || $this->request->isPut()) {
+			$data = $this->request->data;
+
+			$orderProductId = $data['OrderProduct']['id'] ?? null;
+			$orderProductSupplierId = $data['OrderProduct']['supplier_id'] ?? null;
+
+			if (empty($orderProductId)) {
+				$this->errorMsg('Invalid request.');
+				$this->redirect($this->request->referer());
+			}
+
+			$tmpData['OrderProduct'] = [
+				'id' => $orderProductId,
+				'supplier_id' => $orderProductSupplierId,
+			];
+
+			App::uses('OrderProduct', 'Model');
+			$orderProductModel = new OrderProduct;
+			$orderProductModel->save($tmpData);
+
+			$this->successMsg('Supplier updated successfully.');
+		} else {
+			$this->errorMsg('Invalid request.');
+		}
+
+		$this->redirect($this->request->referer());
 	}
 
 }

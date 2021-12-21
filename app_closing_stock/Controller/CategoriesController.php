@@ -54,14 +54,15 @@ class CategoriesController extends AppController
 				$data['Category']['id'] = null;
 				$data['Category']['store_id'] = $this->Session->read('Store.id');
 				if ($this->Category->save($data)) {
-					$this->Session->setFlash('Category "' . $data['Category']['name'] . '" Created Successfully', 'default', ['class' => 'success']);
+					$msg = 'Category "' . $data['Category']['name'] . '" Created.';
+					$this->successMsg($msg);
 				} else {
 					$error = 'An error occurred while creating a new category';
 				}
 			}
 		}
 		if ($error) {
-			$this->Session->setFlash($error, 'default', ['class' => 'error']);
+			$this->errorMsg($error);
 		}
 		$this->redirect('/categories/');
 	}
@@ -71,7 +72,7 @@ class CategoriesController extends AppController
 		$hideSideBar = true;
 
 		if (!$pCatInfo = $this->getCategoryInfo($categoryID)) {
-			$this->Session->setFlash('Category not found.', 'default', ['class' => 'error']);
+			$this->errorMsg('Category not found.');
 			$this->redirect('/categories/');
 		}
 
@@ -101,10 +102,10 @@ class CategoriesController extends AppController
 				$data['Category']['id'] = $categoryID;
 				$data['Category']['store_id'] = $this->Session->read('Store.id');
 				if ($this->Category->save($data)) {
-					$this->Session->setFlash('Category Updated Successfully', 'default', ['class' => 'success']);
-					$this->redirect('/cashbook/');
+					$this->successMsg('Category Updated.');
+					$this->redirect('/categories/');
 				} else {
-					$error = 'An error occured while creating a new category';
+					$error = 'An error occurred while creating a new category';
 				}
 			}
 		} else {
@@ -113,8 +114,9 @@ class CategoriesController extends AppController
 
 		$this->set('pCatInfo', $pCatInfo);
 		$this->set('hideSideBar', $hideSideBar);
+
 		if ($error) {
-			$this->Session->setFlash($error, 'default', ['class' => 'error']);
+			$this->errorMsg($error);
 		}
 	}
 

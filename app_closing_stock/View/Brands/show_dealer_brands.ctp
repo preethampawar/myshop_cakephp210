@@ -38,7 +38,7 @@
 				<td><?php echo $row['Brand']['name']; ?></td>
 				<td><?php echo date('d-m-Y', strtotime($row['Brand']['created'])); ?></td>
 				<td>
-					<?php echo $this->Html->link('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>', ['controller' => 'brands', 'action' => 'removeDealer', $row['Brand']['id']], ['title' => 'Remove Dealer Brand - ' . $row['Brand']['name'], 'escape' => false, 'class' => 'btn btn-danger btn-xs'], 'Are you sure you want to delete this dealer brand?'); ?>
+					<?php echo $this->Html->link('<span class="fa fa-trash-can" aria-hidden="true"></span>', ['controller' => 'brands', 'action' => 'removeDealer', $row['Brand']['id']], ['title' => 'Remove Dealer Brand - ' . $row['Brand']['name'], 'escape' => false, 'class' => 'btn btn-danger btn-sm'], 'Are you sure you want to delete this dealer brand?'); ?>
 				</td>
 			</tr>
 			<?php

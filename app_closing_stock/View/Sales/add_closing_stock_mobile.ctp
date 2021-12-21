@@ -249,12 +249,10 @@ if ($productsInfo) {
 								  action="<?php echo $this->Html->url("/sales/removeProduct/" . $row['Sale']['id']); ?>">
 								<button
 									type="button"
-									class="close"
+									class="btn-close"
 									aria-label="Close"
 									onclick="if (confirm('Are you sure you want to delete this product - <?php echo $row['Sale']['product_name']; ?> from the list?')) { $('#sales_<?php echo $row['Sale']['id']; ?>').submit(); } event.returnValue = false; return false;"
-								>
-									<span aria-hidden="true">&times;</span>
-								</button>
+								></button>
 							</form>
 						</td>
 					</tr>

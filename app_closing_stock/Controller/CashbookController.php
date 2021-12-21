@@ -17,6 +17,15 @@ class CashbookController extends AppController
 	 */
 	public function index($categoryID = null)
 	{
+		App::uses('Category', 'Model');
+		$this->Category = new Category();
+
+		$conditions = ['Category.store_id' => $this->Session->read('Store.id'), 'Category.active' => 1];
+		$categoriesList = $this->Category->find('list', ['conditions' => $conditions]);
+
+		//debug($categoriesList);
+
+
 		$hideSideBar = true;
 		$categoryInfo = null;
 		if ($categoryID) {
@@ -40,17 +49,24 @@ class CashbookController extends AppController
 			$data['Cashbook']['payment_date'] = $this->Session->read('paymentDate');
 			$this->data = $data;
 		}
-		$this->set(compact('cashbook', 'categoryInfo', 'hideSideBar'));
+		$this->set(compact('cashbook', 'categoryInfo', 'hideSideBar', 'categoriesList', 'categoryID'));
 	}
 
-	public function add($categoryID = null)
+	public function add()
 	{
 		$error = null;
+
+		App::uses('Category', 'Model');
+		$this->Category = new Category();
+
+		$conditions = ['Category.store_id' => $this->Session->read('Store.id'), 'Category.active' => 1];
+		$categoriesList = $this->Category->find('list', ['conditions' => $conditions]);
 
 		if ($this->request->isPost() or $this->request->isPut()) {
 			$data = $this->request->data;
 
-			$paymentDate = $data['Cashbook']['payment_date']['year'] . '-' . $data['Cashbook']['payment_date']['month'] . '-' . $data['Cashbook']['payment_date']['day'];
+			$categoryID = $data['Cashbook']['category_id'];
+			$paymentDate = $data['Cashbook']['payment_date'];
 			$data['Cashbook']['payment_date'] = $paymentDate;
 			$data['Cashbook']['category_id'] = $categoryID;
 
@@ -76,9 +92,9 @@ class CashbookController extends AppController
 
 				if ($this->Cashbook->save($data)) {
 					$this->Session->write('paymentDate', $paymentDate);
-					$msg = 'New record added in "' . $categoryInfo['Category']['name'] . '" category';
-					$this->Session->setFlash($msg, 'default', ['class' => 'success']);
-					$this->redirect(['controller' => 'cashbook', 'action' => 'add', $categoryID]);
+					$msg = 'New record created.';
+					$this->successMsg($msg);
+					$this->redirect('/cashbook/');
 				}
 			}
 		} else {
@@ -91,7 +107,8 @@ class CashbookController extends AppController
 		if ($error) {
 			$this->Session->setFlash($error);
 		}
-		$this->redirect($this->request->referer());
+		// $this->redirect($this->request->referer());
+		$this->set(compact('categoriesList'));
 	}
 
 	public function addCashbookFormValidation($data = null)
@@ -116,12 +133,12 @@ class CashbookController extends AppController
 		if ($this->request->isPost()) {
 			if ($cashbookInfo = $this->Cashbook->findById($recordID)) {
 				$this->Cashbook->delete($recordID);
-				$this->Session->setFlash('"' . $cashbookInfo['Cashbook']['category_name'] . '" Cashbook information, dated "' . date('d M Y', strtotime($cashbookInfo['Cashbook']['payment_date'])) . '" has been removed from the list', 'default', ['class' => 'success']);
+				$this->successMsg('Record deleted.');
 			} else {
-				$this->Session->setFlash('Record not found');
+				$this->errorMsg('Record not found.');
 			}
 		} else {
-			$this->Session->setFlash('Invalid request');
+			$this->errorMsg('Invalid request.');
 		}
 
 		$this->redirect($this->request->referer());

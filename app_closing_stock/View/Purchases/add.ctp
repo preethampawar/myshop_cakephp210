@@ -156,8 +156,8 @@ if ($productsInfo) {
 							  action="<?php echo $this->Html->url("/purchases/removeProduct/" . $row['Purchase']['id']); ?>">
 							<a href="#" name="Remove"
 							   onclick="if (confirm('Are you sure you want to delete this product - <?php echo $row['Purchase']['product_name']; ?> from the list?')) { $('#purchase_product_<?php echo $row['Purchase']['id']; ?>').submit(); } event.returnValue = false; return false;"
-							   class="btn btn-danger btn-xs">
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							   class="btn btn-danger btn-sm">
+								<span class="fa fa-trash-can" aria-hidden="true"></span>
 							</a>
 						</form>
 						<?php //echo $this->Form->postLink('Remove', array('controller'=>'purchases', 'action'=>'removeProduct', $row['Purchase']['id']), array('title'=>'Remove product - '.$row['Purchase']['product_name'], 'class'=>'small button link red'), 'Are you sure you want to delete this product "'.$row['Purchase']['product_name'].'"?');?>

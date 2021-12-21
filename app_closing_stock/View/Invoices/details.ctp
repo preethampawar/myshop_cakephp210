@@ -23,6 +23,11 @@
 		<td width="110">DD Amount:</td>
 		<td width="120"><?php echo $invoiceInfo['Invoice']['dd_amount']; ?></td>
 	</tr>
+
+	<tr>
+		<td>Prev Credit:</td>
+		<td><?php echo $invoiceInfo['Invoice']['prev_credit']; ?></td>
+	</tr>
 	<tr>
 		<td>Invoice Value:</td>
 		<td><?php echo $invoiceInfo['Invoice']['invoice_value']; ?></td>
@@ -35,10 +40,10 @@
 		<td>Net Invoice Value:</td>
 		<td><?php echo $invoiceInfo['Invoice']['invoice_value'] + $invoiceInfo['Invoice']['mrp_rounding_off']; ?></td>
 	</tr>
-	<tr>
-		<td>Retail Shop Excise Turnover Tax:</td>
-		<td><?php echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax']; ?></td>
-	</tr>
+<!--	<tr>-->
+<!--		<td>Retail Shop Excise Turnover Tax:</td>-->
+<!--		<td>--><?php //echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax']; ?><!--</td>-->
+<!--	</tr>-->
 	<tr>
 		<td>Special Excise Cess:</td>
 		<td><?php echo $invoiceInfo['Invoice']['special_excise_cess']; ?></td>
@@ -48,8 +53,8 @@
 		<td><?php echo $invoiceInfo['Invoice']['tcs_value']; ?></td>
 	</tr>
 	<tr>
-		<td>Prev Credit:</td>
-		<td><?php echo $invoiceInfo['Invoice']['prev_credit']; ?></td>
+		<td>New Retailer Professional Tax:</td>
+		<td><?php echo $invoiceInfo['Invoice']['new_retailer_prof_tax']; ?></td>
 	</tr>
 	<tr>
 		<td>Credit Balance:</td>
@@ -156,13 +161,13 @@ if ($invoiceProducts) {
 		</tr>
 		<tr>
 			<td class="text-right" colspan='4'>(-) Less this Invoice Value:</td>
-			<td class="text-left"><?php echo $invoiceInfo['Invoice']['invoice_value'] + $invoiceInfo['Invoice']['special_margin']; ?></td>
+			<td class="text-left"><?php echo $invoiceInfo['Invoice']['invoice_value'] + $invoiceInfo['Invoice']['special_margin'] + $invoiceInfo['Invoice']['mrp_rounding_off']; ?></td>
 		</tr>
 
-		<tr>
-			<td class="text-right" colspan='4'>Retail Shop Excise Turnover Tax:</td>
-			<td class="text-left"><?php echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax']; ?></td>
-		</tr>
+<!--		<tr>-->
+<!--			<td class="text-right" colspan='4'>Retail Shop Excise Turnover Tax:</td>-->
+<!--			<td class="text-left">--><?php //echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax']; ?><!--</td>-->
+<!--		</tr>-->
 		<tr>
 			<td class="text-right" colspan='4'>Special Excise Cess:</td>
 			<td class="text-left"><?php echo $invoiceInfo['Invoice']['special_excise_cess']; ?></td>
@@ -172,6 +177,10 @@ if ($invoiceProducts) {
 		<tr>
 			<td class="text-right" colspan='4'>TCS:</td>
 			<td class="text-left"><?php echo $invoiceInfo['Invoice']['tcs_value']; ?></td>
+		</tr>
+		<tr>
+			<td class="text-right" colspan='4'>New Retailer Professional Tax:</td>
+			<td class="text-left"><?php echo $invoiceInfo['Invoice']['new_retailer_prof_tax']; ?></td>
 		</tr>
 		<tr>
 			<td class="text-right" colspan='4'>Retailer Credit Balance:</td>
@@ -185,3 +194,4 @@ if ($invoiceProducts) {
 <?php } else { ?>
 	<p>No products found in Invoice "<?php echo $invoiceInfo['Invoice']['name']; ?>".</p>
 <?php } ?>
+<br><br>

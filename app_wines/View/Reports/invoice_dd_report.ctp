@@ -101,6 +101,7 @@ if ($viewType != 'download') {
 			$total_special_excise_cess = 0;
 			$total_credit_balance = 0;
 			$total_new_retailer_prof_tax = 0;
+			$total_invoice_purchase_value = 0;
 
 			foreach ($invoices as $row) {
 				$k++;
@@ -116,6 +117,7 @@ if ($viewType != 'download') {
 				$total_special_excise_cess += $row['Invoice']['special_excise_cess'];
 				$total_credit_balance += $row['Invoice']['credit_balance'];
 				$total_new_retailer_prof_tax += $row['Invoice']['new_retailer_prof_tax'];
+				$total_invoice_purchase_value =  $total_invoice_value + $total_mrp_rounding_off + $total_special_excise_cess + $total_tcs_value + $total_new_retailer_prof_tax;
 				?>
 				<tr>
 					<td><?php echo $k; ?></td>
@@ -179,6 +181,10 @@ if ($viewType != 'download') {
 			<!--				<td style="width:70%">Previous Credit Balance</td>-->
 			<!--				<td>--><?php //echo $previous_credit_value;?><!--</td>-->
 			<!--			</tr>-->
+			<tr style="font-weight:bold;">
+				<td>Total DD Amount</td>
+				<td><?php echo number_format($total_dd_amount, '2', '.', ''); ?></td>
+			</tr>
 			<tr>
 				<td>Total Invoice Value</td>
 				<td><?php echo $total_invoice_value; ?></td>
@@ -191,10 +197,7 @@ if ($viewType != 'download') {
 				<td>Total Net Invoice Value</td>
 				<td><?php echo $total_net_invoice_value; ?></td>
 			</tr>
-			<tr style="font-weight:bold;">
-				<td>Total DD Amount</td>
-				<td><?php echo number_format($total_dd_amount, '2', '.', ''); ?></td>
-			</tr>
+
 
 
 			<!--            <tr>-->
@@ -217,7 +220,7 @@ if ($viewType != 'download') {
 				<td><?php echo number_format($total_new_retailer_prof_tax, '2', '.', ''); ?></td>
 			</tr>
 
-			<tr style="font-weight:bold;">
+			<tr style="font-weight:bold; display:none;" >
 				<td>Total Purchase Value</td>
 				<td><?php echo number_format($total_purchase_value, '2', '.', ''); ?></td>
 			</tr>
@@ -226,6 +229,11 @@ if ($viewType != 'download') {
 			<!--				<td>-->
 			<?php //echo number_format(($total_dd_amount-$total_purchase_value+$previous_credit_value), '2', '.', '');?><!--</td>-->
 			<!--			</tr>-->
+			<tr style="font-weight:bold;" >
+				<td>Total Invoice Purchase Value</td>
+				<td><?php echo number_format($total_invoice_purchase_value, '2', '.', ''); ?></td>
+			</tr>
+
 		</table>
 		<?php
 	} else {
@@ -238,19 +246,19 @@ if ($viewType != 'download') {
 	if (!empty($invoices)) {
 
 		$csv .= implode(array(
-					'Sl.No.',
-					'Invoice No.',
-					'Invoice Date',
-					'Invoice Value',
-					'MRP Rounding Up',
-					'Net Invoice Value',
-					'DD Amount',
-					'Prev Credit',
+						'Sl.No.',
+						'Invoice No.',
+						'Invoice Date',
+						'Invoice Value',
+						'MRP Rounding Up',
+						'Net Invoice Value',
+						'DD Amount',
+						'Prev Credit',
 //					'Total Retail Shop Excise Turnover Tax',
-					'Total Special Excise Cess',
-					'TCS',
-					'New Retailer Professional Tax',
-					'Credit Balance'
+						'Total Special Excise Cess',
+						'TCS',
+						'New Retailer Professional Tax',
+						'Credit Balance'
 				), ",") . "\r\n";
 		$k = 0;
 
