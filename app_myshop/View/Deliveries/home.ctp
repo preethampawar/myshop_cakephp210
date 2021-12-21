@@ -250,19 +250,18 @@
 														</div>
 													</div>
 
-													<div class="text-center mt-4 mb-2">
-														<!--
+													<div class="text-center mt-4 mb-2">														
 														<button
 																onclick="showConfirmPopup('/deliveries/updateOrderStatusDelivered/<?= base64_encode($row['Order']['id']) ?>', 'Order No. #<?= $row['Order']['id'] ?>', 'Are you sure you have delivered this order?', 'Yes'); return false;"
 																class="btn btn-success btn-md"
 																title="Order #<?= $row['Order']['id'] ?> - Click if you have delivered the order to customer"
 														>Delivered</button>
-														-->
-														<button
+														
+														<!-- <button
 																onclick="orderIsDelivered('<?= base64_encode($row['Order']['id']) ?>', '<?= $row['Order']['id'] ?>')"
 																class="btn btn-success btn-md"
 																title="Order #<?= $row['Order']['id'] ?> - Click if you have delivered the order to customer"
-														>Delivered</button>
+														>Delivered</button> -->
 													</div>
 												</div>
 												<?php
