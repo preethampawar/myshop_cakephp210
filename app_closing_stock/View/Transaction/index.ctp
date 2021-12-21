@@ -1,7 +1,8 @@
 <h1>Manage Transactions</h1>
 
 <div class="text-end mt-3">
-	<a href="/transactions/add" class="btn btn-primary btn-sm">+ Add New Record</a>
+	
+	&nbsp;
 	<a href="/transactions/add" class="btn btn-primary btn-sm">+ Add New Record</a>
 </div>
 
@@ -14,22 +15,18 @@
 	?>
 	<div class="card bg-light mt-4">
 		<div class="card-body">
-			<div class="d-flex justify-content-between">
-				<label class="form-label">Filter</label>
-				<?php echo $this->Form->select('TransactionCategory.id', $categoriesList, ['empty' => '- Select TransactionCategory -', 'class' => 'form-select form-select-sm ms-2', 'onchange' => 'selectCategory(this)', 'default' => $transactionCategoryId]); ?>
-
-
-				<script type="text/javascript">
-					function selectCategory(ele) {
-						var catId = ele.value ?? '';
-						window.location = '/transactions/index/' + catId;
-					}
-				</script>
-
+			<div class="d-flex justify-content-between">				
+				<?php echo $this->Form->select('TransactionCategory.id', $categoriesList, ['empty' => '- Filter -', 'class' => 'form-select form-select-sm', 'onchange' => 'selectCategory(this)', 'default' => $transactionCategoryId]); ?>
+				<label class="form-label text-nowrap ms-2"><a href="/TransactionCategories/" class="btn btn-outline-secondary btn-sm">Manage Category</a></label>
 			</div>
-
 		</div>
 	</div>
+	<script type="text/javascript">
+		function selectCategory(ele) {
+			var catId = ele.value ?? '';
+			window.location = '/transactions/index/' + catId;
+		}
+	</script>
 	<?php
 	}
 	?>
