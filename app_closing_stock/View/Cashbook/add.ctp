@@ -1,82 +1,49 @@
-<p><?php echo $this->Html->link('Cancel', ['controller' => 'salaries', 'action' => 'index'], ['title' => 'Go back to Salary list']); ?></p>
-<h1>Add New Salary</h1>
+<h1 class="">Add Expense/Income</h1>
+<div class="text-end mt-3">
+	<a href="/cashbook/" class="btn btn-warning btn-sm">Cancel</a>
+</div>
 
-<?php
-if ($employeesList) {
+
+
+<?= $this->Form->create('Cashbook', ['url' => '/cashbook/add/']); ?>
+
+<div class="mt-3">
+	<label class="form-label">Category * (<a href="/categories/add" class="small">+Add New</a>)</label>
+	<?php
+	if (!empty($categoriesList)) {
+		echo $this->Form->select('category_id', $categoriesList, ['empty' => false, 'class' => 'form-select form-select-sm']);
+		?>
+
+		<?php
+	} else {
+		echo '<div class="text-muted small mt-3">No category found. Please create a new category to add expenses/income.</div>';
+		return;
+	}
 	?>
-	<div id="AddSalaryDiv">
-		<?php
-		echo $this->Form->create();
-		?>
-		<div id="paramsDiv">
-			<div style="float:left; clear:none;">
-				<?php echo $this->Form->input('employee_id', ['empty' => false, 'label' => 'Select Employee', 'required' => true, 'type' => 'select', 'options' => $employeesList, 'autofocus' => true, 'escape' => false]); ?>
-			</div>
-			<div style="float:left; clear:none;">
-				<?php
-				echo $this->Form->input('payment_amount', ['type' => 'text', 'label' => 'Payment Amount', 'required' => true, 'title' => 'Payment Amount']);
-				?>
-			</div>
-			<div style="float:left; clear:both;">
-				<?php echo $this->Form->input('payment_date', ['label' => 'Salary Date', 'required' => true, 'type' => 'date']); ?>
-			</div>
-			<div style="float:left; clear:none;">
-				<?php echo $this->Form->submit('Add Salary', ['id' => 'SubmitForm', 'type' => 'submit']); ?>
-			</div>
-		</div>
-		<div style="clear:both;"></div>
-		<?php
-		echo $this->Form->end();
-		?>
-	</div>
+</div>
 
-	<h2>Recent records</h2>
-	<?php
-	if ($salaries) {
-		?>
-		<table class='table'>
-			<thead>
-			<tr>
-				<th>S.No</th>
-				<th>Employee</th>
-				<th>Payment Amount</th>
-				<th>Salary Date</th>
-				<th>Actions</th>
-			</tr>
-			</thead>
-			<tbody>
-			<?php
-			$i = 0;
-			foreach ($salaries as $row) {
-				$i++;
-				?>
-				<tr>
-					<td><?php echo $i; ?></td>
-					<td><?php echo $this->Html->link($row['Salary']['employee_name'], ['controller' => 'employees', 'action' => 'view', $row['Salary']['employee_id']], ['title' => 'Click to get Employee details']); ?></td>
-					<td><?php echo $row['Salary']['payment_amount']; ?></td>
-					<td><?php echo date('d-m-Y', strtotime($row['Salary']['payment_date'])); ?></td>
-					<td>
-						<form method="post" style="" name="invoice_remove_product_<?php echo $row['Salary']['id']; ?>"
-							  id="invoice_remove_product_<?php echo $row['Salary']['id']; ?>"
-							  action="<?php echo $this->Html->url("/salaries/remove/" . $row['Salary']['id']); ?>">
-							<input type="submit" value="Remove" name="Remove"
-								   onclick="if (confirm('Are you sure you want to delete this record - <?php echo $row['Salary']['employee_name']; ?> from the list?')) { $('#invoice_remove_product_<?php echo $row['Salary']['id']; ?>').submit(); } event.returnValue = false; return false;">
-						</form>
-						<?php //echo $this->Form->postLink('Remove', array('controller'=>'salaries', 'action'=>'remove', $row['Salary']['id']), array('title'=>'Remove this record of - '.$row['Salary']['employee_name'], 'class'=>'small button link red'), 'Are you sure you want to delete this record of employee "'.$row['Salary']['employee_name'].'"?');?>
-					</td>
-				</tr>
-				<?php
-			}
-			?>
-			</tbody>
-		</table>
+<div class="mt-3">
+	<label class="form-label">Payment Date *</label>
+	<input name="data[Cashbook][payment_date]" type="date" class="form-control form-control-sm" value="<?= $this->Session->check('paymentDate') ? $this->Session->read('paymentDate') : date('Y-m-d') ?>" required>
+</div>
 
-	<?php } else { ?>
-		<p>No salaries found</p>
-	<?php } ?>
+<div class="mt-3">
+	<label class="form-label">Payment Type *</label>
+	<?= $this->Form->input('payment_type', ['type' => 'select', 'label' => false, 'required' => true, 'options' => ['expense' => 'Expense', 'income' => 'Income'], 'class' => 'form-select form-select-sm']); ?>
+</div>
 
-	<?php
-} else {
-	echo 'No employees found. You need to add employees to continue.';
-}
-?>
+<div class="mt-3">
+	<label class="form-label">Amount *</label>
+	<?= $this->Form->input('payment_amount', ['type' => 'number', 'label' => false, 'required' => true, 'class' => 'form-control form-control-sm', 'default' => 0, 'min' => 1]); ?>
+</div>
+
+<div class="mt-3">
+	<label class="form-label">Description</label>
+	<?= $this->Form->input('description', ['type' => 'text', 'label' => false, 'class' => 'form-control form-control-sm']); ?>
+</div>
+
+<div class="mt-4 text-center">
+	<button type="submit" class="btn btn-primary btn-sm">Submit</button>
+</div>
+
+<?= $this->Form->end() ?>

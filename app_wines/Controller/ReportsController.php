@@ -1020,4 +1020,53 @@ ORDER BY p.name";
         $this->set(compact('result', 'hideHeader', 'fromDate', 'toDate', 'paymentType', 'hideSideBar', 'prev_balance', 'showPrevBalance'));
     }
 
+
+	public function transactionsReport()
+	{
+		App::uses('TransactionCategory', 'Model');
+		$this->TransactionCategory = new TransactionCategory();
+
+		$conditions = ['TransactionCategory.store_id' => $this->Session->read('Store.id')];
+		$categoriesList = $this->TransactionCategory->find('list', ['conditions' => $conditions]);
+		$this->set(compact('categoriesList'));
+	}
+
+	public function generateTransactionsReport()
+	{
+		$result = null;
+		$salaries = null;
+		$hideHeader = true;
+		$hideSideBar = true;
+		$purchases = [];
+		$sales = [];
+
+		if ($this->request->isPost()) {
+			$data = $this->request->data;
+			$printView = false;
+			$categoryID = $data['Report']['category_id'];
+			$paymentType = ($data['Report']['payment_type']) ? $data['Report']['payment_type'] : null;
+			$fromDate = $data['Report']['from_date'];
+			$toDate = $data['Report']['to_date'];
+
+			if ($printView) {
+				$this->layout = 'print_view';
+			}
+
+			App::uses('Transaction', 'Model');
+			$this->Transaction = new Transaction();
+			$conditions = ['Transaction.store_id' => $this->Session->read('Store.id'), 'Transaction.payment_date BETWEEN ? AND ?' => [$fromDate, $toDate]];
+
+			if ($paymentType) {
+				$conditions[] = ['Transaction.payment_type' => $paymentType];
+			}
+			if ($categoryID) {
+				$conditions[] = ['Transaction.transaction_category_id' => $categoryID];
+			}
+			$result = $this->Transaction->find('all', ['conditions' => $conditions, 'order' => ['Transaction.payment_date', 'Transaction.created']]);
+		} else {
+			$this->Session->setFlash('Invalid Request');
+		}
+
+		$this->set(compact('result', 'hideHeader', 'fromDate', 'toDate', 'paymentType', 'hideSideBar'));
+	}
 }

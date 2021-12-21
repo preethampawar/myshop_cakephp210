@@ -25,22 +25,7 @@
 
 <!--    <script src="/html-table-search/html-table-search.js"></script>-->
 
-    <link rel="stylesheet" href="/css/site.css" crossorigin="anonymous">
-
-    <style type="text/css">
-        .select2-results ul {
-            color: #333;
-        }
-
-        .row {
-            margin-right: 0px;
-            margin-left: 0px;
-        }
-
-        .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"], .radio input[type="radio"], .radio-inline input[type="radio"] {
-            margin-left: 0px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/site.css?v=1" crossorigin="anonymous">
 </head>
 
 <body>
@@ -53,6 +38,72 @@
 $showHeader = true;
 if (isset($hideHeader) and ($hideHeader)) {
     $showHeader = false;
+}
+$controller = $this->request->controller;
+$action = $this->request->action;
+$homeActive = '';
+$productsActive = '';
+$brandsActive = '';
+$closingStockActive = '';
+$invoicesActive = '';
+$salesActive = '';
+$breakagesActive = '';
+$purchasesActive = '';
+$cashbookActive = '';
+$transactionsActive = '';
+$dealersActive = '';
+$reportsActive = '';
+
+switch ($controller) {
+	case 'stores':
+		$homeActive = "navLinkActive";
+		break;
+	case 'products':
+	case 'product_categories':
+		$productsActive = "navLinkActive";
+		break;
+	case 'brands':
+		$brandsActive = "navLinkActive";
+		break;
+	case 'invoices':
+		$invoicesActive = "navLinkActive";
+		break;
+	case 'breakages':
+		$breakagesActive = "navLinkActive";
+		break;
+	case 'purchases':
+		$invoicesActive = "";
+		$purchasesActive = "";
+		if ($action === 'addProduct') {
+			$invoicesActive = "navLinkActive";
+		} else {
+			$purchasesActive = "navLinkActive";
+		}
+		break;
+	case 'cashbook':
+		$cashbookActive = "navLinkActive";
+		break;
+	case 'transactions':
+		$transactionsActive = "navLinkActive";
+		break;
+	case 'dealers':
+		$dealersActive = "navLinkActive";
+		break;
+	case 'reports':
+		$reportsActive = "navLinkActive";
+		break;
+	case 'sales':
+		$salesActive = "";
+		$closingStockActive = "";
+		if (in_array($action, ['viewClosingStock', 'addClosingStock', 'addAllClosingStock'])) {
+			$closingStockActive = 'navLinkActive';
+		} else {
+			$salesActive = "navLinkActive";
+		}
+		break;
+	default;
+		break;
+
 }
 ?>
 
@@ -101,28 +152,30 @@ if (isset($hideHeader) and ($hideHeader)) {
                 <?php
                 if ($this->Session->check('Store')) {
                     ?>
-                    <?php echo $this->Html->link('Home', ['controller' => 'stores', 'action' => 'home']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Products', ['controller' => 'product_categories', 'action' => 'index']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Brands', ['controller' => 'brands', 'action' => 'index']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Invoices', ['controller' => 'invoices', 'action' => 'index']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Closing Stock', ['controller' => 'sales', 'action' => 'viewClosingStock']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Breakage Stock', ['controller' => 'breakages', 'action' => 'viewBreakageStock']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Purchases', ['controller' => 'purchases', 'action' => 'index']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Sales', ['controller' => 'sales', 'action' => 'index']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Cashbook', ['controller' => 'cashbook', 'action' => 'index']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Dealers', ['controller' => 'dealers', 'action' => 'index']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <?php echo $this->Html->link('Reports', ['controller' => 'reports', 'action' => 'home']); ?>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <?php echo $this->Html->link('Home', ['controller' => 'stores', 'action' => 'home'], ['class' => $homeActive]); ?>
+
+                    <?php echo $this->Html->link('Products', ['controller' => 'product_categories', 'action' => 'index'], ['class' => $productsActive]); ?>
+
+                    <?php echo $this->Html->link('Brands', ['controller' => 'brands', 'action' => 'index'], ['class' => $brandsActive]); ?>
+
+                    <?php echo $this->Html->link('Invoices', ['controller' => 'invoices', 'action' => 'index'], ['class' => $invoicesActive]); ?>
+
+                    <?php echo $this->Html->link('Closing Stock', ['controller' => 'sales', 'action' => 'viewClosingStock'], ['class' => $closingStockActive]); ?>
+
+                    <?php echo $this->Html->link('Breakage Stock', ['controller' => 'breakages', 'action' => 'viewBreakageStock'], ['class' => $breakagesActive]); ?>
+
+                    <?php echo $this->Html->link('Purchases', ['controller' => 'purchases', 'action' => 'index'], ['class' => $purchasesActive]); ?>
+
+                    <?php echo $this->Html->link('Sales', ['controller' => 'sales', 'action' => 'index'], ['class' => $salesActive]); ?>
+
+                    <?php echo $this->Html->link('Cashbook', ['controller' => 'cashbook', 'action' => 'index'], ['class' => $cashbookActive]); ?>
+
+                    <?php echo $this->Html->link('Transactions', ['controller' => 'transactions', 'action' => 'index'], ['class' => $transactionsActive]); ?>
+
+                    <?php echo $this->Html->link('Dealers', ['controller' => 'dealers', 'action' => 'index'], ['class' => $dealersActive]); ?>
+
+                    <?php echo $this->Html->link('Reports', ['controller' => 'reports', 'action' => 'home'], ['class' => $reportsActive]); ?>
+
                     <a href="/SimpleAccountingApp-v1.0.0.apk">Download Mobile App</a>
 
                     <?php // echo $this->Html->link('Counter Balance Sheets', array('controller'=>'CounterBalanceSheets', 'action'=>'index'));?>
@@ -194,6 +247,11 @@ if (isset($hideHeader) and ($hideHeader)) {
                             echo $this->fetch('bank_menu');
                         endif;
 
+                        // transactions report menu
+                        if ($this->fetch('transactions_menu')):
+                            echo $this->fetch('transactions_menu');
+                        endif;
+
                         ?>
                     </nav>
                     <br>
@@ -209,7 +267,7 @@ if (isset($hideHeader) and ($hideHeader)) {
     </div>
     <div class="clear"></div>
 </div>
-
+<br><br>
 <script>
     // In your Javascript2 (external .js resource or <script> tag)
     $(document).ready(function () {

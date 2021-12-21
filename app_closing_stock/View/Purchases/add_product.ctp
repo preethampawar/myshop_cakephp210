@@ -246,6 +246,7 @@ if ($productsInfo) {
 				$totalAmount = 0;
 				$totalSpecialMargin = 0;
 				$totalNoOfUnits = 0;
+				$totalNoOfUnits = 0;
 				$tax = $this->Session->read('Invoice.tax');
 				foreach ($invoiceProducts as $row) {
 					$i++;
@@ -262,11 +263,10 @@ if ($productsInfo) {
 					<tr>
 						<td><?php echo $i; ?></td>
 						<td>
-							<button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-									id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+							<a class="dropdown-toggle" role="button" id="dropdownMenuButton<?= $i ?>" data-bs-toggle="dropdown" aria-expanded="false">
 								<?php echo $row['Purchase']['product_name']; ?>
-							</button>
-							<ul class="dropdown-menu small" aria-labelledby="dropdownMenuButton">
+							</a>
+							<ul class="dropdown-menu small" aria-labelledby="dropdownMenuButton<?= $i ?>">
 								<?php
 								if ($this->Session->read('Store.show_brands_in_products')) {
 									if (isset($row['Product']['Brand']['name'])) {
@@ -363,11 +363,11 @@ if ($productsInfo) {
 					<td><?php echo $invoiceInfo['Invoice']['invoice_value'] + $invoiceInfo['Invoice']['special_margin'] + $invoiceInfo['Invoice']['mrp_rounding_off']; ?></td>
 				</tr>
 
-
-				<tr>
-					<td style="text-align:right;" colspan='4'>Retail Shop Excise Turnover Tax:</td>
-					<td><?php echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax']; ?></td>
-				</tr>
+<!---->
+<!--				<tr>-->
+<!--					<td style="text-align:right;" colspan='4'>Retail Shop Excise Turnover Tax:</td>-->
+<!--					<td>--><?php //echo $invoiceInfo['Invoice']['retail_shop_excise_turnover_tax']; ?><!--</td>-->
+<!--				</tr>-->
 				<tr>
 					<td style="text-align:right;" colspan='4'>Special Excise Cess:</td>
 					<td><?php echo $invoiceInfo['Invoice']['special_excise_cess']; ?></td>
@@ -377,6 +377,11 @@ if ($productsInfo) {
 				<tr>
 					<td style="text-align:right;" colspan='4'>TCS:</td>
 					<td><?php echo $invoiceInfo['Invoice']['tcs_value']; ?></td>
+				</tr>
+
+				<tr>
+					<td style="text-align:right;" colspan='4'>New Retailer Professional Tax:</td>
+					<td><?php echo $invoiceInfo['Invoice']['new_retailer_prof_tax'];?></td>
 				</tr>
 				<tr>
 					<td style="text-align:right;" colspan='4'>Retailer Credit Balance:</td>

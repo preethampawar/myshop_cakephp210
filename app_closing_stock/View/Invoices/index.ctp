@@ -41,11 +41,10 @@ if (!empty($invoices)) {
 						action="<?php echo $this->Html->url("/invoices/Delete/" . $row['Invoice']['id']); ?>"
 					>
 						<div class="dropdown">
-							<button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-									id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+							<a class="dropdown-toggle" role="button" id="dropdownMenuButton<?= $row['Invoice']['id'] ?>" data-bs-toggle="dropdown" aria-expanded="false">
 								<?php echo $row['Invoice']['name']; ?>
-							</button>
-							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $row['Invoice']['id'] ?>">
 								<li>
 									<a class="dropdown-item"
 									   href="/invoices/details/<?php echo $row['Invoice']['id']; ?>">Details</a>

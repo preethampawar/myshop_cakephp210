@@ -78,7 +78,7 @@
 				<td><?php echo $row['Product']['box_buying_price']; ?></td>
 				<td><?php echo $row['Product']['unit_selling_price']; ?></td>
 				<td><?php echo date('d-m-Y', strtotime($row['Product']['created'])); ?></td>
-				<td><?php echo $this->Html->link('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['controller' => 'products', 'action' => 'edit', $productCategoryInfo['ProductCategory']['id'], $row['Product']['id']], ['title' => 'Edit Product - ' . $row['Product']['name'], 'escape' => false, 'class' => 'btn btn-warning btn-xs']); ?>
+				<td><?php echo $this->Html->link('<span class="fa fa-pencil" aria-hidden="true"></span>', ['controller' => 'products', 'action' => 'edit', $productCategoryInfo['ProductCategory']['id'], $row['Product']['id']], ['title' => 'Edit Product - ' . $row['Product']['name'], 'escape' => false, 'class' => 'btn btn-warning btn-sm']); ?>
 				</td>
 			</tr>
 			<?php

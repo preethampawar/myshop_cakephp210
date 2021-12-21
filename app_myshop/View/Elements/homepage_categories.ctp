@@ -38,6 +38,7 @@ if ($categories and !empty($categories)) {
                 foreach ($categories as $row) {
                     $categoryId = $row['Category']['id'];
                     $categoryName = $row['Category']['name'];
+                    $productsCount = $row['Category']['products_count'] ?? 0;
                     $categoryNameSlug = Inflector::slug($categoryName, '-');
 
                     $categoryUploadedImages = $row['Category']['images'] ? json_decode($row['Category']['images']) : [];
@@ -72,6 +73,11 @@ if ($categories and !empty($categories)) {
 								<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
 									<h6><?= $categoryName ?></h6>
 								</a>
+								<div class="text-purple small">
+									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
+										<?= $productsCount ?> item(s)
+									</a>
+								</div>
 							</div>
 						</div>
 
