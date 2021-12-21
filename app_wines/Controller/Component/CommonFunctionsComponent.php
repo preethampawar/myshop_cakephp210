@@ -273,4 +273,22 @@ class CommonFunctionsComponent extends Component {
 		return array();
 	}
 
+
+	/** Function to get Transaction Category info **/
+	public function getTransactionCategoryInfo($transactionCategoryId = null)
+	{
+		App::uses('TransactionCategory', 'Model');
+		$this->TransactionCategory = new TransactionCategory();
+
+		if (!$transactionCategoryId) {
+			return [];
+		} else {
+			$conditions = ['TransactionCategory.id' => $transactionCategoryId, 'TransactionCategory.store_id' => $this->Session->read('Store.id')];
+			if ($categoryInfo = $this->TransactionCategory->find('first', ['conditions' => $conditions])) {
+				return $categoryInfo;
+			}
+		}
+		return [];
+	}
+
 }

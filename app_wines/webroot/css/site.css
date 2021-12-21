@@ -53,7 +53,7 @@ margin : 0 0 1em 0;
 }
 #header{
 	color:#003d4c;
-	padding: 15px 10px;
+	padding: 10px 10px;
 	/*background-image:url('../img/noise.png');*/
 	background-color: #f5f6f6;
 	background-image: linear-gradient(#f5f6f6, #fdeeee);
@@ -781,4 +781,36 @@ input:invalid {
 input:focus:invalid {
 	border: 1px solid red;
 	color: red;
+}
+
+.select2-results ul {
+	color: #333;
+}
+
+.row {
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+.checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"], .radio input[type="radio"], .radio-inline input[type="radio"] {
+	margin-left: 0px;
+}
+
+#header nav a {
+	background-color: #fdf6f6;
+	padding: 2px 5px;
+	border: 1px solid #cfcfcf;
+	border-radius: 2px;
+	margin-right: 5px;
+	margin-top: 10px;
+	display: inline-block;
+}
+#header nav a:hover {
+	background-color: #ffffff;
+	text-decoration: none;
+}
+
+#header nav a.navLinkActive {
+	background-color: #ffffff;
+	text-decoration: none;
 }

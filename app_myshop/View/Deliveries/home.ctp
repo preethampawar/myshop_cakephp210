@@ -2,7 +2,17 @@
 //debug($confirmedOrders);
 //debug($shippedOrders);
 ?>
+<script>
+	function updateSupplier(supplierId, orderProductId) {
+		if (supplierId != "" && confirm("Are you sure you want to update the supplier?")) {
+			document.getElementById("OrderProductAdminDetailsForm"+orderProductId).submit()
+		}
 
+		if (supplierId == "" && confirm("Are you sure you want to remove the supplier?")) {
+			document.getElementById("OrderProductAdminDetailsForm"+orderProductId).submit()
+		}
+	}
+</script>
 
 <div class="accordion" id="deliveryStatus">
 	<div class="accordion-item">
@@ -45,15 +55,31 @@
 														<thead>
 														<tr>
 															<th>Product Name</th>
+															<th>Supplier</th>
 															<th style="width: 60px;" class="text-center">Qty</th>
 														</tr>
 														</thead>
 														<tbody>
 														<?php
 														foreach($row['OrderProduct'] as $orderProduct) {
+															$orderProductId = $orderProduct['id'];
+															$orderProductSupplierId = $orderProduct['supplier_id'];
 															?>
 															<tr>
 																<td><?= $orderProduct['product_name'] ?></td>
+																<td>
+																	<?php
+																	echo $this->Form->create('OrderProduct', ['url' => '/deliveries/updateOrderProductSupplier', 'id' => 'OrderProductAdminDetailsForm' . $orderProductId]);
+																	echo $this->Form->hidden('id', ['value' => $orderProductId]);
+																	echo $this->Form->select('supplier_id', $suppliers, [
+																			'empty' => '- Select Supplier -',
+																			'class' => 'form-select form-select-sm ' . ($orderProductSupplierId ? 'text-success border-success' : 'text-danger border-danger'),
+																			'onchange' => 'updateSupplier(this.value, "' . $orderProductId . '")',
+																			'default' => $orderProductSupplierId,
+																	]);
+																	echo $this->Form->end();
+																	?>
+																</td>
 																<td class="text-center"><?= $orderProduct['quantity'] ?></td>
 															</tr>
 															<?php
@@ -164,15 +190,31 @@
 														<thead>
 														<tr>
 															<th>Product Name</th>
+															<th>Supplier</th>
 															<th style="width: 60px;" class="text-center">Qty</th>
 														</tr>
 														</thead>
 														<tbody>
 														<?php
 														foreach($row['OrderProduct'] as $orderProduct) {
+															$orderProductId = $orderProduct['id'];
+															$orderProductSupplierId = $orderProduct['supplier_id'];
 															?>
 															<tr>
 																<td><?= $orderProduct['product_name'] ?></td>
+																<td>
+																	<?php
+																	echo $this->Form->create('OrderProduct', ['url' => '/deliveries/updateOrderProductSupplier', 'id' => 'OrderProductAdminDetailsForm' . $orderProductId]);
+																	echo $this->Form->hidden('id', ['value' => $orderProductId]);
+																	echo $this->Form->select('supplier_id', $suppliers, [
+																			'empty' => '- Select Supplier -',
+																			'class' => 'form-select form-select-sm ' . ($orderProductSupplierId ? 'text-success border-success' : 'text-danger border-danger'),
+																			'onchange' => 'updateSupplier(this.value, "' . $orderProductId . '")',
+																			'default' => $orderProductSupplierId,
+																	]);
+																	echo $this->Form->end();
+																	?>
+																</td>
 																<td class="text-center"><?= $orderProduct['quantity'] ?></td>
 															</tr>
 															<?php
@@ -209,19 +251,18 @@
 													</div>
 
 													<div class="text-center mt-4 mb-2">
+														<!--
 														<button
 																onclick="showConfirmPopup('/deliveries/updateOrderStatusDelivered/<?= base64_encode($row['Order']['id']) ?>', 'Order No. #<?= $row['Order']['id'] ?>', 'Are you sure you have delivered this order?', 'Yes'); return false;"
 																class="btn btn-success btn-md"
 																title="Order #<?= $row['Order']['id'] ?> - Click if you have delivered the order to customer"
 														>Delivered</button>
-
-														
-
+														-->
 														<button
 																onclick="orderIsDelivered('<?= base64_encode($row['Order']['id']) ?>', '<?= $row['Order']['id'] ?>')"
 																class="btn btn-success btn-md"
 																title="Order #<?= $row['Order']['id'] ?> - Click if you have delivered the order to customer"
-														>Delivered2</button>
+														>Delivered</button>
 													</div>
 												</div>
 												<?php

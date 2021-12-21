@@ -12,23 +12,17 @@
 <?php
 echo $this->Form->create();
 ?>
-<table class="w-100 small">
-	<tbody>
-	<tr>
-		<td>
-			<label for="fromDate">From Date:</label><br>
-			<input type="date" id="fromDate" name="fromDate" class="form-contorl form-contorl-sm"
-				   value="<?php echo $fromDate; ?>" required>
-		</td>
-		<td>&nbsp;&nbsp;</td>
-		<td>
-			<label for="toDate">To Date:</label><br>
-			<input type="date" name="toDate" class="form-contorl form-contorl-sm" value="<?php echo $toDate; ?>"
-				   required>
-		</td>
-	</tr>
-	</tbody>
-</table>
+<div>
+	<label for="fromDate">From Date:</label><br>
+	<input type="date" id="fromDate" name="fromDate" class="form-control form-control-sm"
+	   value="<?php echo $fromDate; ?>" required>
+</div>
+<div class="mt-3">
+	<label for="toDate">To Date:</label><br>
+	<input type="date" name="toDate" class="form-control form-control-sm" value="<?php echo $toDate; ?>"
+		   required>
+</div>
+
 <div class="row mb-3 mt-3">
 	<div class="col-xs-12 text-center">
 		<button type="submit" class="btn btn-purple btn-sm">Generate Report</button>
@@ -87,12 +81,10 @@ if ($sales) {
 							  action="<?php echo $this->Html->url("/sales/removeProduct/" . $row['Sale']['id']); ?>">
 							<button
 								type="button"
-								class="close"
+								class="btn-close"
 								aria-label="Close"
 								onclick="if (confirm('Are you sure you want to delete this product - <?php echo $row['Sale']['product_name']; ?> from the list?')) { $('#sales_<?php echo $row['Sale']['id']; ?>').submit(); } event.returnValue = false; return false;"
-							>
-								<span aria-hidden="true">&times;</span>
-							</button>
+							></button>
 						</form>
 						<?php //echo $this->Form->postLink('Remove', array('controller'=>'sales', 'action'=>'removeProduct', $row['Sale']['id']), array('title'=>'Remove product from invoice - '.$row['Sale']['product_name'], 'class'=>'small button link red'), 'Are you sure you want to delete this product "'.$row['Sale']['product_name'].'"?');?>
 					</td>

@@ -188,6 +188,7 @@ class AppController extends Controller
 					- $retail_shop_excise_turnover_tax
 					- $special_excise_cess
 					- $invoice_info['Invoice']['mrp_rounding_off']
+					- $invoice_info['Invoice']['new_retailer_prof_tax']
 				);
 				$this->Invoice->save($invoice_data);
 			}

@@ -18,13 +18,12 @@
 	if (!empty($stores)) {
 		?>
 		<div id="selectStoreDiv">
-			<table class='table table-striped table-lg'>
+			<table class='table table-lg'>
 				<thead>
 				<tr>
 					<th>
-						Store
+						Store Name
 					</th>
-					<th>Expiry</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -60,9 +59,9 @@
 							<?php
 							echo $this->Html->link(strtoupper($row['Store']['name']), ['controller' => 'stores', 'action' => 'selectStore', $row['Store']['id']], ['title' => 'Select this store']);
 							?>
-						</td>
-						<td>
-							<?php echo $row['Store']['expiry_date'] ? date('d-m-Y', strtotime($row['Store']['expiry_date'])) : '-'; ?>
+							<div class="mt-0 small text-muted ms-4">
+								<span class="small btn btn-sm">[ Expiry Date: <?php echo $row['Store']['expiry_date'] ? date('d-m-Y', strtotime($row['Store']['expiry_date'])) : '-'; ?> ]</span>
+							</div>
 						</td>
 					</tr>
 					<?php

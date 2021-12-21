@@ -428,11 +428,20 @@ Disallow:
 
 	public function contact()
 	{
+		$formtoken = time()+rand(1,99999);
+		$prevFormToken = $this->Session->check('Contact.formtoken') ? $this->Session->read('Contact.formtoken') : '';
+		$this->Session->write('Contact.formtoken', $formtoken);
+
 		$errorMsg = [];
 		$successMsg = null;
 
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
+
+			if ($data['Site']['formtoken'] != $prevFormToken) {
+				$this->errorMsg('Invalid Request.');
+				$this->redirect('/sites/contact');
+			}
 
 			if (Validation::blank($data['User']['name'])) {
 				$errorMsg[] = 'Enter your name';
@@ -476,7 +485,7 @@ Message: ' . htmlentities($data['User']['message']) . '
 					$email->to($supportEmail);
 					$email->bcc($superAdminEmail);
 					$email->subject('Contact Us - Someone is trying to reach you');
-					$email->send($mailContent);
+					// $email->send($mailContent);
 
 					$this->successMsg('Your message has been sent successfully.');
 					$this->redirect('/sites/contact');

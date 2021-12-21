@@ -101,8 +101,8 @@
 								  action="<?php echo $this->Html->url("/banks/remove/" . $row['Bank']['id']); ?>">
 								<a href="#" name="Remove"
 								   onclick="if (confirm('Are you sure you want to delete this record from the list?')) { $('#invoice_bank_product_<?php echo $row['Bank']['id']; ?>').submit(); } event.returnValue = false; return false;"
-								   class="btn btn-danger btn-xs">
-									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+								   class="btn btn-danger btn-sm">
+									<span class="fa fa-trash-can" aria-hidden="true"></span>
 								</a>
 							</form>
 

@@ -1262,8 +1262,19 @@ class AppController extends Controller
 		$siteId = $this->Session->read('Site.id');
 		App::uses('Category', 'Model');
 		$categoryModel = new Category;
-
 		$categories = $categoryModel->getCategories($siteId);
+
+		App::uses('CategoryProduct', 'Model');
+		$categoryProductModel = new CategoryProduct;
+		$categoryProductsCount = $categoryProductModel->getCategoryProductsCount($siteId);
+
+		if ($categories) {
+			foreach($categories as $index => &$row) {
+				$row['Category']['products_count'] = $categoryProductsCount[$row['Category']['id']] ?? 0;
+			}
+		}
+		unset($categoryProductsCount);
+
 		$this->writeCategoryListToCache($categories);
 
 		return $this->getCategoryListFromCache();
