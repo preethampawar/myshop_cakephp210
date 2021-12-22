@@ -51,6 +51,8 @@ if ( !empty($siteLocations)
 ) {
 	$showLocationPopup = true;
 }
+$isMobileApp = $this->Session->check('isMobileApp') ? $this->Session->read('isMobileApp') : false;
+$locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 ?>
 
 <!doctype html>
@@ -122,7 +124,7 @@ if ( !empty($siteLocations)
 
 		function goToLocation(locationId, title, url) {
 			setLocation(locationId, title, url);
-			window.location = '//'+url+'/sites/setLocation/'+locationId;
+			window.location = '//'+url+'/sites/setLocation/'+locationId+'<?= $locationQueryParam ?>';
 		}
 
 		function setLocation(locationId, title, url) {
