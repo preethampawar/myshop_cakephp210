@@ -397,133 +397,33 @@ Cache::config('_cake_model_', [
 	'duration' => $duration,
 ]);
 
-/**
- * Configure user settings.
- */
-Configure::write('Access', [
-	'admin' => 'preetham.pawar@gmail.com',
-	'key' => '284311eb81ca7802e19ff06a71263f8f',
-	'keyhash' => 'md5(admin)',
-	'computer_name' => 'desktop-16o5f6s',
-	'db_backup_file_path' => WWW_ROOT . 'database_backup' . DS,
-	'mysqldump_path' => 'C:/xampp/mysql/bin' //$_SERVER['MYSQL_HOME']
-]);
-
 Configure::write('Config.timezone', 'Asia/Kolkata');
 
 /** Custom Configuration */
 
 /* Image Size */
-Configure::write('MaxImageSize', '6');
-
-/* Max customizable pages per site by default */
-Configure::write('MaxPages', '');
-
-/* Max customizable images for content pages per site by default */
-Configure::write('MaxPageImages', '20');
-
-/* Domain Information */
-Configure::write('BaseDomain', 'www.herbsandnaturals.com');
-Configure::write('BaseDomainName', 'Herbs And Naturals');
-Configure::write('BaseDomainUrl', 'https://www.herbsandnaturals.com');
-
-/* Domain Information */
-Configure::write('Domain', 'www.herbsandnaturals.com');
-Configure::write('DomainName', 'Herbs And Naturals');
-Configure::write('DomainUrl', 'https://www.herbsandnaturals.com');
+Configure::write('MaxImageSize', '10');
 
 /* Site email configuration */
 Configure::write('AdminEmail', 'preetham.pawar+apnastores@gmail.com');
-Configure::write('SupportEmail', 'support@herbsandnaturals.com');
-Configure::write('NoReply', ['name' => 'support@herbsandnaturals.com', 'email' => 'support@herbsandnaturals.com']);
-
-/* Product settings */
-Configure::write('Product.size', ['0.5 ft' => '0.5 ft', '1 ft' => '1 ft', '1.5 ft' => '1.5 ft', '2 ft' => '2 ft', '2.5 ft' => '2.5 ft', '3 ft' => '3 ft', '4 ft' => '4 ft', '5 ft' => '5 ft', '6 ft' => '6 ft', '7 ft' => '7 ft', '8 ft' => '8 ft', '9 ft' => '9 ft', '10 ft' => '10 ft']);
-
-Configure::write('Product.age', ['3 months' => '3 months', '6 months' => '6 months', '9 months' => '9 months', '1 year' => '1 year', '2 years' => '2 years', '3 years' => '3 years', '4 years' => '4 years', '5 years' => '5 years', '6 years' => '6 years', '7 years' => '7 years', '8 years' => '8 years', '9 years' => '9 years', '10 years' => '10 years', 'more than 10 years' => 'more than 10 years']);
-
-$k = 50;
-for ($i = 0; $i <= 58; $i++) {
-	$productQty[$k] = $k;
-	$k = $k + 25;
-}
-Configure::write('Product.quantity', $productQty);
-
-/* Asset domain url */
-//Configure::write('AssetDomainUrl', 'http://assets.apnaaccounts.com/');
-Configure::write('AssetDomainUrl', 'https://www.herbsandnaturals.com/');
-Configure::write('AssetDomainUrl', '/');
-
+Configure::write('SupportEmail', 'preetham.pawar+apnastores@gmail.com');
 
 /* SMS Configuration */
-// Configure::write(
-	// 'Sms',
-	// [
-		// '2Factor' => [
-			// 'apiKey' => '0e09820d-0fef-11ec-a13b-0200cd936042',
-			// 'otpTemplateName' => 'VerifyPhoneOtp',
-			// 'newOrderSenderId' => 'EMUKKA',
-			// 'newOrderTemplate' => 'NewOrder',
-			// 'OrderStatusUpdateSenderId' => 'EMUKKA',
-			// 'OrderStatusUpdateTemplate' => 'OrderStatusUpdate',
-			// 'otpUrl' => 'https://2factor.in/API/V1/{api_key}/SMS/{phone_number}/{otp}/{template_name}',
-			// 'transactionalUrl' => 'https://2factor.in/API/V1/{api_key}/ADDON_SERVICES/SEND/TSMS',
-		// ]
-	// ]
-// );
-
-// Configure::write('SmsProvider', '2Factor');
-
-// Configure::write('LinkedLocations', [
-	// 'www' => [
-		// 'sangareddy' => [
-			// 'title' => 'Sangareddy',
-			// 'url' => 'www.eatmukka.com',
-		// ],
-		// 'zhb' => [
-			// 'title' => 'Zaheerabad',
-			// 'url' => 'zhb.eatmukka.com',
-		// ]
-	// ],
-	// 'zhb' => [
-		// 'sangareddy' => [
-			// 'title' => 'Sangareddy',
-			// 'url' => 'www.eatmukka.com',
-		// ],
-		// 'zhb' => [
-			// 'title' => 'Zaheerabad',
-			// 'url' => 'zhb.eatmukka.com',
-		// ]
-	// ],
-	// 'myshop' => [
-		// 'sangareddy' => [
-			// 'title' => 'Sangareddy',
-			// 'url' => 'www.eatmukka.com',
-		// ],
-		// 'zahirabad' => [
-			// 'title' => 'Zahirabad',
-			// 'url' => 'farmfood.apnastores-local.com:8080',
-		// ],
-		// 'local' => [
-			// 'title' => 'New MIG',
-			// 'url' => 'myshop.apnastores-local.com:8080'
-		// ]
-	// ],
-
-	// 'farmfood' => [
-		// 'local' => [
-			// 'title' => 'New MIG',
-			// 'url' => 'myshop.apnastores-local.com:8080'
-		// ],
-		// 'sangareddy' => [
-			// 'title' => 'Sangareddy',
-			// 'url' => 'www.eatmukka.com',
-		// ],
-		// 'zahirabad' => [
-			// 'title' => 'Zahirabad',
-			// 'url' => 'farmfood.apnastores-local.com:8080',
-		// ],
-	// ]
-// ]);
+Configure::write('SmsProvider', '2Factor');
+Configure::write(
+	'Sms',
+	[
+		'2Factor' => [
+			'apiKey' => '0e09820d-0fef-11ec-a13b-0200cd936042',
+			'otpTemplateName' => 'VerifyPhoneOtp',
+			'newOrderSenderId' => 'EMUKKA',
+			'newOrderTemplate' => 'NewOrder',
+			'OrderStatusUpdateSenderId' => 'EMUKKA',
+			'OrderStatusUpdateTemplate' => 'OrderStatusUpdate',
+			'otpUrl' => 'https://2factor.in/API/V1/{api_key}/SMS/{phone_number}/{otp}/{template_name}',
+			'transactionalUrl' => 'https://2factor.in/API/V1/{api_key}/ADDON_SERVICES/SEND/TSMS',
+		]
+	]
+);
 
 Configure::write('ShowOneProductOnSmallScreen', false);

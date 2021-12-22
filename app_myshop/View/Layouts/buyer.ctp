@@ -27,13 +27,30 @@ if ($this->Session->read('Site.logo')) {
 	$logoUrl = $this->Html->url('/'.$this->Session->read('Site.logo'), true);
 }
 
-$linkedLocations = Configure::read('LinkedLocations');
-$subdomain = $this->request->subdomains()[0];
+$slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
+
+$showLocationOptions = false;
 $showLocationPopup = false;
-if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain])) {
+$siteLocations = null;
+
+$siteConfiguration = $this->Session->check('siteConfiguration') ? $this->Session->read('siteConfiguration') : null;
+
+$andriodAppBadgeUrl = $siteConfiguration['andriodAppBadgeUrl'] ?? null;
+$andriodAppUrl = $siteConfiguration['andriodAppUrl'] ?? null;
+$siteLocations = $siteConfiguration['locations'] ?? null;
+
+$subdomain = $this->request->subdomains()[0];
+$locationId = $siteConfiguration['defaultLocationId'] ?? '';
+$locationTitle = null;
+$locationUrl = null;
+$showLocationOptions = !empty($siteLocations);
+
+if ( !empty($siteLocations)
+		&& $this->request->controller === 'pages'
+		&& $this->request->action === 'display'
+) {
 	$showLocationPopup = true;
 }
-$slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 ?>
 
 <!doctype html>
@@ -57,12 +74,14 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 	</script>
 
 	<meta name="theme-color" content="#317EFB"/>
+	<!--
 	<link rel="manifest" href="/manifest.json" />
 	<script type="module">
-		import '/pwaupdate.js';
-		const el = document.createElement('pwa-update');
-		document.body.appendChild(el);
+		// import '/pwaupdate.js';
+		// const el = document.createElement('pwa-update');
+		// document.body.appendChild(el);
 	</script>
+	-->
 
 	<?php
 	if (!empty($canonical)) {
@@ -120,22 +139,53 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			document.getElementById("topNavProgressBar").classList.add('d-none')
 		}
 	</script>
+
+	<?php
+	if ($showLocationPopup === false && isset($siteLocations[$locationId]) && !empty($siteLocations[$locationId])) {
+		$linkedLocation = $siteLocations[$locationId];
+		$locationTitle = $linkedLocation['title'];
+		$locationUrl = $linkedLocation['url'];
+		?>
+		<script>
+			if (!localStorage.getItem('locationId')) {
+				setLocation('<?= $locationId ?>', '<?= $locationTitle ?>', '<?= $locationUrl ?>');
+			}
+		</script>
+		<?php
+	}
+	?>
 </head>
 
 <body class="bg-dark" onbeforeunload="showLoadingBar()">
 	<div class="bg-white ">
 
 		<?php
-		if($showLocationPopup) {
+		if(!empty($andriodAppBadgeUrl) || $showLocationOptions) {
 			?>
-			<nav class="navbar navbar-expand-lg navbar-static navbar-light bg-light">
-				<div class="container-fluid justify-content-end">
+			<nav class="navbar navbar-expand-lg navbar-static navbar-light">
+				<div class="container-fluid justify-content-between">
+					<div>
+						<?php
+						if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
+							?>
+							<?= $andriodAppBadgeUrl ?>
+							<?php
+							}
+						?>
+					</div>
+
+					<?php
+					if ($showLocationOptions) {
+					?>
 					<div onclick="showLocationPopup()">
 						<div role="button" class="">
 							<i class="fa fa-map-marker-alt text-danger"></i> <h6 id="locationTitleSpan" class="d-inline"></h6>
 							<span class="d-inline nav-link p-1 text-danger"><i class="fa fa-caret-down"></i></span>
 						</div>
 					</div>
+					<?php
+					}
+					?>
 				</div>
 			</nav>
 			<?php
@@ -195,7 +245,15 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 							</li>
 						</ul>
 						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-
+							<?php
+							if ($andriodAppUrl && !$this->Session->read('isMobileApp')) {
+								?>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="<?= $andriodAppUrl ?>"><i class="fa fa-download"></i> Download App</a>
+								</li>
+								<?php
+							}
+							?>
 							<?php if (!$this->Session->check('User.id')): ?>
 								<li class="nav-item px-1">
 									<a class="nav-link px-1" href="/users/customerRegistration">Register</a>
@@ -408,7 +466,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 												name="addProductQtyModal-quantity"
 												class="form-select form-select-sm"
 										>
-											<?php foreach(range(1,100) as $qty): ?>
+											<?php foreach(range(1,10) as $qty): ?>
 												<option value="<?= $qty ?>"><?= $qty ?></option>
 											<?php endforeach; ?>
 										</select>
@@ -630,7 +688,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 			</div>
 
 			<?php
-			if ($showLocationPopup) {
+			if ($showLocationPopup && !empty($siteLocations)) {
 			?>
 			<!-- Location Modal -->
 			<div class="modal fade" id="locationBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="locationBackdropLabel" aria-hidden="true">
@@ -645,7 +703,7 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 
 								<div class="list-group  list-group-flush mt-3 fw-bold">
 								<?php
-								foreach($linkedLocations[$subdomain] as $id => $row) {
+								foreach($siteLocations as $id => $row) {
 								?>
 									<a href="#" onclick="goToLocation('<?= $id ?>', '<?= $row['title'] ?>', '<?= $row['url'] ?>');" class="list-group-item list-group-item-action py-3">
 										<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
@@ -710,6 +768,14 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 	<script src="/js/site.js?v=1.2.5" defer></script>
-	<?= $this->element('customjs') ?>
+	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
+
+	<?php
+	if($this->request->domain() === 'eatmukka.com') {
+	?>
+	<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BMfWKDJnzlndtyhBryNbMmDWM3mjiS4WOcJWCbSxfv8t8Mf37IJnC2_cH22zbIO4pf4DZ3ZAq149NwMQ6uGabLo' });</script><!-- end webpushr code -->
+	<?php
+	}
+	?>
 </body>
 </html>

@@ -70,10 +70,9 @@ $bannerUploadedImages = $this->App->getRearrangedImages($bannerUploadedImages);
 				foreach($bannerUploadedImages as $row) {
 					$image = $row['thumb'];
 					$imageOri = $row['ori'];
-					$encodedImagePath = base64_encode($image->imagePath);
-					$imageUrl = $assetDomainUrl.$image->imagePath;
-					$imageHighlight = $image->highlight;
-					$imageCommonId = $image->commonId;
+					$imageUrl = $assetDomainUrl.$imageOri->imagePath;
+					$imageHighlight = $imageOri->highlight;
+					$imageCommonId = $imageOri->commonId;
 					$highlightImagePath = '/admin/banners/highlightImage/' . $bannerId . '/' . $imageCommonId;
 					$deleteImagePath = '/admin/banners/deleteImage/' . $bannerId . '/' . $imageCommonId;
 					// $deleteOriImagePath = '/admin/banners/deleteImage/' . $bannerId . '/' . $imageCommonId;

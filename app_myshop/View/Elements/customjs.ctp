@@ -1,13 +1,8 @@
 <?php
 // this element should contain only php dependent scripts
-App::uses('Order', 'Model');
 
-$linkedLocations = Configure::read('LinkedLocations');
-$subdomain = $this->request->subdomains()[0];
-$showLocationPopup = false;
-if (isset($linkedLocations[$subdomain]) && !empty($linkedLocations[$subdomain])) {
-	$showLocationPopup = true;
-}
+App::uses('Order', 'Model');
+$showLocationPopup = $showLocationPopup ?? false;
 
 $defaultLat = 17.6140;
 $defaultLng = 78.0816;

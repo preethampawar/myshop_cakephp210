@@ -86,7 +86,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 
 			$image_crop.croppie('result', {
 				type: 'canvas',
-				size: 'original', // can be "viewport" or {"width":800, "height":500},
+				size: {"width": 500, "height": 200}, // can be "viewport" or {"width":800, "height":500},
 				format: 'webp',
 			}).then(function (response) {
 				$.ajax({

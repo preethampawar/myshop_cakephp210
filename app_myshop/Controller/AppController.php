@@ -8,11 +8,6 @@ class AppController extends Controller
 {
 	public $helpers = ['Html', 'Form', 'Session', 'Number', 'Text', 'Img', 'Js' => ['Jquery'], 'App'];
 
-	public $noReplyEmail = [
-		'fromName' => 'ApnaStores',
-		'fromEmail' => 'no-reply@letsgreenify.com',
-	];
-
 	public $components = [
 		'Session',
 	];
@@ -21,6 +16,45 @@ class AppController extends Controller
 	{
 		parent::beforeFilter();
 
+		$this->setDomainConfiguration();
+		$this->setMobileAppConfiguration();
+		$this->setLayout();
+		$this->parseURL();
+		$this->setCacheKeys();
+		$this->loadSiteConfiguration();
+		$this->setTheme();
+		$this->generateCategoryList();
+		// get featured products list
+		//$this->generateFeaturedProductsList();
+	}
+
+	private function setDomainConfiguration()
+	{
+		/* Domain Information */
+		Configure::write('Domain', $this->request->domain());
+		Configure::write('DomainName', $this->request->host());
+		Configure::write('DomainUrl', '//' . $this->request->host());
+		Configure::write('AssetDomainUrl', '/');
+		Configure::write('Security.salt', '');
+
+		return true;
+	}
+
+	private function setMobileAppConfiguration()
+	{
+		if($this->Session->check('isMobileApp')) {
+			return true;
+		}
+
+		$appSource = $this->request->query['s'] ?? null;
+
+		if ($appSource && $appSource === 'mobile') {
+			$this->Session->write('isMobileApp', true);
+		}
+	}
+
+	private function setLayout()
+	{
 		if (isset($this->request->params['admin']) && $this->request->params['admin'] === true) {
 			if (!$this->Session->check('User.id') || $this->Session->read('User.id') === false) {
 				$this->redirect('/users/logout');
@@ -45,40 +79,15 @@ class AppController extends Controller
 			$this->layout = 'delivery';
 		}
 
-
-
-		// Parse http request and load the appropriate domain
-		$this->parseURL();
-
-		$this->setCacheKeys();
-
-		/* Domain Information */
-//		Configure::write('Domain', $this->request->domain());
-//		Configure::write('DomainName', $this->request->host());
-//		Configure::write('DomainUrl', 'http://' . $this->request->host());
-
-		/* Site email configuration */
-//		$supportEmail = $this->Session->read('Site.contact_email');
-//		Configure::write('SupportEmail', $supportEmail);
-//		Configure::write('NoReply', ['name' => $this->request->domain(), 'email' => 'noreply@' . $this->request->domain()]);
-		Configure::write('Security.salt', '');
-
-		$this->setTheme();
-
-		// get category list
-		$this->generateCategoryList();
-
-		// get featured products list
-		//$this->generateFeaturedProductsList();
-
-//		if (! $this->Session->check('categoryListMenu')) {
-//			$categoryList = $this->generateCategoryList();
-//			$this->Session->write('categoryListMenu', $categoryList);
-//		}
+		return true;
 	}
 
 	private function setCacheKeys()
 	{
+		if ($this->Session->check('CacheKeys')) {
+			return true;
+		}
+
 		$keys = [
 			'siteInfo' => $this->getCacheKey('siteInfo'),
 			'catList' => $this->getCacheKey('catList'),
@@ -86,6 +95,8 @@ class AppController extends Controller
 		];
 
 		$this->Session->write('CacheKeys', $keys);
+
+		return true;
 	}
 
 	public function setView($userType = 'buyer')
@@ -145,21 +156,21 @@ class AppController extends Controller
 		return false;
 	}
 
-
 	/**
 	 * Function to parse request URL
 	 */
 	protected function parseURL()
 	{
-		$baseSite = Configure::read('BaseDomainUrl');
-		$siteNotFoundUri = '/sites/notFound';
-		$redirectUrl = $baseSite . $siteNotFoundUri;
-
 		$dName = $this->request->host();
 		$uri = $this->request->here();
 		$params = ($uri == '/') ? null : $uri;
 
 		$defaultDomainInfo = $this->getDefaultDomainInfo();
+
+		if (!$defaultDomainInfo) {
+			$this->layout = 'ajax';
+			throw new Exception("The website you are looking for could not be found.");
+		}
 
 		// check if default domain
 		if ($defaultDomainInfo['Domain']['name'] !== $dName) {
@@ -260,14 +271,6 @@ class AppController extends Controller
 		return $siteInfo;
 	}
 
-	protected function setBuyerCategories()
-	{
-		App::uses('Category', 'Model');
-		$categoryModel = new Category;
-		$categories = $categoryModel->getCategories($this->Session->read('Site.id'));
-		$this->Session->write('SiteCategories', $categories);
-	}
-
 	protected function noticeMsg($msg)
 	{
 		if ($msg) {
@@ -303,16 +306,6 @@ class AppController extends Controller
 		}
 	}
 
-	protected function checkAdmin()
-	{
-		if (!$this->Session->read('User.admin')) {
-			$this->Session->setFlash('You are not authorized to view this page');
-			$this->redirect('/');
-		} else {
-			return true;
-		}
-	}
-
 	protected function checkSeller()
 	{
 		if ($this->Session->read('User.superadmin') == 1) {
@@ -325,40 +318,6 @@ class AppController extends Controller
 		} else {
 			return true;
 		}
-	}
-
-	protected function checkLandingPage()
-	{
-		$contentInfo = $this->getLandingPageInfo();
-		if (isset($contentInfo['Content']['landing_page']) and !empty($contentInfo['Content']['landing_page'])) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Function to get landing page information.
-	 */
-	protected function getLandingPageInfo()
-	{
-		App::uses('Content', 'Model');
-		$contentModel = new Content;
-
-		$conditions = ['Content.site_id' => $this->Session->read('Site.id'), 'Content.landing_page' => '1'];
-		$contentInfo = $contentModel->find('first', ['conditions' => $conditions]);
-
-		if (empty($contentInfo)) {
-			$data = [];
-			$data['Content']['id'] = null;
-			$data['Content']['landing_page'] = '1';
-			$data['Content']['site_id'] = $this->Session->read('Site.id');
-			$data['Content']['title'] = 'Landing Page';
-			if ($contentModel->save($data)) {
-				$contentInfo = $contentModel->read();
-			}
-		}
-
-		return $contentInfo;
 	}
 
 	protected function getHighlightImage($data)
@@ -1085,6 +1044,10 @@ class AppController extends Controller
 
 	protected function setTheme($theme = null)
 	{
+		if ($this->Session->check('Theme')) {
+			return true;
+		}
+
 		App::uses('Site', 'Model');
 
 		if (empty($theme)) {
@@ -1198,6 +1161,8 @@ class AppController extends Controller
 		];
 
 		$this->Session->write('Theme', $themeInfo);
+
+		return true;
 	}
 
 
@@ -1444,5 +1409,26 @@ class AppController extends Controller
 		}
 
 		return $error;
+	}
+
+	private function loadSiteConfiguration()
+	{
+		if ($this->Session->check('siteConfiguration')) {
+			return true;
+		}
+
+		$siteSettingsFile = 'siteinfo.json';
+
+		if (file_exists($siteSettingsFile)) {
+			$subdomain = $this->request->subdomains()[0];
+			$domain = $this->request->domain();
+			$sitesInfo = json_decode(file_get_contents('siteinfo.json'), true);
+			$siteInfo = $sitesInfo[$domain][$subdomain] ?? null;
+			$this->Session->write('siteConfiguration', $siteInfo);
+		} else {
+			$this->Session->write('siteConfiguration', null);
+		}
+
+		return true;
 	}
 }
