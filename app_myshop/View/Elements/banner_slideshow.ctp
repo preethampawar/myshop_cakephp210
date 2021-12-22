@@ -1,5 +1,10 @@
 <?php
 $slideshowEnabled = (int)$this->Session->read('Site.show_banners') === 1;
+$loadingImageUrl = '/loading_1200_480.jpg';
+
+if($this->Session->read('isMobileApp')) {
+	$loadingImageUrl = '/loading_500_200.jpg';
+}
 
 if($slideshowEnabled && $this->request->params['action'] === 'display' && $this->request->params['pass'][0] === 'home') {
 ?>
@@ -37,6 +42,11 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 
 				if ($highlightImage) {
 					$image = $highlightImage['thumb'];
+
+					if($this->Session->read('isMobileApp')) {
+						$image = $highlightImage['ori'];
+					}
+
 					$imageUrl = $assetDomainUrl.$image->imagePath;
 
 					$slideShowImages[$i]['bannerId'] = $banner['Banner']['id'];
@@ -80,7 +90,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 							$desc = $row['description'];
 							$linkUrl = $row['linkUrl'];
 							$imageUrl = $row['imageUrl'];
-							$loadingImageUrl = '/loading4_1080_360.jpg';
+
 							?>
 							<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="4000">
 								<a href="<?= $linkUrl ?>" title="<?= $title ?>" class="text-decoration-none">

@@ -478,12 +478,12 @@ Message: ' . htmlentities($data['User']['message']) . '
 *This is a system generated message. Please do not reply.
 
 ';
-					$supportEmail = Configure::read('SupportEmail');
-					$superAdminEmail = Configure::read('AdminEmail');
+					$supportEmail = Configure::read('AdminEmail');
+					$bccEmails = $this->getBccEmails();
 					$email = new CakeEmail('smtpNoReply');
 					$email->replyTo([$data['User']['email'] => $data['User']['name']]);
 					$email->to($supportEmail);
-					$email->bcc($superAdminEmail);
+					$email->bcc($bccEmails);
 					$email->subject('Contact Us - Someone is trying to reach you');
 					// $email->send($mailContent);
 
