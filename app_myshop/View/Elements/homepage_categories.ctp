@@ -35,6 +35,8 @@ if ($categories and !empty($categories)) {
 
 			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 mb-5">
 				<?php
+				$loadingImageUrl = '/loading4.jpg';
+
                 foreach ($categories as $row) {
                     $categoryId = $row['Category']['id'];
                     $categoryName = $row['Category']['name'];
@@ -44,7 +46,7 @@ if ($categories and !empty($categories)) {
                     $categoryUploadedImages = $row['Category']['images'] ? json_decode($row['Category']['images']) : [];
                     $assetDomainUrl = Configure::read('AssetDomainUrl');
                     $categoryHighlightImage = $this->App->getHighlightImage($categoryUploadedImages);
-                    $loadingImageUrl = '/loading4.jpg';
+
                     $imageUrl = '';
                     if ($categoryHighlightImage) {
                         $image = $categoryHighlightImage['thumb'];
