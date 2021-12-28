@@ -59,7 +59,7 @@ echo $this->set('title_for_layout', $title_for_layout);
 		<th>
 			Balance:<br>
 			<span class="small text-muted">
-				(Total Sales + Total Cashbook Income - Net Purchase Value - Total Breakages + Total Cashbook Expenses)
+				(Total Sales + Total Cashbook Income - Net Purchase Value - Total Breakages - Total Cashbook Expenses)
 			</span>
 		</th>
 		<td><?= $totalBalance ?></td>
