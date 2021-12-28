@@ -919,6 +919,53 @@ function checkIfHuman(e) {
 	return false;
 }
 
+function shareThis(title, text, url, fileArray) {
+	title = title ?? '';
+	text = text ?? '';
+	url = url ?? '';
+	fileArray = fileArray ?? [];
+
+	if (url !== '') {
+		let url2 = new URL(url);
+		url2.searchParams.append('emShareButton', 1);
+		url = url2.href;
+	}
+
+
+	if (title != '') {
+		const shareData = {
+			title: title,
+			text: text,
+			url: url,
+			files: fileArray
+		}
+
+		async function shareNow(shareData) {
+			try {
+				await navigator.share(shareData)
+			} catch (err) {
+				console.log('Error: ' + err)
+			}
+		}
+
+		shareNow(shareData)
+	}
+}
+
+function checkIfShareThisApiIsEnabled() {
+	if(navigator.canShare) {
+		$('.shareButton').removeClass('d-none');
+	}
+}
+
+function showLoadingBar() {
+	document.getElementById("topNavProgressBar").classList.remove('d-none')
+}
+
+function hideLoadingBar() {
+	document.getElementById("topNavProgressBar").classList.add('d-none')
+}
+
 // init site wide variables
 var handleError = function (err) {
 	// alert('Network error. Please check the internet connection and try again.')
@@ -956,6 +1003,7 @@ var alertModal = new bootstrap.Modal(document.getElementById('alertModal'), {
 	keyboard: false
 });
 
+
 $(document).ready(function () {
 	$.fn.modal.Constructor.prototype.enforceFocus = function () {
 	};
@@ -988,5 +1036,11 @@ $(document).ready(function () {
 		initTooltips();
 	} catch (err) {
 		console.log('Error - Bootstrap tooltips: ', err.message);
+	}
+
+	try {
+		checkIfShareThisApiIsEnabled();
+	} catch (err) {
+		console.log('Error - Share feature not available ', err.message);
 	}
 });

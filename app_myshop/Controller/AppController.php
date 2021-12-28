@@ -1076,7 +1076,7 @@ class AppController extends Controller
 				$navbarTheme = ' navbar-light bg-white ';
 
 				// secondary menu
-				$secondaryMenuBg = ' bg-light border-grey border-3 border-bottom border-top-1 border-start-0 border-end-0';
+				$secondaryMenuBg = ' bg-white border-grey border-3 border-bottom border-top-1 border-start-0 border-end-0';
 				$linkColor = ' link-danger ';
 				$cartBadgeBg = ' bg-orange ';
 				$hightlightLink = ' text-orange ';

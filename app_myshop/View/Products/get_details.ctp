@@ -58,7 +58,23 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<?php
 	}
 	?>
-	<h1><?= $productName; ?></h1>
+	<div class="d-flex justify-content-between">
+		<h1><?= $productName; ?></h1>
+		<div>
+			<?= $this->element('sharebutton', [
+					'title' => $productName,
+					'text' => '',
+					'url' => $this->Html->url($canonical, true),
+					'files' => '[]',
+					'class' => '',
+			]); ?>
+		</div>
+	</div>
+
+
+	<div class="my-3 text-end">
+
+	</div>
 
 	<?php
 	if ($ratingsInfo && (int)$ratingsInfo['ratingsCount'] > 0) {
@@ -184,6 +200,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 										</button>
 									</div>
 								</div>
+
 								<div class="ms-2" style="width:45px">
 									<div id="addQtyProductDetails-spinner" class="d-none">
 										<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">

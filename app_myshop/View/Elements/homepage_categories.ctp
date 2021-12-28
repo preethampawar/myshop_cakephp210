@@ -46,6 +46,7 @@ if ($categories and !empty($categories)) {
                     $categoryUploadedImages = $row['Category']['images'] ? json_decode($row['Category']['images']) : [];
                     $assetDomainUrl = Configure::read('AssetDomainUrl');
                     $categoryHighlightImage = $this->App->getHighlightImage($categoryUploadedImages);
+					$categoryProductsUrl = $this->Html->url('/products/show/' . $categoryId . '/' . $categoryNameSlug, true);
 
                     $imageUrl = '';
                     if ($categoryHighlightImage) {
@@ -59,7 +60,7 @@ if ($categories and !empty($categories)) {
 
 						<div class="card h-100 shadow" id="category<?php echo $categoryId; ?>">
 
-							<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none d-block">
+							<a href='<?= $categoryProductsUrl ?>' class="text-decoration-none d-block">
 								<img
 										src="<?php echo $loadingImageUrl; ?>"
 										data-original="<?php echo $imageUrl; ?>"
@@ -75,10 +76,19 @@ if ($categories and !empty($categories)) {
 								<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
 									<h6><?= $categoryName ?></h6>
 								</a>
-								<div class="text-purple small">
+								<div class="small">
 									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
 										<?= $productsCount ?> item(s)
 									</a>
+
+									<?= $this->element('sharebutton', [
+											'title' => $categoryName,
+											'text' => '',
+											'url' => $categoryProductsUrl,
+											'files' => '[]',
+											'class' => 'ms-2',
+											'showAsButton' => false,
+									]); ?>
 								</div>
 							</div>
 						</div>

@@ -98,6 +98,14 @@ $minOrderForFreeShipping = (float)$this->Session->read('Site.free_shipping_min_a
 					<?php else: ?>
 						<button type="button" class="btn btn-sm btn-outline-secondary disabled">Out of stock</button>
 					<?php endif; ?>
+
+					<?= $this->element('sharebutton', [
+							'title' => $productName,
+							'text' => '',
+							'url' => $this->Html->url($productDetailsPageUrl, true),
+							'files' => '[]',
+							'class' => 'mt-3',
+							]); ?>
 				</div>
 			</div>
 		<?php endif; ?>
