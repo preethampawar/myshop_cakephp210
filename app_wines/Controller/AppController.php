@@ -50,6 +50,10 @@ class AppController extends Controller
 
 	public function beforeFilter()
 	{
+		if ($this->Session->check('showExpiryNotice') && $this->Session->check('showExpiryNotice') === true) {
+			return true;
+		}
+
         // check if store is expired
         if ($this->Session->check('Store.created')) {
             $storeExpiryDate = $this->Session->read('Store.expiry_date');
@@ -64,7 +68,7 @@ class AppController extends Controller
                 // check if store is about to expire in 1 month
                 $unixTimeStoreExpiryNotice = strtotime($storeExpiryDate . " -1 month");
                 if ($unixTimeNow > $unixTimeStoreExpiryNotice) {
-                    $this->noticeMsg("This Store will expire on '$storeExpiryDate'. Contact software owner to renew this store before expiry date.");
+					$this->Session->write('showExpiryNotice', true);
                 }
             }
         }
@@ -133,7 +137,7 @@ class AppController extends Controller
 	public function noticeMsg($msg)
 	{
 		if ($msg) {
-			$this->Session->setFlash($msg, 'default', array('class' => 'notice  alert alert-warning'));
+			$this->Session->setFlash($msg, 'Flash/notice');
 		}
 		return true;
 	}
