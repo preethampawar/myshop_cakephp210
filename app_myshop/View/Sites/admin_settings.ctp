@@ -462,14 +462,24 @@ $this->set('enableTextEditor', true);
 						><?php echo $this->data['Site']['tos']; ?></textarea>
 					</div>
 					<div class="mb-4">
-					<label for="SitePrivacyPolicy" class="form-label">Privacy Policy</label>
-					<textarea
-							id="SitePrivacyPolicy"
-							name="data[Site][privacy_policy]"
-							class="form-control form-control-sm tinymce"
-							placeholder="Enter Privacy Policy"
-					><?php echo $this->data['Site']['privacy_policy']; ?></textarea>
-				</div>
+						<label for="SitePrivacyPolicy" class="form-label">Privacy Policy</label>
+						<textarea
+								id="SitePrivacyPolicy"
+								name="data[Site][privacy_policy]"
+								class="form-control form-control-sm tinymce"
+								placeholder="Enter Privacy Policy"
+						><?php echo $this->data['Site']['privacy_policy']; ?></textarea>
+					</div>
+					<div class="mb-4">
+						<label for="SiteFooterScripts" class="form-label">Footer Scripts (HTML/Javascript code)</label>
+						<textarea
+								id="SiteFooterScripts"
+								name="data[Site][footer_scripts]"
+								class="form-control form-control-sm"
+								placeholder="Enter HTML/Javascript code"
+								rows="4"
+						><?php echo $this->data['Site']['footer_scripts']; ?></textarea>
+					</div>
 				</div>
 
 			</div>
