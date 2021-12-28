@@ -36,6 +36,7 @@ if (!empty($categoriesList)) {
 			<i class="fa fa-chevron-circle-right"></i> Show All Products
 		</a>
 	</li>
+
 	<?php
 } else {
 	?>
