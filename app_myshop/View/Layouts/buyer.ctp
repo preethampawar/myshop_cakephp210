@@ -27,7 +27,7 @@ if ($this->Session->read('Site.logo')) {
 	$logoUrl = $this->Html->url('/'.$this->Session->read('Site.logo'), true);
 }
 
-$slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
+$testimonialsSlideShowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 
 $showLocationOptions = false;
 $showLocationPopup = false;
@@ -131,14 +131,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			localStorage.setItem('locationId', locationId);
 			localStorage.setItem('location', title);
 			localStorage.setItem('locationUrl', url);
-		}
-
-		function showLoadingBar() {
-			document.getElementById("topNavProgressBar").classList.remove('d-none')
-		}
-
-		function hideLoadingBar() {
-			document.getElementById("topNavProgressBar").classList.add('d-none')
 		}
 	</script>
 
@@ -248,6 +240,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						</ul>
 						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 							<?php
+							/*
 							if ($andriodAppUrl && !$this->Session->read('isMobileApp')) {
 								?>
 								<li class="nav-item px-1">
@@ -255,6 +248,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 								</li>
 								<?php
 							}
+							*/
 							?>
 							<?php if (!$this->Session->check('User.id')): ?>
 								<li class="nav-item px-1">
@@ -291,17 +285,17 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			</div>
 		</nav>
 
-		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>" style="z-index: 999">
-			<ul class="nav container justify-content-between pt-2 pb-2 small">
+		<div class="sticky-top shadow <?= $secondaryMenuBg ?>" style="z-index: 999">
+			<ul class="nav container justify-content-between pt-2 pb-2">
 				<li class="nav-item">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<i class="fa fa-th"></i> Shop By Category
+						<i class="fa fa-bars-staggered"></i> Products
 					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-							<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
+							<i class="fa fa-cart-shopping"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
 						</a>
 					</li>
 				<?php endif; ?>
@@ -317,23 +311,14 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			</div>
 		</div>
 
-		<div id="storeSlideShow">
-			<?= $this->element('banner_slideshow') ?>
-		</div>
+		<?= $this->element('banner_slideshow') ?>
+
 
 		<div class="container mt-4" style="min-height: 500px;">
 
-			<?php echo $this->fetch('content'); ?>
+			<?= $this->fetch('content') ?>
 
-			<?php
-			if ($slideshowEnabled) {
-				?>
-				<div id="storeTestimonials" class="mt-4">
-					<?= $this->element('testimonials_slideshow') ?>
-				</div>
-				<?php
-			}
-			?>
+			<?= $this->element('testimonials_slideshow') ?>
 
 
 			<?php
@@ -378,6 +363,11 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 			<!-- Categories Menu -->
 			<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
+				<div class="small">
+					<a class="nav-link small" href="/" title="Show all products">
+						<i class="fa fa-home"></i> Home
+					</a>
+				</div>
 				<div class="offcanvas-header border-bottom border-4 border-warning">
 					<h5 id="offcanvasTopLabel">Shop By Category</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -396,7 +386,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<!-- Shopping Cart -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel"><i class="fa fa-shopping-cart"></i> My Cart</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-cart-shopping"></i> My Cart</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="myShoppingCartBody"></div>
@@ -769,15 +759,10 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.2.5" defer></script>
-	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
-
+	<script src="/js/site.js?v=1.2.6" defer></script>
 	<?php
-	if($this->request->domain() === 'eatmukka.com') {
-	?>
-	<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BMfWKDJnzlndtyhBryNbMmDWM3mjiS4WOcJWCbSxfv8t8Mf37IJnC2_cH22zbIO4pf4DZ3ZAq149NwMQ6uGabLo' });</script><!-- end webpushr code -->
-	<?php
-	}
+	echo $this->element('customjs', ['showLocationPopup' => $showLocationPopup]);
+	echo $this->element('footerscripts');
 	?>
 </body>
 </html>

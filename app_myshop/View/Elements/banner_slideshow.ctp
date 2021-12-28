@@ -8,59 +8,59 @@ if($this->Session->read('isMobileApp')) {
 
 if($slideshowEnabled && $this->request->params['action'] === 'display' && $this->request->params['pass'][0] === 'home') {
 ?>
+<div id="storeSlideShow">
+	<?php
+	$siteId = $this->Session->read('Site.id');
 
-		<?php
-		$siteId = $this->Session->read('Site.id');
+	App::uses('Banner', 'Model');
+	$bannerModel = new Banner();
+	$conditions = [
+		'Banner.site_id' => $siteId,
+		'Banner.active' => 1,
+	];
+	$fields = [
+			'Banner.id',
+			'Banner.title',
+			'Banner.description',
+			'Banner.images',
+			'Banner.url',
+	];
+	$banners = $bannerModel->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'order'=>'Banner.created DESC', 'recursive'=> -1]);
+	$slideShowImages = [];
 
-		App::uses('Banner', 'Model');
-		$bannerModel = new Banner();
-		$conditions = [
-			'Banner.site_id' => $siteId,
-			'Banner.active' => 1,
-		];
-		$fields = [
-				'Banner.id',
-				'Banner.title',
-				'Banner.description',
-				'Banner.images',
-				'Banner.url',
-		];
-		$banners = $bannerModel->find('all', ['conditions' => $conditions, 'fields'=>$fields, 'order'=>'Banner.created DESC', 'recursive'=> -1]);
-		$slideShowImages = [];
+	if ($banners) {
+		$assetDomainUrl = Configure::read('AssetDomainUrl');
+		$i = 0;
+		foreach ($banners as $banner) {
 
-		if ($banners) {
-			$assetDomainUrl = Configure::read('AssetDomainUrl');
-			$i = 0;
-			foreach ($banners as $banner) {
+			$bannerId = $banner['Banner']['id'];
+			$title = $banner['Banner']['title'];
+			$description = $banner['Banner']['description'];
+			$url = $banner['Banner']['url'];
+			$bannerUploadedImages = $banner['Banner']['images'] ? json_decode($banner['Banner']['images']) : [];
+			$highlightImage = $this->App->getHighlightImage($bannerUploadedImages);
 
-				$bannerId = $banner['Banner']['id'];
-				$title = $banner['Banner']['title'];
-				$description = $banner['Banner']['description'];
-				$url = $banner['Banner']['url'];
-				$bannerUploadedImages = $banner['Banner']['images'] ? json_decode($banner['Banner']['images']) : [];
-				$highlightImage = $this->App->getHighlightImage($bannerUploadedImages);
+			if ($highlightImage) {
+				$image = $highlightImage['thumb'];
 
-				if ($highlightImage) {
-					$image = $highlightImage['thumb'];
-
-					if($this->Session->read('isMobileApp')) {
-						$image = $highlightImage['ori'];
-					}
-
-					$imageUrl = $assetDomainUrl.$image->imagePath;
-
-					$slideShowImages[$i]['bannerId'] = $banner['Banner']['id'];
-					$slideShowImages[$i]['title'] = htmlentities(trim($banner['Banner']['title']));
-					$slideShowImages[$i]['description'] = htmlentities(trim($banner['Banner']['description']));
-					$slideShowImages[$i]['linkUrl'] = $banner['Banner']['url'];
-					$slideShowImages[$i]['imageUrl'] = $imageUrl;
+				if($this->Session->read('isMobileApp')) {
+					$image = $highlightImage['ori'];
 				}
-				$i++;
-			}
-		}
-		?>
 
-		<?php if ($slideShowImages) { ?>
+				$imageUrl = $assetDomainUrl.$image->imagePath;
+
+				$slideShowImages[$i]['bannerId'] = $banner['Banner']['id'];
+				$slideShowImages[$i]['title'] = htmlentities(trim($banner['Banner']['title']));
+				$slideShowImages[$i]['description'] = htmlentities(trim($banner['Banner']['description']));
+				$slideShowImages[$i]['linkUrl'] = $banner['Banner']['url'];
+				$slideShowImages[$i]['imageUrl'] = $imageUrl;
+			}
+			$i++;
+		}
+	}
+	?>
+
+	<?php if ($slideShowImages) { ?>
 
 			<div class="mb-4 container-xxl p-0">
 				<div id="homepageSlideshow" class="carousel slide" data-bs-ride="carousel">
@@ -136,8 +136,6 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 			</div>
 
 		<?php } ?>
-
-
+</div>
 <?php
 }
-?>

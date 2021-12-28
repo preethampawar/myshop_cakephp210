@@ -3,8 +3,8 @@ $slideshowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 
 if($slideshowEnabled && $this->request->params['action'] === 'display' && $this->request->params['pass'][0] === 'home') {
 ?>
-
-		<?php
+<div id="storeTestimonials" class="mt-4">
+	<?php
 		$siteId = $this->Session->read('Site.id');
 
 		App::uses('Testimonial', 'Model');
@@ -44,8 +44,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 	<?php
 	if ($slideShowImages) {
 	?>
-
-	<div class="alert alert-warning pb-0">
+		<div class="alert alert-warning pb-0">
 		<h4 class="text-center text-decoration-underline">Testimonials</h4>
 		<div id="testimonialSlideShow" class="carousel slide carousel-dark mt-4" data-bs-ride="carousel">
 			<div class="carousel-indicators">
@@ -110,10 +109,9 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 			</div>
 		</div>
 	</div>
-
-<?php } ?>
-
-
+	<?php
+	}
+	?>
+</div>
 <?php
 }
-?>
