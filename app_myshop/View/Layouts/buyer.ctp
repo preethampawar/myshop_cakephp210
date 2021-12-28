@@ -248,6 +248,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						</ul>
 						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 							<?php
+							/*
 							if ($andriodAppUrl && !$this->Session->read('isMobileApp')) {
 								?>
 								<li class="nav-item px-1">
@@ -255,6 +256,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 								</li>
 								<?php
 							}
+							*/
 							?>
 							<?php if (!$this->Session->check('User.id')): ?>
 								<li class="nav-item px-1">
@@ -291,17 +293,17 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			</div>
 		</nav>
 
-		<div class="sticky-top shadow-sm <?= $secondaryMenuBg ?>" style="z-index: 999">
-			<ul class="nav container justify-content-between pt-2 pb-2 small">
+		<div class="sticky-top shadow <?= $secondaryMenuBg ?>" style="z-index: 999">
+			<ul class="nav container justify-content-between pt-2 pb-2">
 				<li class="nav-item">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<i class="fa fa-th"></i> Shop By Category
+						<i class="fa fa-bars-staggered"></i> Products
 					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-							<i class="fa fa-shopping-cart"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
+							<i class="fa fa-cart-shopping"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
 						</a>
 					</li>
 				<?php endif; ?>
@@ -378,6 +380,11 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 			<!-- Categories Menu -->
 			<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
+				<div class="small">
+					<a class="nav-link small" href="/" title="Show all products">
+						<i class="fa fa-home"></i> Home
+					</a>
+				</div>
 				<div class="offcanvas-header border-bottom border-4 border-warning">
 					<h5 id="offcanvasTopLabel">Shop By Category</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -396,7 +403,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<!-- Shopping Cart -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel"><i class="fa fa-shopping-cart"></i> My Cart</h5>
+					<h5 id="offcanvasTopLabel"><i class="fa fa-cart-shopping"></i> My Cart</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="myShoppingCartBody"></div>
@@ -771,6 +778,44 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 	<script src="/js/site.js?v=1.2.5" defer></script>
 	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
+	<script>
+		function shareThis(title, text, url, fileArray) {
+			title = title ?? '';
+			text = text ?? '';
+			url = url ?? '';
+			fileArray = fileArray ?? [];
+
+			if (url !== '') {
+				let url2 = new URL(url);
+				url2.searchParams.append('emShareButton', 1);
+				url = url2.href;
+			}
+
+
+			if (title != '') {
+				const shareData = {
+					title: title,
+					text: text,
+					url: url,
+					files: fileArray
+				}
+
+				async function shareNow(shareData) {
+					try {
+						await navigator.share(shareData)
+					} catch (err) {
+						console.log('Error: ' + err)
+					}
+				}
+
+				shareNow(shareData)
+			}
+		}
+
+		if(!navigator.canShare) {
+			//$('.shareButton').addClass('d-none');
+		}
+	</script>
 
 	<?php
 	if($this->request->domain() === 'eatmukka.com') {
