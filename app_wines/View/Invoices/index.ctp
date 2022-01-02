@@ -67,9 +67,12 @@ if(!empty($invoices)) {
 							action="<?php echo $this->Html->url("/invoices/Delete/" . $row['Invoice']['id']); ?>"
 					>
 						<div class="dropdown">
-							<a class="dropdown-toggle" role="button" id="dropdownMenuButton<?= $row['Invoice']['id'] ?>" data-bs-toggle="dropdown" aria-expanded="false">
+							<?php
+							echo $this->Html->link($row['Invoice']['name'], array('controller'=>'invoices', 'action'=>'selectInvoice', $row['Invoice']['id']), array('title'=>'Add/Remove products in this invoice - '.$row['Invoice']['name']));
+							?>
+							<!-- <a class="dropdown-toggle" role="button" id="dropdownMenuButton<?= $row['Invoice']['id'] ?>" data-bs-toggle="dropdown" aria-expanded="false">
 								<?php echo $row['Invoice']['name']; ?>
-							</a>
+							</a> -->
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $row['Invoice']['id'] ?>">
 								<li>
 									<a class="dropdown-item"

@@ -26,6 +26,7 @@
 <!--    <script src="/html-table-search/html-table-search.js"></script>-->
 
     <link rel="stylesheet" href="/css/site.css?v=1" crossorigin="anonymous">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
 </head>
 
 <body>

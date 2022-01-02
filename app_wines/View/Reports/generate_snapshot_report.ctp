@@ -5,10 +5,10 @@ $totalExciseCess = (float) $invoicesInfo['total_special_excise_cess'] ?? 0;
 $totalTcsValue = (float) $invoicesInfo['total_tcs_value'] ?? 0;
 $totalNewRetailerPrefTax = (float) $invoicesInfo['total_new_retailer_prof_tax'] ?? 0;
 $totalDdAmount = (float) $invoicesInfo['total_dd_amount'] ?? 0;
-$totalPrevCredit = (float) $invoicesInfo['total_prev_credit'] ?? 0;
+
 
 $totalPurchaseValue = $totalInvoiceValue + $totalMrpRoundingOff + $totalExciseCess + $totalTcsValue + $totalNewRetailerPrefTax;
-$retailerCreditBalance = $totalDdAmount + $totalPrevCredit - $totalPurchaseValue;
+$retailerCreditBalance = $totalDdAmount - $totalPurchaseValue;
 
 $totalSales = (float) ($sales['total_sale_amount'] ?? 0);
 $totalBreakages = (float) ($breakages['total_breakage_amount'] ?? 0);
@@ -102,48 +102,4 @@ echo $this->set('title_for_layout', $title_for_layout);
 	</tr>
 
 </table>
-<br><br>
-
-<h3>Invoice DD Report</h3>
-<table class="table" style="width: 600px;">
-	<tr>
-		<th>Total Inovice DD Amount:</th>
-		<td><?= $totalDdAmount ?></td>
-	</tr>
-	<tr>
-		<th>Total Previous Credit:</th>
-		<td><?= $totalPrevCredit ?></td>
-	</tr>
-	<tr>
-		<th>Total Invoice Value:</th>
-		<td><?= $totalInvoiceValue ?></td>
-	</tr>
-	<tr>
-		<th>Total MRP Rounding Off:</th>
-		<td><?= $totalMrpRoundingOff ?></td>
-	</tr>
-	<tr>
-		<th>Total Special Excise Cess:</th>
-		<td><?= $totalExciseCess ?></td>
-	</tr>
-	<tr>
-		<th>Total TCS:</th>
-		<td><?= $totalTcsValue ?></td>
-	</tr>
-	<tr>
-		<th>Total New Retailer Professional Tax:</th>
-		<td><?= $totalNewRetailerPrefTax ?></td>
-	</tr>
-	<tr>
-		<th>
-			Retailer Credit Balance:<br>
-			<span class="small text-muted">
-				(Total DD Amount + Total Previous Credit - Total Invoice Value - Total MRP Rounding Off - Total Special Excise Cess - Total TCS - Total New Retailer Professional Tax)
-			</span>
-		</th>
-		<td><?= $retailerCreditBalance ?></td>
-	</tr>
-
-</table>
-
 <br><br>
