@@ -80,20 +80,7 @@ class InvoicesController extends AppController
 		$this->Session->delete('Invoice');
 		$invoices = $this->Invoice->find('all', ['conditions' => ['Invoice.store_id' => $this->Session->read('Store.id')], 'order' => ['Invoice.invoice_date DESC', 'Invoice.created DESC']]);
 
-		// get invoice amount from purchases
-		App::uses('Purchase', 'Model');
-		$this->Purchase = new Purchase();
-
-		$purchaseInfo = $this->Purchase->find('all', ['conditions' => ['Purchase.store_id' => $this->Session->read('Store.id'), 'Purchase.invoice_id NOT' => 'NULL'], 'fields' => ['SUM(Purchase.total_amount) as total_amount', 'SUM(Purchase.total_special_margin) as total_special_margin', 'Purchase.invoice_id'], 'group' => ['Purchase.invoice_id']]);
-		$invoiceAmount = [];
-		if ($purchaseInfo) {
-			foreach ($purchaseInfo as $row) {
-				$invoiceAmount[$row['Purchase']['invoice_id']] = $row[0]['total_amount'] + $row[0]['total_special_margin'];
-			}
-		}
-
 		$this->set('invoices', $invoices);
-		$this->set('invoiceAmount', $invoiceAmount);
 	}
 
 	public function edit($invoiceID = null)
@@ -147,10 +134,6 @@ class InvoicesController extends AppController
 								$data['Invoice']['store_id'] = $this->Session->read('Store.id');
 								$data['Invoice']['supplier_name'] = ($data['Invoice']['supplier_id']) ? $suppliersList[$data['Invoice']['supplier_id']] : '';
 								if ($this->Invoice->save($data)) {
-									$this->updateInvoice($invoiceID);
-
-									$msg = 'Invoice details updated successfully';
-
 									// update purchase products date with this invoice date.
 									App::uses('Purchase', 'Model');
 									$this->Purchase = new Purchase();
@@ -158,6 +141,10 @@ class InvoicesController extends AppController
 									$conditions = ['Purchase.invoice_id' => $invoiceID];
 									$this->Purchase->recursive = '-1';
 									$this->Purchase->updateAll($fields, $conditions);
+
+									$this->updateInvoice($invoiceID);
+
+									$msg = 'Invoice details updated successfully';
 
 									$this->successMsg($msg);
 									$this->redirect('/invoices/selectInvoice/' . $invoiceID);
@@ -232,6 +219,19 @@ class InvoicesController extends AppController
 		$conditions = ['Purchase.invoice_id' => $invoiceID];
 		$invoiceProducts = $this->Purchase->find('all', ['conditions' => $conditions, 'recursive' => 2]);
 		$this->set(compact('invoiceInfo', 'invoiceProducts'));
+	}
+
+	public function refresh()
+	{
+		$storeId = $this->Session->read('Store.id');
+		$invoices = $this->Invoice->find('list', ['conditions' => ['Invoice.store_id' => $storeId]]);
+
+		foreach($invoices as $invoiceId => $invoiceName) {
+			$this->updateInvoice($invoiceId);
+		}
+
+		$this->successMsg('Invoices updated successfully.');
+		$this->redirect($this->request->referer());
 	}
 
 }

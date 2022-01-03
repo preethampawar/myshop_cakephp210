@@ -12,7 +12,7 @@
 			echo $this->Form->input('Invoice.name', array('label' => 'Invoice No.', 'required' => true, 'type' => 'text', 'title' => 'Enter Invoice Name', 'class' => 'form-control form-control-sm'));
 			//echo $this->Form->input('Invoice.dd_no', array('label'=>'DD No.', 'title'=>'Enter DD No.'));
 			echo $this->Form->input('Invoice.mrp_rounding_off', array('label' => 'MRP Rounding Off', 'title' => 'Enter MRP Rounding Off Value', 'default' => 0, 'class' => 'form-control form-control-sm'));
-			echo $this->Form->input('Invoice.dd_amount', array('label' => 'DD Amount', 'title' => 'Enter DD Amount', 'required' => true, 'class' => 'form-control form-control-sm'));
+			echo $this->Form->input('Invoice.dd_amount', array('label' => 'DD Amount', 'title' => 'Enter DD Amount', 'default' => 0, 'class' => 'form-control form-control-sm'));
 			echo $this->Form->input('Invoice.prev_credit', array('label' => 'Previous Credit', 'title' => 'Enter Previous Credit', 'default' => 0, 'class' => 'form-control form-control-sm'));
 			//echo $this->Form->input('Invoice.retail_shop_excise_turnover_tax', array('label'=>'Retail Shop Excise Turnover Tax', 'title'=>'Retail Shop Excise Turnover Tax'));
 			echo $this->Form->input('Invoice.special_excise_cess', array('label' => 'Special Excise Cess', 'title' => 'Special Excise Cess', 'class' => 'form-control form-control-sm', 'default' => 0,));
