@@ -510,6 +510,8 @@ function saveOrderDeliveryDetails() {
 			'customerMessage': customerMessage,
 		}
 
+		setCustomerDeliveryDetails(data);
+
 		const response = postData(saveOrderDeliveryDetails, data)
 
 		let loader = spinner + '<div class="text-center small">Please wait.</div>'
@@ -964,6 +966,44 @@ function showLoadingBar() {
 
 function hideLoadingBar() {
 	document.getElementById("topNavProgressBar").classList.add('d-none')
+}
+
+function setCustomerDeliveryDetails(data) {
+	console.log('save delivery details', data);
+	localStorage.setItem('customer_delivery_details', JSON.stringify(data));
+}
+
+function getCustomerDeliveryDetails() {
+	let data = localStorage.getItem('customer_delivery_details');
+	console.log('get delivery details', data);
+	return JSON.parse(data);
+}
+
+function fillCustomerOrderDetailsFromLocalStorage() {
+	let data = localStorage.getItem('customer_delivery_details');
+	let deliveryDetails = JSON.parse(data);
+
+	if(deliveryDetails) {
+		if ($('#orderCustomerName')) {
+			$('#orderCustomerName').val(deliveryDetails.customerName);
+		}
+
+		if ($('#orderCustomerEmail')) {
+			$('#orderCustomerEmail').val(deliveryDetails.customerEmail);
+		}
+
+		if ($('#orderCustomerPhone')) {
+			$('#orderCustomerPhone').val(deliveryDetails.customerPhone);
+		}
+
+		if ($('#orderCustomerAddress')) {
+			$('#orderCustomerAddress').val(deliveryDetails.customerAddress);
+		}
+
+		if ($('#orderCustomerMessage')) {
+			$('#orderCustomerMessage').val(deliveryDetails.customerMessage);
+		}
+	}
 }
 
 // init site wide variables
