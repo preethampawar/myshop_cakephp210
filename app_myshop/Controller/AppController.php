@@ -1165,7 +1165,6 @@ class AppController extends Controller
 		return true;
 	}
 
-
 	protected function getCacheKey($keyOf)
 	{
 		$domain = $this->request->subdomains()[0];
@@ -1430,5 +1429,22 @@ class AppController extends Controller
 		}
 
 		return true;
+	}
+
+	/** Function to get Transaction Category info **/
+	public function getTransactionCategoryInfo($transactionCategoryId = null)
+	{
+		App::uses('TransactionCategory', 'Model');
+		$this->TransactionCategory = new TransactionCategory();
+
+		if (!$transactionCategoryId) {
+			return [];
+		} else {
+			$conditions = ['TransactionCategory.id' => $transactionCategoryId, 'TransactionCategory.site_id' => $this->Session->read('Site.id')];
+			if ($categoryInfo = $this->TransactionCategory->find('first', ['conditions' => $conditions])) {
+				return $categoryInfo;
+			}
+		}
+		return [];
 	}
 }
