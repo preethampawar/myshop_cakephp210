@@ -26,6 +26,7 @@
 <!--    <script src="/html-table-search/html-table-search.js"></script>-->
 
     <link rel="stylesheet" href="/css/site.css?v=1" crossorigin="anonymous">
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
 </head>
 
 <body>
@@ -261,6 +262,19 @@ switch ($controller) {
         }
         ?>
         <div <?php if ($showSideBar) { ?> class="col-xs-9 col-sm-9 col-lg-10" <?php } ?>>
+			<?php
+			if ($this->Session->check('showExpiryNotice') && $this->Session->check('showExpiryNotice') === true) {
+				$storeExpiryDate = date('d-m-Y', strtotime($this->Session->read('Store.expiry_date')));
+				$message = "This Store will expire on '$storeExpiryDate'. Contact software owner to renew this store before expiry date.";
+				?>
+				<div id="FlashMessage" class="notice alert alert-warning alert-dismissible" role="alert">
+					<strong>Notice!</strong> <?php echo $message; ?>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+				<br>
+				<?php
+			}
+			?>
             <?php echo $this->Session->flash(); ?>
             <?php echo $this->fetch('content'); ?>
         </div>

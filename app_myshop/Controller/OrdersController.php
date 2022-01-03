@@ -199,6 +199,7 @@ class OrdersController extends AppController
 		$this->layout = false;
 		$orderId = $this->getOrderId();
 		$orderDetails = $this->Order->findById($orderId);
+		$orderProducts = '';
 
 		$userId = null;
 
@@ -282,6 +283,7 @@ class OrdersController extends AppController
 				$cartValue += $totalProductPurchaseValue;
 				$totalItems += $qty;
 				$totalDiscount += $discount * $qty;
+				$orderProducts .= htmlentities($row['product_name']) . "($qty), ";
 			}
 
 
@@ -356,6 +358,9 @@ class OrdersController extends AppController
 
 					if((bool)$this->Session->read('Site.sms_notifications') === true) {
 						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+
+						// send one notification msg to Karthik / Delivery person
+						$this->Sms->sendNewOrderSms('7331109133', '#'.$orderId, $this->Session->read('Site.title'));
 
 						// send new order sms to manager of the site
 						$adminPhone = $this->Session->read('Site.notifications_mobile_no');

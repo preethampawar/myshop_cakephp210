@@ -95,7 +95,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
 	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.2">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.3">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>

@@ -1069,4 +1069,148 @@ ORDER BY p.name";
 
 		$this->set(compact('result', 'hideHeader', 'fromDate', 'toDate', 'paymentType', 'hideSideBar'));
 	}
+
+	public function snapshot()
+	{
+
+	}
+
+	public function generateSnapshotReport()
+	{
+		$result = null;
+		$hideHeader = true;
+		$hideSideBar = true;
+		$sales = [];
+		$purchases = [];
+		$breakages = [];
+		$invoicesInfo = [];
+		$cashbookIncome = [];
+		$cashbookExpenses = [];
+
+		if ($this->request->isPost()) {
+			$data = $this->request->data;
+
+			$printView = false;
+			$fromDate = $data['Report']['from_date'];
+			$toDate = $data['Report']['to_date'];
+			$storeId = $this->Session->read('Store.id');
+
+			if ($printView) {
+				$this->layout = 'print_view';
+			}
+
+			App::uses('Invoice', 'Model');
+			$invoiceModel = new Invoice();
+
+			// Get invoices & purchase info
+			$sql = "
+SELECT
+	SUM(invoice_value) total_invoice_value,
+	SUM(mrp_rounding_off) total_mrp_rounding_off,
+
+	SUM(dd_amount) total_dd_amount,
+	SUM(prev_credit) total_prev_credit,
+
+	SUM(special_excise_cess) total_special_excise_cess,
+	SUM(tcs_value) total_tcs_value,
+	SUM(new_retailer_prof_tax) AS total_new_retailer_prof_tax
+FROM invoices
+WHERE store_id = $storeId
+	AND invoice_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$invoicesInfo = $result[0][0];
+			}
+
+			// get sales info
+			$sql = "
+SELECT
+	SUM(total_amount) total_sale_amount
+FROM sales
+WHERE store_id = $storeId
+	AND sale_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$sales = $result[0][0];
+			}
+
+			// get purchases info
+			$sql = "
+SELECT
+	SUM(total_amount) total_purchase_amount
+FROM purchases
+WHERE store_id = $storeId
+	AND purchase_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$purchases = $result[0][0];
+			}
+
+			// get breakages info
+			$sql = "
+SELECT
+	SUM(total_amount) total_breakage_amount
+FROM breakages
+WHERE store_id = $storeId
+	AND breakage_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$breakages = $result[0][0];
+			}
+
+			// get cashbook income
+			$sql = "
+SELECT
+	SUM(payment_amount) total_income_amount
+FROM cashbook
+WHERE store_id = $storeId
+  	AND payment_type = 'income'
+	AND payment_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$cashbookIncome = $result[0][0];
+			}
+
+			// get cashbook expenses
+			$sql = "
+SELECT
+	SUM(payment_amount) total_expense_amount
+FROM cashbook
+WHERE store_id = $storeId
+  	AND payment_type = 'expense'
+	AND payment_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$cashbookExpenses = $result[0][0];
+			}
+
+		} else {
+			$this->Session->setFlash('Invalid Request');
+		}
+
+		$this->set(compact(
+			'hideHeader',
+			'hideSideBar',
+			'fromDate',
+			'toDate',
+			'invoicesInfo',
+			'sales',
+			'purchases',
+			'breakages',
+			'cashbookIncome',
+			'cashbookExpenses'
+		));
+	}
 }

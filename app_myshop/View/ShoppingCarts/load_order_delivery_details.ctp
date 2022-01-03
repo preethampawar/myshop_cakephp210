@@ -137,3 +137,11 @@ if (isset($shoppingCartProducts['ShoppingCartProduct']) and !empty($shoppingCart
 
 <br><br><br><br>
 
+<?php
+if (!$prefilledDeliveryDetails  && empty(trim($orderDetails['Order']['customer_name']))) {
+	?>
+	<script>fillCustomerOrderDetailsFromLocalStorage()</script>
+	<?php
+}
+?>
+

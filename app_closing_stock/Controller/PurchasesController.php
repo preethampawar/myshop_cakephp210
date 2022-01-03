@@ -138,17 +138,11 @@ class PurchasesController extends AppController
 			if ((!isset($data['Purchase']['box_buying_price'])) or (!Validation::decimal($data['Purchase']['box_buying_price'])) or ($data['Purchase']['box_buying_price'] <= 0)) {
 				$error = 'Box price should be greater than 0';
 			}
-			if ((!isset($data['Purchase']['special_margin'])) or (!Validation::decimal($data['Purchase']['special_margin'])) or ($data['Purchase']['special_margin'] < 0)) {
-				$error = 'Special margin should be greater than or equal to "0"';
-			}
 			if ((!isset($data['Purchase']['total_units'])) or (!Validation::naturalNumber($data['Purchase']['total_units']))) {
 				$error = 'No. of Units should be greater than 0';
 			}
 			if ((!isset($data['Purchase']['total_amount'])) or (!Validation::decimal($data['Purchase']['total_amount'])) or ($data['Purchase']['total_amount'] <= 0)) {
 				$error = 'Total amount should be greater than 0';
-			}
-			if ((!isset($data['Purchase']['total_special_margin'])) or (!Validation::decimal($data['Purchase']['total_special_margin'])) or ($data['Purchase']['total_special_margin'] < 0)) {
-				$error = 'Total special margin should be greater than or equal to "0"';
 			}
 		} else {
 			$error = 'Empty product details';
