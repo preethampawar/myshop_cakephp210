@@ -49,6 +49,10 @@ class AppController extends Controller
 
 	public function beforeFilter()
 	{
+		if ($this->Session->check('showExpiryNotice') && $this->Session->check('showExpiryNotice') === true) {
+			return true;
+		}
+
         // check if store is expired
         if ($this->Session->check('Store.created')) {
             $storeExpiryDate = $this->Session->read('Store.expiry_date');
@@ -63,7 +67,8 @@ class AppController extends Controller
                 // check if store is about to expire in 1 month
                 $unixTimeStoreExpiryNotice = strtotime($storeExpiryDate . " -1 month");
                 if ($unixTimeNow > $unixTimeStoreExpiryNotice) {
-                    $this->noticeMsg("This Store will expire on '$storeExpiryDate'. Contact software owner to renew this store before expiry date.");
+					$this->Session->write('showExpiryNotice', true);
+                    //$this->noticeMsg("This Store will expire on '$storeExpiryDate'. Contact software owner to renew this store before expiry date.");
                 }
             }
         }
@@ -156,40 +161,42 @@ class AppController extends Controller
 			$this->Purchase = new Purchase();
 
 			$invoice_info = $this->Invoice->findById($invoiceID);
-			//$tcs_percent = $invoice_info['Invoice']['tcs_percent'];
 
 			$this->Purchase->clear();
+			$this->Purchase->recursive = -1;
 			$purchase_products = $this->Purchase->findAllByInvoiceId($invoiceID);
 			if ($purchase_products) {
 				$invoice_value = 0;
-				$tcs_value = $invoice_info['Invoice']['tcs_value'];
-				$retail_shop_excise_turnover_tax = $invoice_info['Invoice']['retail_shop_excise_turnover_tax'];
-				$special_excise_cess = $invoice_info['Invoice']['special_excise_cess'];
+				$tcs_value = (float)$invoice_info['Invoice']['tcs_value'];
+				$retail_shop_excise_turnover_tax = (float)$invoice_info['Invoice']['retail_shop_excise_turnover_tax'];
+				$special_excise_cess = (float)$invoice_info['Invoice']['special_excise_cess'];
+				$newRetailerProfessionalTax = (float)$invoice_info['Invoice']['new_retailer_prof_tax'];
+				$mrpRoundingOff = (float)$invoice_info['Invoice']['mrp_rounding_off'];
+				$ddAmount = (float)$invoice_info['Invoice']['dd_amount'];
+				$prevCredit = (float)$invoice_info['Invoice']['prev_credit'];
 				$special_margin = 0;
 
 				foreach ($purchase_products as $row) {
 					$invoice_value += $row['Purchase']['total_amount'];
-					$special_margin += $row['Purchase']['total_special_margin'];
 				}
-				$net_invoice_value = $invoice_value + $special_margin;
-				//$tcs_value = ($tcs_percent > 0) ? ceil((($net_invoice_value*$tcs_percent)/100)) : 0;
 
 				$invoice_data['Invoice']['id'] = $invoiceID;
 				$invoice_data['Invoice']['invoice_value'] = $invoice_value;
 				$invoice_data['Invoice']['special_margin'] = $special_margin;
-				//$invoice_data['Invoice']['tcs_value'] = $tcs_value;
 
-				$dd_purchase = $invoice_value + $special_margin + $tcs_value;
+				$dd_purchase = $invoice_value
+					+ $mrpRoundingOff
+					+ $special_excise_cess
+					+ $tcs_value
+					+ $retail_shop_excise_turnover_tax
+					+ $newRetailerProfessionalTax;
+
+				$newCreditBalance = $ddAmount
+					+ $prevCredit
+					- $dd_purchase;
+
 				$invoice_data['Invoice']['dd_purchase'] = $dd_purchase;
-				$invoice_data['Invoice']['credit_balance'] = (
-					$invoice_info['Invoice']['dd_amount']
-					+ $invoice_info['Invoice']['prev_credit']
-					- $dd_purchase
-					- $retail_shop_excise_turnover_tax
-					- $special_excise_cess
-					- $invoice_info['Invoice']['mrp_rounding_off']
-					- $invoice_info['Invoice']['new_retailer_prof_tax']
-				);
+				$invoice_data['Invoice']['credit_balance'] = $newCreditBalance;
 				$this->Invoice->save($invoice_data);
 			}
 		}

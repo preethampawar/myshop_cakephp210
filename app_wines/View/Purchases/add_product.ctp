@@ -134,8 +134,8 @@ $boxQuantity = 0;
 				echo $this->Form->input('unit_price', array('type'=>'hidden'));
 				echo $this->Form->input('total_units', array('type'=>'hidden'));
 				echo $this->Form->input('total_amount', array('type'=>'hidden'));
-				echo $this->Form->input('special_margin', array('type'=>'hidden'));
-				echo $this->Form->input('total_special_margin', array('type'=>'hidden'));
+				echo $this->Form->input('special_margin', array('type'=>'hidden', 'value' => 0));
+				echo $this->Form->input('total_special_margin', array('type'=>'hidden', 'value' => 0));
 				?>
 			</div>
 			<?php
@@ -219,7 +219,6 @@ $boxQuantity = 0;
 				$i++;
 				$totalBoxes+=$row['Purchase']['box_qty'];
 				$totalAmount+=$row['Purchase']['total_amount'];
-				$totalSpecialMargin+=$row['Purchase']['total_special_margin'];
 				$totalUnits = $row['Purchase']['total_units'];
 				$noOfBoxes = floor($row['Purchase']['total_units']/$row['Purchase']['units_in_box']);
 				$unitInBox = $row['Purchase']['units_in_box'];
