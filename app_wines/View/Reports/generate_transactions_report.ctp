@@ -16,7 +16,7 @@ if ($result) {
 			<tr>
 				<th>#</th>
 				<th>Date</th>
-				<th>Category</th>
+				<th>Account</th>
 				<th>Debit</th>
 				<th>Credit</th>
 			</tr>

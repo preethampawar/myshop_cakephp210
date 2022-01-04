@@ -10,4 +10,7 @@
 	<ul>
 		<li><?php echo $this->Html->link('Business Snapshot Report', array('controller'=>'reports', 'action'=>'snapshot'));?></li>
 	</ul>
+	<ul>
+		<li><?php echo $this->Html->link('P & L Report', array('controller'=>'reports', 'action'=>'profitLossReport'));?></li>
+	</ul>
 </div>

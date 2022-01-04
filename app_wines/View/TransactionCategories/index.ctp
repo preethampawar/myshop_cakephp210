@@ -2,18 +2,18 @@
 <?php echo $this->element('transactions_menu');?>
 <?php $this->end();?>
 
-<h1 class="mt-3">Manage Transaction Categories</h1>
+<h1 class="mt-3">Manage Accounts</h1>
 <br>
 <div id="AddCategoryDiv" class="card bg-light mt-3">
 	<div class="card-body">
 		<?php echo $this->Form->create('TransactionCategory', ['url' => '/TransactionCategories/add/']); ?>
 
-		<?php echo $this->Form->input('name', ['placeholder' => 'Enter Transaction Category Name', 'label' => 'Category Name', 'required' => true, 'class' => 'form-control form-control-sm']); ?>
+		<?php echo $this->Form->input('name', ['placeholder' => 'Enter Account Name', 'label' => 'New Account Name', 'required' => true, 'class' => 'form-control form-control-sm']); ?>
 
 		<?php // echo $this->Form->input('expense', ['type' => 'checkbox', 'label' => 'Expense']); ?>
 		<?php // echo $this->Form->input('income', ['type' => 'checkbox', 'label' => 'Income']); ?>
 
-		<?php echo $this->Form->submit('Create Transaction Category', ['class' => 'btn btn-primary btn-sm mt-3']); ?>
+		<?php echo $this->Form->submit('Create Account', ['class' => 'btn btn-primary btn-sm mt-3']); ?>
 
 		<?php echo $this->Form->end(); ?>
 	</div>
@@ -25,7 +25,9 @@
 		<thead>
 		<tr>
 			<th>#</th>
-			<th>Category Name</th>
+			<th>Account Name</th>
+			<th>Show in Balance Sheet</th>
+			<th>Priority</th>
 			<th></th>
 		</tr>
 		</thead>
@@ -38,9 +40,21 @@
 			<tr>
 				<td><?php echo $i; ?></td>
 				<td>
-					<span class=" me-1 <?= $row['TransactionCategory']['active'] == '1' ? 'text-success' : 'text-danger' ?>">&#9679;</span>
+
+					<i class="me-2 fa fa-circle <?= $row['TransactionCategory']['active'] == '1' ? 'text-success' : 'text-danger' ?>"></i>
+
 					<?php
 					echo $row['TransactionCategory']['name'];
+					?>
+				</td>
+				<td>
+					<?php
+					echo $row['TransactionCategory']['show_in_balance_sheet'] ? 'Yes' : '';
+					?>
+				</td>
+				<td>
+					<?php
+					echo $row['TransactionCategory']['priority'] > 0 ? $row['TransactionCategory']['priority'] : '';
 					?>
 				</td>
 				<td class="text-end">

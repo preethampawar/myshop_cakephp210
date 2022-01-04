@@ -99,6 +99,9 @@ class TransactionCategoriesController extends AppController
 			}
 
 			if (!$error) {
+//				debug($data);
+//				exit;
+
 				$data['TransactionCategory']['id'] = $transactionCategoryId;
 				$data['TransactionCategory']['store_id'] = $this->Session->read('Store.id');
 				if ($this->TransactionCategory->save($data)) {

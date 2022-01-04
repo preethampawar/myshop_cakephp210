@@ -1213,4 +1213,136 @@ WHERE store_id = $storeId
 			'cashbookExpenses'
 		));
 	}
+
+	public function profitLossReport()
+	{
+
+	}
+
+	public function generateProfitLossReport()
+	{
+		$hideHeader = true;
+		$hideSideBar = true;
+		$sales = [];
+		$purchases = [];
+		$breakages = [];
+		$invoicesInfo = [];
+		$openingStockInfo = null;
+		$closingStockInfo = null;
+		$cashbookInfo = null;
+
+		if ($this->request->isPost()) {
+			$data = $this->request->data;
+
+			$printView = false;
+			$fromDate = $data['Report']['from_date'];
+			$toDate = $data['Report']['to_date'];
+			$storeId = $this->Session->read('Store.id');
+
+			if ($printView) {
+				$this->layout = 'print_view';
+			}
+
+			App::uses('Invoice', 'Model');
+			$invoiceModel = new Invoice();
+
+			// Get invoices & purchase info
+			$sql = "
+SELECT
+	SUM(invoice_value) total_invoice_value,
+	SUM(mrp_rounding_off) total_mrp_rounding_off,
+
+	SUM(dd_amount) total_dd_amount,
+	SUM(prev_credit) total_prev_credit,
+
+	SUM(special_excise_cess) total_special_excise_cess,
+	SUM(tcs_value) total_tcs_value,
+	SUM(new_retailer_prof_tax) AS total_new_retailer_prof_tax
+FROM invoices
+WHERE store_id = $storeId
+	AND invoice_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$invoicesInfo = $result[0][0];
+			}
+
+			// get sales info
+			$sql = "
+SELECT
+	SUM(total_amount) total_sale_amount
+FROM sales
+WHERE store_id = $storeId
+	AND sale_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$sales = $result[0][0];
+			}
+
+			// get purchases info
+			$sql = "
+SELECT
+	SUM(total_amount) total_purchase_amount
+FROM purchases
+WHERE store_id = $storeId
+	AND purchase_date BETWEEN '$fromDate' AND '$toDate'
+";
+			$result = $invoiceModel->query($sql);
+
+			if($result && isset($result[0][0])) {
+				$purchases = $result[0][0];
+			}
+
+			// get income and expenses from cashbook
+			$sql = "
+SELECT c.id, c.name, COALESCE(c_income.total_income_amount, 0) total_income_amount, COALESCE(c_expenses.total_expense_amount, 0) total_expense_amount
+FROM categories c
+	LEFT JOIN
+		(SELECT
+			SUM(payment_amount) total_expense_amount, category_id
+		FROM cashbook
+		WHERE store_id = $storeId
+			AND payment_type = 'expense'
+			AND payment_date BETWEEN '$fromDate' AND '$toDate'
+		GROUP BY category_id) c_expenses ON c.id = c_expenses.category_id
+	LEFT JOIN
+		(SELECT
+			SUM(payment_amount) total_income_amount, category_id
+		FROM cashbook
+		WHERE store_id = $storeId
+			AND payment_type = 'income'
+			AND payment_date BETWEEN '$fromDate' AND '$toDate'
+		GROUP BY category_id) c_income ON c.id = c_income.category_id
+
+WHERE c.store_id = $storeId
+			";
+			$cashbookInfo = $invoiceModel->query($sql);
+
+			// get opening stock info
+			$openingStockInfo = $this->Report->getOpeningStockValue($storeId, $fromDate);
+			$closingStockInfo = $this->Report->getClosingStockValue($storeId, $fromDate, $toDate);
+
+			// get closing stock info
+
+		} else {
+			$this->Session->setFlash('Invalid Request');
+		}
+
+		$this->set(compact(
+			'hideHeader',
+			'hideSideBar',
+			'fromDate',
+			'toDate',
+			'invoicesInfo',
+			'sales',
+			'purchases',
+			'breakages',
+			'openingStockInfo',
+			'closingStockInfo',
+			'cashbookInfo'
+		));
+	}
 }

@@ -309,6 +309,7 @@ class SalesController extends AppController {
 			$data = $this->request->data;
 			$saleDate = $data['Sale']['sale_date']['year'].'-'.$data['Sale']['sale_date']['month'].'-'.$data['Sale']['sale_date']['day'];
 			$data['Sale']['sale_date'] = $saleDate;
+
 			$this->Session->delete('selectedProductID');
 
 			$error = $this->addSaleFormValidation($data);
@@ -339,7 +340,14 @@ class SalesController extends AppController {
 			}
 
 			// find if stock has already been entered in future date
-			$productAlreadyAddedInFutureDate = $this->Sale->find('first', ['conditions' => ['Sale.sale_date >' => $saleDate, 'Sale.store_id'=>$this->Session->read('Store.id')]]);
+			$productAlreadyAddedInFutureDate = $this->Sale->find('first', [
+				'conditions' => [
+					'Sale.product_id' => $data['Sale']['product_id'],
+					'Sale.sale_date >' => $saleDate,
+					'Sale.store_id'=>$this->Session->read('Store.id')
+				]
+			]);
+
 			if($productAlreadyAddedInFutureDate) {
 				$futureSaleDate = Date('d-m-Y', strtotime($productAlreadyAddedInFutureDate['Sale']['sale_date']));
 				$error = 'Closing stock / sale has already been entered for "' . $productInfo['Product']['name'] . '" on "'.$futureSaleDate.'". ';
