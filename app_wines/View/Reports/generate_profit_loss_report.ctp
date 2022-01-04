@@ -70,32 +70,39 @@ echo $this->set('title_for_layout', $title_for_layout);
 	<tr>
 		<td>Opening Stock</td>
 		<td>&nbsp;</td>
-		<td><?= number_format($openingStockInfo['openingStockValueAsPerInvoice'], 2) ?></td>
+		<td><?= number_format($openingStockInfo['openingStockValueAsPerInvoice'], 2, '.', '') ?></td>
 	</tr>
 	<tr>
 		<td>Closing Stock</td>
-		<td><?= number_format($closingStockInfo['closingStockValueAsPerInvoice'], 2) ?></td>
+		<td><?= number_format($closingStockInfo['closingStockValueAsPerInvoice'], 2, '.', '') ?></td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="text-muted">
 		<td>&nbsp;</td>
 		<td>
-			<?= $grossIncome = $totalSales + number_format($closingStockInfo['closingStockValueAsPerInvoice'], 2) ?>
+			<?php
+			$grossIncome = $totalSales + $closingStockInfo['closingStockValueAsPerInvoice'];
+			echo number_format($grossIncome, 2, '.', '');
+			?>
 		</td>
 		<td>
 			<?php
-			echo $grossExpenses = $totalPurchases
+			$grossExpenses = $totalPurchases
 				+ $totalMrpRoundingOff
 				+ $totalExciseCess
 				+ $totalTcsValue
 				+ $totalNewRetailerPrefTax
-				+ number_format($openingStockInfo['openingStockValueAsPerInvoice'], 2);
+				+ $openingStockInfo['openingStockValueAsPerInvoice'];
+
+
+			echo number_format($grossExpenses, 2, '.', '');
 			?>
+
 		</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td colspan="2" class="text-center"><div class="text-center"><b>Gross Profit = <?= $grossIncome - $grossExpenses ?></b></div></td>
+		<td colspan="2" class="text-center"><div class="text-center"><b>Gross Profit = <?= number_format($grossIncome - $grossExpenses, 2, '.', '') ?></b></div></td>
 	</tr>
 	<?php
 	$hasCategories = false;
@@ -136,12 +143,12 @@ echo $this->set('title_for_layout', $title_for_layout);
 	<tfoot>
 	<tr>
 		<th>&nbsp;</th>
-		<th><?= $netIncome = $grossIncome + $cashbookIncome ?></th>
-		<th><?= $netExpenses = $grossExpenses + $cashbookExpenses ?></th>
+		<th><?= number_format($netIncome = $grossIncome + $cashbookIncome, 2, '.', '') ?></th>
+		<th><?= number_format($netExpenses = $grossExpenses + $cashbookExpenses, 2, '.', '') ?></th>
 	</tr>
 	<tr>
 		<th>&nbsp;</th>
-		<th colspan="2" class="text-center"><div class="text-center">Net Profit = <?= $netIncome - $netExpenses ?> </div></th>
+		<th colspan="2" class="text-center"><div class="text-center">Net Profit = <?= number_format($netIncome - $netExpenses, 2, '.', '') ?> </div></th>
 	</tr>
 	</tfoot>
 </table>
