@@ -122,7 +122,7 @@ class Report extends AppModel {
 		if ($productWiseClosingStock) {
 			foreach($productWiseClosingStock as &$row) {
 				$productId = $row['pr']['id'];
-				$productBoxQty = (int)$row['pr']['box_qty'];
+				$productBoxQty = (int)($row['pr']['box_qty'] > 0 ? $row['pr']['box_qty'] : 1);
 				$productBoxBuyingPrice = (float)$row['pr']['box_buying_price'];
 				$productUnitSellingPrice = (float)$row['pr']['unit_selling_price'];
 				$unitProductPurchasePrice = $productBoxBuyingPrice / $productBoxQty;
