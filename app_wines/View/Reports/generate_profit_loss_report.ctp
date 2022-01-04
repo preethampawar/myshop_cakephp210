@@ -70,17 +70,17 @@ echo $this->set('title_for_layout', $title_for_layout);
 	<tr>
 		<td>Opening Stock</td>
 		<td>&nbsp;</td>
-		<td><?= $openingStockInfo['openingStockValueAsPerInvoice'] ?></td>
+		<td><?= number_format($openingStockInfo['openingStockValueAsPerInvoice'], 2) ?></td>
 	</tr>
 	<tr>
 		<td>Closing Stock</td>
-		<td><?= $closingStockInfo['closingStockValueAsPerInvoice'] ?></td>
+		<td><?= number_format($closingStockInfo['closingStockValueAsPerInvoice'], 2) ?></td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="text-muted">
 		<td>&nbsp;</td>
 		<td>
-			<?= $grossIncome = $totalSales + $closingStockInfo['closingStockValueAsPerInvoice'] ?>
+			<?= $grossIncome = $totalSales + number_format($closingStockInfo['closingStockValueAsPerInvoice'], 2) ?>
 		</td>
 		<td>
 			<?php
@@ -89,7 +89,7 @@ echo $this->set('title_for_layout', $title_for_layout);
 				+ $totalExciseCess
 				+ $totalTcsValue
 				+ $totalNewRetailerPrefTax
-				+ $openingStockInfo['openingStockValueAsPerInvoice'];
+				+ number_format($openingStockInfo['openingStockValueAsPerInvoice'], 2);
 			?>
 		</td>
 	</tr>
