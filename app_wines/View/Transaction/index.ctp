@@ -13,7 +13,7 @@
 		<div class="card-body">
 			<div class="d-flex justify-content-between">
 				<label class="form-label">Filter</label>
-				<?php echo $this->Form->select('TransactionCategory.id', $categoriesList, ['empty' => '- Select TransactionCategory -', 'class' => 'form-control form-control-sm ms-2', 'onchange' => 'selectCategory(this)', 'default' => $transactionCategoryId]); ?>
+				<?php echo $this->Form->select('TransactionCategory.id', $categoriesList, ['empty' => '- Select Account -', 'class' => 'form-control form-control-sm ms-2', 'onchange' => 'selectCategory(this)', 'default' => $transactionCategoryId]); ?>
 
 
 				<script type="text/javascript">
@@ -35,7 +35,7 @@
 	<h6 class="mt-3">
 		<?php
 		if ($categoryInfo) {
-			echo 'Category "' . $categoryInfo['TransactionCategory']['name'] . '"';
+			echo 'Account "' . $categoryInfo['TransactionCategory']['name'] . '"';
 			?>
 			<span
 					style="font-size:11px; font-style:italic;">[<?php echo $this->Html->link('Show all records', ['controller' => 'transactions', 'action' => 'index'], ['title' => 'Show all category records']); ?>]</span>
@@ -58,7 +58,7 @@
 				<th>Date</th>
 				<th>Amount</th>
 				<th>Type</th>
-				<th>TransactionCategory</th>
+				<th>Account</th>
 				<th></th>
 			</tr>
 			</thead>

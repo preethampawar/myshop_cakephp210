@@ -13,7 +13,7 @@
 		?>
 	</div>
 	<div class="mt-3">
-		<?php echo $this->Form->input('category_id', ['empty' => 'All', 'label' => 'Select Category', 'type' => 'select', 'options' => $categoriesList, 'escape' => false, 'class' => 'form-control form-control-sm']); ?>
+		<?php echo $this->Form->input('category_id', ['empty' => 'All', 'label' => 'Select Account', 'type' => 'select', 'options' => $categoriesList, 'escape' => false, 'class' => 'form-control form-control-sm']); ?>
 	</div>
 
 	<div class="mt-3">

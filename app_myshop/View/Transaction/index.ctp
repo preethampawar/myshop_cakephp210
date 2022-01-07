@@ -1,7 +1,7 @@
 <?php echo $this->element('transactions_menu');?>
 
 <h1>Transactions</h1>
-<br>
+
 
 <div class="mt-3">
 	<?php

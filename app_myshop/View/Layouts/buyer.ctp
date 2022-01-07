@@ -759,7 +759,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.2.6" defer></script>
+	<script src="/js/site.js?v=1.2.7" defer></script>
 	<?php
 	echo $this->element('customjs', ['showLocationPopup' => $showLocationPopup]);
 	echo $this->element('footerscripts');
