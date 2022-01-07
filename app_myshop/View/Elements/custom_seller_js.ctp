@@ -279,12 +279,6 @@ App::uses('Order', 'Model');
 		} catch (err) {
 			console.log('Error - Light box for images: ', err.message);
 		}
-
-		try {
-			initTooltips();
-		} catch (err) {
-			console.log('Error - Bootstrap tooltips: ', err.message);
-		}
 	});
 </script>
 
