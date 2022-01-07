@@ -122,6 +122,9 @@ $enableTextEditor = $enableTextEditor ?? false;
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="/transactions/">Transactions</a>
+		</li>		
+		<li class="nav-item">
+			<a class="nav-link" href="/GroupPaperRates/">PaperRates</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="/admin/sites/settings">Store Settings</a>
