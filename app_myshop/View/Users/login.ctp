@@ -5,8 +5,6 @@
 	<div class="mb-3 d-none">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
 			Email Address
-			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
-				  title="Enter your email address. This will be used for communication purposes only">?</span>
 		</label>
 		<input
 			type="email"
@@ -20,10 +18,7 @@
 	</div>
 
 	<div class="mb-1">
-		<label for="exampleFormControlInput1" class="form-label font-weight-bold">Mobile Number
-			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
-				  title="Enter your 10 digit mobile number without country code">?</span>
-		</label>
+		<label for="exampleFormControlInput1" class="form-label font-weight-bold">Mobile Number</label>
 		<input
 			type="number"
 			name="data[User][mobile]"

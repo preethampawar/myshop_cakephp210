@@ -5,9 +5,7 @@
 
 	<div class="mb-3">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
-			Business Title
-			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
-				  title="Enter your business name. This will be used as an online display name for your business.">?</span>
+			Business Title			
 		</label>
 		<input
 			type="text"
@@ -23,8 +21,6 @@
 	<div class="mb-3">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
 			Caption (optional)
-			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
-				  title="Enter a single line caption for your business.">?</span>
 		</label>
 		<input
 			type="text"
@@ -38,8 +34,6 @@
 	<div class="mb-4">
 		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
 			Business name in URL
-			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
-				  title="Enter a one word name (minimum 3 characters) for your business that would be displayed in the URL.">?</span>
 		</label>
 		<input
 			v-model="siteName"

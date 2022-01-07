@@ -311,20 +311,7 @@ function showAddProductQtyModal(categoryId, productId) {
 
 	$('#addProductQtyModal-quantity').val(1);
 	$('#addProductQtyModal-quantity').data('category-id', categoryId);
-	$('#addProductQtyModal-quantity').data('product-id', productId);
-
-	console.log($('#addProductQtyModal-quantity').data('category-id'))
-	//
-	// $('#addProductQtyModal-saveButton').click(function () {
-	// 	let productQty = $('#addProductQtyModal-quantity').val();
-	// 	console.log(productQty)
-	// })
-
-	// let productDetailsUrl = '/products/getDetails/' + categoryId + '/' + productId;
-	// const data = getPage(productDetailsUrl);
-	// data.then(function (response) {
-	// 	$("#productDetailsBody").html(response);
-	// });
+	$('#addProductQtyModal-quantity').data('product-id', productId);	
 }
 
 function addToCartFromProductDetailsPage(categoryId, productId, qty) {
@@ -1055,12 +1042,6 @@ $(document).ready(function () {
 	}
 
 	try {
-		delayImagesAfterPageLoad();
-	} catch (err) {
-		console.log('Error - delay load images: ', err.message);
-	}
-
-	try {
 		showServerToastMessages();
 	} catch (err) {
 		console.log('Error - Toast messages: ', err.message);
@@ -1070,12 +1051,6 @@ $(document).ready(function () {
 		enableLightBoxForImages()
 	} catch (err) {
 		console.log('Error - Light box for images: ', err.message);
-	}
-
-	try {
-		initTooltips();
-	} catch (err) {
-		console.log('Error - Bootstrap tooltips: ', err.message);
 	}
 
 	try {

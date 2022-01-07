@@ -1447,4 +1447,21 @@ class AppController extends Controller
 		}
 		return [];
 	}
+
+	public function getGroupInfo($groupId = null)
+	{
+		App::uses('Group', 'Model');
+		$this->Group = new Group();
+
+		if (!$groupId) {
+			return [];
+		} else {
+			$conditions = ['Group.id' => $groupId, 'Group.site_id' => $this->Session->read('Site.id')];
+			if ($groupInfo = $this->Group->find('first', ['conditions' => $conditions])) {
+				return $groupInfo;
+			}
+		}
+		
+		return [];
+	}
 }
