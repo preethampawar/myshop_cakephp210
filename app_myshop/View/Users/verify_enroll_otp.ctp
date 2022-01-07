@@ -3,9 +3,8 @@
 	<h1 class="mb-3">Verify OTP</h1>
 
 	<div class="mb-3">
-		<label for="exampleFormControlInput1" class="form-label font-weight-bold">Enter your OTP
-			<span class="badge bg-info" data-bs-toggle="tooltip" data-placement="top"
-				  title="Enter the OTP which you have received in the email or on mobile">?</span>
+		<label for="exampleFormControlInput1" class="form-label font-weight-bold">
+			Enter your OTP			
 		</label>
 		<input
 			type="text"

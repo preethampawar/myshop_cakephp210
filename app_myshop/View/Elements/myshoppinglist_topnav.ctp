@@ -13,7 +13,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 	foreach ($shoppingCart['ShoppingCartProduct'] as $row) {
 		$totalItems += $row['quantity'];
 	}
-	?>
+?>
 
 	<div class="bg-white">
 
@@ -58,46 +58,29 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			if ($imageDetails) {
 				$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
 			}
-			?>
+		?>
 
 			<div class="mt-2 mb-4">
 				<div id="topNavCartRow<?php echo $categoryID . '-' . $productID; ?>">
 					<div class="p-1 pb-3 border rounded">
 						<div class="bg-light rounded p-2">
 							<div class="d-flex justify-content-between">
-											<span onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>')"
-												  role="button" class="text-primary">
-												<?= $productName ?>
-											</span>
+								<span onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>')" role="button" class="text-primary">
+									<?= $productName ?>
+								</span>
 
 								<div>
 									<?php
 									$title = $categoryName . ' &raquo; ' . $productName . '<br>Quantity: ' . $qty;
 									?>
-									<span
-										href="#"
-										onclick="showDeleteProductFromCartPopup('<?= $shoppingCartProductID ?>', '<?= $title ?>')"
-										class="text-danger p-2"
-										title="<?= $title ?>"
-										role="button"
-									><i class="fa fa-times"></i></span>
+									<span href="#" onclick="showDeleteProductFromCartPopup('<?= $shoppingCartProductID ?>', '<?= $title ?>')" class="text-danger p-2" title="<?= $title ?>" role="button"><i class="fa fa-times"></i></span>
 								</div>
 							</div>
 
 						</div>
 						<div class="d-flex mt-2">
 							<div>
-								<img
-										src="<?php echo $thumbUrl; ?>"
-										loading="lazy"
-										class="img-fluid"
-										role="button"
-										alt="<?php echo $productName; ?>"
-										id="<?php echo $imageTagId; ?>"
-										width="75"
-										height="75"
-										onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');"
-								/>
+								<img src="<?php echo $thumbUrl; ?>" loading="lazy" class="img-fluid" role="button" alt="<?php echo $productName; ?>" id="<?php echo $imageTagId; ?>" width="75" height="75" onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');" />
 							</div>
 							<div class="ms-2">
 								<div class="small text-muted">
@@ -109,13 +92,13 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 									<div>
 										<span class="text-danger fw-bold fs-5"><?php echo $this->App->price($productCartValue); ?></span>
 									</div>
-									<?php if ($showDiscount): ?>
+									<?php if ($showDiscount) : ?>
 										<div class="ms-2 mt-1">
 											<span class="small text-decoration-line-through">MRP <?php echo $this->App->price($productCartMRPValue); ?></span>
 										</div>
 									<?php endif; ?>
 								</div>
-								<?php if ($showDiscount): ?>
+								<?php if ($showDiscount) : ?>
 									<div class="text-success fw-bold small">
 										Save <?php echo $this->App->priceOfferInfo($productCartValue, $productCartMRPValue); ?>
 									</div>
@@ -126,27 +109,13 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 							<div class="small">Quantity:</div>
 							<div class="d-flex">
 
-								<input
-										type="number"
-										id="ProductQuantity<?= $shoppingCartProductID ?>"
-										name="data[Product][quantity]"
-										class="form-control form-control-sm w-50"
-										min="1"
-										max="100"
-										data-shopping-cart-product-id="<?= $shoppingCartProductID ?>"
-										data-actual-qty="<?= $qty ?>"
-										value="<?= $qty ?>"
-										required
-								>
+								<input type="number" id="ProductQuantity<?= $shoppingCartProductID ?>" name="data[Product][quantity]" class="form-control form-control-sm w-50" min="1" max="100" data-shopping-cart-product-id="<?= $shoppingCartProductID ?>" data-actual-qty="<?= $qty ?>" value="<?= $qty ?>" required>
 								<div>
-									<button
-											class="btn btn-sm btn-primary ms-2"
-											onclick="updateProductQtyFromShoppingCart('<?php echo $categoryID; ?>', '<?php echo $productID; ?>', $('#ProductQuantity<?= $shoppingCartProductID ?>').val(), '<?= $shoppingCartProductID ?>')">
+									<button class="btn btn-sm btn-primary ms-2" onclick="updateProductQtyFromShoppingCart('<?php echo $categoryID; ?>', '<?php echo $productID; ?>', $('#ProductQuantity<?= $shoppingCartProductID ?>').val(), '<?= $shoppingCartProductID ?>')">
 										Update
 									</button>
 								</div>
-								<div id="updatingCartSpinner<?= $shoppingCartProductID ?>"
-									 class="spinner-border spinner-border-sm text-primary ms-3 mt-2 small d-none" role="status">
+								<div id="updatingCartSpinner<?= $shoppingCartProductID ?>" class="spinner-border spinner-border-sm text-primary ms-3 mt-2 small d-none" role="status">
 									<span class="visually-hidden">updating...</span>
 								</div>
 							</div>
@@ -154,7 +123,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 					</div>
 				</div>
 			</div>
-			<?php
+		<?php
 		}
 		?>
 
@@ -204,16 +173,16 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			</div>
 
 			<!-------------- -->
-			<?php if($applyPromoDiscount) { ?>
-			<div class="small text-danger">
-				Promo Code Applied - <?= $this->App->price($promoDiscountValue) ?> OFF
-			</div>
+			<?php if ($applyPromoDiscount) { ?>
+				<div class="small text-danger">
+					Promo Code Applied - <?= $this->App->price($promoDiscountValue) ?> OFF
+				</div>
 			<?php } ?>
 
-			<?php if($promoCodeInfo && $applyPromoDiscount === false) { ?>
-			<div class="small text-danger">
-				Add item(s) worth <?= $this->App->price($purchaseThisMuchToAvailPromoCode) ?> or more to get <?= $this->App->price($promoDiscountValue) ?> OFF
-			</div>
+			<?php if ($promoCodeInfo && $applyPromoDiscount === false) { ?>
+				<div class="small text-danger">
+					Add item(s) worth <?= $this->App->price($purchaseThisMuchToAvailPromoCode) ?> or more to get <?= $this->App->price($promoDiscountValue) ?> OFF
+				</div>
 			<?php } ?>
 			<!-------------- -->
 
@@ -224,9 +193,9 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			<div>
 				<?php
 				if ($deliveryCharges > 0 && $minOrderForFreeShipping > $payableAmount) {
-					?>
+				?>
 					<span class="text-danger small">Free delivery on Orders above <?= $this->App->price($minOrderForFreeShipping) ?></span>
-					<?php
+				<?php
 				}
 				?>
 			</div>
@@ -242,42 +211,33 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		<?php
 		if ($this->Session->check('Site.show_promo_codes') && (bool)$this->Session->read('Site.show_promo_codes') === true) {
 		?>
-		<div class="mt-4 p-3 pb-4 shadow rounded small">
-			<h6>Have Promo Code (or) Discount Code?</h6>
-			<hr>
-			<div class="d-flex justify-content-sm-between">
-				<input
-					type="text"
-					name="promoc"
-					id="promoCodeVal"
-					class="form-control form-control-sm"
-					placeholder="Enter code here"
-				>
-				<button class="btn btn-outline-primary btn-sm ms-2" onclick="applyPromoCode()">Apply</button>
-			</div>
-
-			
-
-			<?php
-			if ($this->Session->check('PromoCode')) {
-				?>
-				<div class="mt-3 mb-0 alert alert-secondary bg-light text-center">
-					Applied Promo Code: <b><?= $this->Session->read('PromoCode.name') ?></b>
-
-					<div class="mt-2 text-center">
-						<span class="btn btn-sm btn-outline-danger rounded-pill" onclick="removePromoCode()"><i class="fa fa-times me-1"></i> Remove Promo Code</span>
-					</div>
+			<div class="mt-4 p-3 pb-4 shadow rounded small">
+				<h6>Have Promo Code (or) Discount Code?</h6>
+				<hr>
+				<div class="d-flex justify-content-sm-between">
+					<input type="text" name="promoc" id="promoCodeVal" class="form-control form-control-sm" placeholder="Enter code here">
+					<button class="btn btn-outline-primary btn-sm ms-2" onclick="applyPromoCode()">Apply</button>
 				</div>
-				<?php
-			}
-			?>
 
-			<?= $this->element('promocodes_list') ?>			
-		</div>
+				<?php
+				if ($this->Session->check('PromoCode')) {
+				?>
+					<div class="mt-3 mb-0 alert alert-secondary bg-light text-center">
+						Applied Promo Code: <b><?= $this->Session->read('PromoCode.name') ?></b>
+
+						<div class="mt-2 text-center">
+							<span class="btn btn-sm btn-outline-danger rounded-pill" onclick="removePromoCode()"><i class="fa fa-times me-1"></i> Remove Promo Code</span>
+						</div>
+					</div>
+				<?php
+				}
+				?>
+
+				<?= $this->element('promocodes_list') ?>
+			</div>
 		<?php
 		}
 		?>
-
 
 		<div class="mt-5 text-center">
 			<button class="btn btn-orange" onclick="showOrderDeliveryDetails()">PLACE ORDER</button>
@@ -286,15 +246,13 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 		</div>
 	</div>
 
-
-	<?php
+<?php
 } else {
-	?>
+?>
 	<div class="bg-white">
 		No items in your cart.
 	</div>
-	<?php
+<?php
 }
 ?>
 <br><br><br><br>
-

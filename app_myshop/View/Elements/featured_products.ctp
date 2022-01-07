@@ -5,9 +5,6 @@ $homepage = $homepage ?? null;
 App::uses('Product', 'Model');
 $productModel = new Product();
 $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), true, $limit);
-
-//$featuredProductsCacheKey = $this->Session->read('CacheKeys.featuredProducts');
-//$allCategories = Cache::read($featuredProductsCacheKey, 'verylong');
 ?>
 
 <section id="ProductsInfo">
@@ -88,47 +85,6 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 							'ratingsCount' => $ratingsCount,
 						]
 					);
-
-
-//					if (!empty($row['CategoryProducts'])) {
-//						foreach ($row['CategoryProducts'] as $row2) {
-//							$pCount++;
-//							$productID = $row2['Product']['id'];
-//							$productName = ucwords($row2['Product']['name']);
-//							$productNameSlug = Inflector::slug($productName, '-');
-//							$productTitle = $productName;
-//
-//							$assetDomainUrl = Configure::read('AssetDomainUrl');
-//							$productUploadedImages = $row2['Product']['images'] ? json_decode($row2['Product']['images']) : [];
-//							$imageDetails = $this->App->getHighlightImage($productUploadedImages);
-//							$thumbUrl = "/img/noimage.jpg";
-//							$imageTagId = random_int(1, 10000);
-//
-//							if($imageDetails) {
-//								$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
-//							}
-//
-//							$productImageUrl = $thumbUrl;
-//							$mrp = $row2['Product']['mrp'];
-//							$discount = $row2['Product']['discount'];
-//							$salePrice = $mrp - $discount;
-//
-//							echo $this->element('product_card', [
-//									'productImageUrl' => $productImageUrl,
-//									'productName' => $productName,
-//									'imageTagId' => $imageTagId,
-//									'productTitle' => $productTitle,
-//									'categoryID' => $categoryID,
-//									'productID' => $productID,
-//									'categoryNameSlug' => $categoryNameSlug,
-//									'productNameSlug' => $productNameSlug,
-//									'mrp' => $mrp,
-//									'discount' => $discount,
-//									'salePrice' => $salePrice,
-//								]
-//							);
-//						}
-//					}
 				}
 				?>
 			</div>

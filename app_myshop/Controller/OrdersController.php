@@ -493,6 +493,7 @@ class OrdersController extends AppController
 			$salePrice = $mrp - $discount;
 			$productName = $row['Product']['name'];
 			$categoryName = $row['Category']['name'];
+			$product_id = $row['Product']['id'];
 
 			$orderProductData = null;
 			$orderProductData = [
@@ -500,6 +501,7 @@ class OrdersController extends AppController
 					'id' => null,
 					'order_id' => $orderId,
 					'site_id' => $siteId,
+					'product_id' => $product_id,
 					'product_name' => $productName,
 					'category_name' => $categoryName,
 					'quantity' => $qty,
