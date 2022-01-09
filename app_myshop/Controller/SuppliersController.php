@@ -201,39 +201,101 @@ class SuppliersController extends AppController
 		$this->redirect('/admin/suppliers/');
 	}
 
-	function admin_products($supplierId = null)
+	function admin_products($supplierId = null, $groupId = null)
 	{
 		$errorMsg = null;
-
+		
+		App::uses('SupplierProduct', 'Model');
+		$supplierProductModel = new SupplierProduct();		
 
 		if ($this->request->isPost()) {
 			$data = $this->request->data;
 
+			if (!empty($data['SupplierProduct'])) {				
 
+				foreach($data['SupplierProduct'] as $row) {
+					$deleteConditions = [
+						'SupplierProduct.supplier_id' => $supplierId,
+						'SupplierProduct.product_id' => $row['product_id'],  
+						'SupplierProduct.site_id' => $this->Session->read('Site.id')
+					];
+					$supplierProductModel->deleteAll($deleteConditions);
+
+					$tmp = [];
+					$tmp['SupplierProduct']['id'] = null;
+					$tmp['SupplierProduct']['product_id'] = $row['product_id'];
+					$tmp['SupplierProduct']['price_relation'] = $row['price_relation'];
+					$tmp['SupplierProduct']['relative_base_price'] = (float)$row['relative_base_price'];
+					$tmp['SupplierProduct']['price_relation2'] = $row['price_relation2'];
+					$tmp['SupplierProduct']['relative_base_price2'] = (float)$row['relative_base_price2'];
+					$tmp['SupplierProduct']['active'] = (bool)$row['active'];
+					$tmp['SupplierProduct']['supplier_id'] = $supplierId;
+					$tmp['SupplierProduct']['site_id'] = $this->Session->read('Site.id');
+
+					$supplierProductModel->save($tmp);				
+				}
+
+				$this->successMsg('Supplier Products updated.');
+				$this->redirect($this->request->referer());
+			}
 		}
 
-
 		$suppliers = $this->Supplier->find('list', ['conditions' => ['Supplier.site_id' => $this->Session->read('Site.id'), 'Supplier.deleted' => 0]]);
-		//debug($suppliers);
-
-		App::uses('SupplierProduct', 'Model');
-		$supplierProductModel = new SupplierProduct();
+		$supplierProductModel->recursive = -1;
 		$supplierProducts = $supplierProductModel->find('all', ['conditions' => ['SupplierProduct.supplier_id' => $supplierId]]);
-		debug($supplierProducts);
+		
+		if ($supplierProducts) {
+			$tmp = [];
+			foreach($supplierProducts as $row) {
+				$tmp[$row['SupplierProduct']['product_id']] = $row;
+			}
+			$supplierProducts = $tmp;
+			unset($tmp);
+		}
+
+		App::uses('Group', 'Model');
+		$this->Group = new Group();
+		$groupRates = $this->Group->find('list', ['fields' => ['Group.id', 'Group.rate'], 'conditions' => ['Group.site_id' => $this->Session->read('Site.id'), 'Group.deleted' => 0]]);
+
+		$groups = $this->Group->find('all', ['conditions' => ['Group.site_id' => $this->Session->read('Site.id'), 'Group.deleted' => 0], 'order' => ['Group.name']]);
+
+		$groupsList = [];
+		foreach($groups as $index => $row) {
+			$groupName = $row['Group']['name'] . ' [' . $row['Group']['rate'] . ']';
+			$groupsList[$row['Group']['id']] = $groupName;
+		}
+		unset($groups);
+
+		$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.deleted' => 0, 'Product.group_id >' => 0];
+
+		if ($groupId) {
+			$conditions['Product.group_id'] = $groupId;
+		}
 
 		App::uses('Product', 'Model');
 		$productModel = new Product();
 		$productModel->unbindModel(['hasMany' => 'CategoryProduct']);
-
-		$conditions = ['Product.site_id' => $this->Session->read('Site.id'), 'Product.deleted' => 0];
-		$products = $productModel->find('all', ['conditions' => $conditions, 'fields' => ['Product.id', 'Product.name', 'Product.mrp', 'Product.allow_relative_price_update']]);
-		debug($products);
-
+		$products = $productModel->find('all',
+			[
+				'conditions' => $conditions,
+				'fields' => [
+					'Product.id',
+					'Product.name',
+					'Product.mrp',
+					'Product.allow_relative_price_update',
+					'Product.relative_base_price',
+					'Product.group_id',
+					'Product.relative_price_relation',
+					'Product.discount',
+				],
+				'order' => ['Product.name ASC', 'Product.group_id ASC']
+			]
+		);
+		// debug($products);
 
 		($errorMsg) ? $this->errorMsg($errorMsg) : '';
 
-		$this->set(compact('errorMsg', 'products', 'suppliers', 'supplierId'));
+		$this->set(compact('errorMsg', 'products', 'supplierProducts', 'groupsList', 'groupId', 'groupRates', 'suppliers', 'supplierId'));
 	}
+	
 }
-
-?>
