@@ -357,17 +357,17 @@ class OrdersController extends AppController
 					$msg = 'Your order has been placed successfully. You will be notified once the order is confirmed.';
 
 					if((bool)$this->Session->read('Site.sms_notifications') === true) {
-						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+						// $this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
 
-						// send one notification msg to Karthik / Delivery person
-						$this->Sms->sendNewOrderSms('7331109133', '#'.$orderId, $this->Session->read('Site.title'));
+						// // send one notification msg to Karthik / Delivery person
+						// $this->Sms->sendNewOrderSms('7331109133', '#'.$orderId, $this->Session->read('Site.title'));
 
-						// send new order sms to manager of the site
-						$adminPhone = $this->Session->read('Site.notifications_mobile_no');
+						// // send new order sms to manager of the site
+						// $adminPhone = $this->Session->read('Site.notifications_mobile_no');
 
-						if (!empty($adminPhone)) {
-							$this->Sms->sendNewOrderSms($adminPhone, '#'.$orderId, $this->Session->read('Site.title'));
-						}
+						// if (!empty($adminPhone)) {
+						// 	$this->Sms->sendNewOrderSms($adminPhone, '#'.$orderId, $this->Session->read('Site.title'));
+						// }
 					}
 
 				} else {
@@ -1036,7 +1036,7 @@ class OrdersController extends AppController
 SELECT 
 	s.id supplier_id, s.name supplier_name
 	, p.id product_id, p.name p_name, p.group_id
-	, g.name g_name
+	, g.name g_name, g.default_paper_rate
 	, sp.price_relation, sp.relative_base_price, sp.price_relation2, sp.relative_base_price2
 	, gpr.date paper_rate_date, gpr.rate paper_rate
 FROM suppliers s
@@ -1044,10 +1044,11 @@ FROM suppliers s
 	JOIN `products` p ON p.id = sp.product_id
 	JOIN `groups` g ON g.id = p.group_id
 	LEFT JOIN `group_paper_rates` gpr ON gpr.group_id = g.id
+		AND gpr.date BETWEEN '$start_date' AND '$end_date'
 
 WHERE s.site_id = $siteId 
 	AND sp.active = 1
-	AND gpr.date BETWEEN '$start_date' AND '$end_date'
+	
 ORDER BY supplier_name, p_name, paper_rate_date
 		";
 		$supplierProductsPaperRates = $supplierModel->query($sql);
@@ -1063,6 +1064,7 @@ ORDER BY supplier_name, p_name, paper_rate_date
 				$group_id = $row['p']['group_id'] ?? null;
 				
 				$group_name = $row['g']['g_name'] ?? null;
+				$group_default_paper_rate = $row['g']['default_paper_rate'] ?? null;
 
 				$supplierProductPriceRelation1 = $row['sp']['price_relation'] ?? null;
 				$supplierProductRelativePrice1 = $row['sp']['relative_base_price'] ?? null;
@@ -1071,6 +1073,10 @@ ORDER BY supplier_name, p_name, paper_rate_date
 
 				$paperRateDate = $row['gpr']['paper_rate_date'] ?? null;
 				$paperRate = $row['gpr']['paper_rate'] ?? null;
+
+				if ($paperRate === null && $group_default_paper_rate > 0) {
+					$paperRate = $group_default_paper_rate;	
+				}
 
 				$supplierRate = 0;
                 
@@ -1105,23 +1111,42 @@ ORDER BY supplier_name, p_name, paper_rate_date
                     }
                 }
 
-				if (!empty($supplierId) && !empty($productId) && !empty($paperRateDate)) {
-					$tmp[$supplierId][$productId][$paperRateDate] = [
-						'supplierId' => $supplierId,
-						'supplierName' => $supplierName,
-						'productId' => $productId,
-						'productName' => $productName,
-						'group_id' => $group_id,
-						'group_name' => $group_name,
-						'supplierProductPriceRelation1' => $supplierProductPriceRelation1,
-						'supplierProductRelativePrice1' => $supplierProductRelativePrice1,
-						'supplierProductPriceRelation2' => $supplierProductPriceRelation2,
-						'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
-	
-						'paperRateDate' => $paperRateDate,
-						'paperRate' => $paperRate,
-						'supplierRate' => $supplierRate,
-					];
+                if (!empty($supplierId) && !empty($productId)) {
+                    if(!empty($paperRateDate)) {
+						$tmp[$supplierId][$productId][$paperRateDate] = [
+							'supplierId' => $supplierId,
+							'supplierName' => $supplierName,
+							'productId' => $productId,
+							'productName' => $productName,
+							'group_id' => $group_id,
+							'group_name' => $group_name,
+							'supplierProductPriceRelation1' => $supplierProductPriceRelation1,
+							'supplierProductRelativePrice1' => $supplierProductRelativePrice1,
+							'supplierProductPriceRelation2' => $supplierProductPriceRelation2,
+							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
+		
+							'paperRateDate' => $paperRateDate,
+							'paperRate' => $paperRate,
+							'supplierRate' => $supplierRate,
+						];
+                    } else {
+						$tmp[$supplierId][$productId]['default'] = [
+							'supplierId' => $supplierId,
+							'supplierName' => $supplierName,
+							'productId' => $productId,
+							'productName' => $productName,
+							'group_id' => $group_id,
+							'group_name' => $group_name,
+							'supplierProductPriceRelation1' => $supplierProductPriceRelation1,
+							'supplierProductRelativePrice1' => $supplierProductRelativePrice1,
+							'supplierProductPriceRelation2' => $supplierProductPriceRelation2,
+							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
+		
+							'paperRateDate' => $paperRateDate,
+							'paperRate' => $paperRate,
+							'supplierRate' => $supplierRate,
+						];
+					}                
 				}				
 			}
 			
