@@ -16,7 +16,8 @@
 						<th>#</th>
 						<th>Group</th>
 						<th>Status</th>
-						<th>Base Rate</th>
+						<th>MRP Base Rate</th>
+						<th>Default Paper Rate</th>
 						<th>Created</th>
 						<th></th>
 					</tr>
@@ -30,6 +31,8 @@
 						$groupCreatedOn = date('d/m/Y', strtotime($row['Group']['created']));
 						$groupActive = $row['Group']['active'];
 						$groupRate = $row['Group']['rate'];
+						$defaultRate = $row['Group']['default_paper_rate'];
+						
 						?>
 						<tr>
 							<td><?php echo $i; ?>.</td>
@@ -63,6 +66,9 @@
 							</td>
 							<td>
 								<?= $groupRate ?>
+							</td>
+							<td>
+								<?= $defaultRate > 0 ? $defaultRate : '-' ?>
 							</td>
 							<td><?php echo $groupCreatedOn; ?></td>
 

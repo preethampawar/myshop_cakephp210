@@ -82,6 +82,14 @@ if (!empty($orders)) {
 				$supplierRate = (float)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId][$createdRawDate]['supplierRate'] ?? 0);
 				$supplierAmount = $supplierRate * $quantity;
 
+				if (empty($paperRateDate)) {
+					$paperRate = (float)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId]['default']['paperRate'] ?? 0);
+					$paperRateDate = (string)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId]['default']['paperRateDate'] ?? '');
+					$supplierRate = (float)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId]['default']['supplierRate'] ?? 0);
+					$supplierAmount = $supplierRate * $quantity;
+				}
+
+
 
 				$ordersData[$k]['SlNo'] = $i;
 				$ordersData[$k]['orderNo'] = $orderId;

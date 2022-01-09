@@ -34,7 +34,7 @@
 		</div>
 
 		<div class="mt-3">
-			<label for="GroupRate">Base Rate</label>
+			<label for="GroupRate">MRP Base Rate</label>
 			<?= $this->Form->input('Group.rate', [
 					'type' => 'number',
 					'placeholder' => 'Enter Rate',
@@ -42,7 +42,19 @@
 					'class' => 'form-control form-control-sm',
 					'required' => false,
 			]) ?>
-			<span class="text-danger small">*All products related to this group will be updated accordingly.</span>
+			<span class="text-danger small">*All products MRP rates, related to this group will be updated accordingly.</span>
+		</div>
+		
+		<div class="mt-3">
+			<label for="GroupRate">Default Paper Rate</label>
+			<?= $this->Form->input('Group.default_paper_rate', [
+					'type' => 'number',
+					'placeholder' => 'Enter Rate',
+					'label' => false,
+					'class' => 'form-control form-control-sm',
+					'required' => false,
+			]) ?>
+			<span class="text-danger small">*Default rate used to calculate seller product rates</span>
 		</div>
 
 		<div class="mt-4">
