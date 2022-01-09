@@ -940,6 +940,7 @@ class OrdersController extends AppController
 		$siteId = $this->Session->read('Site.id');
 		$start_date = $this->request->query['start_date'] ?? date('Y').'-01-01';
 		$end_date = $this->request->query['end_date'] ?? date('Y-m-d');
+		$selectedSupplier = $this->request->query['data']['supplier_id'] ?? '';
 
 		$sql = 'select
 					count(*) count, status
@@ -982,7 +983,19 @@ class OrdersController extends AppController
 		$conditions['Order.status NOT'] = Order::ORDER_STATUS_DRAFT;
 		$conditions['Order.archived'] = 0;
 
-		$this->Order->bindModel(['belongsTo' => ['User']]);
+		$orderProductConditions = [];
+		if ($selectedSupplier > 0) {
+			$orderProductConditions['OrderProduct.supplier_id'] = $selectedSupplier;
+		}
+
+		$this->Order->bindModel([
+			'belongsTo' => ['User'],
+			'hasMany' => [
+				'OrderProduct' => [
+					'conditions' => $orderProductConditions
+				]
+			],
+		]);
 		// $this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
 
 
@@ -992,6 +1005,14 @@ class OrdersController extends AppController
 				'Order.created' => 'ASC'
 			],
 		]);
+		if (!empty($orders)) {
+			foreach($orders as $index => $row) {
+				if (empty($row['OrderProduct'])) {
+					unset($orders[$index]);
+				}
+			}
+		}
+
 
 		App::import('Model', 'User');
 		$userModel = new User();
@@ -1019,10 +1040,10 @@ SELECT
 	, sp.price_relation, sp.relative_base_price, sp.price_relation2, sp.relative_base_price2
 	, gpr.date paper_rate_date, gpr.rate paper_rate
 FROM suppliers s
-	JOIN supplier_products sp ON sp.supplier_id = s.id
-	JOIN products p ON p.id = sp.product_id
-	JOIN GROUPS g ON g.id = p.group_id
-	LEFT JOIN group_paper_rates gpr ON gpr.group_id = g.id
+	JOIN `supplier_products` sp ON sp.supplier_id = s.id
+	JOIN `products` p ON p.id = sp.product_id
+	JOIN `groups` g ON g.id = p.group_id
+	LEFT JOIN `group_paper_rates` gpr ON gpr.group_id = g.id
 
 WHERE s.site_id = $siteId 
 	AND sp.active = 1
@@ -1115,7 +1136,9 @@ ORDER BY supplier_name, p_name, paper_rate_date
 		$this->set('archivedOrdersCount', $archivedOrdersCount);
 		$this->set('start_date', $start_date);
 		$this->set('end_date', $end_date);
+		$this->set('download', $download);
 		$this->set('suppliers', $suppliers);
+		$this->set('selectedSupplier', $selectedSupplier);
 		$this->set('download', $download);
 		$this->set('supplierProductsPaperRates', $supplierProductsPaperRates);
 	}
