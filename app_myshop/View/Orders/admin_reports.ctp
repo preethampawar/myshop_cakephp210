@@ -20,6 +20,9 @@ $q = '';
 if ($q_start_date && $q_end_date) {
 	$q = '?'.$q_start_date.'&'.$q_end_date;
 }
+if ($selectedSupplier > 0) {
+	$q .= '&data[supplier_id]='.$selectedSupplier;
+}
 
 $ordersData = [];
 if (!empty($orders)) {
@@ -190,7 +193,7 @@ if ($download) {
 	}
 	$fileName = 'Orders_' . ($start_date ?? date('Y-m-d')) . ' to ' . ($end_date ?? date('Y-m-d')) . '.csv';
 
-	array_to_csv_download($csvData, $fileName);
+	array_to_csv_download($csvData, $fileName, ',');
 
 
 }
@@ -200,8 +203,8 @@ if ($download) {
 <h1>Orders Report</h1>
 
 <form method="get">
-	<div class="hstack gap-3 small mt-3">
-		<div>
+	<div class="row small mt-3">
+		<div class="col-md-3 mb-3">
 			<label for="StartDate">From <span class="text-danger small">(required)</span></label>
 			<input
 				type="date"
@@ -212,7 +215,7 @@ if ($download) {
 			>
 		</div>
 
-		<div>
+		<div class="col-md-3 mb-3">
 			<label for="EndDate">To <span class="text-danger small">(required)</span></label>
 			<input
 				type="date"
@@ -222,7 +225,16 @@ if ($download) {
 				class="form-control form-control-sm"
 			>
 		</div>
-		<div><button class="btn btn-sm btn-info mt-3" type="submit">Search</button></div>
+		
+		<div class="col-md-3 mb-3">
+			<label for="Suppliers">Supplier</label>
+			<?= $this->Form->select('supplier_id', $suppliers, ['class' => 'form-select form-select-sm', 'default' => $selectedSupplier ?? null, 'empty' => '- All -']) ?>
+		</div>
+
+		<div class="col-md-3">
+			<label for="Suppliers" class="d-none d-md-block">&nbsp;</label>
+			<button class="btn btn-sm btn-outline-primary w-100 d-block" type="submit">Search</button>
+		</div>
 	</div>
 </form>
 <hr>
