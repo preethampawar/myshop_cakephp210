@@ -357,17 +357,17 @@ class OrdersController extends AppController
 					$msg = 'Your order has been placed successfully. You will be notified once the order is confirmed.';
 
 					if((bool)$this->Session->read('Site.sms_notifications') === true) {
-						// $this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
+						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
 
-						// // send one notification msg to Karthik / Delivery person
-						// $this->Sms->sendNewOrderSms('7331109133', '#'.$orderId, $this->Session->read('Site.title'));
+						// send one notification msg to Karthik / Delivery person
+						$this->Sms->sendNewOrderSms('917331109133', '#'.$orderId, $this->Session->read('Site.title'));
 
-						// // send new order sms to manager of the site
-						// $adminPhone = $this->Session->read('Site.notifications_mobile_no');
+						// send new order sms to manager of the site
+						$adminPhone = $this->Session->read('Site.notifications_mobile_no');
 
-						// if (!empty($adminPhone)) {
-						// 	$this->Sms->sendNewOrderSms($adminPhone, '#'.$orderId, $this->Session->read('Site.title'));
-						// }
+						if (!empty($adminPhone)) {
+							$this->Sms->sendNewOrderSms($adminPhone, '#'.$orderId, $this->Session->read('Site.title'));
+						}
 					}
 
 				} else {
@@ -1074,42 +1074,38 @@ ORDER BY supplier_name, p_name, paper_rate_date
 				$paperRateDate = $row['gpr']['paper_rate_date'] ?? null;
 				$paperRate = $row['gpr']['paper_rate'] ?? null;
 
-				if ($paperRate === null && $group_default_paper_rate > 0) {
-					$paperRate = $group_default_paper_rate;	
-				}
-
 				$supplierRate = 0;
                 
-				if ($paperRate > 0) {
-                    try {
-                        switch ($supplierProductPriceRelation1) {
-							case '+':
-								$supplierRate = (float)eval("return ($paperRate+($supplierProductRelativePrice1));");
-								break;
-							case '-':
-								$supplierRate = (float)eval("return ($paperRate-($supplierProductRelativePrice1));");
-								break;
-							case '*':
-								$supplierRate = (float)eval("return ($paperRate*$supplierProductRelativePrice1);");
-								break;
-						}
+				
+				try {
+					switch ($supplierProductPriceRelation1) {
+						case '+':
+							$supplierRate = (float)eval("return ($paperRate+($supplierProductRelativePrice1));");
+							break;
+						case '-':
+							$supplierRate = (float)eval("return ($paperRate-($supplierProductRelativePrice1));");
+							break;
+						case '*':
+							$supplierRate = (float)eval("return ($paperRate*$supplierProductRelativePrice1);");
+							break;
+					}
 
-						switch ($supplierProductPriceRelation2) {
-							case '+':
-								$supplierRate = (float)eval("return ($supplierRate+($supplierProductRelativePrice2));");
-								break;
-							case '-':
-								$supplierRate = (float)eval("return ($supplierRate-($supplierProductRelativePrice2));");
-								break;
-							case '*':
-								$supplierRate = (float)eval("return ($supplierRate*$supplierProductRelativePrice2);");
-								break;
-						}
-						
-                    } catch (Throwable $e) {
-                        //debug($e->getMessage());
-                    }
-                }
+					switch ($supplierProductPriceRelation2) {
+						case '+':
+							$supplierRate = (float)eval("return ($supplierRate+($supplierProductRelativePrice2));");
+							break;
+						case '-':
+							$supplierRate = (float)eval("return ($supplierRate-($supplierProductRelativePrice2));");
+							break;
+						case '*':
+							$supplierRate = (float)eval("return ($supplierRate*$supplierProductRelativePrice2);");
+							break;
+					}
+					
+				} catch (Throwable $e) {
+					//debug($e->getMessage());
+				}
+                
 
                 if (!empty($supplierId) && !empty($productId)) {
                     if(!empty($paperRateDate)) {
@@ -1143,7 +1139,7 @@ ORDER BY supplier_name, p_name, paper_rate_date
 							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
 		
 							'paperRateDate' => $paperRateDate,
-							'paperRate' => $paperRate,
+							'paperRate' => $group_default_paper_rate,
 							'supplierRate' => $supplierRate,
 						];
 					}                
