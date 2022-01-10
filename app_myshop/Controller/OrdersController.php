@@ -1074,38 +1074,42 @@ ORDER BY supplier_name, p_name, paper_rate_date
 				$paperRateDate = $row['gpr']['paper_rate_date'] ?? null;
 				$paperRate = $row['gpr']['paper_rate'] ?? null;
 
+				if ($paperRate === null && $group_default_paper_rate > 0) {
+					$paperRate = $group_default_paper_rate;	
+				}
+
 				$supplierRate = 0;
                 
-				
-				try {
-					switch ($supplierProductPriceRelation1) {
-						case '+':
-							$supplierRate = (float)eval("return ($paperRate+($supplierProductRelativePrice1));");
-							break;
-						case '-':
-							$supplierRate = (float)eval("return ($paperRate-($supplierProductRelativePrice1));");
-							break;
-						case '*':
-							$supplierRate = (float)eval("return ($paperRate*$supplierProductRelativePrice1);");
-							break;
-					}
+				if ($paperRate > 0) {
+                    try {
+                        switch ($supplierProductPriceRelation1) {
+							case '+':
+								$supplierRate = (float)eval("return ($paperRate+($supplierProductRelativePrice1));");
+								break;
+							case '-':
+								$supplierRate = (float)eval("return ($paperRate-($supplierProductRelativePrice1));");
+								break;
+							case '*':
+								$supplierRate = (float)eval("return ($paperRate*$supplierProductRelativePrice1);");
+								break;
+						}
 
-					switch ($supplierProductPriceRelation2) {
-						case '+':
-							$supplierRate = (float)eval("return ($supplierRate+($supplierProductRelativePrice2));");
-							break;
-						case '-':
-							$supplierRate = (float)eval("return ($supplierRate-($supplierProductRelativePrice2));");
-							break;
-						case '*':
-							$supplierRate = (float)eval("return ($supplierRate*$supplierProductRelativePrice2);");
-							break;
-					}
-					
-				} catch (Throwable $e) {
-					//debug($e->getMessage());
-				}
-                
+						switch ($supplierProductPriceRelation2) {
+							case '+':
+								$supplierRate = (float)eval("return ($supplierRate+($supplierProductRelativePrice2));");
+								break;
+							case '-':
+								$supplierRate = (float)eval("return ($supplierRate-($supplierProductRelativePrice2));");
+								break;
+							case '*':
+								$supplierRate = (float)eval("return ($supplierRate*$supplierProductRelativePrice2);");
+								break;
+						}
+						
+                    } catch (Throwable $e) {
+                        //debug($e->getMessage());
+                    }
+                }
 
                 if (!empty($supplierId) && !empty($productId)) {
                     if(!empty($paperRateDate)) {
@@ -1139,7 +1143,7 @@ ORDER BY supplier_name, p_name, paper_rate_date
 							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
 		
 							'paperRateDate' => $paperRateDate,
-							'paperRate' => $group_default_paper_rate,
+							'paperRate' => $paperRate,
 							'supplierRate' => $supplierRate,
 						];
 					}                
