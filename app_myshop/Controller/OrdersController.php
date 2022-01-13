@@ -223,6 +223,7 @@ class OrdersController extends AppController
 
 					if ($newUser) {
 						$userId = $newUser['User']['id'];
+						$this->Session->write('User', $newUser);
 					} else {
 						$error = 'Could not auto register user. Please try again.';
 					}
@@ -1033,7 +1034,7 @@ class OrdersController extends AppController
 
 		// get supplier product paper rates
 		$sql = "
-SELECT 
+SELECT
 	s.id supplier_id, s.name supplier_name
 	, p.id product_id, p.name p_name, p.group_id
 	, g.name g_name, g.default_paper_rate
@@ -1046,15 +1047,15 @@ FROM suppliers s
 	LEFT JOIN `group_paper_rates` gpr ON gpr.group_id = g.id
 		AND gpr.date BETWEEN '$start_date' AND '$end_date'
 
-WHERE s.site_id = $siteId 
+WHERE s.site_id = $siteId
 	AND sp.active = 1
-	
+
 ORDER BY supplier_name, p_name, paper_rate_date
 		";
 		$supplierProductsPaperRates = $supplierModel->query($sql);
 
 		$tmp = [];
-		if ($supplierProductsPaperRates) {			
+		if ($supplierProductsPaperRates) {
 			foreach($supplierProductsPaperRates as $row) {
 				$supplierId = $row['s']['supplier_id'] ?? null;
 				$supplierName = $row['s']['supplier_name'] ?? null;
@@ -1062,7 +1063,7 @@ ORDER BY supplier_name, p_name, paper_rate_date
 				$productId = $row['p']['product_id'] ?? null;
 				$productName = $row['p']['p_name'] ?? null;
 				$group_id = $row['p']['group_id'] ?? null;
-				
+
 				$group_name = $row['g']['g_name'] ?? null;
 				$group_default_paper_rate = $row['g']['default_paper_rate'] ?? null;
 
@@ -1075,11 +1076,11 @@ ORDER BY supplier_name, p_name, paper_rate_date
 				$paperRate = $row['gpr']['paper_rate'] ?? null;
 
 				if ($paperRate === null && $group_default_paper_rate > 0) {
-					$paperRate = $group_default_paper_rate;	
+					$paperRate = $group_default_paper_rate;
 				}
 
 				$supplierRate = 0;
-                
+
 				if ($paperRate > 0) {
                     try {
                         switch ($supplierProductPriceRelation1) {
@@ -1105,7 +1106,7 @@ ORDER BY supplier_name, p_name, paper_rate_date
 								$supplierRate = (float)eval("return ($supplierRate*$supplierProductRelativePrice2);");
 								break;
 						}
-						
+
                     } catch (Throwable $e) {
                         //debug($e->getMessage());
                     }
@@ -1124,7 +1125,7 @@ ORDER BY supplier_name, p_name, paper_rate_date
 							'supplierProductRelativePrice1' => $supplierProductRelativePrice1,
 							'supplierProductPriceRelation2' => $supplierProductPriceRelation2,
 							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
-		
+
 							'paperRateDate' => $paperRateDate,
 							'paperRate' => $paperRate,
 							'supplierRate' => $supplierRate,
@@ -1141,15 +1142,15 @@ ORDER BY supplier_name, p_name, paper_rate_date
 							'supplierProductRelativePrice1' => $supplierProductRelativePrice1,
 							'supplierProductPriceRelation2' => $supplierProductPriceRelation2,
 							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
-		
+
 							'paperRateDate' => $paperRateDate,
 							'paperRate' => $paperRate,
 							'supplierRate' => $supplierRate,
 						];
-					}                
-				}				
+					}
+				}
 			}
-			
+
 		}
 		$supplierProductsPaperRates = $tmp;
 		unset($tmp);

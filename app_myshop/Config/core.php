@@ -228,7 +228,7 @@ Configure::write('Cache.viewPrefix', 'prefix');
  */
 Configure::write('Session', [
 	'defaults' => 'php',
-	'timeout' => 2880,
+	'timeout' => 7200,
 ]);
 
 /**

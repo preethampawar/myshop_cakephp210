@@ -13,7 +13,7 @@ if (!$isMobileApp) {
 	<?php
 	if ($showAsButton === true) {
 	?>
-		<button title="Share" class="btn btn-sm btn-outline-success rounded-circle shareButton <?= $class ?> d-none" onclick="shareThis('<?= $title ?>', '<?= $text ?>', '<?= $url ?>', <?= $files ?>)">
+		<button title="Share" class="btn btn-sm btn-outline-secondary rounded-circle shareButton <?= $class ?> d-none" onclick="shareThis('<?= $title ?>', '<?= $text ?>', '<?= $url ?>', <?= $files ?>)">
 			<i class="fa fa-share-nodes"></i>
 		</button>
 	<?php
