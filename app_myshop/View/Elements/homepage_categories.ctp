@@ -33,7 +33,8 @@ if ($categories and !empty($categories)) {
     if ($showCategoriesDiv) {
         ?>
 
-			<div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 mb-5">
+			<div class="table-responsive mb-3">
+				<div class="hstack gap-3">
 				<?php
 				$loadingImageUrl = '/loading4.jpg';
 
@@ -56,47 +57,47 @@ if ($categories and !empty($categories)) {
 
                     if ($imageUrl) {
                         ?>
-					<div class="col text-center" id="categoryCard<?= $categoryId ?>">
 
-						<div class="card h-100 shadow" id="category<?php echo $categoryId; ?>">
-
-							<a href='<?= $categoryProductsUrl ?>' class="text-decoration-none d-block">
-								<img
-										src="<?php echo $loadingImageUrl; ?>"
-										data-original="<?php echo $imageUrl; ?>"
-										class="lazy card-img-top img-fluid"
-										role="button"
-										alt="<?php echo $categoryName; ?>"
-										width="300"
-										height="300"
-								/>
-							</a>
-
-							<div class="card-body text-center">
-								<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
-									<h6><?= $categoryName ?></h6>
+						<div id="categoryCard<?= $categoryId ?>">
+							<div class="text-center" id="category<?php echo $categoryId; ?> " style="width: 10rem;">
+								<a href='<?= $categoryProductsUrl ?>' class="text-decoration-none d-block">
+									<img
+											src="<?php echo $imageUrl; ?>"
+											data-original="<?php echo $imageUrl; ?>"
+											class="img-fluid rounded-circle"
+											role="button"
+											alt="<?php echo $categoryName; ?>"
+											width="300"
+											height="300"
+											loading="lazy"
+									/>
 								</a>
-								<div class="small">
-									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
-										<?= $productsCount ?> item(s)
-									</a>
 
-									<?= $this->element('sharebutton', [
-											'title' => $categoryName,
-											'text' => '',
-											'url' => $categoryProductsUrl,
-											'files' => '[]',
-											'class' => 'ms-2',
-											'showAsButton' => false,
-									]); ?>
+								<div class="card-body">
+									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
+										<h6><?= $categoryName ?></h6>
+									</a>
+									<div class="small">
+										<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
+											<?= $productsCount ?> item(s)
+										</a>
+
+										<?= $this->element('sharebutton', [
+												'title' => $categoryName,
+												'text' => '',
+												'url' => $categoryProductsUrl,
+												'files' => '[]',
+												'class' => 'ms-2',
+												'showAsButton' => false,
+										]); ?>
+									</div>
 								</div>
 							</div>
 						</div>
-
-					</div>
 					<?php
                     }
                 } ?>
+			</div>
 			</div>
 
 	<?php

@@ -311,7 +311,7 @@ function showAddProductQtyModal(categoryId, productId) {
 
 	$('#addProductQtyModal-quantity').val(1);
 	$('#addProductQtyModal-quantity').data('category-id', categoryId);
-	$('#addProductQtyModal-quantity').data('product-id', productId);	
+	$('#addProductQtyModal-quantity').data('product-id', productId);
 }
 
 function addToCartFromProductDetailsPage(categoryId, productId, qty) {
@@ -1031,31 +1031,3 @@ var alertModal = new bootstrap.Modal(document.getElementById('alertModal'), {
 });
 
 
-$(document).ready(function () {
-	$.fn.modal.Constructor.prototype.enforceFocus = function () {
-	};
-
-	try {
-		lazyLoadImages();
-	} catch (err) {
-		console.log('Error - Lazy load images: ', err.message);
-	}
-
-	try {
-		showServerToastMessages();
-	} catch (err) {
-		console.log('Error - Toast messages: ', err.message);
-	}
-
-	try {
-		enableLightBoxForImages()
-	} catch (err) {
-		console.log('Error - Light box for images: ', err.message);
-	}
-
-	try {
-		checkIfShareThisApiIsEnabled();
-	} catch (err) {
-		console.log('Error - Share feature not available ', err.message);
-	}
-});
