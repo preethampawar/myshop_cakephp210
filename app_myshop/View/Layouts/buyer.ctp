@@ -287,15 +287,15 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 		<div class="sticky-top shadow <?= $secondaryMenuBg ?>" style="z-index: 999">
 			<ul class="nav container justify-content-between pt-2 pb-2">
-				<li class="nav-item">
+				<li class="nav-item middle">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<i class="fa fa-bars-staggered"></i> Products
+						<i class="fa fa-bars-staggered fs-5"></i> Products
 					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')): ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-							<i class="fa fa-cart-shopping"></i> My Cart <span class="badge rounded-pill <?= $cartBadgeBg ?>">0</span>
+							<i class="fa fa-cart-shopping fs-5"></i> My Cart <span class="badge bg-orange rounded-pill">0</span>
 						</a>
 					</li>
 				<?php endif; ?>
@@ -751,18 +751,20 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		</footer>
 	</div>
 
-	<div class="container">
+	<div class="container bg-white text-dark">
 		<?php echo $this->element('sql_dump'); ?>
 	</div>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/js/site.js?v=1.2.7"></script>
+	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
+
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
 	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/site.js?v=1.2.7" defer></script>
-	<?php
-	echo $this->element('customjs', ['showLocationPopup' => $showLocationPopup]);
-	echo $this->element('footerscripts');
-	?>
+	<script src="/js/final.js?v=1.0.0" defer></script>
+
+	<!-- third party scripts from backend db -->
+	<?= $this->element('footerscripts')	?>
 </body>
 </html>
