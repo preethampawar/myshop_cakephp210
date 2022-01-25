@@ -76,8 +76,15 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	</script>
 
 	<meta name="theme-color" content="#317EFB"/>
+	<?php
+	if ($this->request->domain() === 'eatmukka.com') {
+		?>
+		<link rel="manifest" href="/manifest.json" />
+		<?php
+	}
+	?>
+	
 	<!--
-	<link rel="manifest" href="/manifest.json" />
 	<script type="module">
 		// import '/pwaupdate.js';
 		// const el = document.createElement('pwa-update');
