@@ -42,7 +42,7 @@ class AppController extends Controller
 
 	private function setMobileAppConfiguration()
 	{
-		if($this->Session->check('isMobileApp')) {
+		if ($this->Session->check('isMobileApp')) {
 			return true;
 		}
 
@@ -794,7 +794,6 @@ class AppController extends Controller
 				$visitInfo = $productVisitModel->read();
 			}
 		} catch (Exception $e) {
-
 		}
 
 		return $visitInfo;
@@ -892,7 +891,7 @@ class AppController extends Controller
 
 				// Use the client to do fun stuff like send text messages!
 				$client->messages->create(
-				// the number you'd like to send the message to
+					// the number you'd like to send the message to
 					'+919866042196',
 					[
 						// A Twilio phone number you purchased at twilio.com/console
@@ -1169,7 +1168,7 @@ class AppController extends Controller
 	{
 		$domain = $this->request->subdomains()[0];
 
-		return $domain.'.'.$keyOf;
+		return $domain . '.' . $keyOf;
 	}
 
 	protected function getSiteInfoFromCache()
@@ -1233,7 +1232,7 @@ class AppController extends Controller
 		$categoryProductsCount = $categoryProductModel->getCategoryProductsCount($siteId);
 
 		if ($categories) {
-			foreach($categories as $index => &$row) {
+			foreach ($categories as $index => &$row) {
 				$row['Category']['products_count'] = $categoryProductsCount[$row['Category']['id']] ?? 0;
 			}
 		}
@@ -1331,34 +1330,34 @@ class AppController extends Controller
 		$message = htmlentities(trim($message));
 		$smsNotificationEnabled = (bool) $this->Session->read('Site.sms_notifications') === true;
 
-		switch($orderStatus) {
+		switch ($orderStatus) {
 			case Order::ORDER_STATUS_NEW:
 				$emailTemplate = 'order_new';
-				$subject = 'New Order #'.$orderId;
+				$subject = 'New Order #' . $orderId;
 				break;
 			case Order::ORDER_STATUS_CONFIRMED:
 				$emailTemplate = 'order_confirmed';
-				$subject = 'Confirmed - Order #'.$orderId;
+				$subject = 'Confirmed - Order #' . $orderId;
 				break;
 			case Order::ORDER_STATUS_SHIPPED:
 				$emailTemplate = 'order_shipped';
-				$subject = 'Shipped - Order #'.$orderId;
+				$subject = 'Shipped - Order #' . $orderId;
 				break;
 			case Order::ORDER_STATUS_DELIVERED:
 				$emailTemplate = 'order_delivered';
-				$subject = 'Delivered - Order #'.$orderId;
+				$subject = 'Delivered - Order #' . $orderId;
 				break;
 			case Order::ORDER_STATUS_CANCELLED:
 				$emailTemplate = 'order_cancelled';
-				$subject = 'Cancelled - Order #'.$orderId;
+				$subject = 'Cancelled - Order #' . $orderId;
 				break;
-//			case Order::ORDER_STATUS_RETURNED:
-//				$emailTemplate = 'order_returned';
-//				$subject = 'Returned - Order #'.$orderId;
-//				break;
+				//			case Order::ORDER_STATUS_RETURNED:
+				//				$emailTemplate = 'order_returned';
+				//				$subject = 'Returned - Order #'.$orderId;
+				//				break;
 			case Order::ORDER_STATUS_CLOSED:
 				$emailTemplate = 'order_closed';
-				$subject = 'Closed - Order #'.$orderId;
+				$subject = 'Closed - Order #' . $orderId;
 				break;
 			default:
 				break;
@@ -1387,11 +1386,11 @@ class AppController extends Controller
 
 			// send sms
 			if (!in_array($orderStatus, [Order::ORDER_STATUS_DRAFT, Order::ORDER_STATUS_NEW, Order::ORDER_STATUS_CLOSED])) {
-				$this->Sms->sendOrderUpdateSms($toPhone, '#'.$orderId, $orderStatus, $message, $this->Session->read('Site.title'));
+				$this->Sms->sendOrderUpdateSms($toPhone, '#' . $orderId, $orderStatus, $message, $this->Session->read('Site.title'));
 
 				if ($deliveryPersonPhone && $orderStatus === Order::ORDER_STATUS_CONFIRMED) {
 					// send confirmed order sms to delivery person
-					$this->Sms->sendOrderUpdateSms($deliveryPersonPhone, '#'.$orderId, $orderStatus, $message, $this->Session->read('Site.title'));
+					$this->Sms->sendOrderUpdateSms($deliveryPersonPhone, '#' . $orderId, $orderStatus, $message, $this->Session->read('Site.title'));
 				}
 			}
 
@@ -1461,7 +1460,7 @@ class AppController extends Controller
 				return $groupInfo;
 			}
 		}
-		
+
 		return [];
 	}
 }

@@ -36,12 +36,40 @@ if ($buyerView) {
 	$catListCacheKey = $this->Session->read('CacheKeys.catList');
 	$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
 
-	echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
+	//echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
+?>
+	<div id="homepage_categories_menu_container">
+		<div class="table-responsive mb-3 " aria-hidden="true">
+			<div class="hstack gap-3">
+				<div class="text-center placeholder-glow" style="width: 9rem;">
+					<div class="placeholder rounded-circle" style="width: 144px; height: 144px;"></div>
+					<div class="card-body">
+						<span class="placeholder col-10"></span>
+						<span class="placeholder col-6"></span>
+					</div>
+				</div>
+				<div class="text-center placeholder-glow" style="width: 9rem;">
+					<div class="placeholder rounded-circle" style="width: 144px; height: 144px;"></div>
+					<div class="card-body">
+						<span class="placeholder col-10"></span>
+						<span class="placeholder col-6"></span>
+					</div>
+				</div>
+				<div class="text-center placeholder-glow" style="width: 9rem;">
+					<div class="placeholder rounded-circle" style="width: 144px; height: 144px;"></div>
+					<div class="card-body">
+						<span class="placeholder col-10"></span>
+						<span class="placeholder col-6"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php
 	echo $this->element('featured_products', ['limit' => 42, 'homepage' => true]);
 
 	$this->set('customMeta', $customMeta);
 } else {
-
 }
 ?>
 <br>
