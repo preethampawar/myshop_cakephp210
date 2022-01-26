@@ -24,7 +24,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 
 $logoUrl = null;
 if ($this->Session->read('Site.logo')) {
-	$logoUrl = $this->Html->url('/'.$this->Session->read('Site.logo'), true);
+	$logoUrl = $this->Html->url('/' . $this->Session->read('Site.logo'), true);
 }
 
 $testimonialsSlideShowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
@@ -45,9 +45,10 @@ $locationTitle = null;
 $locationUrl = null;
 $showLocationOptions = !empty($siteLocations);
 
-if ( !empty($siteLocations)
-		&& $this->request->controller === 'pages'
-		&& $this->request->action === 'display'
+if (
+	!empty($siteLocations)
+	&& $this->request->controller === 'pages'
+	&& $this->request->action === 'display'
 ) {
 	$showLocationPopup = true;
 }
@@ -57,6 +58,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 <!doctype html>
 <html lang="en">
+
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
@@ -75,9 +77,16 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		}
 	</script>
 
-	<meta name="theme-color" content="#317EFB"/>
+	<meta name="theme-color" content="#317EFB" />
+	<?php
+	if ($this->request->domain() === 'eatmukka.com') {
+	?>
+		<link rel="manifest" href="/manifest.json" />
+	<?php
+	}
+	?>
+
 	<!--
-	<link rel="manifest" href="/manifest.json" />
 	<script type="module">
 		// import '/pwaupdate.js';
 		// const el = document.createElement('pwa-update');
@@ -88,7 +97,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<?php
 	if (!empty($canonical)) {
 		$canonicalUrl = $this->Html->url($canonical, true);
-		echo '<link rel="canonical" href="'. $canonicalUrl .'">';
+		echo '<link rel="canonical" href="' . $canonicalUrl . '">';
 	}
 	?>
 
@@ -102,9 +111,9 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<?php
 	if (isset($loadVueJs) && $loadVueJs == true) {
-		?>
+	?>
 		<script src="/vendor/vue/vue.min.js"></script>
-		<?php
+	<?php
 	}
 	?>
 
@@ -124,7 +133,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 		function goToLocation(locationId, title, url) {
 			setLocation(locationId, title, url);
-			window.location = '//'+url+'/sites/setLocation/'+locationId+'<?= $locationQueryParam ?>';
+			window.location = '//' + url + '/sites/setLocation/' + locationId + '<?= $locationQueryParam ?>';
 		}
 
 		function setLocation(locationId, title, url) {
@@ -139,50 +148,51 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		$linkedLocation = $siteLocations[$locationId];
 		$locationTitle = $linkedLocation['title'];
 		$locationUrl = $linkedLocation['url'];
-		?>
+	?>
 		<script>
 			if (!localStorage.getItem('locationId')) {
 				setLocation('<?= $locationId ?>', '<?= $locationTitle ?>', '<?= $locationUrl ?>');
 			}
 		</script>
-		<?php
+	<?php
 	}
 	?>
 </head>
 
 <body class="bg-dark" onbeforeunload="showLoadingBar()">
-	<div class="bg-white ">
+	<div class="bg-white" id="root">
 
 		<?php
-		if(!empty($andriodAppBadgeUrl) || $showLocationOptions) {
-			?>
+		if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
+		?>
 			<nav class="navbar navbar-expand-lg navbar-static navbar-light">
 				<div class="container-fluid justify-content-between">
 					<div>
 						<?php
 						if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
-							?>
+						?>
 							<?= $andriodAppBadgeUrl ?>
-							<?php
-							}
+						<?php
+						}
 						?>
 					</div>
 
 					<?php
 					if ($showLocationOptions) {
 					?>
-					<div onclick="showLocationPopup()">
-						<div role="button" class="">
-							<i class="fa fa-map-marker-alt text-danger"></i> <h6 id="locationTitleSpan" class="d-inline"></h6>
-							<span class="d-inline nav-link p-1 text-danger"><i class="fa fa-caret-down"></i></span>
+						<div onclick="showLocationPopup()">
+							<div role="button" class="">
+								<i class="fa fa-map-marker-alt text-danger"></i>
+								<h6 id="locationTitleSpan" class="d-inline"></h6>
+								<span class="d-inline nav-link p-1 text-danger"><i class="fa fa-caret-down"></i></span>
+							</div>
 						</div>
-					</div>
 					<?php
 					}
 					?>
 				</div>
 			</nav>
-			<?php
+		<?php
 		}
 		?>
 
@@ -191,20 +201,13 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 				<a class="navbar-brand" href="/">
 					<?php
 					if ($logoUrl) {
-						?>
-							<img
-								src="<?= $logoUrl ?>"
-								alt="<?= $this->Session->read('Site.title') ?>"
-								title="<?= $this->Session->read('Site.title') ?>"
-								class="img-fluid"
-								width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>"
-								height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>"
-							>
-						<?php
+					?>
+						<img src="<?= $logoUrl ?>" alt="<?= $this->Session->read('Site.title') ?>" title="<?= $this->Session->read('Site.title') ?>" class="img-fluid" width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>" height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>">
+					<?php
 					} else {
-						?>
+					?>
 						<i class="fa fa-home"></i> <?= $this->Session->read('Site.title') ?>
-						<?php
+					<?php
 					}
 					?>
 				</a>
@@ -224,11 +227,11 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 							</li>
 							<?php
 							if ($this->App->isSellerForThisSite()) {
-								?>
+							?>
 								<li class="nav-item px-1">
 									<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="fa fa-tools"></i> Manage Store</a>
 								</li>
-								<?php
+							<?php
 							}
 							?>
 							<li class="nav-item px-1">
@@ -250,31 +253,31 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 							}
 							*/
 							?>
-							<?php if (!$this->Session->check('User.id')): ?>
+							<?php if (!$this->Session->check('User.id')) : ?>
 								<li class="nav-item px-1">
 									<a class="nav-link px-1" href="/users/customerRegistration">Register</a>
 								</li>
 							<?php endif; ?>
 
 
-							<?php if ($this->Session->check('User.id')): ?>
+							<?php if ($this->Session->check('User.id')) : ?>
 
-								<?php if ($this->Session->read('Site.shopping_cart')): ?>
-								<li class="nav-item px-1">
-									<a class="nav-link px-1" href="/orders/">My Orders</a>
-								</li>
+								<?php if ($this->Session->read('Site.shopping_cart')) : ?>
+									<li class="nav-item px-1">
+										<a class="nav-link px-1" href="/orders/">My Orders</a>
+									</li>
 								<?php endif; ?>
 
 								<li class="nav-item dropdown px-1">
 									<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 										<i class="fa fa-user-circle"></i>
-										<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
+										<?= $this->Session->read('User.firstname') != '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
 									</a>
 									<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
 										<li class="nav-item px-1"><a class="nav-link px-1" href="/users/logout">Logout</a></li>
 									</ul>
 								</li>
-							<?php else: ?>
+							<?php else : ?>
 								<li class="nav-item px-1">
 									<a class="nav-link px-1" href="/users/login">Login</a>
 								</li>
@@ -292,7 +295,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						<i class="fa fa-bars-staggered fs-5"></i> Products
 					</a>
 				</li>
-				<?php if ($this->Session->read('Site.shopping_cart')): ?>
+				<?php if ($this->Session->read('Site.shopping_cart')) : ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
 							<i class="fa fa-cart-shopping fs-5"></i> My Cart <span class="badge bg-orange rounded-pill">0</span>
@@ -301,37 +304,29 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 				<?php endif; ?>
 			</ul>
 			<div class="progress rounded-0 d-none" id="topNavProgressBar">
-				<div
-					class="progress-bar progress-bar-striped progress-bar-animated bg-orange small"
-					role="progressbar"
-					aria-valuenow="100"
-					aria-valuemin="0"
-					aria-valuemax="100"
-					style="width: 100%">Loading...</div>
+				<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange small" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading...</div>
 			</div>
 		</div>
 
 		<?= $this->element('banner_slideshow') ?>
 
-
 		<div class="container mt-4" style="min-height: 500px;">
-
 			<?= $this->fetch('content') ?>
-
 			<?= $this->element('testimonials_slideshow') ?>
-
 
 			<?php
 			$showPaymentContactInfo = false;
 
-			if ($this->request->params['controller'] != 'users'
-					&& $this->request->params['controller'] != 'sites'
-					&& $this->request->params['controller'] != 'orders') {
+			if (
+				$this->request->params['controller'] != 'users'
+				&& $this->request->params['controller'] != 'sites'
+				&& $this->request->params['controller'] != 'orders'
+			) {
 				$showPaymentContactInfo = true;
 			}
 
-			if ($showPaymentContactInfo && !empty($this->Session->read('Site.contact_info'))):
-				?>
+			if ($showPaymentContactInfo && !empty($this->Session->read('Site.contact_info'))) :
+			?>
 
 				<div class="text-center alert alert-info mt-4">
 					<h4 class="text-decoration-underline">Contact Us</h4>
@@ -344,9 +339,8 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			?>
 
 			<?php
-			if ($showPaymentContactInfo && !empty($this->Session->read('Site.payment_info'))):
-				?>
-
+			if ($showPaymentContactInfo && !empty($this->Session->read('Site.payment_info'))) :
+			?>
 				<div class="text-center alert alert-info mt-4">
 					<h4 class="text-decoration-underline">Payment Details</h4>
 					<div class="small mt-4">
@@ -373,9 +367,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="categoriesMenuBody">
-					<?php
-					echo $this->element('categories_menu');
-					?>
+					<div id="categories_menu_container"></div>
 					<div class="mt-4 text-center bottom">
 						<a role="button" class="nav-link btn btn-sm btn-light" data-bs-dismiss="offcanvas" aria-label="Close">Close</a>
 					</div>
@@ -452,33 +444,27 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 							</div>
 							<table class="table table-borderless table-sm small mt-4 mb-2">
 								<tbody>
-								<tr>
-									<td>
-										<select id="addProductQtyModal-quantity"
-												name="addProductQtyModal-quantity"
-												class="form-select form-select-sm"
-										>
-											<?php foreach(range(1,10) as $qty): ?>
-												<option value="<?= $qty ?>"><?= $qty ?></option>
-											<?php endforeach; ?>
-										</select>
-									</td>
-									<td style="width: 50px;">
-										<button
-												id="addProductQtyModal-saveButton"
-												class="btn btn-primary btn-sm ms-2"
-												onclick="saveProductQtyToCart()">
-											Add
-										</button>
-									</td>
-									<td style="width:45px">
-										<div id="addProductQtyModal-spinner" class="d-none">
-											<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">
-												<span class="visually-hidden">Loading...</span>
+									<tr>
+										<td>
+											<select id="addProductQtyModal-quantity" name="addProductQtyModal-quantity" class="form-select form-select-sm">
+												<?php foreach (range(1, 10) as $qty) : ?>
+													<option value="<?= $qty ?>"><?= $qty ?></option>
+												<?php endforeach; ?>
+											</select>
+										</td>
+										<td style="width: 50px;">
+											<button id="addProductQtyModal-saveButton" class="btn btn-primary btn-sm ms-2" onclick="saveProductQtyToCart()">
+												Add
+											</button>
+										</td>
+										<td style="width:45px">
+											<div id="addProductQtyModal-spinner" class="d-none">
+												<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">
+													<span class="visually-hidden">Loading...</span>
+												</div>
 											</div>
-										</div>
-									</td>
-								</tr>
+										</td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -519,8 +505,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			</div>
 
 			<!-- Confirm Popup -->
-			<div class="modal" id="confirmPopup" data-bs-backdrop="static" data-bs-keyboard="false"
-				 aria-labelledby="deleteModal" aria-hidden="true">
+			<div class="modal" id="confirmPopup" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="deleteModal" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -542,8 +527,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						</div>
 						<div class="modal-footer mt-3 p-1">
 							<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25" onclick="$('#confirmPopupBuyerSpinner').removeClass('d-none')"><span class="ok">Ok</span></a>
-							<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span
-										class="ok">Ok</span></button>
+							<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span class="ok">Ok</span></button>
 							<button type="button" class="btn btn-outline-secondary btn-sm cancelButton w-25" data-bs-dismiss="modal">
 								Cancel
 							</button>
@@ -553,8 +537,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			</div>
 
 			<!-- delete product from cart popup -->
-			<div class="modal fade" id="deleteProductFromCartPopup" data-bs-backdrop="static" data-bs-keyboard="false"
-				 aria-labelledby="deleteProductFromCartModal" aria-hidden="true">
+			<div class="modal fade" id="deleteProductFromCartPopup" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="deleteProductFromCartModal" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-body">
@@ -564,12 +547,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 									<div id="deleteProductFromCartPopupProductName" class="fw-bold mt-3"></div>
 								</div>
 								<div class="ms-2">
-									<button
-											type="button"
-											class="btn-close p-2"
-											data-bs-dismiss="modal"
-											aria-label="Close"
-											onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">
+									<button type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close" onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">
 										<span aria-hidden="true"></span>
 									</button>
 								</div>
@@ -577,11 +555,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						</div>
 						<div class="modal-footer mt-2 p-1">
 							<a href="#" class="deleteLink btn btn-danger btn-sm me-3 w-25" onclick="deleteProductFromCart()"><span class="ok">Ok</span></a>
-							<button
-									type="button"
-									class="btn btn-outline-secondary btn-sm w-25"
-									data-bs-dismiss="modal"
-									onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">Cancel</button>
+							<button type="button" class="btn btn-outline-secondary btn-sm w-25" data-bs-dismiss="modal" onclick="deleteProductFromCartPopup.hide(); myShoppingCart.show();">Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -589,24 +563,12 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 			<!-- Toast messages -->
 			<div aria-live="polite" aria-atomic="true" class="position-relative">
-				<!-- Position it: -->
-				<!-- - `.toast-container` for spacing between toasts -->
-				<!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
-				<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
 				<div class="toast-container fixed-top end-0 p-2 mt-5" style="left: auto">
 					<div id="ToastMessage" class="d-none">
-						<div
-							id="toastDiv"
-							class="toast toast-js text-white border-white border-2"
-							role="alert"
-							aria-live="assertive"
-							aria-atomic="true"
-							data-bs-autohide="true"
-							data-bs-delay="1500">
+						<div id="toastDiv" class="toast toast-js text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="1500">
 							<div class="d-flex align-items-center justify-content-between">
 								<div class="toast-body"></div>
-								<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
-										aria-label="Close"></button>
+								<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
 							</div>
 						</div>
 					</div>
@@ -618,43 +580,32 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-body">
-							<?php if((bool)$this->Session->read('Site.sms_notifications') === true) { ?>
-							<div>
-								<?php echo $this->Form->create('User', ['url' => '/users/otpVerification', 'onsubmit' => "verifyOtp()"]); ?>
-								<button type="submit" disabled style="display: none" aria-hidden="true"></button>
-								<h1>Verify OTP</h1>
+							<?php if ((bool)$this->Session->read('Site.sms_notifications') === true) { ?>
+								<div>
+									<?php echo $this->Form->create('User', ['url' => '/users/otpVerification', 'onsubmit' => "verifyOtp()"]); ?>
+									<button type="submit" disabled style="display: none" aria-hidden="true"></button>
+									<h1>Verify OTP</h1>
 
-								<div class="mt-5">
-									<input
-										type="number"
-										name="data[User][otp]"
-										class="form-control"
-										id="UserVerifyOtp"
-										placeholder="Enter OTP"
-										min="1000"
-										max="9999"
-										required
-										autofocus
-										autocomplete="off"
-									>
+									<div class="mt-5">
+										<input type="number" name="data[User][otp]" class="form-control" id="UserVerifyOtp" placeholder="Enter OTP" min="1000" max="9999" required autofocus autocomplete="off">
+									</div>
+
+									<div class="text-danger mt-2 small">
+										<?php
+										$text = "*OTP is sent to your Email Address.";
+										if ((bool)$this->Session->read('Site.sms_notifications') === true) {
+											$text = "*OTP is sent to your Mobile no. and Email Address provided in Order details";
+										}
+										echo $text;
+										?>
+									</div>
+
+									<div class="mt-4">
+										<button type="button" class="btn btn-md btn-primary" id="orderVerifyOtpButton" onclick="verifyOtp()">Next - Verify OTP</button>
+									</div>
+
+									<?php echo $this->Form->end(); ?>
 								</div>
-
-								<div class="text-danger mt-2 small">
-									<?php
-									$text = "*OTP is sent to your Email Address.";
-									if((bool)$this->Session->read('Site.sms_notifications') === true) {
-										$text = "*OTP is sent to your Mobile no. and Email Address provided in Order details";
-									}
-									echo $text;
-									?>
-								</div>
-
-								<div class="mt-4">
-									<button type="button" class="btn btn-md btn-primary" id="orderVerifyOtpButton" onclick="verifyOtp()">Next - Verify OTP</button>
-								</div>
-
-								<?php echo $this->Form->end(); ?>
-							</div>
 							<?php } else { ?>
 								<div>If you are already registered, please <a href="/users/login" class="text-orange">login</a> to place an Order.</div>
 
@@ -670,8 +621,8 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 							<div id="confirmOrderSpinnerGuest" class="mt-4"></div>
 						</div>
 						<div class="modal-footer">
-							<?php if((bool)$this->Session->read('Site.sms_notifications') === false) { ?>
-							<a href="/users/login" role="button" class="btn btn-orange">Go to Login Page</a>
+							<?php if ((bool)$this->Session->read('Site.sms_notifications') === false) { ?>
+								<a href="/users/login" role="button" class="btn btn-orange">Go to Login Page</a>
 							<?php } ?>
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 						</div>
@@ -682,33 +633,33 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<?php
 			if ($showLocationPopup && !empty($siteLocations)) {
 			?>
-			<!-- Location Modal -->
-			<div class="modal fade" id="locationBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="locationBackdropLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="locationBackdropLabel">Select Location</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body pb-5">
-							<div>We currently serve in the following areas. Choose your location of interest.</div>
+				<!-- Location Modal -->
+				<div class="modal fade" id="locationBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="locationBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="locationBackdropLabel">Select Location</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body pb-5">
+								<div>We currently serve in the following areas. Choose your location of interest.</div>
 
 								<div class="list-group  list-group-flush mt-3 fw-bold">
-								<?php
-								foreach($siteLocations as $id => $row) {
-								?>
-									<a href="#" onclick="goToLocation('<?= $id ?>', '<?= $row['title'] ?>', '<?= $row['url'] ?>');" class="list-group-item list-group-item-action py-3">
-										<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
-									</a>
-								<?php
-								}
-								?>
+									<?php
+									foreach ($siteLocations as $id => $row) {
+									?>
+										<a href="#" onclick="goToLocation('<?= $id ?>', '<?= $row['title'] ?>', '<?= $row['url'] ?>');" class="list-group-item list-group-item-action py-3">
+											<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
+										</a>
+									<?php
+									}
+									?>
 								</div>
 
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			<?php
 			}
 			?>
@@ -737,11 +688,11 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						</li>
 						<?php
 						if ($testimonialsEnabled) {
-							?>
+						?>
 							<li class="nav-item px-1">
 								<a class="nav-link px-1" href="/testimonials/">Testimonials</a>
 							</li>
-							<?php
+						<?php
 						}
 						?>
 
@@ -766,5 +717,16 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<!-- third party scripts from backend db -->
 	<?= $this->element('footerscripts')	?>
+
+	<!-- React scripts -->
+	<!-- <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script> -->
+	<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+	<!-- Load our React component. -->
+
+	<script src="/react-myshop/dist/categories-menu.js"></script>
+
 </body>
+
 </html>
