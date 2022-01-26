@@ -198,7 +198,8 @@ class CategoriesController extends AppController
 		}
 
 		$this->response->header('Content-type', 'application/json');
-		$this->response->body(json_encode([
+		$this->response->body(
+			json_encode([
 				'error' => $error,
 				'msg' => $msg,
 			], JSON_THROW_ON_ERROR)
@@ -239,7 +240,6 @@ class CategoriesController extends AppController
 				$msg = 'Category image update failed';
 				$this->errorMsg($msg);
 			}
-
 		}
 
 		$this->redirect($redirectURL);
@@ -275,7 +275,6 @@ class CategoriesController extends AppController
 				$msg = 'Category image update failed';
 				$this->errorMsg($msg);
 			}
-
 		}
 		$this->redirect($redirectURL);
 	}
@@ -297,5 +296,10 @@ class CategoriesController extends AppController
 			$this->errorMsg('An error occurred while updating data');
 		}
 		$this->redirect('/admin/categories/');
+	}
+
+	public function menu_json()
+	{
+		$this->layout = false;
 	}
 }
