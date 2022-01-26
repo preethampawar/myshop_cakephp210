@@ -60,7 +60,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 <html lang="en">
 
 <head>
-	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,14 +84,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<?php
 	}
 	?>
-
-	<!--
-	<script type="module">
-		// import '/pwaupdate.js';
-		// const el = document.createElement('pwa-update');
-		// document.body.appendChild(el);
-	</script>
-	-->
 
 	<?php
 	if (!empty($canonical)) {
@@ -707,7 +698,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	</div>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
 	<script src="/js/site.js?v=1.2.7"></script>
 	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
 
@@ -719,14 +710,11 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<?= $this->element('footerscripts')	?>
 
 	<!-- React scripts -->
-	<!-- <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-	<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script> -->
-	<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-	<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-	<!-- Load our React component. -->
+	<!-- <script src="/vendor/react/react.development.js"></script>
+	<script src="/vendor/react/react-dom.development.js"></script> -->
+	<script src="/vendor/react/react.production.min.js"></script>
+	<script src="/vendor/react/react-dom.production.min.js"></script>
 
 	<script src="/react-myshop/dist/categories-menu.js"></script>
-
 </body>
-
 </html>
