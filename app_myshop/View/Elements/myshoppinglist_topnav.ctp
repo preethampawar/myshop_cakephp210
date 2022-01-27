@@ -65,9 +65,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 					<div class="p-1 pb-3 border rounded">
 						<div class="bg-light rounded p-2">
 							<div class="d-flex justify-content-between">
-								<span onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>')" role="button" class="text-primary">
-									<?= $productName ?>
-								</span>
+								<a href="/products/getDetails/<?= $categoryID; ?>/<?= $productID; ?>/<?= $productNameSlug ?>" class="link-primary text-decoration-none"><?= $productName ?></a>
 
 								<div>
 									<?php
@@ -80,7 +78,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 						</div>
 						<div class="d-flex mt-2">
 							<div>
-								<img src="<?php echo $thumbUrl; ?>" loading="lazy" class="img-fluid" role="button" alt="<?php echo $productName; ?>" id="<?php echo $imageTagId; ?>" width="75" height="75" onclick="myShoppingCart.hide(); showProductDetails('<?php echo $categoryID; ?>', '<?php echo $productID; ?>');" />
+								<img src="<?php echo $thumbUrl; ?>" loading="lazy" class="img-fluid" role="button" alt="<?php echo $productName; ?>" id="<?php echo $imageTagId; ?>" width="75" height="75" />
 							</div>
 							<div class="ms-2">
 								<div class="small text-muted">
