@@ -8,6 +8,9 @@ $linkColor = $theme['linkColor'];
 $cartBadgeBg = $theme['cartBadgeBg'];
 $hightlightLink = $theme['hightlightLink'];
 $canonical = $canonical ?? null;
+$enableLightbox = $enableLightbox ?? false;
+
+//debug($enableLightbox);
 
 if (!empty($title_for_layout)) {
 	$title_for_layout = $title_for_layout . ' - ' . $this->Session->read('Site.title');
@@ -74,6 +77,8 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		if (!window.fetch) {
 			window.location = '/pages/unsupportedbrowser'
 		}
+
+		var isLightBoxEnabled = "<?= $enableLightbox ? 1 : '' ?>";
 	</script>
 
 	<meta name="theme-color" content="#317EFB" />
@@ -93,9 +98,11 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	?>
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta2-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.3">
+	<?php if ($enableLightbox) { ?>
+		<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
+	<?php } ?>
+	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta3-web/css/all.min.css" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.4" media="print" onload="this.media='all'">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -138,8 +145,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	if ($showLocationPopup === false && isset($siteLocations[$locationId]) && !empty($siteLocations[$locationId])) {
 		$linkedLocation = $siteLocations[$locationId];
 		$locationTitle = $linkedLocation['title'];
-		$locationUrl = $linkedLocation['url'];
-	?>
+		$locationUrl = $linkedLocation['url']; ?>
 		<script>
 			if (!localStorage.getItem('locationId')) {
 				setLocation('<?= $locationId ?>', '<?= $locationTitle ?>', '<?= $locationUrl ?>');
@@ -156,31 +162,41 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		<?php
 		if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
 		?>
-			<nav class="navbar navbar-expand-lg navbar-static navbar-light">
-				<div class="container-fluid justify-content-between">
+			<nav class="navbar navbar-expand-lg navbar-static navbar-light" style="height: 30px;">
+				<div class="container-fluid justify-content-between d-none" id="locationAppNavBar">
 					<div>
 						<?php
 						if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
 						?>
-							<?= $andriodAppBadgeUrl ?>
+							<span class="small text-muted" role="button" data-bs-toggle="modal" data-bs-target="#downloadAppModal">
+								Download App <i class="text-danger fab fa-google-play"></i>
+							</span>
+							<div class="modal fade" id="downloadAppModal" tabindex="-1" aria-labelledby="downloadAppModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="downloadAppModalLabel">Download Mobile App</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body text-center">
+											<?= $andriodAppBadgeUrl ?>
+										</div>
+									</div>
+								</div>
+							</div>
 						<?php
-						}
-						?>
+						} ?>
 					</div>
 
 					<?php
 					if ($showLocationOptions) {
 					?>
-						<div onclick="showLocationPopup()">
-							<div role="button" class="">
-								<i class="fa fa-map-marker-alt text-danger"></i>
-								<h6 id="locationTitleSpan" class="d-inline"></h6>
-								<span class="d-inline nav-link p-1 text-danger"><i class="fa fa-caret-down"></i></span>
-							</div>
+						<div class="small text-muted" role="button" onclick="showLocationPopup()">
+							<span id="locationTitleSpan" class="d-inline"></span>
+							<i class="fa fa-map-marker-alt text-danger"></i>
 						</div>
 					<?php
-					}
-					?>
+					} ?>
 				</div>
 			</nav>
 		<?php
@@ -193,7 +209,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					<?php
 					if ($logoUrl) {
 					?>
-						<img src="<?= $logoUrl ?>" alt="<?= $this->Session->read('Site.title') ?>" title="<?= $this->Session->read('Site.title') ?>" class="img-fluid" width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>" height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>">
+						<img src="<?= $logoUrl ?>" alt="<?= $this->Session->read('Site.title') ?>" title="<?= $this->Session->read('Site.title') ?>" class="img-fluid" width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>" height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>" loading="eager">
 					<?php
 					} else {
 					?>
@@ -235,14 +251,14 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 							<?php
 							/*
-							if ($andriodAppUrl && !$this->Session->read('isMobileApp')) {
-								?>
-								<li class="nav-item px-1">
-									<a class="nav-link px-1" href="<?= $andriodAppUrl ?>"><i class="fa fa-download"></i> Download App</a>
-								</li>
-								<?php
-							}
-							*/
+                            if ($andriodAppUrl && !$this->Session->read('isMobileApp')) {
+                                ?>
+                                <li class="nav-item px-1">
+                                    <a class="nav-link px-1" href="<?= $andriodAppUrl ?>"><i class="fa fa-download"></i> Download App</a>
+                                </li>
+                                <?php
+                            }
+                            */
 							?>
 							<?php if (!$this->Session->check('User.id')) : ?>
 								<li class="nav-item px-1">
@@ -279,7 +295,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			</div>
 		</nav>
 
-		<div class="sticky-top shadow <?= $secondaryMenuBg ?>" style="z-index: 999">
+		<div class="sticky-top shadow <?= $secondaryMenuBg ?> opacity-98" style="z-index: 999;">
 			<ul class="nav container justify-content-between pt-2 pb-2">
 				<li class="nav-item middle">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
@@ -349,7 +365,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<!-- Categories Menu -->
 			<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
 				<div class="small">
-					<a class="nav-link small" href="/" title="Show all products">
+					<a class="nav-link" href="/" title="Show all products">
 						<i class="fa fa-home"></i> Home
 					</a>
 				</div>
@@ -402,67 +418,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 				<div class="offcanvas-body" id="orderPaymentDetailsBody"></div>
 			</div>
 
-			<!-- Product Details -->
-			<div class="modal fade" id="productDetails" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="productDetailsLabel">Product Details</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body" id="productDetailsBody">
-							<div class="text-center">
-								<div class="spinner-border text-primary" role="status">
-									<span class="visually-hidden">Loading...</span>
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Product Quantity -->
-			<div class="modal" id="addProductQty" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProductQtyLabel" aria-hidden="true">
-				<div class="modal-dialog modal-sm modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-body" id="addProductQtyBody">
-							<div class="d-flex justify-content-between">
-								<h6 class="modal-title" id="addProductQtyLabel">Select Quantity</h6>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<table class="table table-borderless table-sm small mt-4 mb-2">
-								<tbody>
-									<tr>
-										<td>
-											<select id="addProductQtyModal-quantity" name="addProductQtyModal-quantity" class="form-select form-select-sm">
-												<?php foreach (range(1, 10) as $qty) : ?>
-													<option value="<?= $qty ?>"><?= $qty ?></option>
-												<?php endforeach; ?>
-											</select>
-										</td>
-										<td style="width: 50px;">
-											<button id="addProductQtyModal-saveButton" class="btn btn-primary btn-sm ms-2" onclick="saveProductQtyToCart()">
-												Add
-											</button>
-										</td>
-										<td style="width:45px">
-											<div id="addProductQtyModal-spinner" class="d-none">
-												<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">
-													<span class="visually-hidden">Loading...</span>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
 			<!-- Alert -->
 			<div class="modal" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm modal-dialog-centered">
@@ -474,22 +429,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 							</div>
 							<hr>
 							<div class="mt-3 mb-3" id="alertModalContent"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Ajax loader -->
-			<div id="fullLoader">
-				<div class="modal" id="fullLoaderBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-sm">
-						<div class="modal-content">
-							<div class="modal-body text-center text-purple">
-								<div class="d-flex justify-content-center">
-									<div class="spinner-border text-purple" role="status" aria-hidden="true"></div>
-									<span class="ms-3 fs-5">Loading...</span>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -643,8 +582,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 											<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
 										</a>
 									<?php
-									}
-									?>
+									} ?>
 								</div>
 
 							</div>
@@ -699,12 +637,14 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
-	<script src="/js/site.js?v=1.2.7"></script>
+	<script src="/js/site.js?v=1.2.8"></script>
 	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
 
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
-	<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
-	<script src="/js/final.js?v=1.0.0" defer></script>
+	<?php if ($enableLightbox) { ?>
+		<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
+	<?php } ?>
+	<script src="/js/final.js?v=1.1.0" defer></script>
 
 	<!-- third party scripts from backend db -->
 	<?= $this->element('footerscripts')	?>
@@ -717,4 +657,5 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<script src="/react-myshop/dist/categories-menu.js"></script>
 </body>
+
 </html>

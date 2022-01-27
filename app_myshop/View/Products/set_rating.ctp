@@ -131,39 +131,11 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 						<?php endif; ?>
 
 						<?php if ($cartEnabled && !$noStock): ?>
-							<form id="AddToCart<?php echo $productID; ?>"
-								  action="/shopping_carts/add/<?php echo $categoryID; ?>/<?php echo $productID; ?>"
-								  method="post" class="flex">
-								<div class="row mt-3">
-									<div class="col">
-										<label for="ShoppingCartProductQuantity<?php echo $productID; ?>"
-											   class="small">Select Quantity</label>
-										<select
-											name="data[ShoppingCartProduct][quantity]"
-											id="ShoppingCartProductQuantity<?php echo $productID; ?>"
-											class="form-select form-select-sm"
-											style="margin-top: 1px;"
-										>
-											<?php echo $selectBoxQuantityOptions; ?>
-										</select>
-									</div>
-									<div class="col">
-										<button
-												onclick="addToCartFromProductDetailsPage('<?= $categoryID ?>', '<?= $productID ?>', $('#ShoppingCartProductQuantity<?php echo $productID; ?>').val())"
-												type="button"
-												class="btn btn-sm btn-primary mt-4">
-											Add To Cart
-										</button>
-									</div>
+							<div class="row mt-3">
+								<div class="col-sm-12 col-md-8 col-lg-6 col-xl-5">
+								<?= $this->element('add_to_cart_button', ['categoryID' => $categoryID, 'productID' => $productID]) ?>
 								</div>
-								<div class="ms-2" style="width:45px">
-									<div id="addQtyProductDetails-spinner" class="d-none">
-										<div class="spinner-border spinner-border-sm mt-2 text-primary" role="status">
-											<span class="visually-hidden">Loading...</span>
-										</div>
-									</div>
-								</div>
-							</form>
+							</div>
 						<?php elseif ($cartEnabled && $noStock): ?>
 							<div class="row mt-3">
 								<div class="col">
