@@ -3,6 +3,12 @@ $(document).ready(function () {
 	};
 
 	try {
+		showLocationAndApp();
+	} catch (err) {
+		console.log('Error - Location Nav could not be displayed: ', err.message);
+	}
+
+	try {
 		lazyLoadImages();
 	} catch (err) {
 		console.log('Error - Lazy load images: ', err.message);
@@ -12,12 +18,6 @@ $(document).ready(function () {
 		showServerToastMessages();
 	} catch (err) {
 		console.log('Error - Toast messages: ', err.message);
-	}
-
-	try {
-		enableLightBoxForImages()
-	} catch (err) {
-		console.log('Error - Light box for images: ', err.message);
 	}
 
 	try {

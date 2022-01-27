@@ -7,7 +7,7 @@ if ($rating) {
 ?>
 	<div class="d-flex justify-content-start" title="<?= $title ?>">
 		<?php
-		for($i=1; $i <= 5; $i++) {
+		for ($i = 1; $i <= 5; $i++) {
 			if ($i <= $rating) {
 				$class = 'fa fa-star';
 			} elseif ($i == ceil($rating)) {
@@ -15,22 +15,18 @@ if ($rating) {
 			} else {
 				$class = 'far fa-star';
 			}
-			?>
-			<span class="text-orange me-1">
-				<i class="<?= $class ?>"></i>
-			</span>
-			<?php
+		?>
+			<i class="<?= $class ?> text-orange me-1"></i>
+		<?php
 		}
 		?>
 		<?php
-		if ($count){
-			?>
-			<span class="text-muted small mt-1"><?= $count ?></span>
-			<?php
+		if ($count) {
+		?>
+			<span class="text-muted small"><?= $count ?></span>
+		<?php
 		}
 		?>
-
 	</div>
 <?php
 }
-
