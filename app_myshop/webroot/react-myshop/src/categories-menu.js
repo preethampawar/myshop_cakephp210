@@ -133,7 +133,7 @@ const HomepageCategoriesMenu = () => {
             });
 
             return (<div className="table-responsive mb-3">
-                <div className="hstack gap-3">
+                <div className="hstack gap-3 align-items-start">
                     {content}
                 </div>
             </div>

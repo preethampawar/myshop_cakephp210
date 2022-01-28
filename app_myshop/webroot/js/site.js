@@ -140,8 +140,8 @@ function loadShoppingCart() {
 }
 
 // price formatter
-function formatPrice($value) {
-	return '&#8377;'.$value;
+function formatPrice(value) {
+	return '&#8377;' + value;
 }
 
 // generate random number

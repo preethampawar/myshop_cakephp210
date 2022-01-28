@@ -192,7 +192,7 @@ var HomepageCategoriesMenu = function HomepageCategoriesMenu() {
                 { className: 'table-responsive mb-3' },
                 React.createElement(
                     'div',
-                    { className: 'hstack gap-3' },
+                    { className: 'hstack gap-3 align-items-start' },
                     content
                 )
             );

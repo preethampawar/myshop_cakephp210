@@ -38,6 +38,8 @@ if ($buyerView) {
 
 	//echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
 ?>
+	
+
 	<div id="homepage_categories_menu_container">
 		<div class="table-responsive mb-3 " aria-hidden="true">
 			<div class="hstack gap-3">
@@ -62,11 +64,54 @@ if ($buyerView) {
 						<span class="placeholder col-6"></span>
 					</div>
 				</div>
+				<div class="text-center placeholder-glow" style="width: 9rem;">
+					<div class="placeholder rounded-circle" style="width: 144px; height: 144px;"></div>
+					<div class="card-body">
+						<span class="placeholder col-10"></span>
+						<span class="placeholder col-6"></span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+
+	<?php
+	/*
+	<div id="home_page_category_products">
+		<div class="table-responsive mb-3 " aria-hidden="true">
+			<div class="hstack gap-3">
+				<div class="card placeholder-glow" style="width: 10rem;">
+					<div class="placeholder card-img-top" style="height: 126px"></div>
+					<div class="card-body p-2">
+						<span class="placeholder col-10"></span>
+						<span class="placeholder col-6"></span>
+						<span class="placeholder col-12 placeholder-lg mt-3"></span>
+					</div>
+				</div>
+				<div class="card placeholder-glow" style="width: 10rem;">
+					<div class="placeholder card-img-top" style="height: 126px"></div>
+					<div class="card-body p-2">
+						<span class="placeholder col-10"></span>
+						<span class="placeholder col-6"></span>
+						<span class="placeholder col-12 placeholder-lg mt-3"></span>
+					</div>
+				</div>
+				<div class="card placeholder-glow" style="width: 10rem;">
+					<div class="placeholder card-img-top" style="height: 126px"></div>
+					<div class="card-body p-2">
+						<span class="placeholder col-10"></span>
+						<span class="placeholder col-6"></span>
+						<span class="placeholder col-12 placeholder-lg mt-3"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php
+	*/
+	?>
 <?php
-	echo $this->element('featured_products', ['limit' => 42, 'homepage' => true]);
+	echo $this->element('featured_products', ['limit' => 18, 'homepage' => true]);
 
 	$this->set('customMeta', $customMeta);
 } else {
