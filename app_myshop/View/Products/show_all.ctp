@@ -10,8 +10,8 @@
 			$categoryID = $row['Category']['id'];
 			$categoryName = $row['Category']['name'];
 			$categoryNameSlug = Inflector::slug($categoryName, '-');
-			?>
-			<article class="mt-4">
+	?>
+			<article class="mt-3">
 				<header>
 					<h5><?php echo $categoryName; ?></h5>
 					<hr>
@@ -24,8 +24,8 @@
 				}
 
 				if (!empty($row['CategoryProducts'])) {
-					?>
-					<div class="<?= $productsRowClass ?>">
+				?>
+					<div class="row g-3 g-lg-x-4 p-0 mt-2">
 						<?php
 						$z = 0;
 						foreach ($row['CategoryProducts'] as $row2) {
@@ -40,7 +40,7 @@
 							$thumbUrl = "/img/noimage.jpg";
 							$imageTagId = random_int(1, 10000);
 
-							if($imageDetails) {
+							if ($imageDetails) {
 								$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
 							}
 
@@ -53,46 +53,54 @@
 							$hideProductPrice = $row2['Product']['hide_price'];
 							$avgRating = $row2['Product']['avg_rating'];
 							$ratingsCount = $row2['Product']['ratings_count'];
+						?>
 
-							echo $this->element('product_card', [
-									'productImageUrl' => $productImageUrl,
-									'productName' => $productName,
-									'productShortDesc' => $productShortDesc,
-									'imageTagId' => $imageTagId,
-									'productTitle' => $productTitle,
-									'categoryID' => $categoryID,
-									'productID' => $productID,
-									'categoryNameSlug' => $categoryNameSlug,
-									'productNameSlug' => $productNameSlug,
-									'mrp' => $mrp,
-									'discount' => $discount,
-									'salePrice' => $salePrice,
-									'cartEnabled' => $cartEnabled,
-									'noStock' => $noStock,
-									'hideProductPrice' => $hideProductPrice,
-									'avgRating' => $avgRating,
-									'ratingsCount' => $ratingsCount,
-								]
-							);
+							<div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-3" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
+								<?php
+								echo $this->element(
+									'product_card',
+									[
+										'productImageUrl' => $productImageUrl,
+										'productName' => $productName,
+										'productShortDesc' => $productShortDesc,
+										'imageTagId' => $imageTagId,
+										'productTitle' => $productTitle,
+										'categoryID' => $categoryID,
+										'productID' => $productID,
+										'categoryNameSlug' => $categoryNameSlug,
+										'productNameSlug' => $productNameSlug,
+										'mrp' => $mrp,
+										'discount' => $discount,
+										'salePrice' => $salePrice,
+										'cartEnabled' => $cartEnabled,
+										'noStock' => $noStock,
+										'hideProductPrice' => $hideProductPrice,
+										'avgRating' => $avgRating,
+										'ratingsCount' => $ratingsCount,
+									]
+								);
+								?>
+							</div>
+						<?php
 						}
 						?>
 					</div>
 
-					<?php
+				<?php
 				} else {
-					?>
+				?>
 					<p>No products found</p>
-					<?php
+				<?php
 				}
 				?>
 			</article>
-			<?php
+		<?php
 			$k++;
 		}
 	} else {
 		?>
 		<p>No Products Found</p>
-		<?php
+	<?php
 	}
 	?>
 </section>

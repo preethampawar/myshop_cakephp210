@@ -14,7 +14,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 		<?php
 		if (!$homepage) {
 		?>
-			<h1 class="mt-4"><i class="fa fa-fire text-orange"></i> Hot Deals (<?= count($allCategories) ?> items)</h1>
+			<h1 class="mt-2"><i class="fa fa-fire text-orange"></i> Hot Deals (<?= count($allCategories) ?> items)</h1>
 		<?php
 		}
 		?>
@@ -26,12 +26,12 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 			$assetDomainUrl = Configure::read('AssetDomainUrl');
 
 			$showOneProductOnSmallScreen = Configure::read('ShowOneProductOnSmallScreen') ?? false;
-			$productsRowClass = "row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-3 g-lg-x-4 p-0";
+			$productsRowClass = "row g-3 g-lg-x-4 p-0";
 			if ($showOneProductOnSmallScreen) {
-				$productsRowClass = "row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-lg-x-4 p-0";
+				$productsRowClass = "row g-3 g-lg-x-4 p-0";
 			}
-			?>
-			<div class="<?= $productsRowClass ?> mt-4">
+		?>
+			<div class="row g-3 g-lg-x-4 p-0 mt-3">
 				<?php
 				foreach ($allCategories as $row) {
 					$categoryID = $row['Category']['id'];
@@ -51,7 +51,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					$thumbUrl = "/img/noimage.jpg";
 					$imageTagId = random_int(1, 10000);
 
-					if($imageDetails) {
+					if ($imageDetails) {
 						$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
 					}
 
@@ -64,47 +64,55 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 					$hideProductPrice = $row['Product']['hide_price'];
 					$avgRating = $row['Product']['avg_rating'];
 					$ratingsCount = $row['Product']['ratings_count'];
+				?>
 
-					echo $this->element('product_card', [
-							'productImageUrl' => $productImageUrl,
-							'productName' => $productName,
-							'productShortDesc' => $productShortDesc,
-							'imageTagId' => $imageTagId,
-							'productTitle' => $productTitle,
-							'categoryID' => $categoryID,
-							'productID' => $productID,
-							'categoryNameSlug' => $categoryNameSlug,
-							'productNameSlug' => $productNameSlug,
-							'mrp' => $mrp,
-							'discount' => $discount,
-							'salePrice' => $salePrice,
-							'cartEnabled' => $cartEnabled,
-							'noStock' => $noStock,
-							'hideProductPrice' => $hideProductPrice,
-							'avgRating' => $avgRating,
-							'ratingsCount' => $ratingsCount,
-						]
-					);
+					<div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-3" id="productCard<?php echo $categoryID . '-' . $productID; ?>">
+						<?php
+						echo $this->element(
+							'product_card',
+							[
+								'productImageUrl' => $productImageUrl,
+								'productName' => $productName,
+								'productShortDesc' => $productShortDesc,
+								'imageTagId' => $imageTagId,
+								'productTitle' => $productTitle,
+								'categoryID' => $categoryID,
+								'productID' => $productID,
+								'categoryNameSlug' => $categoryNameSlug,
+								'productNameSlug' => $productNameSlug,
+								'mrp' => $mrp,
+								'discount' => $discount,
+								'salePrice' => $salePrice,
+								'cartEnabled' => $cartEnabled,
+								'noStock' => $noStock,
+								'hideProductPrice' => $hideProductPrice,
+								'avgRating' => $avgRating,
+								'ratingsCount' => $ratingsCount,
+							]
+						);
+						?>
+					</div>
+				<?php
 				}
 				?>
 			</div>
 
 			<?php
 			if ($homepage) {
-				?>
+			?>
 				<div class="mt-5 mb-5 text-center">
 					<a href="/products/showFeatured" class="btn btn-orange btn-sm">Show more deals...</a>
 				</div>
 				<hr>
-				<?php
+			<?php
 			}
 			?>
 
-			<?php
+		<?php
 		} else {
-			?>
+		?>
 			<p>No Products Found</p>
-			<?php
+		<?php
 		}
 		?>
 	</article>

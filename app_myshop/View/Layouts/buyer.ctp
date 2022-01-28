@@ -102,7 +102,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
 	<?php } ?>
 	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.4" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.5" media="print" onload="this.media='all'">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -162,7 +162,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		<?php
 		if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
 		?>
-			<nav class="navbar navbar-expand-lg navbar-static navbar-light" style="height: 30px;">
+			<nav class="navbar navbar-expand-lg navbar-static navbar-light" style="height: 40px;">
 				<div class="container-fluid justify-content-between d-none" id="locationAppNavBar">
 					<div>
 						<?php
@@ -637,7 +637,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
-	<script src="/js/site.js?v=1.2.8"></script>
+	<script src="/js/site.js?v=1.2.9"></script>
 	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
 
 	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
@@ -656,6 +656,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<script src="/vendor/react/react-dom.production.min.js"></script>
 
 	<script src="/react-myshop/dist/categories-menu.js"></script>
+	<!-- <script src="/react-myshop/dist/homepage-category-products.js"></script> -->
 </body>
 
 </html>

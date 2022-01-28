@@ -72,6 +72,35 @@ class ProductsController extends AppController
 		$this->set(compact('allProducts'));
 	}
 
+
+	public function json()
+	{
+		$this->layout = null;
+
+		$allCategories = $this->Product->getAllProducts($this->Session->read('Site.id'));
+		$allProducts = [];
+		if($allCategories) {
+			$allProducts = [];
+			foreach ($allCategories as $row) {
+				if(!isset($allProducts[$row['Category']['id']])) {
+					$allProducts[$row['Category']['id']]['Category'] = $row['Category'];
+				}
+			}
+
+			foreach ($allProducts as $categoryId => &$category) {
+				foreach($allCategories as $row) {
+					if($row['Category']['id'] == $categoryId) {
+						unset($row['Category']);
+						$category['CategoryProducts'][] = $row;
+					}
+				}
+			}
+		}
+		unset($allCategories);
+
+		$this->set(compact('allProducts'));
+	}
+
 	/**
 	 * Function to show all featured products
 	 */
