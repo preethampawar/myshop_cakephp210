@@ -156,7 +156,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	?>
 </head>
 
-<body class="bg-dark" onbeforeunload="showLoadingBar()">
+<body class="bg-white" onbeforeunload="showLoadingBar()">
 	<div class="bg-white" id="root">
 
 		<?php
@@ -637,14 +637,13 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
-	<script src="/js/site.js?v=1.2.9"></script>
+	<script src="/js/site.js?v=1.2.10"></script>
 	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
-
-	<script src="/vendor/jquery.lazy-master/jquery.lazy.min.js" defer></script>
+	
 	<?php if ($enableLightbox) { ?>
 		<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 	<?php } ?>
-	<script src="/js/final.js?v=1.1.0" defer></script>
+	<script src="/js/final.js?v=1.1.1" defer></script>
 
 	<!-- third party scripts from backend db -->
 	<?= $this->element('footerscripts')	?>

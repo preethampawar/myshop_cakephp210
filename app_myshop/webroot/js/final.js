@@ -10,6 +10,7 @@ $(document).ready(function () {
 
 	try {
 		lazyLoadImages();
+		// loadHomepageProducts();
 	} catch (err) {
 		console.log('Error - Lazy load images: ', err.message);
 	}

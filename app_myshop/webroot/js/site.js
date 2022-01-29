@@ -60,10 +60,37 @@ function refreshPage() {
 
 // lazy load images
 function lazyLoadImages() {
-	$("img.lazy").Lazy({
-		attribute: "data-original",
-		threshold: 200,
+	// $("img.lazy").Lazy({
+	// 	attribute: "data-original",
+	// 	threshold: 200,
+	// });
+
+	const images = document.querySelectorAll('[data-original]');
+	const config = {
+		rootMargin: '0px 0px 50px 0px',
+		threshold: 0
+	};
+
+	let observer = new IntersectionObserver(function (entries, self) {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				// console.log(`Image ${entry.target.src} is in the viewport!`);
+				preloadImage(entry.target);
+				// Stop watching and load the image
+				self.unobserve(entry.target);
+			}
+		});
+	}, config);
+
+	images.forEach(image => {
+		observer.observe(image);
 	});
+
+	function preloadImage(img) {
+		const src = img.getAttribute('data-original');
+		if (!src) { return; }
+		img.src = src;
+	}
 }
 
 function delayImagesAfterPageLoad() {
@@ -891,6 +918,42 @@ function showLocationAndApp() {
 	if (ele) {
 		ele.classList.remove("d-none")
 	}
+}
+
+
+let imageCount = 0;
+
+function fetchHomePageProducts() {
+	console.log('loading', imageCount);
+	window.scrollBy(300, 0);
+	imageCount += 5;
+};
+
+function loadHomepageProducts() {
+
+	let options = {
+		root: null,
+		rootMargin: "0px",
+		threshold: 0.25
+	};
+
+	function handleIntersect(entries, observer) {
+		entries.forEach((entry) => {
+			console.log('observing entry.target', entry.target);
+			if (entry.isIntersecting) {
+				if (imageCount !== 20) {
+					fetchHomePageProducts()
+				} else {
+					observer.unobserve(entry.target);
+				}
+
+			}
+		});
+	}
+
+	let observer = new IntersectionObserver(handleIntersect, options);
+	observer.observe(document.getElementById('showMoreDeals'));
+
 }
 
 // init site wide variables
