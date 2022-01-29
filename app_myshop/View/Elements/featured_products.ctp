@@ -100,7 +100,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 			<?php
 			if ($homepage) {
 			?>
-				<div class="mt-5 mb-5 text-center">
+				<div class="mt-5 mb-5 text-center" id="showMoreDeals">
 					<a href="/products/showFeatured" class="btn btn-orange btn-sm">Show more deals...</a>
 				</div>
 				<hr>
