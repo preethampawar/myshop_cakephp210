@@ -55,6 +55,7 @@ if (
 ) {
 	$showLocationPopup = true;
 }
+$showLocationPopup = false; // temporarily disable location popup on pageload
 $isMobileApp = $this->Session->check('isMobileApp') ? $this->Session->read('isMobileApp') : false;
 $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 ?>
