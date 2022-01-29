@@ -64,13 +64,6 @@ if ($buyerView) {
 						<span class="placeholder col-6"></span>
 					</div>
 				</div>
-				<div class="text-center placeholder-glow" style="width: 9rem;">
-					<div class="placeholder rounded-circle" style="width: 144px; height: 144px;"></div>
-					<div class="card-body">
-						<span class="placeholder col-10"></span>
-						<span class="placeholder col-6"></span>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -111,7 +104,7 @@ if ($buyerView) {
 	*/
 	?>
 <?php
-	echo $this->element('featured_products', ['limit' => 18, 'homepage' => true]);
+	echo $this->element('featured_products', ['limit' => 42, 'homepage' => true]);
 
 	$this->set('customMeta', $customMeta);
 } else {
