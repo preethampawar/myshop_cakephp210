@@ -33,7 +33,6 @@ if ($this->Session->read('Site.logo')) {
 $testimonialsSlideShowEnabled = (int)$this->Session->read('Site.show_testimonials') === 1;
 
 $showLocationOptions = false;
-$showLocationPopup = false;
 $siteLocations = null;
 
 $siteConfiguration = $this->Session->check('siteConfiguration') ? $this->Session->read('siteConfiguration') : null;
@@ -48,16 +47,9 @@ $locationTitle = null;
 $locationUrl = null;
 $showLocationOptions = !empty($siteLocations);
 
-if (
-	!empty($siteLocations)
-	&& $this->request->controller === 'pages'
-	&& $this->request->action === 'display'
-) {
-	$showLocationPopup = true;
-}
-
 $isMobileApp = $this->Session->check('isMobileApp') ? $this->Session->read('isMobileApp') : false;
 $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
+
 ?>
 
 <!doctype html>
@@ -99,11 +91,11 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	?>
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.7" media="print" onload="this.media='all'">
 	<?php if ($enableLightbox) { ?>
 		<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
 	<?php } ?>
 	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.5" media="print" onload="this.media='all'">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -115,46 +107,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<?php
 	}
 	?>
-
-	<script>
-		function selectLocation() {
-			let defaultLocation = localStorage.getItem('location');
-			let defaultLocationId = localStorage.getItem('locationId');
-			let defaultLocationUrl = localStorage.getItem('locationUrl');
-			if (!defaultLocation) {
-				showLocationPopup();
-			} else {
-				if (location.host !== defaultLocationUrl) {
-					goToLocation(defaultLocationId, defaultLocation, defaultLocationUrl);
-				}
-			}
-		}
-
-		function goToLocation(locationId, title, url) {
-			setLocation(locationId, title, url);
-			window.location = '//' + url + '/sites/setLocation/' + locationId + '<?= $locationQueryParam ?>';
-		}
-
-		function setLocation(locationId, title, url) {
-			localStorage.setItem('locationId', locationId);
-			localStorage.setItem('location', title);
-			localStorage.setItem('locationUrl', url);
-		}
-	</script>
-
-	<?php
-	if ($showLocationPopup === false && isset($siteLocations[$locationId]) && !empty($siteLocations[$locationId])) {
-		$linkedLocation = $siteLocations[$locationId];
-		$locationTitle = $linkedLocation['title'];
-		$locationUrl = $linkedLocation['url']; ?>
-		<script>
-			if (!localStorage.getItem('locationId')) {
-				setLocation('<?= $locationId ?>', '<?= $locationTitle ?>', '<?= $locationUrl ?>');
-			}
-		</script>
-	<?php
-	}
-	?>
 </head>
 
 <body class="bg-white" onbeforeunload="showLoadingBar()">
@@ -163,43 +115,60 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		<?php
 		if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
 		?>
-			<nav class="navbar navbar-expand-lg navbar-static navbar-light" style="height: 40px;">
-				<div class="container-fluid justify-content-between d-none" id="locationAppNavBar">
-					<div>
-						<?php
-						if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
-						?>
-							<span class="small text-muted" role="button" data-bs-toggle="modal" data-bs-target="#downloadAppModal">
-								Download App <i class="text-danger fab fa-google-play"></i>
-							</span>
-							<div class="modal fade" id="downloadAppModal" tabindex="-1" aria-labelledby="downloadAppModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="downloadAppModalLabel">Download Mobile App</h5>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body text-center">
-											<?= $andriodAppBadgeUrl ?>
-										</div>
-									</div>
-								</div>
+			<div class="d-flex justify-content-between container-fluid text-muted small py-2 px-3">
+				<div>
+					<?php
+					if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
+					?>
+						<span role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasApp" aria-controls="offCanvasApp">
+							Download App <i class="text-danger fab fa-google-play"></i>
+						</span>
+						<div class="offcanvas offcanvas-top" tabindex="-1" id="offCanvasApp" aria-labelledby="offCanvasAppLabel">
+							<div class="offcanvas-header">
+								<h5 class="offcanvas-title" id="offCanvasAppLabel">Download Mobile App</h5>
+								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 							</div>
-						<?php
-						} ?>
-					</div>
-
+							<div class="offcanvas-body">
+								<?= $andriodAppBadgeUrl ?>
+							</div>
+						</div>
+					<?php
+					}
+					?>
+				</div>
+				<div>
 					<?php
 					if ($showLocationOptions) {
 					?>
-						<div class="small text-muted" role="button" onclick="showLocationPopup()">
-							<span id="locationTitleSpan" class="d-inline"></span>
-							<i class="fa fa-map-marker-alt text-danger"></i>
+						<span role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasLocation" aria-controls="offCanvasLocation">
+							<i class="fa fa-map-marker-alt text-danger"></i> <?= $siteLocations[$subdomain]['title'] ?>
+						</span>
+						<div class="offcanvas offcanvas-top" tabindex="-1" id="offCanvasLocation" aria-labelledby="offCanvasLocationLabel">
+							<div class="offcanvas-header">
+								<h5 class="offcanvas-title" id="offCanvasLocationLabel">Select Location</h5>
+								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+							</div>
+							<div class="offcanvas-body">
+								<div>We currently serve in the following areas. Choose your location of interest.</div>
+
+								<div class="list-group  list-group-flush mt-3">
+									<?php
+									foreach ($siteLocations as $id => $row) {
+									?>
+										<a href="//<?= $row['url'] ?>" class="list-group-item list-group-item-action py-3">
+											<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
+										</a>
+									<?php
+									} ?>
+								</div>
+							</div>
 						</div>
 					<?php
-					} ?>
+					}
+					?>
+
 				</div>
-			</nav>
+			</div>
 		<?php
 		}
 		?>
@@ -297,22 +266,24 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		</nav>
 
 		<div class="sticky-top shadow <?= $secondaryMenuBg ?> opacity-98" style="z-index: 999;">
-			<ul class="nav container justify-content-between pt-2 pb-2">
+			<ul class="nav container justify-content-between pt-3">
 				<li class="nav-item middle">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<i class="fa fa-bars-staggered fs-5"></i> Products
+						<div class="d-inline-block" style="width:21px;"><i class="fa fa-bars-staggered fs-5"></i></div> Products
 					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')) : ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-							<i class="fa fa-cart-shopping fs-5"></i> My Cart <span class="badge bg-orange rounded-pill">0</span>
+							<div class="d-inline-block"><i class="fa fa-cart-shopping fs-5"></i></div> My Cart <span class="badge bg-orange rounded-pill">0</span>
 						</a>
 					</li>
 				<?php endif; ?>
 			</ul>
-			<div class="progress rounded-0 d-none" id="topNavProgressBar">
-				<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange small" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading...</div>
+			<div style="height: 12px;" class="bg-light">
+				<div class="progress rounded-0 d-none small" id="topNavProgressBar" style="height: 12px;">
+					<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange small" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading...</div>
+				</div>
 			</div>
 		</div>
 
@@ -435,38 +406,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 				</div>
 			</div>
 
-			<!-- Confirm Popup -->
-			<div class="modal" id="confirmPopup" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="deleteModal" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="deleteModal"></h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true"></span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="content">Are you sure?</div>
-
-							<div class="mt-4 text-center d-none" id="confirmPopupBuyerSpinner">
-								<div class="spinner-border spinner-border-sm text-primary" role="status">
-									<span class="visually-hidden">Loading...</span>
-								</div>
-								<br>
-								Please wait. Your request is in process.
-							</div>
-						</div>
-						<div class="modal-footer mt-3 p-1">
-							<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25" onclick="$('#confirmPopupBuyerSpinner').removeClass('d-none')"><span class="ok">Ok</span></a>
-							<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span class="ok">Ok</span></button>
-							<button type="button" class="btn btn-outline-secondary btn-sm cancelButton w-25" data-bs-dismiss="modal">
-								Cancel
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
 			<!-- delete product from cart popup -->
 			<div class="modal fade" id="deleteProductFromCartPopup" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="deleteProductFromCartModal" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
@@ -512,33 +451,33 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					<div class="modal-content">
 						<div class="modal-body">
 							<?php if ((bool)$this->Session->read('Site.sms_notifications') === true) { ?>
-								<div>
-									<?php echo $this->Form->create('User', ['url' => '/users/otpVerification', 'onsubmit' => "verifyOtp()"]); ?>
-									<button type="submit" disabled style="display: none" aria-hidden="true"></button>
-									<h1>Verify OTP</h1>
 
-									<div class="mt-5">
-										<input type="number" name="data[User][otp]" class="form-control" id="UserVerifyOtp" placeholder="Enter OTP" min="1000" max="9999" required autofocus autocomplete="off">
-									</div>
+								<?php echo $this->Form->create('User', ['url' => '/users/otpVerification', 'onsubmit' => "verifyOtp()"]); ?>
+								<button type="submit" disabled style="display: none" aria-hidden="true"></button>
+								<h1>Verify OTP</h1>
 
-									<div class="text-danger mt-2 small">
-										<?php
-										$text = "*OTP is sent to your Email Address.";
-										if ((bool)$this->Session->read('Site.sms_notifications') === true) {
-											$text = "*OTP is sent to your Mobile no. and Email Address provided in Order details";
-										}
-										echo $text;
-										?>
-									</div>
-
-									<div class="mt-4">
-										<button type="button" class="btn btn-md btn-primary" id="orderVerifyOtpButton" onclick="verifyOtp()">Next - Verify OTP</button>
-									</div>
-
-									<?php echo $this->Form->end(); ?>
+								<div class="mt-5">
+									<input type="number" name="data[User][otp]" class="form-control" id="UserVerifyOtp" placeholder="Enter OTP" min="1000" max="9999" required autofocus autocomplete="off">
 								</div>
+
+								<div class="text-danger mt-2 small">
+									<?php
+									$text = "*OTP is sent to your Email Address.";
+									if ((bool)$this->Session->read('Site.sms_notifications') === true) {
+										$text = "*OTP is sent to your Mobile no. and Email Address provided in Order details";
+									}
+									echo $text;
+									?>
+								</div>
+
+								<div class="mt-4">
+									<button type="button" class="btn btn-md btn-primary" id="orderVerifyOtpButton" onclick="verifyOtp()">Next - Verify OTP</button>
+								</div>
+
+								<?php echo $this->Form->end(); ?>
+
 							<?php } else { ?>
-								<div>If you are already registered, please <a href="/users/login" class="text-orange">login</a> to place an Order.</div>
+								If you are already registered, please <a href="/users/login" class="text-orange">login</a> to place an Order.
 
 								<div class="mt-3 text-center">(OR)</div>
 
@@ -560,39 +499,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					</div>
 				</div>
 			</div>
-
-			<?php
-			if ($showLocationPopup && !empty($siteLocations)) {
-			?>
-				<!-- Location Modal -->
-				<div class="modal fade" id="locationBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="locationBackdropLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="locationBackdropLabel">Select Location</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body pb-5">
-								<div>We currently serve in the following areas. Choose your location of interest.</div>
-
-								<div class="list-group  list-group-flush mt-3 fw-bold">
-									<?php
-									foreach ($siteLocations as $id => $row) {
-									?>
-										<a href="#" onclick="goToLocation('<?= $id ?>', '<?= $row['title'] ?>', '<?= $row['url'] ?>');" class="list-group-item list-group-item-action py-3">
-											<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
-										</a>
-									<?php
-									} ?>
-								</div>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			<?php
-			}
-			?>
 		</div>
 
 		<div class="container mt-4">
@@ -638,13 +544,13 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
-	<script src="/js/site.js?v=1.2.10"></script>
-	<?= $this->element('customjs', ['showLocationPopup' => $showLocationPopup]) ?>
-	
+	<script src="/js/site.js?v=1.3.0"></script>
+	<?= $this->element('customjs') ?>
+
 	<?php if ($enableLightbox) { ?>
 		<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 	<?php } ?>
-	<script src="/js/final.js?v=1.1.1" defer></script>
+	<script src="/js/final.js?v=1.1.2" defer></script>
 
 	<!-- third party scripts from backend db -->
 	<?= $this->element('footerscripts')	?>

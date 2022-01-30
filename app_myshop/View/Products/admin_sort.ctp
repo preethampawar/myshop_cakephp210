@@ -36,6 +36,10 @@
 		$productName = $row['Product']['name'];
 		$sort = $row['CategoryProduct']['sort'];
 		$categoryProductId = $row['CategoryProduct']['id'];
+
+		if (empty($row['Product']['id'])) {
+			continue;
+		}
 		?>
 		<tr style="cursor: move;">
 			<td class="small">

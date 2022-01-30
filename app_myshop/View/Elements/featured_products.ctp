@@ -11,13 +11,13 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 	<article>
 		<?= $this->element('homepage_tabmenu', ['homepage' => $homepage]) ?>
 
-		<?php
-		if (!$homepage) {
-		?>
-			<h1 class="mt-2"><i class="fa fa-fire text-orange"></i> Hot Deals (<?= count($allCategories) ?> items)</h1>
-		<?php
-		}
-		?>
+		<header>
+			<div class="alert alert-secondary bg-light p-2 mt-4 shadow-sm" role="button">
+				<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/0/99/asc">
+					<div class="d-inline-block" style="width: 20px;"><i class="fa fa-fire text-orange"></i></div> Hot Deals <?= !$homepage ? '(' . (count($allCategories)) . ') items' : '' ?>
+				</a>
+			</div>
+		</header>
 
 		<?php
 		if (!empty($allCategories)) {
@@ -31,7 +31,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 				$productsRowClass = "row g-3 g-lg-x-4 p-0";
 			}
 		?>
-			<div class="row g-3 g-lg-x-4 p-0 mt-3">
+			<div class="row g-3 g-lg-x-4 p-0">
 				<?php
 				foreach ($allCategories as $row) {
 					$categoryID = $row['Category']['id'];

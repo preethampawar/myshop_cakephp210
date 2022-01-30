@@ -3,12 +3,6 @@ $(document).ready(function () {
 	};
 
 	try {
-		showLocationAndApp();
-	} catch (err) {
-		console.log('Error - Location Nav could not be displayed: ', err.message);
-	}
-
-	try {
 		lazyLoadImages();
 		// loadHomepageProducts();
 	} catch (err) {
