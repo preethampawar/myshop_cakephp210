@@ -35,6 +35,18 @@
 			>
 			<div class='text-muted small'>Note*: Only alphanumeric characters are accepted. Special characters will be removed.</div>
 		</div>
+		<div class="mb-3">
+			<label for="CategorySort" class="form-label">Sort Preference</label>
+			<input
+				type="number"
+				id="CategorySort"
+				name="data[Category][sort]"
+				value="<?php echo $this->data['Category']['sort']; ?>"
+				class="form-control form-control-sm"
+				placeholder="Enter Sort Number"								
+			>
+			<div class='text-muted small'>Note*: Used in arranging Categories in ascending order</div>
+		</div>
 
 		<div class="my-3">
 			<label for="CategoryMetaKeywords" class="form-label">Meta Keywords (SEO)</label>

@@ -26,7 +26,7 @@ class Category extends AppModel
 	{
 		$conditions = ['Category.site_id' => $siteId, 'Category.active' => '1', 'Category.parent_id' => null, 'Category.deleted' => '0'];
 		$this->unbindModel(['belongsTo'=>['ParentCategory']]);
-		return $this->find('all', ['conditions' => $conditions, 'recursive' => '-1', 'order' => 'Category.name ASC']);
+		return $this->find('all', ['conditions' => $conditions, 'recursive' => '-1', 'order' => ['Category.sort ASC', 'Category.name ASC']]);
 	}
 
 	public function admin_getCategories()

@@ -61,6 +61,7 @@
 					<th>#</th>
 					<th>Image</th>
 					<th>Category</th>
+					<th>Sort</th>
 					<th></th>
 				</tr>
 				</thead>
@@ -72,6 +73,7 @@
 					$categoryID = $row['Category']['id'];
 					$categoryActive = $row['Category']['active'];
 					$categoryName = $row['Category']['name'];
+					$categorySort = $row['Category']['sort'];
 					$categoryProductsBasePrice = $row['Category']['products_base_price'];
 					$tmp = substr($categoryName, 0, 25);
 					$categoryDisplayName = (strlen($categoryName) > 28) ? $tmp . '...' : $categoryName;
@@ -122,6 +124,7 @@
 								<a href="/admin/categories/edit/<?= $categoryID ?>" class="ms-1"><?= $categoryDisplayName ?></a>
 
 							</td>
+							<td><?= $categorySort ?></td>
 							<td>
 								<div class="text-end text-nowrap">
 									<a href="/admin/categories/showProducts/<?= $categoryID ?>" class="btn btn-sm btn-outline-primary">Manage Products</a>
