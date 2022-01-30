@@ -77,7 +77,7 @@ class Product extends AppModel
 		return $allCategories;
 	}
 
-	public function getAllProducts($siteId, $featured = null, $limit = null)
+	public function getAllProducts($siteId, $featured = null, $limit = null, $filter = [])
 	{
 		App::uses('CategoryProduct', 'Model');
 		$this->CategoryProduct = new CategoryProduct;
@@ -105,6 +105,42 @@ class Product extends AppModel
 		if ($featured) {
 			$order = ['Product.sort'];
 			array_push($productConditions, ['Product.featured' => '1']);
+		}
+
+		if ($filter) {
+			switch ($filter['type']) {
+				case 'price':
+					$startValue = (float)$filter['startValue'] ?? 0;
+					$endValue = (float)$filter['endValue'] ?? 0;
+					$sort = (string)$filter['sort'] ?? 'asc';
+
+					if (!in_array($filter['sort'], ['asc', 'desc'])) {
+						$sort = 'asc';
+					}
+					$orderBy = sprintf('(Product.mrp - Product.discount) %s', $sort);
+					$order = [$orderBy];
+
+					array_push($fields, '(Product.mrp - Product.discount) Sale');
+					$condition = '';
+
+					if ($startValue == 0 && $endValue > 0) {
+						$condition = sprintf('(Product.mrp - Product.discount) <= %d', $endValue);
+					}
+					if ($startValue > 0 && $endValue == 0) {
+						$condition = sprintf('(Product.mrp - Product.discount) >= %d', $startValue);
+					}
+					if ($startValue > 0 && $endValue > 0) {
+						$condition = sprintf('(Product.mrp - Product.discount) BETWEEN %d AND %d', $startValue, $endValue);
+					}
+
+					if (!empty($condition)) {
+						array_push($productConditions, [$condition]);
+					}
+					break;
+
+				default:
+					break;
+			}
 		}
 
 		return $this->CategoryProduct->find('all', ['conditions' => $productConditions, 'order' => $order, 'fields' => $fields, 'limit' => $limit]);

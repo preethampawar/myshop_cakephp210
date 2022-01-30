@@ -22,14 +22,50 @@ $inactiveAlertClass = "alert-info"
 
 
 <div class="table-responsive mt-3">
-	<div class="hstack gap-3">		
-		<div class="alert alert-danger p-1 mb-2 shadow-sm" role="button">
+	<div class="hstack gap-3">
+		<div class="alert alert-danger p-0 mb-2 shadow-sm" role="button">
 			<a class="nav-link text-nowrap" aria-current="page" href="/products/showFeatured">
-				<i class="fa fa-fire text-orange"></i> Hot Deals
+				<div class="d-inline-block" style="width: 20px;"><i class="fa fa-fire text-orange"></i></div> Hot Deals
 			</a>
 		</div>
-		<div class="alert alert-primary p-1 mb-2 shadow-sm">
-			<a class="nav-link text-nowrap" href="/products/showAll"><i class="fa-solid fa-boxes-stacked text-orange"></i> Show All Products</a>
+		<div class="alert alert-warning p-0 mb-2 shadow-sm" role="button">
+			<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/0/99/asc">
+				Below <?= $this->App->price(99); ?>
+			</a>
+		</div>
+		<div class="alert alert-info p-0 mb-2 shadow-sm" role="button">
+			<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/99/199/asc">
+				<?= $this->App->price(99); ?> -
+				<?= $this->App->price(199); ?>
+			</a>
+		</div>
+		<div class="alert alert-success p-0 mb-2 shadow-sm" role="button">
+			<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/199/299/asc">
+				<?= $this->App->price(199); ?> -
+				<?= $this->App->price(299); ?>
+			</a>
+		</div>
+		<div class="alert alert-primary p-0 mb-2 shadow-sm" role="button">
+			<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/299/399/asc">
+				<?= $this->App->price(299); ?> -
+				<?= $this->App->price(399); ?>
+			</a>
+		</div>
+		<div class="alert alert-info p-0 mb-2 shadow-sm" role="button">
+			<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/399/499/asc">
+				<?= $this->App->price(399); ?> -
+				<?= $this->App->price(499); ?>
+			</a>
+		</div>
+		<div class="alert alert-secondary bg-light p-0 mb-2 shadow-sm" role="button">
+			<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/499/0/asc">
+				<?= $this->App->price(499); ?> & Above
+			</a>
+		</div>
+		<div class="alert alert-secondary p-0 mb-2 shadow-sm" role="button">
+			<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/0/0/asc">
+				Show All
+			</a>
 		</div>
 	</div>
 </div>

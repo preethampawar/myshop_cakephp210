@@ -2,7 +2,6 @@
 // this element should contain only php dependent scripts
 
 App::uses('Order', 'Model');
-$showLocationPopup = $showLocationPopup ?? false;
 
 $defaultLat = 17.6140;
 $defaultLng = 78.0816;
@@ -15,7 +14,7 @@ $zoomLevel = 15;
 	var geocoder;
 	var infoWindow;
 	var defaultLat = <?= !empty($defaultLat) ? $defaultLat : 17.6140 ?>;
-	var defaultLng =  <?= !empty($defaultLng) ? $defaultLng : 78.0816 ?>;
+	var defaultLng = <?= !empty($defaultLng) ? $defaultLng : 78.0816 ?>;
 	var defaultAddress = '<?= !empty($defaultAddress) ? $defaultAddress : 'Sangareddy' ?>';
 	var zoomLevel = <?= !empty($zoomLevel) ? $zoomLevel : 15 ?>;
 </script>
@@ -35,26 +34,15 @@ $zoomLevel = 15;
 		}
 	}
 
-	$(document).ready(function () {
-		<?php
-		if($showLocationPopup) {
-		?>
-		selectLocation();
+	$(document).ready(function() {
 
-		if (localStorage.getItem('location')) {
-			$('#locationTitleSpan').text(localStorage.getItem('location'))
-		}
-		<?php
-		}
-		?>
-
-		<?php if ($this->Session->read('Site.shopping_cart')): ?>
-		try {
-			loadShoppingCartHeader();
-			loadShoppingCart()
-		} catch (err) {
-			console.log('Error - Shopping cart top nav header: ', err.message);
-		}
+		<?php if ($this->Session->read('Site.shopping_cart')) : ?>
+			try {
+				loadShoppingCartHeader();
+				loadShoppingCart()
+			} catch (err) {
+				console.log('Error - Shopping cart top nav header: ', err.message);
+			}
 		<?php endif; ?>
 
 		<?php
@@ -76,4 +64,3 @@ $zoomLevel = 15;
 		?>
 	});
 </script>
-

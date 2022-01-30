@@ -329,14 +329,6 @@ function productAddToCart(categoryId, productId, productQty = 1, ele) {
 	return response;
 }
 
-
-// show ShoppingCart content
-function showMyShoppingCart() {
-	myShoppingCart.show()
-
-	loadShoppingCart();
-}
-
 // show Order Summary
 function showOrderSummary() {
 	loadOrderSummary()
@@ -751,16 +743,6 @@ function removePromoCode() {
 	return result
 }
 
-// show location popup
-function showLocationPopup() {
-	let locationPopup;
-
-	locationPopup = new bootstrap.Modal(document.getElementById('locationBackdrop'));
-	locationPopup.show();
-
-	return false;
-}
-
 function hidePaymentAlertError() {
 	$('#paymentErrorAlert').addClass('d-none')
 }
@@ -912,14 +894,6 @@ function fillCustomerOrderDetailsFromLocalStorage() {
 		}
 	}
 }
-
-function showLocationAndApp() {
-	let ele = document.getElementById('locationAppNavBar');
-	if (ele) {
-		ele.classList.remove("d-none")
-	}
-}
-
 
 let imageCount = 0;
 

@@ -50,17 +50,17 @@ class ProductsController extends AppController
 
 		$allCategories = $this->Product->getAllProducts($this->Session->read('Site.id'));
 		$allProducts = [];
-		if($allCategories) {
+		if ($allCategories) {
 			$allProducts = [];
 			foreach ($allCategories as $row) {
-				if(!isset($allProducts[$row['Category']['id']])) {
+				if (!isset($allProducts[$row['Category']['id']])) {
 					$allProducts[$row['Category']['id']]['Category'] = $row['Category'];
 				}
 			}
 
 			foreach ($allProducts as $categoryId => &$category) {
-				foreach($allCategories as $row) {
-					if($row['Category']['id'] == $categoryId) {
+				foreach ($allCategories as $row) {
+					if ($row['Category']['id'] == $categoryId) {
 						unset($row['Category']);
 						$category['CategoryProducts'][] = $row;
 					}
@@ -79,17 +79,17 @@ class ProductsController extends AppController
 
 		$allCategories = $this->Product->getAllProducts($this->Session->read('Site.id'));
 		$allProducts = [];
-		if($allCategories) {
+		if ($allCategories) {
 			$allProducts = [];
 			foreach ($allCategories as $row) {
-				if(!isset($allProducts[$row['Category']['id']])) {
+				if (!isset($allProducts[$row['Category']['id']])) {
 					$allProducts[$row['Category']['id']]['Category'] = $row['Category'];
 				}
 			}
 
 			foreach ($allProducts as $categoryId => &$category) {
-				foreach($allCategories as $row) {
-					if($row['Category']['id'] == $categoryId) {
+				foreach ($allCategories as $row) {
+					if ($row['Category']['id'] == $categoryId) {
 						unset($row['Category']);
 						$category['CategoryProducts'][] = $row;
 					}
@@ -165,7 +165,8 @@ class ProductsController extends AppController
 		App::uses('ProductReview', 'Model');
 		$productReviewsModel = new ProductReview();
 		$productReviews = $productReviewsModel->find(
-			'all', [
+			'all',
+			[
 				'conditions' => [
 					'ProductReview.product_id' => $productID,
 					'ProductReview.user_id > ' => 0
@@ -174,7 +175,8 @@ class ProductsController extends AppController
 					'ProductReview.created DESC'
 				],
 				'recursive' => -1
-			]);
+			]
+		);
 
 		$userReview = null;
 		if ($this->Session->read('User.id')) {
@@ -187,12 +189,14 @@ class ProductsController extends AppController
 		$this->set(compact('productInfo', 'categoryInfo', 'isAjax', 'productReviews', 'ratingsInfo', 'userReview'));
 	}
 
-	public function setRating($productId, $ratingValue = 5) {
+	public function setRating($productId, $ratingValue = 5)
+	{
 		$this->layout = false;
 
 		if (!$productInfo = $this->isSiteProduct($productId)) {
 			$this->response->header('Content-type', 'application/json');
-			$this->response->body(json_encode([
+			$this->response->body(
+				json_encode([
 					'error' => true,
 					'msg' => 'Product not found',
 				], JSON_THROW_ON_ERROR)
@@ -218,7 +222,7 @@ class ProductsController extends AppController
 		}
 
 		if (!$tmp['ProductReview']['id']) {
-			$productReviewId = $this->Session->check('ProductReview.'.$productId) ? $this->Session->read('ProductReview.'.$productId) : null;
+			$productReviewId = $this->Session->check('ProductReview.' . $productId) ? $this->Session->read('ProductReview.' . $productId) : null;
 			$tmp['ProductReview']['id'] = $productReviewId;
 		}
 
@@ -230,7 +234,7 @@ class ProductsController extends AppController
 		$productReviewRating = $productReviewsModel->save($tmp);
 
 		if ($productReviewRating) {
-			$this->Session->write('ProductReview.'.$productId, $productReviewRating['ProductReview']['id']);
+			$this->Session->write('ProductReview.' . $productId, $productReviewRating['ProductReview']['id']);
 		}
 
 		// save average rating in products table
@@ -242,7 +246,8 @@ class ProductsController extends AppController
 		$this->Product->save($tmp);
 
 		$this->response->header('Content-type', 'application/json');
-		$this->response->body(json_encode([
+		$this->response->body(
+			json_encode([
 				'error' => false,
 				'msg' => 'Ratings updated for this product',
 			], JSON_THROW_ON_ERROR)
@@ -300,7 +305,8 @@ class ProductsController extends AppController
 		}
 
 		$this->response->header('Content-type', 'application/json');
-		$this->response->body(json_encode([
+		$this->response->body(
+			json_encode([
 				'error' => $error,
 				'msg' => $msg,
 			], JSON_THROW_ON_ERROR)
@@ -343,7 +349,7 @@ class ProductsController extends AppController
 	public function admin_add($categoryId = null)
 	{
 		if ($this->productsLimitExceeded()) {
-			$this->errorMsg('You cannot add new products. You have reached your quota (max '.$this->Session->read('Site.products_limit').') of adding products in your store.');
+			$this->errorMsg('You cannot add new products. You have reached your quota (max ' . $this->Session->read('Site.products_limit') . ') of adding products in your store.');
 			$this->redirect($this->request->referer());
 		}
 
@@ -638,7 +644,8 @@ class ProductsController extends AppController
 		}
 
 		$this->response->header('Content-type', 'application/json');
-		$this->response->body(json_encode([
+		$this->response->body(
+			json_encode([
 				'error' => $error,
 				'msg' => $msg,
 			], JSON_THROW_ON_ERROR)
@@ -677,7 +684,6 @@ class ProductsController extends AppController
 				$msg = 'Product image update failed';
 				$this->errorMsg($msg);
 			}
-
 		}
 
 		$this->redirect($redirectURL);
@@ -712,7 +718,6 @@ class ProductsController extends AppController
 				$msg = 'Product image update failed';
 				$this->errorMsg($msg);
 			}
-
 		}
 		$this->redirect($redirectURL);
 	}
@@ -733,7 +738,7 @@ class ProductsController extends AppController
 			$sortInfo = $this->data['sortinfo'] ?? '';
 			$sortInfo = json_decode($sortInfo, true);
 
-			foreach($sortInfo as $row) {
+			foreach ($sortInfo as $row) {
 				$categoryProductId = $row['catproductId'];
 				$sort = $row['sort'];
 
@@ -745,6 +750,7 @@ class ProductsController extends AppController
 		}
 
 		$this->CategoryProduct->unbindModel(['belongsTo' => ['Category']]);
+		$this->CategoryProduct->bindModel(['belongsTo' => ['Product' => ['conditions' => ['Product.active' => 1, 'Product.deleted' => 0,]]]]);
 		$categoryProducts = $this->CategoryProduct->findAllByCategoryId($categoryId, [], ['CategoryProduct.sort']);
 
 		$this->set('categoryInfo', $categoryInfo);
@@ -759,7 +765,7 @@ class ProductsController extends AppController
 			$sortInfo = $this->data['sortinfo'] ?? '';
 			$sortInfo = json_decode($sortInfo, true);
 
-			foreach($sortInfo as $row) {
+			foreach ($sortInfo as $row) {
 				$productId = $row['productId'];
 				$sort = $row['sort'];
 
@@ -770,14 +776,57 @@ class ProductsController extends AppController
 			}
 		}
 
-		$conditions = [
-			'Product.site_id' => $this->Session->read('Site.id'),
-			'Product.deleted' => 0,
-		];
+		$products = [];
+		$activeCategoryProductIds = [];
 
-		$products = $this->Product->find('all', ['conditions' => $conditions, 'order' => 'Product.sort']);
+		App::uses('Category', 'Model');
+		$categoryModel = new Category;
+		$categoryModel->bindModel(['hasMany' => ['CategoryProduct' => ['fields' => ['CategoryProduct.product_id']]]]);
+		$categories = $categoryModel->find('all', ['fields' => ['Category.id'], 'conditions' => ['Category.site_id' => $this->Session->read('Site.id'), 'Category.active' => 1, 'Category.deleted' => 0], 'recursive' => 1]);
+
+		foreach ($categories as $row) {
+			if (!empty($row['CategoryProduct'])) {
+				foreach ($row['CategoryProduct'] as $categoryProduct) {
+
+					$activeCategoryProductIds[$categoryProduct['product_id']] = $categoryProduct['product_id'];
+				}
+			}
+		}
+
+		if (!empty($activeCategoryProductIds)) {
+			$conditions = [
+				'Product.site_id' => $this->Session->read('Site.id'),
+				'Product.deleted' => 0,
+				'Product.active' => 1,
+				'Product.featured' => 1,
+				'Product.id IN' => $activeCategoryProductIds,
+			];
+
+			$products = $this->Product->find('all', ['conditions' => $conditions, 'order' => 'Product.sort', 'recursive' => -1]);
+		}
 
 		$this->set('products', $products);
+	}
 
+	public function filter($type, $startValue = 0, $endValue = 0, $sort = 'asc')
+	{
+		if(!in_array($type, ['price'])) {
+			$type = 'price';
+		}
+		if(!in_array($sort, ['asc', 'desc'])) {
+			$sort = 'asc';
+		}
+
+		$filter = [
+			'type' => $type,
+			'startValue' => (int)$startValue,
+			'endValue' => (int)$endValue,
+			'sort' => (string)$sort,
+		];
+		$siteId = $this->Session->read('Site.id');
+
+		$products = $this->Product->getAllProducts($siteId, null, null, $filter);
+
+		$this->set(compact('products', 'filter'));
 	}
 }

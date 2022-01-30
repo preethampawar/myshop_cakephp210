@@ -525,12 +525,4 @@ Message: ' . htmlentities($data['User']['message']) . '
 
 		$this->redirect($this->referer());
 	}
-
-	public function setLocation($locationId)
-	{
-		$this->layout = 'buyer';
-		$this->set('locationId', $locationId);
-	}
 }
-
-?>
