@@ -5,7 +5,7 @@
 	  "andriodAppUrl": "https://play.google.com/store/apps/details?id=com.eatmukka",
 	  "defaultLocationId": "sangareddy",
 	  "locations": {
-		"sangareddy": {
+		"www": {
 		  "title": "Sangareddy",
 		  "url": "www.eatmukka.com"
 		},
@@ -20,7 +20,7 @@
 	  "andriodAppUrl": "https://play.google.com/store/apps/details?id=com.eatmukka",
 	  "defaultLocationId": "zhb",
 	  "locations": {
-		"sangareddy": {
+		"www": {
 		  "title": "Sangareddy",
 		  "url": "www.eatmukka.com"
 		},
