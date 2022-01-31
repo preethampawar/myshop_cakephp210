@@ -110,6 +110,7 @@ if ($type == 'vertical') {
 				type: 'canvas',
 				size: 'original', // can be "viewport" or {"width":800, "height":500},
 				format: 'webp',
+				quality: 0.85,
 			}).then(function (response) {
 				$.ajax({
 					url: imageUploadUrl,
@@ -130,8 +131,8 @@ if ($type == 'vertical') {
 						$image_crop.croppie('result', {
 							type: 'canvas',
 							size: {"width": <?= $width ?>, "height": <?= $height ?>},
-							format: 'png',
-							quality: 1
+							format: 'webp',
+							quality: 0.85,
 						}).then(function (response) {
 							$.ajax({
 								url: imageUploadUrl,
