@@ -97,7 +97,7 @@
 								<?php
 								if ($imageUrl) {
 									?>
-									<a href='/admin/categories/edit/<?= $categoryID ?>'>
+									<a href="/admin/categories/showProducts/<?= $categoryID ?>">
 										<img src="<?= $imageUrl ?> " loading="lazy" width="50" height="50" class="mb-2">
 									</a>
 									<?php
@@ -121,7 +121,7 @@
 								<?php endif; ?>
 
 
-								<a href="/admin/categories/edit/<?= $categoryID ?>" class="ms-1"><?= $categoryDisplayName ?></a>
+								<a href="/admin/categories/showProducts/<?= $categoryID ?>" class="ms-1"><?= $categoryDisplayName ?></a>
 
 							</td>
 							<td><?= $categorySort ?></td>
