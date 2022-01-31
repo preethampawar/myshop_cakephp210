@@ -3,6 +3,23 @@ App::uses('ShoppingCart', 'Model');
 $shoppingCartModel = new ShoppingCart;
 $shoppingCart = $shoppingCartModel->getShoppingCartProducts($this->Session->read('ShoppingCart.id'));
 
+App::uses('Product', 'Model');
+$productModel = new Product;
+$siteId = $this->Session->read('Site.id');
+$products = $productModel->getAllProducts($siteId, null, null, $filter = ['type' => 'show_in_cart']);
+
+$showInCartProducts = [];
+if ($products) {
+	// remove same products in multiple categories
+	foreach ($products as $row) {
+		$showInCartProducts[$row['Product']['id']] = $row;
+	}
+}
+unset($products);
+unset($productModel);
+unset($shoppingCartModel);
+
+$inCartProductIds = [];
 $selectBoxQuantityOptions = '';
 for ($i = 1; $i <= 50; $i++) {
 	$selectBoxQuantityOptions .= "<option value='$i'>$i</option>";
@@ -49,6 +66,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			$productUploadedImages = $row['Product']['images'] ? json_decode($row['Product']['images']) : [];
 			$imageDetails = $this->App->getHighlightImage($productUploadedImages);
 			$thumbUrl = '/img/noimage.jpg';
+			$loadingImageUrl = '/loading4.jpg';
 			$imageTagId = random_int(1, 10000);
 			$productCartValue = $qty * $salePrice;
 			$productCartMRPValue = $qty * $mrp;
@@ -58,6 +76,8 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 			if ($imageDetails) {
 				$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
 			}
+
+			$inCartProductIds[] = $productID;
 		?>
 
 			<div class="mt-2 mb-4">
@@ -78,7 +98,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 						</div>
 						<div class="d-flex mt-2">
 							<div>
-								<img src="<?php echo $thumbUrl; ?>" loading="lazy" class="img-fluid" role="button" alt="<?php echo $productName; ?>" id="<?php echo $imageTagId; ?>" width="75" height="75" />
+								<img src="<?php echo $loadingImageUrl; ?>" data-original="<?php echo $thumbUrl; ?>" loading="lazy" class="lazy img-fluid" role="button" alt="<?php echo $productName; ?>" id="<?php echo $imageTagId; ?>" width="75" height="75" />
 							</div>
 							<div class="ms-2">
 								<div class="small text-muted">
@@ -242,6 +262,101 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 
 			<a href="#" type="button" class="small mt-3 d-none" data-bs-dismiss="offcanvas" aria-label="Close">Hide Cart</a>
 		</div>
+
+		<?php
+		if ($showInCartProducts) {
+
+			// Filter out show_in_cart related products which are already there in cart
+			foreach ($showInCartProducts as $row2) {
+				if (in_array($row2['Product']['id'], $inCartProductIds)) {
+					unset($showInCartProducts[$row2['Product']['id']]);
+				}
+			}
+		}
+
+		if ($showInCartProducts) {
+		?>
+			<section id="EssentialProducts">
+				<article>
+					<header>
+						<div class="alert alert-info mt-5 shadow" role="button">
+							<i class="far fa-hand-point-down"></i> Recommended
+						</div>
+					</header>
+
+					<div class="row g-3 p-0">
+						<?php
+						foreach ($showInCartProducts as $row2) {
+							if (in_array($row2['Product']['id'], $inCartProductIds)) {
+								continue;
+							}
+
+							$categoryID = $row2['Category']['id'];
+							$categoryName = ucwords($row2['Category']['name']);
+							$categoryNameSlug = Inflector::slug($categoryName, '-');
+
+							$productID = $row2['Product']['id'];
+							$productName = ucwords($row2['Product']['name']);
+							$productShortDesc = $row2['Product']['short_desc'];
+							$productNameSlug = Inflector::slug($productName, '-');
+							$productTitle = $productName;
+							$assetDomainUrl = Configure::read('AssetDomainUrl');
+							$productUploadedImages = $row2['Product']['images'] ? json_decode($row2['Product']['images']) : [];
+							$imageDetails = $this->App->getHighlightImage($productUploadedImages);
+							$thumbUrl = "/img/noimage.jpg";
+							$imageTagId = random_int(1, 10000);
+
+							if ($imageDetails) {
+								$thumbUrl = $assetDomainUrl . $imageDetails['thumb']->imagePath;
+							}
+
+							$productImageUrl = $thumbUrl;
+							$mrp = $row2['Product']['mrp'];
+							$discount = $row2['Product']['discount'];
+							$salePrice = $mrp - $discount;
+							$noStock = $row2['Product']['no_stock'];
+							$cartEnabled = $this->Session->read('Site.shopping_cart');
+							$hideProductPrice = $row2['Product']['hide_price'];
+							$avgRating = $row2['Product']['avg_rating'];
+							$ratingsCount = $row2['Product']['ratings_count'];
+						?>
+
+							<div class="col-6" id="productEssentialsCard<?php echo $categoryID . '-' . $productID; ?>">
+								<?php
+								echo $this->element(
+									'product_card',
+									[
+										'productImageUrl' => $productImageUrl,
+										'productName' => $productName,
+										'productShortDesc' => $productShortDesc,
+										'imageTagId' => $imageTagId,
+										'productTitle' => $productTitle,
+										'categoryID' => $categoryID,
+										'productID' => $productID,
+										'categoryNameSlug' => $categoryNameSlug,
+										'productNameSlug' => $productNameSlug,
+										'mrp' => $mrp,
+										'discount' => $discount,
+										'salePrice' => $salePrice,
+										'cartEnabled' => $cartEnabled,
+										'noStock' => $noStock,
+										'hideProductPrice' => $hideProductPrice,
+										'avgRating' => $avgRating,
+										'ratingsCount' => $ratingsCount,
+									]
+								);
+								?>
+							</div>
+						<?php
+						}
+						?>
+					</div>
+
+				</article>
+			</section>
+		<?php
+		}
+		?>
 	</div>
 
 <?php

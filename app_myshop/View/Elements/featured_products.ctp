@@ -12,7 +12,7 @@ $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), 
 		<?= $this->element('homepage_tabmenu', ['homepage' => $homepage]) ?>
 
 		<header>
-			<div class="alert alert-secondary bg-light p-2 mt-4 shadow-sm" role="button">
+			<div class="alert alert-danger p-2 mt-4 shadow-sm" role="button">
 				<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/0/99/asc">
 					<div class="d-inline-block" style="width: 20px;"><i class="fa fa-fire text-orange"></i></div> Hot Deals <?= !$homepage ? '(' . (count($allCategories)) . ') items' : '' ?>
 				</a>
