@@ -88,6 +88,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 				type: 'canvas',
 				size: {"width": 500, "height": 200}, // can be "viewport" or {"width":800, "height":500},
 				format: 'webp',
+				quality: 0.85,
 			}).then(function (response) {
 				$.ajax({
 					url: imageUploadUrl,
@@ -109,6 +110,7 @@ $assetDomainUrl = Configure::read('AssetDomainUrl');
 							type: 'canvas',
 							size: {"width": 1200, "height": 480},
 							format: 'webp',
+							quality: 0.85,
 						}).then(function (response) {
 							$.ajax({
 								url: imageUploadUrl,
