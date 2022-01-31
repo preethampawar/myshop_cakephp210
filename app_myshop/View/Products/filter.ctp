@@ -5,7 +5,7 @@ if ($filter['type'] === 'price') {
 		$title = 'Below ';
 		$title .= $this->App->price($filter['endValue']);
 	}
-	if ($filter['startValue'] > 0 && $filter['endValue'] == 0) {		
+	if ($filter['startValue'] > 0 && $filter['endValue'] == 0) {
 		$title = 'Above ';
 		$title .= $this->App->price($filter['startValue']);
 	}
@@ -17,7 +17,25 @@ if ($filter['type'] === 'price') {
 	if ($filter['startValue'] == 0 && $filter['endValue'] == 0) {
 		$title = 'All Products ';
 	}
+}
 
+$alertClass = 'alert alert-secondary bg-light';
+switch ($filter['startValue']) {
+	case 0:		
+		$alertClass = $filter['endValue'] > 0 ? 'alert alert-warning' : 'alert alert-secondary';
+		break;
+	case 99:
+		$alertClass = 'alert alert-info';
+		break;
+	case 199:
+		$alertClass = 'alert alert-success';
+		break;
+	case 299:
+		$alertClass = 'alert alert-primary';
+		break;
+	case 399:
+		$alertClass = 'alert alert-info';
+		break;
 }
 ?>
 
@@ -30,7 +48,7 @@ $this->set('title_for_layout', $title);
 <section id="ProductInfo">
 	<article>
 		<header>
-			<div class="alert alert-secondary bg-light p-2 mt-4 shadow-sm" role="button">
+			<div class="<?= $alertClass ?> p-2 mt-4 shadow-sm" role="button">
 				<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/0/99/asc">
 					<?= $title ?> (<?= count($products) ?> items)
 				</a>

@@ -58,6 +58,21 @@ $this->set('enableTextEditor', true);
 				>
 				<label class="form-check-label" for="ProductFeatured">Show in Best Deals</label>
 			</div>
+
+			<div class="form-check form-switch">
+				<input type="hidden" name="data[Product][show_in_cart]" value="0">
+				<input
+					type="checkbox"
+					id="ProductShowInCart"
+					name="data[Product][show_in_cart]"
+					value="1"
+					class="form-check-input"
+					<?php echo $this->data['Product']['show_in_cart'] ? 'checked' : null; ?>
+				>
+				<label class="form-check-label" for="ProductShowInCart">Show In Cart</label>
+			</div>
+
+
 			<div class="form-check form-switch">
 				<input type="hidden" name="data[Product][no_stock]" value="0">
 				<input

@@ -65,7 +65,7 @@ function lazyLoadImages() {
 	// 	threshold: 200,
 	// });
 
-	const images = document.querySelectorAll('[data-original]');
+	const images = document.querySelectorAll('.lazy[data-original]');
 	const config = {
 		rootMargin: '0px 0px 50px 0px',
 		threshold: 0
@@ -90,6 +90,8 @@ function lazyLoadImages() {
 		const src = img.getAttribute('data-original');
 		if (!src) { return; }
 		img.src = src;
+
+		img.removeAttribute('data-original');
 	}
 }
 
@@ -160,6 +162,7 @@ function loadShoppingCart() {
 	data.then(function (response) {
 		if (response.length > 0) {
 			$("#myShoppingCartBody").html(response);
+			lazyLoadImages();
 		}
 	})
 

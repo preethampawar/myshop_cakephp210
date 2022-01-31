@@ -115,15 +115,15 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 		<?php
 		if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
 		?>
-			<div class="d-flex justify-content-between container-fluid text-muted small py-2 px-3">
+			<div class="d-flex justify-content-between container-fluid text-muted small">
 				<div>
 					<?php
 					if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
 					?>
-						<span role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasApp" aria-controls="offCanvasApp">
+						<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasApp" aria-controls="offCanvasApp">
 							Download App <i class="text-danger fab fa-google-play"></i>
-						</span>
-						<div class="offcanvas offcanvas-top" tabindex="-1" id="offCanvasApp" aria-labelledby="offCanvasAppLabel">
+						</div>
+						<div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasApp" aria-labelledby="offCanvasAppLabel">
 							<div class="offcanvas-header">
 								<h5 class="offcanvas-title" id="offCanvasAppLabel">Download Mobile App</h5>
 								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -140,10 +140,10 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					<?php
 					if ($showLocationOptions) {
 					?>
-						<span role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasLocation" aria-controls="offCanvasLocation">
+						<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasLocation" aria-controls="offCanvasLocation">
 							<i class="fa fa-map-marker-alt text-danger"></i> <?= $siteLocations[$subdomain]['title'] ?>
-						</span>
-						<div class="offcanvas offcanvas-top" tabindex="-1" id="offCanvasLocation" aria-labelledby="offCanvasLocationLabel">
+						</div>
+						<div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasLocation" aria-labelledby="offCanvasLocationLabel">
 							<div class="offcanvas-header">
 								<h5 class="offcanvas-title" id="offCanvasLocationLabel">Select Location</h5>
 								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -544,13 +544,13 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
-	<script src="/js/site.js?v=1.3.0"></script>
+	<script src="/js/site.js?v=1.3.1"></script>
 	<?= $this->element('customjs') ?>
 
 	<?php if ($enableLightbox) { ?>
 		<script src="/vendor/lightbox2-2.11.3/dist/js/lightbox.min.js" defer></script>
 	<?php } ?>
-	<script src="/js/final.js?v=1.1.2" defer></script>
+	<script src="/js/final.js?v=1.1.3" defer></script>
 
 	<!-- third party scripts from backend db -->
 	<?= $this->element('footerscripts')	?>
