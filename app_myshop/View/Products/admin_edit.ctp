@@ -69,7 +69,7 @@ $this->set('enableTextEditor', true);
 					class="form-check-input"
 					<?php echo $this->data['Product']['show_in_cart'] ? 'checked' : null; ?>
 				>
-				<label class="form-check-label" for="ProductShowInCart">Show In Cart</label>
+				<label class="form-check-label" for="ProductShowInCart">Show In Cart (Recommended item)</label>
 			</div>
 
 
