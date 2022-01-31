@@ -138,6 +138,12 @@ class Product extends AppModel
 					}
 					break;
 
+				case 'show_in_cart':
+					array_push($productConditions, ['Product.show_in_cart' => '1']);
+					$orderBy = sprintf('(Product.mrp - Product.discount) %s', 'ASC');
+					$order = [$orderBy];
+					break;
+
 				default:
 					break;
 			}
