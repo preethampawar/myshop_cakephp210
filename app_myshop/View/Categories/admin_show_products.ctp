@@ -76,7 +76,7 @@
 										?>
 
 										<span
-										class="fa fa-circle text-success"
+										class="bi bi-circle-fill text-success"
 										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 										<?php
 									} else {
@@ -86,7 +86,7 @@
 										?>
 
 										<span
-										class="fa fa-circle text-danger"
+										class="bi bi-circle-fill text-danger"
 										onclick="showConfirmPopup('<?php echo $url;?>', '<?php echo $title;?>', '<?php echo $confirmMessage;?>')"></span>
 										<?php
 									}

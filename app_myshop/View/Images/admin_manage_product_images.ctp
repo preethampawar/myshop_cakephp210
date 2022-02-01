@@ -115,7 +115,7 @@ $verticalActive = $type == 'vertical' ? ' active ' : '';
 							<?php
 						} else {
 							?>
-							<span class="btn btn-sm btn-warning ms-2 disabled "><span class="fa fa-check-circle"></span> Highlighted</span>
+							<span class="btn btn-sm btn-warning ms-2 disabled "><span class="bi bi-check-circle"></span> Highlighted</span>
 							<?php
 						}
 						?>

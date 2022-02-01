@@ -91,7 +91,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 									<?php
 									$title = $categoryName . ' &raquo; ' . $productName . '<br>Quantity: ' . $qty;
 									?>
-									<span href="#" onclick="showDeleteProductFromCartPopup('<?= $shoppingCartProductID ?>', '<?= $title ?>')" class="text-danger p-2" title="<?= $title ?>" role="button"><i class="fa fa-times"></i></span>
+									<span href="#" onclick="showDeleteProductFromCartPopup('<?= $shoppingCartProductID ?>', '<?= $title ?>')" class="text-danger p-2" title="<?= $title ?>" role="button"><i class="bi bi-x"></i></span>
 								</div>
 							</div>
 
@@ -244,7 +244,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 						Applied Promo Code: <b><?= $this->Session->read('PromoCode.name') ?></b>
 
 						<div class="mt-2 text-center">
-							<span class="btn btn-sm btn-outline-danger rounded-pill" onclick="removePromoCode()"><i class="fa fa-times me-1"></i> Remove Promo Code</span>
+							<span class="btn btn-sm btn-outline-danger rounded-pill" onclick="removePromoCode()"><i class="bi bi-x me-1"></i> Remove Promo Code</span>
 						</div>
 					</div>
 				<?php
@@ -280,7 +280,7 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 				<article>
 					<header>
 						<div class="alert alert-info mt-5 shadow" role="button">
-							<i class="far fa-hand-point-down"></i> Recommended
+							<i class="bi bi-arrow-down-circle"></i> Recommended
 						</div>
 					</header>
 

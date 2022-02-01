@@ -168,11 +168,11 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 		<h5>Add Review</h5>
 
 		<div class="mt-3 fs-5">
-			<span class="text-orange" id="starRating1" data-rating="1" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-			<span class="text-orange" id="starRating2" data-rating="2" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-			<span class="text-orange" id="starRating3" data-rating="3" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-			<span class="text-orange" id="starRating4" data-rating="4" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-			<span class="text-orange" id="starRating5" data-rating="5" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
+			<span class="text-orange" id="starRating1" data-rating="1" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+			<span class="text-orange" id="starRating2" data-rating="2" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+			<span class="text-orange" id="starRating3" data-rating="3" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+			<span class="text-orange" id="starRating4" data-rating="4" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+			<span class="text-orange" id="starRating5" data-rating="5" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
 		</div>
 
 		<div class="text-end mt-3">

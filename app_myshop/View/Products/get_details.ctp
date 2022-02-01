@@ -204,11 +204,11 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 			?>
 			<span class="text-purple">Rate this product</span>
 			<div class="mt-1 fs-5" id="ratingsDiv<?= $productID ?>">
-				<span class="text-orange" id="starRating1" data-rating="1" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating2" data-rating="2" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating3" data-rating="3" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating4" data-rating="4" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
-				<span class="text-orange" id="starRating5" data-rating="5" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="far fa-star"></i></span>
+				<span class="text-orange" id="starRating1" data-rating="1" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+				<span class="text-orange" id="starRating2" data-rating="2" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+				<span class="text-orange" id="starRating3" data-rating="3" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+				<span class="text-orange" id="starRating4" data-rating="4" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
+				<span class="text-orange" id="starRating5" data-rating="5" onclick="setRating(this.id, <?= $productID ?>)" role="button"><i class="bi bi-star"></i></span>
 			</div>
 
 			<?php
@@ -265,7 +265,7 @@ $productImageUrl = $this->Html->url($thumbUrl, true);
 				?>
 					<div class="border rounded p-3 mb-3">
 						<div class="text-start small text-muted d-flex justify-content-between">
-							<div class="small text-muted"><i class="fa fa-user"></i> <?= $row['ProductReview']['user_name'] ?></div>
+							<div class="small text-muted"><i class="bi bi-person"></i> <?= $row['ProductReview']['user_name'] ?></div>
 							<div class="small"><small><?= $this->App->convertTimeToDays($row['ProductReview']['created']) ?></small></div>
 						</div>
 

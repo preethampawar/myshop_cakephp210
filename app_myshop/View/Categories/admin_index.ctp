@@ -110,13 +110,13 @@
 									class="text-success"
 									title="Active"
 									onclick="showConfirmPopup('/admin/categories/activate/<?= $categoryID ?>/false', 'Deactivate Category?', 'Are you sure you want to Deactivate this category?'); return false;">
-									<i class="fa fa-circle"></i></span>
+									<i class="bi bi-circle-fill"></i></span>
 								<?php else: ?>
 									<span
 										class="text-danger"
 										title="Inactive"
 										onclick="showConfirmPopup('/admin/categories/activate/<?= $categoryID ?>/true', 'Activate Category?', 'Are you sure you want to Activate this category?'); return false;">
-										<i class="fa fa-circle"></i>
+										<i class="bi bi-circle-fill"></i>
 									</span>
 								<?php endif; ?>
 

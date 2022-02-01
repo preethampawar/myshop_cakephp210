@@ -266,7 +266,7 @@ if ($download) {
 	if (!empty($orders)) {
 		?>
 			<div>
-				<a class="btn btn-primary ms-3" href="/admin/orders/reports/<?= $orderType ?: 0 ?>/1<?= $q ?>"><i class="fa fa-download"></i> Download</a>
+				<a class="btn btn-primary ms-3" href="/admin/orders/reports/<?= $orderType ?: 0 ?>/1<?= $q ?>"><i class="bi bi-download"></i> Download</a>
 			</div>
 		<?php
 	}
