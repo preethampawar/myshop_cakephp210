@@ -4,7 +4,8 @@ var myModal = document.getElementById('audioNotificationModal') !== null ? new b
 
 var playSound = function playSound() {
     var sound = new Howl({
-        src: ['/Emergency.mp3']
+        src: ['/Emergency.mp3'],
+        html5: true
     });
     sound.play();
 };
