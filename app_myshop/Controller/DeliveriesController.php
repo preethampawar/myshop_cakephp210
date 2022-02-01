@@ -262,6 +262,7 @@ class DeliveriesController extends AppController
 
 		$conditions = [
 			'Order.site_id' => $this->Session->read('Site.id'),			
+			'Order.archived' => 0,			
 		];
 
 		if (!$this->isSellerForThisSite()) {
