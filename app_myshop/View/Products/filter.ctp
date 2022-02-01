@@ -48,7 +48,7 @@ $this->set('title_for_layout', $title);
 <section id="ProductInfo">
 	<article>
 		<header>
-			<div class="<?= $alertClass ?> p-2 mt-4 shadow-sm" role="button">
+			<div class="<?= $alertClass ?> p-2 mt-2 shadow-sm" role="button">
 				<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/0/99/asc">
 					<?= $title ?> (<?= count($products) ?> items)
 				</a>

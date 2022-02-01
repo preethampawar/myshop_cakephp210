@@ -95,7 +95,7 @@ $encodedOrderId = base64_encode($orderId);
 						<td>
 							<div class="dropdown">
 								<a class="" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									<i class="fa fa-ellipsis-v p-2"></i>
+									<i class="bi bi-three-dots-vertical p-2"></i>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									<li><a class="dropdown-item" href="#" onclick="showConfirmPopup('<?= $removeOrderProductUrl ?>', 'Remove Product', '<?= $removeOrderProductContent ?>'); return false;">Remove</a></li>

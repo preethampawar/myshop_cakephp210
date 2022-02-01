@@ -36,10 +36,12 @@ if ($buyerView) {
 	$catListCacheKey = $this->Session->read('CacheKeys.catList');
 	$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
 
-	//echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
+	echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
 ?>
 	
-
+<?php
+/*
+?>
 	<div id="homepage_categories_menu_container">
 		<div class="table-responsive mb-3 " aria-hidden="true">
 			<div class="hstack gap-3">
@@ -68,8 +70,6 @@ if ($buyerView) {
 		</div>
 	</div>
 
-	<?php
-	/*
 	<div id="home_page_category_products">
 		<div class="table-responsive mb-3 " aria-hidden="true">
 			<div class="hstack gap-3">

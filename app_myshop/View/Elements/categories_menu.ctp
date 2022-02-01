@@ -23,7 +23,7 @@ if (!empty($categoriesList)) {
 			>
 				<span><?php echo $categoryName; ?> (<?= $productsCount ?>)</span>
 				<span>
-					<i class="fa fa-chevron-right"></i>
+					<i class="bi bi-chevron-right"></i>
 				</span>
 			</a>
 
@@ -33,7 +33,7 @@ if (!empty($categoriesList)) {
 	?>
 	<li class="list-group-item px-0 pt-2">
 		<a class="nav-link" href="/products/showAll" title="Show all products">
-			<i class="fa fa-chevron-circle-right"></i> Show All Products
+			<i class="bi bi-arrow-right-circle"></i> Show All Products
 		</a>
 	</li>
 

@@ -264,7 +264,7 @@ if ($orderType) {
 							<td class="text-start">
 								<?= $status ?>
 								<span class="ms-2" title="<?= $offlineOrder ? 'Offline Order' : 'Online Order' ?>">
-									<?= $offlineOrder ? '<i class="fa fa-headset text-warning"></i>' : '<i class="fa fa-mobile-alt text-success"></i>' ?>
+									<?= $offlineOrder ? '<i class="bi bi-headset text-warning"></i>' : '<i class="bi bi-phone-fill text-success"></i>' ?>
 								</span>
 							</td>
 							<td><?= $this->App->price($totalAmount) ?></td>

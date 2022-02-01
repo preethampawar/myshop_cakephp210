@@ -9,7 +9,7 @@ $promoCodes = $promoCodeModel->getActivePromoCodes($siteId);
 if ($promoCodes) {
     ?>
     <div class="mt-4">
-        <h6>Available Offers <i class="fa-regular fa-percent"></i></h6>
+        <h6>Available Offers <i class="bi bi-percent"></i></h6>
 
         <div>
             <table class="table">

@@ -9,11 +9,11 @@ if ($rating) {
 		<?php
 		for ($i = 1; $i <= 5; $i++) {
 			if ($i <= $rating) {
-				$class = 'fa fa-star';
+				$class = 'bi bi-star-fill';
 			} elseif ($i == ceil($rating)) {
-				$class = 'fas fa-star-half-alt';
+				$class = 'bi bi-star-half';
 			} else {
-				$class = 'far fa-star';
+				$class = 'bi bi-star';
 			}
 		?>
 			<i class="<?= $class ?> text-orange me-1"></i>

@@ -172,7 +172,7 @@ $this->set('enableTextEditor', true);
 										'Delete Logo',
 										'Are you sure you want to remove this Logo?')"
 							>
-								<i class="fa fa-times"></i> Delete Logo
+								<i class="bi bi-x"></i> Delete Logo
 							</button>
 						</div>
 						<?php

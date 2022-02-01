@@ -4,7 +4,7 @@
 			 aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="1500">
 			<div class="d-flex align-items-center justify-content-between">
 				<div class="toast-body">
-					<span class="fa fa-check-circle"></span>
+					<span class="bi bi-check-circle"></span>
 					<?= $message ?>
 				</div>
 				<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
