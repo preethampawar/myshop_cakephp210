@@ -3,7 +3,7 @@
 		<div id="<?php echo h($key) ?>Message" class="toast toast-php text-white bg-danger border-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="1500">
 			<div class="d-flex align-items-center justify-content-between">
 				<div class="toast-body">
-					<span class="fa fa-exclamation-circle"></span>
+					<span class="bi bi-exclamation-circle"></span>
 					<?= $message ?>
 				</div>
 				<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>

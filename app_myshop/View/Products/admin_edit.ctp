@@ -152,7 +152,7 @@ $this->set('enableTextEditor', true);
 									class="text-center "
 									onclick="showDeleteImagePopup('<?= $deleteImagesUrl; ?>', '<?= $deleteImagePath; ?>', 'Delete Image', 'Are you sure you want to delete this image?')"
 								>
-									<span class="fa fa-times-circle text-danger p-2" role="button"></span>
+									<span class="bi bi-x-circle text-danger p-2" role="button"></span>
 								</div>
 							</div>
 

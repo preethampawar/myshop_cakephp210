@@ -12,7 +12,7 @@ if ($testimonials) {
 	?>
 		<div class="p-3 border-start border-warning border-5 my-3">
 			<div>
-				<i class="fa fa-quote-left small text-orange me-2"></i>
+				<i class="bi bi-quote small text-orange me-2"></i>
 				<?php
 				if($url) {
 					?>
@@ -24,7 +24,7 @@ if ($testimonials) {
 					<?php
 				}
 				?>
-				<i class="fa fa-quote-right small text-orange ms-2"></i>
+				<i class="bi bi-quote small text-orange ms-2"></i>
 			</div>
 			<div class="text-start text-orange fst-italic small mt-3"> - <?= $customerName ?></div>
 		</div>

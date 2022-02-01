@@ -76,7 +76,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 					<div class="carousel-item <?= $i === 0 ? 'active' : '' ?>" data-bs-interval="6000">
 						<div class="container text-center pb-5">
 							<div class="fst-italic">
-								<i class="fa fa-quote-left small text-orange me-1"></i>
+								<i class="bi bi-quote small text-orange me-1"></i>
 								<?php
 								if ($linkUrl) {
 									?>
@@ -88,7 +88,7 @@ if($slideshowEnabled && $this->request->params['action'] === 'display' && $this-
 									echo  $title;
 								}
 								?>
-								<i class="fa fa-quote-right small text-orange ms-1"></i>
+								<i class="bi bi-quote small text-orange ms-1"></i>
 							</div>
 
 							<?php

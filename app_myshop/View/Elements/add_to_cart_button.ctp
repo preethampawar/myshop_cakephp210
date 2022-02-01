@@ -14,7 +14,7 @@ if ($categoryID &&  $productID) {
 			<option value="5">5</option>
 		</select>
 		<button class="btn btn-primary w-50 text-nowrap" type="button" onclick="productAddToCart('<?= $categoryID ?>', '<?= $productID ?>', (document.getElementById('productCardInputGroupSelect<?= $uniqueId ?>').value), this)">
-			Add <i class="ms-1 fa fa-shopping-cart"></i>
+		Add <i class="bi bi-cart-plus-fill"></i>
 		</button>
 	</div>
 <?php

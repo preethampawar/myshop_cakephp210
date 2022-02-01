@@ -16,6 +16,6 @@ if (isset($shoppingCart['ShoppingCartProduct']) and !empty($shoppingCart['Shoppi
 }
 ?>
 <a href="#" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-	<div class="<?= (int)$totalItems > 0 ? ' text-orange' : ''; ?>"><i class="fa fa-cart-shopping fs-5"></i> My Cart <span class="badge bg-orange rounded-pill"><?php echo (int)$totalItems; ?></span></div>
+	<div class="<?= (int)$totalItems > 0 ? ' text-orange' : ''; ?>"><i class="bi <?= (int)$totalItems > 0 ? ' bi-cart-check-fill' : ' bi-cart'; ?> fs-5"></i> My Cart <span class="badge bg-orange rounded-pill"><?php echo (int)$totalItems; ?></span></div>
 </a>
 

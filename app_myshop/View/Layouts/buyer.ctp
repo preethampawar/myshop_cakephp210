@@ -95,7 +95,8 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<?php if ($enableLightbox) { ?>
 		<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
 	<?php } ?>
-	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta3-web/css/all.min.css" media="print" onload="this.media='all'">
+	<!-- <link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta3-web/css/all.min.css" media="print" onload="this.media='all'"> -->
+	<link rel="stylesheet" href="/vendor/bootstrap-icons-1.8.0/bootstrap-icons.css" media="print" onload="this.media='all'">
 	<?= $this->element('customcss') ?>
 
 	<?= $analyticsCode ?>
@@ -111,6 +112,15 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 <body class="bg-white" onbeforeunload="showLoadingBar()">
 	<div class="bg-white" id="root">
+		<?php
+		if ($this->App->isSellerForThisSite()) {
+		?>
+			<div class="container">
+				<div id="deliveryHearbeat"></div>
+			</div>
+		<?php
+		}
+		?>
 
 		<?php
 		if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
@@ -121,7 +131,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
 					?>
 						<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasApp" aria-controls="offCanvasApp">
-							Download App <i class="text-danger fab fa-google-play"></i>
+							Download App <i class="text-danger bi bi-download"></i>
 						</div>
 						<div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasApp" aria-labelledby="offCanvasAppLabel">
 							<div class="offcanvas-header">
@@ -141,7 +151,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					if ($showLocationOptions) {
 					?>
 						<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasLocation" aria-controls="offCanvasLocation">
-							<i class="fa fa-map-marker-alt text-danger"></i> <?= $siteLocations[$subdomain]['title'] ?>
+							<i class="bi bi-geo-alt-fill text-danger"></i> <?= $siteLocations[$subdomain]['title'] ?>
 						</div>
 						<div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasLocation" aria-labelledby="offCanvasLocationLabel">
 							<div class="offcanvas-header">
@@ -156,7 +166,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 									foreach ($siteLocations as $id => $row) {
 									?>
 										<a href="//<?= $row['url'] ?>" class="list-group-item list-group-item-action py-3">
-											<i class="fa fa-map-marker-alt text-danger"></i> <?= $row['title'] ?>
+											<i class="bi bi-geo-alt-fill text-danger"></i> <?= $row['title'] ?>
 										</a>
 									<?php
 									} ?>
@@ -183,14 +193,14 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					<?php
 					} else {
 					?>
-						<i class="fa fa-home"></i> <?= $this->Session->read('Site.title') ?>
+						<i class="bi bi-house-door"></i> <?= $this->Session->read('Site.title') ?>
 					<?php
 					}
 					?>
 				</a>
 
 				<div class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="fa fa-bars navbar-brand"></i>
+					<i class="bi bi-list navbar-brand"></i>
 				</div>
 				<div class="offcanvas offcanvas-end" id="navbarNav">
 					<div class="offcanvas-header border-bottom border-4 border-warning">
@@ -206,7 +216,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 							if ($this->App->isSellerForThisSite()) {
 							?>
 								<li class="nav-item px-1">
-									<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="fa fa-tools"></i> Manage Store</a>
+									<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="bi bi-tools"></i> Manage Store</a>
 								</li>
 							<?php
 							}
@@ -224,7 +234,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
                             if ($andriodAppUrl && !$this->Session->read('isMobileApp')) {
                                 ?>
                                 <li class="nav-item px-1">
-                                    <a class="nav-link px-1" href="<?= $andriodAppUrl ?>"><i class="fa fa-download"></i> Download App</a>
+                                    <a class="nav-link px-1" href="<?= $andriodAppUrl ?>"><i class="bi bi-download"></i> Download App</a>
                                 </li>
                                 <?php
                             }
@@ -247,7 +257,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 								<li class="nav-item dropdown px-1">
 									<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-										<i class="fa fa-user-circle"></i>
+										<i class="bi bi-person-circle"></i>
 										<?= $this->Session->read('User.firstname') != '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
 									</a>
 									<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
@@ -269,13 +279,13 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<ul class="nav container justify-content-between pt-3">
 				<li class="nav-item middle">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<div class="d-inline-block" style="width:21px;"><i class="fa fa-bars-staggered fs-5"></i></div> Products
+						<div class="d-inline-block" style="width:21px;"><i class="bi bi-list-nested fs-5"></i></div> Products
 					</a>
 				</li>
 				<?php if ($this->Session->read('Site.shopping_cart')) : ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
-							<div class="d-inline-block"><i class="fa fa-cart-shopping fs-5"></i></div> My Cart <span class="badge bg-orange rounded-pill">0</span>
+							<div class="d-inline-block"><i class="bi bi-cart fs-5"></i></div> My Cart <span class="badge bg-orange rounded-pill">0</span>
 						</a>
 					</li>
 				<?php endif; ?>
@@ -338,7 +348,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
 				<div class="small">
 					<a class="nav-link" href="/" title="Show all products">
-						<i class="fa fa-home"></i> Home
+						<i class="bi bi-house-door"></i> Home
 					</a>
 				</div>
 				<div class="offcanvas-header border-bottom border-4 border-warning">
@@ -346,7 +356,9 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="categoriesMenuBody">
-					<div id="categories_menu_container"></div>
+					<?php
+					echo $this->element('categories_menu');
+					?>
 					<div class="mt-4 text-center bottom">
 						<a role="button" class="nav-link btn btn-sm btn-light" data-bs-dismiss="offcanvas" aria-label="Close">Close</a>
 					</div>
@@ -357,7 +369,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<!-- Shopping Cart -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="myShoppingCart" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel"><i class="fa fa-cart-shopping"></i> My Cart</h5>
+					<h5 id="offcanvasTopLabel"><i class="bi bi-cart"></i> My Cart</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="myShoppingCartBody"></div>
@@ -366,7 +378,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<!-- Order Summary -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderSummary" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel"><i class="fa fa-info-circle"></i> Order Summary</h5>
+					<h5 id="offcanvasTopLabel"><i class="bi bi-info-circle"></i> Order Summary</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderSummaryBody"></div>
@@ -375,7 +387,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<!-- Order delivery details -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderDeliveryDetails" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel"><i class="fa fa-shipping-fast"></i> Delivery Details</h5>
+					<h5 id="offcanvasTopLabel"><i class="bi bi-truck"></i> Delivery Details</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderDeliveryDetailsBody"></div>
@@ -384,7 +396,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			<!-- Order payment details -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="orderPaymentDetails" aria-labelledby="offcanvasTopLabel">
 				<div class="offcanvas-header border-bottom border-4 border-warning">
-					<h5 id="offcanvasTopLabel"><i class="fa fa-wallet"></i> Payment Details</h5>
+					<h5 id="offcanvasTopLabel"><i class="bi bi-wallet-fill"></i> Payment Details</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body" id="orderPaymentDetailsBody"></div>
@@ -555,14 +567,27 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	<!-- third party scripts from backend db -->
 	<?= $this->element('footerscripts')	?>
 
-	<!-- React scripts -->
-	<!-- <script src="/vendor/react/react.development.js"></script>
-	<script src="/vendor/react/react-dom.development.js"></script> -->
-	<script src="/vendor/react/react.production.min.js"></script>
-	<script src="/vendor/react/react-dom.production.min.js"></script>
 
-	<script src="/react-myshop/dist/categories-menu.js"></script>
-	<!-- <script src="/react-myshop/dist/homepage-category-products.js"></script> -->
+
+	<?php
+	if ($this->App->isSellerForThisSite()) {
+	?>
+		<script src="/vendor/howler/howler.core.min.js"></script>
+
+		<!-- React scripts -->
+		<!-- <script src="/vendor/react/react.development.js"></script>
+		<script src="/vendor/react/react-dom.development.js"></script> -->
+		<script src="/vendor/react/react.production.min.js"></script>
+		<script src="/vendor/react/react-dom.production.min.js"></script>
+
+		<script src="/react-myshop/dist/delivery-heartbeat.js"></script>
+		<!-- <script src="/react-myshop/dist/categories-menu.js"></script> -->
+		<!-- <script src="/react-myshop/dist/homepage-category-products.js"></script> -->
+
+	<?php
+	}
+	?>
+
 </body>
 
 </html>

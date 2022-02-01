@@ -17,6 +17,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 
 <!doctype html>
 <html lang="en">
+
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
@@ -38,8 +39,8 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 	</script>
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/vendor/fontawesome-free-6.0.0-beta3-web/css/all.min.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.4">
+	<link rel="stylesheet" href="/vendor/bootstrap-icons-1.8.0/bootstrap-icons.css" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.7">
 
 	<?= $analyticsCode ?>
 </head>
@@ -52,9 +53,10 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 				<a class="navbar-brand" href="/deliveries/home">
 					<?= $this->Session->read('Site.title') ?>
 				</a>
+				<div id="deliveryHearbeat"></div>
 
 				<div class="navbar-toggler border-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="fa fa-bars"></i>
+					<i class="bi bi-list"></i>
 				</div>
 				<div class="offcanvas offcanvas-end" id="navbarNav">
 					<div class="offcanvas-header border-bottom border-4 border-warning">
@@ -66,22 +68,25 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 							<li class="nav-item px-1">
 								<a class="nav-link px-1" href="/deliveries/home">Home</a>
 							</li>
+							<li class="nav-item px-1">
+								<a class="nav-link px-1" href="/deliveries/ordersDelivered">Delivery Report</a>
+							</li>
 							<li class="nav-item px-1 d-none">
 								<a class="nav-link px-1" href="/deliveries/dashboard">Dashboard</a>
 							</li>
 						</ul>
-						<?php if ($this->Session->check('User.id')): ?>
-						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="#">
-									<i class="fa fa-user-circle"></i>
-									<?= $this->Session->read('User.firstname')!= '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
-								</a>
-							</li>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/users/logout">Logout</a>
-							</li>
-						</ul>
+						<?php if ($this->Session->check('User.id')) : ?>
+							<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="#">
+										<i class="bi bi-person-circle"></i>
+										<?= $this->Session->read('User.firstname') != '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
+									</a>
+								</li>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/users/logout">Logout</a>
+								</li>
+							</ul>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -97,7 +102,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 
 		<div class="container mt-4 pb-5" style="min-height: 500px;">
 			<div class="my-3 text-end">
-				<a href="/deliveries/home" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i> Refresh</a>
+				<a href="/deliveries/home" class="btn btn-sm btn-primary"><i class="bi bi-arrow-clockwise"></i> Refresh</a>
 			</div>
 			<?php echo $this->fetch('content'); ?>
 
@@ -119,8 +124,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 			</div>
 
 			<!-- Confirm Popup -->
-			<div class="modal" id="confirmPopup" data-bs-backdrop="static" data-bs-keyboard="false"
-				 aria-labelledby="deleteModal" aria-hidden="true">
+			<div class="modal" id="confirmPopup" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="deleteModal" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -142,8 +146,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 						</div>
 						<div class="modal-footer mt-3 p-1">
 							<a href="#" class="actionLink btn btn-danger btn-sm me-2 w-25" onclick="$('#confirmPopupSpinner').removeClass('d-none')"><span class="ok">Ok</span></a>
-							<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span
-										class="ok">Ok</span></button>
+							<button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span class="ok">Ok</span></button>
 							<button type="button" class="btn btn-outline-secondary btn-sm cancelButton w-25" data-bs-dismiss="modal">
 								Cancel
 							</button>
@@ -160,18 +163,10 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 				<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
 				<div class="toast-container fixed-top end-0 p-2 mt-5" style="left: auto">
 					<div id="ToastMessage" class="d-none">
-						<div
-							id="toastDiv"
-							class="toast toast-js text-white border-white border-2"
-							role="alert"
-							aria-live="assertive"
-							aria-atomic="true"
-							data-bs-autohide="true"
-							data-bs-delay="1500">
+						<div id="toastDiv" class="toast toast-js text-white border-white border-2" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="1500">
 							<div class="d-flex align-items-center justify-content-between">
 								<div class="toast-body"></div>
-								<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
-										aria-label="Close"></button>
+								<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
 							</div>
 						</div>
 					</div>
@@ -182,8 +177,7 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 				<div id="toastDiv" class="toast text-white border-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="2000">
 					<div class="d-flex align-items-center">
 						<div class="toast-body"></div>
-						<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast"
-								aria-label="Close"></button>
+						<button type="button" class="btn-close btn-close-white ml-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
 					</div>
 				</div>
 			</div>
@@ -197,23 +191,59 @@ if (!empty(trim($this->Session->read('Site.analytics_code')))) {
 	<script src="/vendor/jquery/jquery-3.6.0.slim.min.js"></script>
 	<script src="/vendor/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
 	<?= $this->element('custom_delivery_js') ?>
-	<script>
-		var time = new Date().getTime();
-		$(document.body).bind("mousemove keypress touchmove scroll", function(e) {
-			time = new Date().getTime();
-		});
 
-		function refresh() {
-			if(new Date().getTime() - time >= (30*1000)) //30 seconds
-				window.location.reload(true);
-			else
-				setTimeout(refresh, 15000);
-		}
+	<?php
+	if ($this->request->controller === 'deliveries' && $this->request->action === 'home') {
+	?>
 
-		setTimeout(refresh, 15000);
-	</script>
+		<script>
+			var time = new Date().getTime();
+			$(document.body).bind("mousemove keypress touchmove scroll", function(e) {
+				time = new Date().getTime();
+			});
 
+			function refresh() {
+				if (new Date().getTime() - time >= (30 * 1000)) //30 seconds
+					window.location.reload(true);
+				else
+					setTimeout(refresh, 15000);
+			}
 
+			//setTimeout(refresh, 15000);
+		</script>
+	<?php
+	}
+	?>
+
+	<div class="modal fade" id="audioNotificationModal" tabindex="-1" aria-labelledby="audioNotificationModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="audioNotificationModalLabel">Audio alerts!</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					Sound alert on new order will be enabled once you close this message box.
+					<br><br>
+					Please don't close the browser or app.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="/vendor/howler/howler.core.min.js"></script>
+
+	<!-- React scripts -->
+	<!-- <script src="/vendor/react/react.development.js"></script>
+	<script src="/vendor/react/react-dom.development.js"></script> -->
+	<script src="/vendor/react/react.production.min.js"></script>
+	<script src="/vendor/react/react-dom.production.min.js"></script>
+
+	<script src="/react-myshop/dist/delivery-heartbeat.js"></script>
 
 </body>
+
 </html>
