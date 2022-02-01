@@ -17,7 +17,7 @@ $enableTextEditor = $enableTextEditor ?? false;
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css">
 	<link rel="stylesheet" href="/vendor/bootstrap-icons-1.8.0/bootstrap-icons.css" media="print" onload="this.media='all'">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.7">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.8">
 	<?= $this->element('customcss') ?>
 
 	<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
