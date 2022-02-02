@@ -1,7 +1,8 @@
 <?php
-function array_to_csv_download($array, $filename = "orders.csv", $delimiter=";") {
+function array_to_csv_download($array, $filename = "orders.csv", $delimiter = ";")
+{
 	header('Content-Type: application/csv; charset=UTF-8');
-	header('Content-Disposition: attachment; filename="'.$filename.'";');
+	header('Content-Disposition: attachment; filename="' . $filename . '";');
 
 	// open the "output" stream
 	// see http://www.php.net/manual/en/wrappers.php.php#refsect2-wrappers.php-unknown-unknown-unknown-descriptioq
@@ -13,22 +14,28 @@ function array_to_csv_download($array, $filename = "orders.csv", $delimiter=";")
 	exit;
 }
 
-$q_start_date = isset($this->request->query['start_date']) ? 'start_date='.$this->request->query['start_date'] : '';
-$q_end_date = isset($this->request->query['end_date']) ? 'end_date='.$this->request->query['end_date'] : '';
+$q_start_date = isset($this->request->query['start_date']) ? 'start_date=' . $this->request->query['start_date'] : '';
+$q_end_date = isset($this->request->query['end_date']) ? 'end_date=' . $this->request->query['end_date'] : '';
 
 $q = '';
 if ($q_start_date && $q_end_date) {
-	$q = '?'.$q_start_date.'&'.$q_end_date;
+	$q = '?' . $q_start_date . '&' . $q_end_date;
 }
 if ($selectedSupplier > 0) {
-	$q .= '&data[supplier_id]='.$selectedSupplier;
+	$q .= '&data[supplier_id]=' . $selectedSupplier;
 }
 
 $ordersData = [];
+
+$orders_total_amount = 0;
+$orders_online_amount = 0;
+$orders_cash_amount = 0;
+$orders_supplier_amount = 0;
+
 if (!empty($orders)) {
 	$i = 1;
 	$k = 1;
-	foreach($orders as $row) {
+	foreach ($orders as $row) {
 		$orderId = (string)$row['Order']['id'];
 		$customerName = (string)$row['Order']['customer_name'];
 		$customerEmail = (string)$row['Order']['customer_email'];
@@ -42,9 +49,21 @@ if (!empty($orders)) {
 		$status = (string)$row['Order']['status'];
 		$notes = htmlentities($row['Order']['notes'], ENT_QUOTES);
 		$paymentMethod = (string)$row['Order']['payment_method'];
+		$partialPaymentAmount = (float)$row['Order']['partial_payment_amount'];
+		$onlinePaymentAmount = $orderTotalAmount - $partialPaymentAmount;
+
+		if ($paymentMethod == Order::PAYMENT_METHOD_COD) {
+			$partialPaymentAmount = $orderTotalAmount;
+			$onlinePaymentAmount = 0;
+		}
+
+		$orders_total_amount += $orderTotalAmount;
+		$orders_online_amount += $onlinePaymentAmount;
+		$orders_cash_amount += $partialPaymentAmount;
+
 		$onlineOrOfflineOrder = (string)$row['Order']['is_offline_order'] ? 'Offline' : 'Online';
 		$promoCode = (string)$row['Order']['promo_code'] ?: '-';
-		$promoCodeDiscount = (float)$row['Order']['promo_code_discount'] ? : '-';
+		$promoCodeDiscount = (float)$row['Order']['promo_code_discount'] ?: '-';
 		$deliveryUserId = $row['Order']['delivery_user_id'];
 		$deliveryUserName = (string)($usersList && $deliveryUserId ? ($usersList[$deliveryUserId] ?? '') : '-');
 		$modifiedDate = date('d-m-Y h:i A', strtotime($row['Order']['modified']));
@@ -55,7 +74,7 @@ if (!empty($orders)) {
 		$log = !empty($row['Order']['log']) ? json_decode($row['Order']['log'], true) : null;
 
 		if ($log) {
-			foreach($log as $row2) {
+			foreach ($log as $row2) {
 				if ($row2['orderStatus'] == Order::ORDER_STATUS_NEW) {
 					$createdDate = date('d-m-Y h:i A', $row2['date']);
 					$createdRawDate = date('Y-m-d', $row2['date']);
@@ -67,7 +86,7 @@ if (!empty($orders)) {
 		$createdRawDate = (string)($createdRawDate ?: $modifiedRawDate);
 
 		if (!empty($row['OrderProduct'])) {
-			foreach($row['OrderProduct'] as $orderProduct) {
+			foreach ($row['OrderProduct'] as $orderProduct) {
 				$productId = $orderProduct['product_id'];
 				$productName = $orderProduct['product_name'];
 				$categoryName = $orderProduct['category_name'];
@@ -89,7 +108,7 @@ if (!empty($orders)) {
 					$supplierAmount = $supplierRate * $quantity;
 				}
 
-
+				$orders_supplier_amount += $supplierAmount;
 
 				$ordersData[$k]['SlNo'] = $i;
 				$ordersData[$k]['orderNo'] = $orderId;
@@ -102,6 +121,8 @@ if (!empty($orders)) {
 				$ordersData[$k]['orderTotalDiscount'] = $orderTotalDiscount;
 				$ordersData[$k]['orderShippingAmount'] = $orderShippingAmount;
 				$ordersData[$k]['orderTotalAmount'] = $orderTotalAmount;
+				$ordersData[$k]['orderOnlineAmount'] = $onlinePaymentAmount;
+				$ordersData[$k]['orderPartialAmount'] = $partialPaymentAmount;
 				$ordersData[$k]['status'] = $status;
 				$ordersData[$k]['notes'] = $notes;
 				$ordersData[$k]['paymentMethod'] = $paymentMethod;
@@ -119,91 +140,124 @@ if (!empty($orders)) {
 				$ordersData[$k]['supplierName'] = $supplierName;
 
 				$ordersData[$k]['paperRateDate'] = $paperRateDate;
-				$ordersData[$k]['paperRate'] = $paperRate ? $paperRate : '';				
+				$ordersData[$k]['paperRate'] = $paperRate ? $paperRate : '';
 				$ordersData[$k]['supplierRate'] = $supplierRate ? $supplierRate : '';
 				$ordersData[$k]['supplierAmount'] = $supplierAmount ? $supplierAmount : '';
-
-
 
 				$k++;
 			}
 			$i++;
 		}
-
 	}
 }
 
 if ($download) {
 	$csvHeader = [
-			'Sl No.',
-			'Order No.',
-			'Date',
-			'Status',
-			'Amount',
-			'Shipping',
-			'Total Amount',
-			'Payment Method',
-			'Saved Amount',
-			'Online/Offline',
-			'Customer',
-			'Email',
-			'Mobile',
-			'Address',
-			'Special Instructions',
-			'Promo Code',
-			'Promo Code Discount',
-			'Product',
-			'Category',
-			'MRP',
-			'Discount',
-			'Sale Price',
-			'Quantity',
-			'Supplier',
-			'Date',
-			'Paper Rate',			
-			'Supplier Rate',
-			'Supplier Amount',
+		'Sl No.',
+		'Order No.',
+		'Date',
+		'Status',
+		'Amount',
+		'Shipping',
+		'Total Amount',
+		'Payment Method',
+		'Online Payment Amount',
+		'Cash Payment Amount',
+		'Saved Amount',
+		'Online/Offline',
+		'Customer',
+		'Email',
+		'Mobile',
+		'Address',
+		'Special Instructions',
+		'Promo Code',
+		'Promo Code Discount',
+		'Product',
+		'Category',
+		'MRP',
+		'Discount',
+		'Sale Price',
+		'Quantity',
+		'Supplier',
+		'Date',
+		'Paper Rate',
+		'Supplier Rate',
+		'Supplier Amount',
 	];
 
 	$csvData[] = $csvHeader;
 
 	foreach ($ordersData as $row) {
 		$csvData[] = [
-				$row['SlNo'],
-				$row['orderNo'],
-				$row['createdDate'],
-				$row['status'],
-				$row['orderTotalCartValue'],
-				$row['orderShippingAmount'],
-				$row['orderTotalAmount'],
-				$row['paymentMethod'],
-				$row['orderTotalDiscount'],
-				$row['onlineOrOfflineOrder'],
-				$row['customerName'],
-				$row['customerEmail'],
-				$row['customerPhone'],
-				$row['customerAddress'],
-				$row['customerMessage'],
-				$row['promoCode'],
-				$row['promoCodeDiscount'],
-				$row['productName'],
-				$row['categoryName'],
-				$row['mrp'],
-				$row['discount'],
-				$row['salePrice'],
-				$row['quantity'],
-				$row['supplierName'],
-				$row['paperRateDate'],
-				$row['paperRate'],
-				$row['supplierRate'],
-				$row['supplierAmount'],
+			$row['SlNo'],
+			$row['orderNo'],
+			$row['createdDate'],
+			$row['status'],
+			$row['orderTotalCartValue'],
+			$row['orderShippingAmount'],
+			$row['orderTotalAmount'],
+			$row['paymentMethod'],
+			$row['orderOnlineAmount'],
+			$row['orderPartialAmount'],
+			$row['orderTotalDiscount'],
+			$row['onlineOrOfflineOrder'],
+			$row['customerName'],
+			$row['customerEmail'],
+			$row['customerPhone'],
+			$row['customerAddress'],
+			$row['customerMessage'],
+			$row['promoCode'],
+			$row['promoCodeDiscount'],
+			$row['productName'],
+			$row['categoryName'],
+			$row['mrp'],
+			$row['discount'],
+			$row['salePrice'],
+			$row['quantity'],
+			$row['supplierName'],
+			$row['paperRateDate'],
+			$row['paperRate'],
+			$row['supplierRate'],
+			$row['supplierAmount'],
 		];
 	}
+
+	$csvData[] = [
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		$orders_total_amount,
+		null,
+		$orders_online_amount,
+		$orders_cash_amount,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		$orders_supplier_amount,
+	];
+
 	$fileName = 'Orders_' . ($start_date ?? date('Y-m-d')) . ' to ' . ($end_date ?? date('Y-m-d')) . '.csv';
 
 	array_to_csv_download($csvData, $fileName, ',');
-
-
 }
 
 ?>
@@ -214,26 +268,14 @@ if ($download) {
 	<div class="row small mt-3">
 		<div class="col-md-3 mb-3">
 			<label for="StartDate">From <span class="text-danger small">(required)</span></label>
-			<input
-				type="date"
-				id ="StartDate"
-				name = "start_date"
-				value="<?= $start_date ?? date('Y-m-d') ?>"
-				class="form-control form-control-sm"
-			>
+			<input type="date" id="StartDate" name="start_date" value="<?= $start_date ?? date('Y-m-d') ?>" class="form-control form-control-sm">
 		</div>
 
 		<div class="col-md-3 mb-3">
 			<label for="EndDate">To <span class="text-danger small">(required)</span></label>
-			<input
-				type="date"
-				id ="EndDate"
-				name = "end_date"
-				value="<?= $end_date ?? date('Y-m-d') ?>"
-				class="form-control form-control-sm"
-			>
+			<input type="date" id="EndDate" name="end_date" value="<?= $end_date ?? date('Y-m-d') ?>" class="form-control form-control-sm">
 		</div>
-		
+
 		<div class="col-md-3 mb-3">
 			<label for="Suppliers">Supplier</label>
 			<?= $this->Form->select('supplier_id', $suppliers, ['class' => 'form-select form-select-sm', 'default' => $selectedSupplier ?? null, 'empty' => '- All -']) ?>
@@ -264,11 +306,11 @@ if ($download) {
 
 	<?php
 	if (!empty($orders)) {
-		?>
-			<div>
-				<a class="btn btn-primary ms-3" href="/admin/orders/reports/<?= $orderType ?: 0 ?>/1<?= $q ?>"><i class="bi bi-download"></i> Download</a>
-			</div>
-		<?php
+	?>
+		<div>
+			<a class="btn btn-primary ms-3" href="/admin/orders/reports/<?= $orderType ?: 0 ?>/1<?= $q ?>"><i class="bi bi-download"></i> Download</a>
+		</div>
+	<?php
 	}
 	?>
 </div>
@@ -291,42 +333,44 @@ $orderType = !empty($orderType) ? $orderType : 'All';
 		<div class="table-responsive mt-4">
 			<table class="table table-sm small mt-4" style="min-height:200px;">
 				<thead>
-				<tr>
-					<th>Sl No.</th>
-					<th>Order No.</th>
-					<th>Date</th>
-					<th>Status</th>
-					<th>Amount</th>
-					<th>Shipping</th>
-					<th>Total Amount</th>
-					<th>Payment Method</th>
-					<th>Saved Amount</th>
-					<th>Online/Offline</th>
-					<th>Customer</th>
-					<th>Email</th>
-					<th>Mobile</th>
-					<th>Address</th>
-					<th>Special Instructions</th>
-					<th>Promo Code</th>
-					<th>Promo Code Discount</th>
-					<th>Product</th>
-					<th>Category</th>
-					<th>MRP</th>
-					<th>Discount</th>
-					<th>Sale Price</th>
-					<th>Quantity</th>
-					<th>Supplier</th>
-					<!-- <th>Date</th> -->
-					<th>Paper Rate</th>
-					<th>Supplier Rate</th>
-					<th>Supplier Amount</th>					
-				</tr>
+					<tr>
+						<th>Sl No.</th>
+						<th>Order No.</th>
+						<th>Date</th>
+						<th>Status</th>
+						<th>Amount</th>
+						<th>Shipping</th>
+						<th>Total Amount</th>
+						<th>Payment Method</th>
+						<th>Online Payment Amount</th>
+						<th>Cash Payment Amount</th>
+						<th>Saved Amount</th>
+						<th>Online/Offline</th>
+						<th>Customer</th>
+						<th>Email</th>
+						<th>Mobile</th>
+						<th>Address</th>
+						<th>Special Instructions</th>
+						<th>Promo Code</th>
+						<th>Promo Code Discount</th>
+						<th>Product</th>
+						<th>Category</th>
+						<th>MRP</th>
+						<th>Discount</th>
+						<th>Sale Price</th>
+						<th>Quantity</th>
+						<th>Supplier</th>
+						<!-- <th>Date</th> -->
+						<th>Paper Rate</th>
+						<th>Supplier Rate</th>
+						<th>Supplier Amount</th>
+					</tr>
 				</thead>
 				<tbody>
 					<?php
 					$i = 0;
 					foreach ($ordersData as $row) {
-						?>
+					?>
 						<tr>
 							<td><?= $row['SlNo'] ?></td>
 							<td><?= $row['orderNo'] ?></td>
@@ -336,6 +380,8 @@ $orderType = !empty($orderType) ? $orderType : 'All';
 							<td><?= $row['orderShippingAmount'] ?></td>
 							<td><?= $row['orderTotalAmount'] ?></td>
 							<td><?= $row['paymentMethod'] ?></td>
+							<td><?= $row['orderOnlineAmount'] ?></td>
+							<td><?= $row['orderPartialAmount'] ?></td>
 							<td><?= $row['orderTotalDiscount'] ?></td>
 							<td><?= $row['onlineOrOfflineOrder'] ?></td>
 							<td><?= $row['customerName'] ?></td>
@@ -358,19 +404,53 @@ $orderType = !empty($orderType) ? $orderType : 'All';
 							<td><?= $row['supplierRate'] ?></td>
 							<td><?= $row['supplierAmount'] ?></td>
 						</tr>
-						<?php
+					<?php
 					}
 					?>
 				</tbody>
+				<tfoot>
+					<tr>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th><?= $orders_total_amount ?></th>
+						<th>&nbsp;</th>
+						<th><?= $orders_online_amount ?></th>
+						<th><?= $orders_cash_amount ?></th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+
+						<!-- <th>&nbsp;</th> -->
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th><?= $orders_supplier_amount ?></th>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
-		<?php
+	<?php
 	} else {
-		?>
+	?>
 		No orders found.
-		<?php
+	<?php
 	}
 	?>
 </div>
 <br><br><br>
-
