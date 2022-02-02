@@ -33,6 +33,8 @@
 			<tr>
 				<th>#</th>
 				<th>Product Name</th>
+				<th>BestDeal</th>
+				<th>ShowInCart</th>
 				<th>Group</th>
 				<th>Base Price</th>
 				<th>Relative Price</th>
@@ -54,6 +56,7 @@
 					$i++;
 					$productActive = $categoryProducts[$productID]['Product']['active'];
 					$productFeatured = $categoryProducts[$productID]['Product']['featured'];
+					$productShowInCart = $categoryProducts[$productID]['Product']['show_in_cart'];
 					$mrp = (float)$categoryProducts[$productID]['Product']['mrp'];
 					$discount = (float)$categoryProducts[$productID]['Product']['discount'];
 					$salePrice = $mrp - $discount;
@@ -94,6 +97,44 @@
 								</span>
 
 								<?php echo $this->Html->link($productName, '/admin/products/edit/' . $productID . '/' . $categoryID, ['title' => $productName]); ?>
+							</td>
+							<td>
+								<span class="me-1">
+									<?php
+									if ($productFeatured) {
+										$title = "Click to remove from Best deal - $productName";
+										$url = '/admin/products/unsetFeatured/' . $productID;
+										?>
+										<a href="<?php echo $url;?>" class="bi bi-circle-fill text-success" title="<?= $title ?>"></a>
+										<?php
+									} else {
+										$title = "Set as Best deal - $productName";
+										$url = '/admin/products/setFeatured/' . $productID;
+										?>
+										<a href="<?php echo $url;?>" class="bi bi-circle-fill text-danger" title="<?= $title ?>"></a>
+										<?php
+									}
+									?>
+								</span>
+							</td>
+							<td>
+								<span class="me-1">
+									<?php
+									if ($productShowInCart) {
+										$title = "Remove from Best deal - $productName";
+										$url = '/admin/products/toggleShowInCart/' . $productID . '/0';
+										?>
+										<a href="<?php echo $url;?>" class="bi bi-circle-fill text-success" title="<?= $title ?>"></a>
+										<?php
+									} else {
+										$title = "Show in Best deal - $productName";
+										$url = '/admin/products/toggleShowInCart/' . $productID . '/1';
+										?>
+										<a href="<?php echo $url;?>" class="bi bi-circle-fill text-danger" title="<?= $title ?>"></a>
+										<?php
+									}
+									?>
+								</span>
 							</td>
 							<td class="text-muted">
 								<?php

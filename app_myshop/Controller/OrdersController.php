@@ -386,16 +386,12 @@ class OrdersController extends AppController
 		$this->set('orderEmailUrl', $orderEmailUrl);
 	}
 
-	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null, $paymentMethod = null)
+	public function admin_updateStatus($encodedOrderId, $orderStatus, $sendEmailToCustomer = null, $base64_encoded_message = null)
 	{
 		if (!in_array($orderStatus, Order::ORDER_STATUS_OPTIONS)) {
 			$this->errorMsg('Invalid request');
 			$this->redirect('/admin/orders/details/'.$encodedOrderId);
 			return;
-		}
-
-		if ($paymentMethod && !isset(Order::ORDER_PAYMENT_OPTIONS[$paymentMethod])) {
-			$paymentMethod = null;
 		}
 
 		$message = $base64_encoded_message ? base64_decode($base64_encoded_message) : '';
@@ -423,10 +419,6 @@ class OrdersController extends AppController
 				'log' => $log,
 			]
 		];
-
-		if ($paymentMethod) {
-			$orderData['Order']['payment_method'] = $paymentMethod;
-		}
 
 		if ($this->Order->save($orderData)) {
 			$this->successMsg('Order status updated successfully');
@@ -1167,5 +1159,29 @@ ORDER BY supplier_name, p_name, paper_rate_date
 		$this->set('selectedSupplier', $selectedSupplier);
 		$this->set('download', $download);
 		$this->set('supplierProductsPaperRates', $supplierProductsPaperRates);
+	}
+
+	public function admin_updatePaymentMethod($orderId)
+	{
+		$order = $this->Order->findById($orderId);
+
+		if ($order) {
+			if ($this->request->isPost() || $this->request->isPut()) {
+				$data = $this->request->data;
+				
+				$tmp['Order']['id'] = $orderId;
+				$tmp['Order']['payment_method'] = $data['payment_method'];
+				$tmp['Order']['partial_payment_amount'] = $data['partial_payment_amount'] ?? 0;
+
+				$this->Order->save($tmp);
+				$this->successMsg('Payment method updated successfully.');
+			} else {
+				$this->errorMsg('Invalid request.');
+			}
+		} else {
+			$this->errorMsg('Order not found.');
+		}
+
+		$this->redirect($this->referer());
 	}
 }
