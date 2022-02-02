@@ -829,4 +829,21 @@ class ProductsController extends AppController
 
 		$this->set(compact('products', 'filter'));
 	}
+
+	public function admin_toggleShowInCart($productID, $value = 0)
+	{
+		if ($productInfo = $this->isSiteProduct($productID)) {
+			$tmp['Product']['id'] = $productID;
+			$tmp['Product']['show_in_cart'] = ((int)$value > 0 ) ? 1 : 0;
+
+			if ($this->Product->save($tmp)) {
+				$this->Session->setFlash('Product successfully updated.', 'default', ['class' => 'success']);
+			} else {
+				$this->Session->setFlash('An error occured while communicating with the server.', 'default', ['class' => 'error']);
+			}
+		} else {
+			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+		}
+		$this->redirect($this->request->referer());
+	}
 }
