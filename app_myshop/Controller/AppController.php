@@ -16,6 +16,7 @@ class AppController extends Controller
 	{
 		parent::beforeFilter();
 
+		$this->checkDomain();
 		$this->setDomainConfiguration();
 		$this->setMobileAppConfiguration();
 		$this->setLayout();
@@ -26,6 +27,14 @@ class AppController extends Controller
 		$this->generateCategoryList();
 		// get featured products list
 		//$this->generateFeaturedProductsList();
+	}
+
+	private function checkDomain()
+	{
+		if ($this->request->domain() == $this->request->host()) {
+			$this->redirect('//www.' . $this->request->domain(), ['status' => 301]);
+			exit;
+		}
 	}
 
 	private function setDomainConfiguration()
