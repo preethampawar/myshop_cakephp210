@@ -122,10 +122,10 @@ class ProductsController extends AppController
 		$errorMsg = [];
 
 		if (!$categoryInfo = $this->isSiteCategory($categoryID)) {
-			$this->Session->setFlash('Category Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Category Not Found');
 			$this->redirect('/admin/categories/');
 		} else if (!$productInfo = $this->isSiteProduct($productID)) {
-			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Not Found');
 			$categoryNameSlug = Inflector::slug($categoryInfo['Category']['name'], '-');
 			$this->redirect('/admin/products/show/' . $categoryID . '/' . $categoryNameSlug);
 		}
@@ -509,12 +509,12 @@ class ProductsController extends AppController
 	public function admin_deleteProduct($productID, $categoryID = null)
 	{
 		if (!$productInfo = $this->isSiteProduct($productID)) {
-			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Not Found');
 		} elseif (!empty($categoryID) and !$this->isSiteCategory($categoryID)) {
-			$this->Session->setFlash('Product Category Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Category Not Found');
 		} else {
 			$this->deleteProduct($productID, $categoryID);
-			$this->Session->setFlash('Product Deleted Successfully', 'default', ['class' => 'success']);
+			$this->successMsg('Product Deleted Successfully');
 		}
 
 		// redirect
@@ -539,7 +539,7 @@ class ProductsController extends AppController
 				$this->errorMsg('An error occurred while communicating with the server.');
 			}
 		} else {
-			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Not Found');
 		}
 		$this->redirect($this->request->referer());
 	}
@@ -558,7 +558,7 @@ class ProductsController extends AppController
 				$this->errorMsg('An error occurred while communicating with the server.');
 			}
 		} else {
-			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Not Found');
 		}
 		$this->redirect($this->request->referer());
 	}
@@ -571,13 +571,13 @@ class ProductsController extends AppController
 		if ($productInfo = $this->isSiteProduct($productID)) {
 			$tmp['Product']['id'] = $productID;
 			$tmp['Product']['featured'] = '0';
-			if ($this->Product->save($tmp)) {
-				$this->Session->setFlash('Product successfully removed from featured list.', 'default', ['class' => 'success']);
+			if ($this->Product->save($tmp)) {				
+				$this->successMsg('Product successfully removed from featured list.');
 			} else {
-				$this->Session->setFlash('An error occured while communicating with the server.', 'default', ['class' => 'error']);
+				$this->errorMsg('An error occured while communicating with the server.');
 			}
 		} else {
-			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Not Found');
 		}
 		$this->redirect($this->request->referer());
 	}
@@ -591,12 +591,12 @@ class ProductsController extends AppController
 			$tmp['Product']['id'] = $productID;
 			$tmp['Product']['featured'] = '1';
 			if ($this->Product->save($tmp)) {
-				$this->Session->setFlash('Product successfully added to featured list.', 'default', ['class' => 'success']);
+				$this->successMsg('Product successfully added to featured list.');
 			} else {
-				$this->Session->setFlash('An error occured while communicating with the server.', 'default', ['class' => 'error']);
+				$this->errorMsg('An error occured while communicating with the server.';
 			}
 		} else {
-			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Not Found');
 		}
 		$this->redirect($this->request->referer());
 	}
@@ -837,12 +837,12 @@ class ProductsController extends AppController
 			$tmp['Product']['show_in_cart'] = ((int)$value > 0 ) ? 1 : 0;
 
 			if ($this->Product->save($tmp)) {
-				$this->Session->setFlash('Product successfully updated.', 'default', ['class' => 'success']);
+				$this->successMsg('Product successfully updated.');
 			} else {
-				$this->Session->setFlash('An error occured while communicating with the server.', 'default', ['class' => 'error']);
+				$this->errorMsg('An error occured while communicating with the server.');
 			}
 		} else {
-			$this->Session->setFlash('Product Not Found', 'default', ['class' => 'error']);
+			$this->errorMsg('Product Not Found');
 		}
 		$this->redirect($this->request->referer());
 	}
