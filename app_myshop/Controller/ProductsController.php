@@ -593,7 +593,7 @@ class ProductsController extends AppController
 			if ($this->Product->save($tmp)) {
 				$this->successMsg('Product successfully added to featured list.');
 			} else {
-				$this->errorMsg('An error occured while communicating with the server.';
+				$this->errorMsg('An error occured while communicating with the server.');
 			}
 		} else {
 			$this->errorMsg('Product Not Found');
