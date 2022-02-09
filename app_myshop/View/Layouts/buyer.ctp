@@ -113,124 +113,54 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 <body class="bg-white" onbeforeunload="showLoadingBar()">
 	<div class="bg-white" id="root">
 		<?php
-		if ($this->App->isSellerForThisSite()) {
+		if (!$isMobileApp) {
 		?>
-			<div class="container">
-				<div id="deliveryHearbeat"></div>
-			</div>
-		<?php
-		}
-		?>
+			<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
+				<div class="container">
+					<a class="navbar-brand" href="/">
+						<?php
+						if ($logoUrl) {
+						?>
+							<img src="<?= $logoUrl ?>" alt="<?= $this->Session->read('Site.title') ?>" title="<?= $this->Session->read('Site.title') ?>" class="img-fluid" width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>" height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>" loading="eager">
+						<?php
+						} else {
+						?>
+							<i class="bi bi-house-door"></i> <?= $this->Session->read('Site.title') ?>
+						<?php
+						} ?>
+					</a>
 
-		<?php
-		if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
-		?>
-			<div class="d-flex justify-content-between container-fluid text-muted small">
-				<div>
-					<?php
-					if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
-					?>
-						<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasApp" aria-controls="offCanvasApp">
-							Download App <i class="text-danger bi bi-download"></i>
-						</div>
-						<div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasApp" aria-labelledby="offCanvasAppLabel">
-							<div class="offcanvas-header">
-								<h5 class="offcanvas-title" id="offCanvasAppLabel">Download Mobile App</h5>
-								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-							</div>
-							<div class="offcanvas-body">
-								<?= $andriodAppBadgeUrl ?>
-							</div>
-						</div>
-					<?php
-					}
-					?>
-				</div>
-				<div>
-					<?php
-					if ($showLocationOptions) {
-					?>
-						<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasLocation" aria-controls="offCanvasLocation">
-							<i class="bi bi-geo-alt-fill text-danger"></i> <?= $siteLocations[$subdomain]['title'] ?>
-						</div>
-						<div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasLocation" aria-labelledby="offCanvasLocationLabel">
-							<div class="offcanvas-header">
-								<h5 class="offcanvas-title" id="offCanvasLocationLabel">Select Location</h5>
-								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-							</div>
-							<div class="offcanvas-body">
-								<div>We currently serve in the following areas. Choose your location of interest.</div>
-
-								<div class="list-group  list-group-flush mt-3">
-									<?php
-									foreach ($siteLocations as $id => $row) {
-									?>
-										<a href="//<?= $row['url'] ?>" class="list-group-item list-group-item-action py-3">
-											<i class="bi bi-geo-alt-fill text-danger"></i> <?= $row['title'] ?>
-										</a>
-									<?php
-									} ?>
-								</div>
-							</div>
-						</div>
-					<?php
-					}
-					?>
-
-				</div>
-			</div>
-		<?php
-		}
-		?>
-
-		<nav class="navbar navbar-expand-lg navbar-static <?= $navbarTheme ?>">
-			<div class="container">
-				<a class="navbar-brand" href="/">
-					<?php
-					if ($logoUrl) {
-					?>
-						<img src="<?= $logoUrl ?>" alt="<?= $this->Session->read('Site.title') ?>" title="<?= $this->Session->read('Site.title') ?>" class="img-fluid" width="<?= (int)$this->Session->read('Site.logo_width') > 0 ? (int)$this->Session->read('Site.logo_width') : 200 ?>" height="<?= (int)$this->Session->read('Site.logo_height') > 0 ? (int)$this->Session->read('Site.logo_height') : 50 ?>" loading="eager">
-					<?php
-					} else {
-					?>
-						<i class="bi bi-house-door"></i> <?= $this->Session->read('Site.title') ?>
-					<?php
-					}
-					?>
-				</a>
-
-				<div class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="bi bi-list navbar-brand"></i>
-				</div>
-				<div class="offcanvas offcanvas-end" id="navbarNav">
-					<div class="offcanvas-header border-bottom border-4 border-warning">
-						<h5 class="offcanvas-title" id="offcanvasNavbarLabel"><?= $this->Session->read('Site.title') ?></h5>
-						<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					<div class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+						<i class="bi bi-list navbar-brand"></i>
 					</div>
-					<div class="offcanvas-body  <?= $navbarTheme ?>">
-						<ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/">Home</a>
-							</li>
-							<?php
-							if ($this->App->isSellerForThisSite()) {
-							?>
+					<div class="offcanvas offcanvas-end" id="navbarNav">
+						<div class="offcanvas-header border-bottom border-4 border-warning">
+							<h5 class="offcanvas-title" id="offcanvasNavbarLabel"><?= $this->Session->read('Site.title') ?></h5>
+							<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+						</div>
+						<div class="offcanvas-body  <?= $navbarTheme ?>">
+							<ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
 								<li class="nav-item px-1">
-									<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="bi bi-tools"></i> Manage Store</a>
+									<a class="nav-link px-1" href="/">Home</a>
 								</li>
-							<?php
-							}
-							?>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/sites/about">About Us</a>
-							</li>
-							<li class="nav-item px-1">
-								<a class="nav-link px-1" href="/sites/contact">Contact Us</a>
-							</li>
-						</ul>
-						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-							<?php
-							/*
+								<?php
+								if ($this->App->isSellerForThisSite()) {
+								?>
+									<li class="nav-item px-1">
+										<a class="nav-link px-1 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="bi bi-tools"></i> Manage Store</a>
+									</li>
+								<?php
+								} ?>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/sites/about">About Us</a>
+								</li>
+								<li class="nav-item px-1">
+									<a class="nav-link px-1" href="/sites/contact">Contact Us</a>
+								</li>
+							</ul>
+							<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+								<?php
+								/*
                             if ($andriodAppUrl && !$this->Session->read('isMobileApp')) {
                                 ?>
                                 <li class="nav-item px-1">
@@ -239,49 +169,86 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
                                 <?php
                             }
                             */
-							?>
-							<?php if (!$this->Session->check('User.id')) : ?>
-								<li class="nav-item px-1">
-									<a class="nav-link px-1" href="/users/customerRegistration">Register</a>
-								</li>
-							<?php endif; ?>
-
-
-							<?php if ($this->Session->check('User.id')) : ?>
-
-								<?php if ($this->Session->read('Site.shopping_cart')) : ?>
+								?>
+								<?php if (!$this->Session->check('User.id')) : ?>
 									<li class="nav-item px-1">
-										<a class="nav-link px-1" href="/orders/">My Orders</a>
+										<a class="nav-link px-1" href="/users/customerRegistration">Register</a>
 									</li>
 								<?php endif; ?>
 
-								<li class="nav-item dropdown px-1">
-									<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-										<i class="bi bi-person-circle"></i>
-										<?= $this->Session->read('User.firstname') != '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
-									</a>
-									<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-										<li class="nav-item px-1"><a class="nav-link px-1" href="/users/logout">Logout</a></li>
-									</ul>
-								</li>
-							<?php else : ?>
-								<li class="nav-item px-1">
-									<a class="nav-link px-1" href="/users/login">Login</a>
-								</li>
-							<?php endif; ?>
-						</ul>
+
+								<?php if ($this->Session->check('User.id')) : ?>
+
+									<?php if ($this->Session->read('Site.shopping_cart')) : ?>
+										<li class="nav-item px-1">
+											<a class="nav-link px-1" href="/orders/">My Orders</a>
+										</li>
+									<?php endif; ?>
+
+									<li class="nav-item dropdown px-1">
+										<a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="bi bi-person-circle"></i>
+											<?= $this->Session->read('User.firstname') != '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
+										</a>
+										<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+											<li class="nav-item px-1"><a class="nav-link px-1" href="/users/logout">Logout</a></li>
+										</ul>
+									</li>
+								<?php else : ?>
+									<li class="nav-item px-1">
+										<a class="nav-link px-1" href="/users/login">Login</a>
+									</li>
+								<?php endif; ?>
+							</ul>
+						</div>
 					</div>
 				</div>
-			</div>
-		</nav>
+			</nav>
+		<?php
+		}
+		?>
 
 		<div class="sticky-top shadow <?= $secondaryMenuBg ?> opacity-98" style="z-index: 999;">
-			<ul class="nav container justify-content-between pt-3">
+			<ul class="nav container justify-content-between">
 				<li class="nav-item middle">
 					<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#categoriesMenu">
-						<div class="d-inline-block" style="width:21px;"><i class="bi bi-list-nested fs-5"></i></div> Products
+						<?php
+						if (!$isMobileApp) {
+						?>
+							<div class="d-inline-block" style="width:21px;">
+								<i class="bi bi-list-nested fs-5"></i>
+							</div> Products
+						<?php
+						} else {
+						?>
+							<div class="d-inline-block" style="width:21px;">
+								<i class="bi bi-list fs-3"></i>
+							</div>
+						<?php
+						}
+						?>
 					</a>
+
 				</li>
+
+				<?php
+				if ($isMobileApp) {
+				?>
+					<li class="nav-item"><a href="/" class="nav-link <?= $linkColor ?>"><i class="bi bi-house fs-5"></i> Home</a></li>
+				<?php
+				}
+				?>
+
+				<?php
+				if ($this->App->isSellerForThisSite()) {
+				?>
+					<li class="nav-item pt-1 d-none">
+						<div id="deliveryHearbeat" class="mt-2"></div>
+					</li>
+				<?php
+				}
+				?>
+
 				<?php if ($this->Session->read('Site.shopping_cart')) : ?>
 					<li class="nav-item" id="topNavShoppingCart">
 						<a href="#" class="nav-link <?= $linkColor ?>" data-bs-toggle="offcanvas" data-bs-target="#myShoppingCart">
@@ -346,11 +313,37 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 			<!-- Categories Menu -->
 			<div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesMenu" aria-labelledby="offcanvasTopLabel">
-				<div class="small">
-					<a class="nav-link" href="/" title="Show all products">
-						<i class="bi bi-house-door"></i> Home
-					</a>
-				</div>
+
+				<?php
+				if ($isMobileApp) {
+				?>
+					<div class="small d-flex justify-content-between bg-light">
+						<a class="nav-link px-2" href="/" title="Show all products">
+							<i class="bi bi-house-door"></i> Home
+						</a>
+
+						<?php if (!$this->Session->check('User.id')) : ?>
+							<a class="nav-link px-2" href="/users/customerRegistration">Register</a>
+						<?php endif; ?>
+
+
+						<?php if ($this->Session->check('User.id')) : ?>
+							<?php if ($this->Session->read('Site.shopping_cart')) : ?>
+								<a class="nav-link px-2" href="/orders/">My Orders</a>
+							<?php endif; ?>
+							<a class="nav-link px-2 disabled" href="#">
+								<i class="bi bi-person-circle"></i>
+								<?= $this->Session->read('User.firstname') != '' ? $this->Session->read('User.firstname') : $this->Session->read('User.mobile') ?>
+							</a>
+							<a class="nav-link px-2" href="/users/logout">Logout</a>
+						<?php else : ?>
+							<a class="nav-link px-2" href="/users/login">Login</a>
+						<?php endif; ?>
+					</div>
+				<?php
+				}
+				?>
+
 				<div class="offcanvas-header border-bottom border-4 border-warning">
 					<h5 id="offcanvasTopLabel">Shop By Category</h5>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -363,7 +356,6 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 						<a role="button" class="nav-link btn btn-sm btn-light" data-bs-dismiss="offcanvas" aria-label="Close">Close</a>
 					</div>
 				</div>
-
 			</div>
 
 			<!-- Shopping Cart -->
@@ -547,6 +539,67 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 					</ul>
 				</div>
 			</nav>
+
+			<?php
+			if (!empty($andriodAppBadgeUrl) || $showLocationOptions) {
+			?>
+				<div class="d-flex justify-content-between container text-muted small bg-light">
+					<div>
+						<?php
+						if ($andriodAppBadgeUrl && !$this->Session->read('isMobileApp')) {
+						?>
+							<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasApp" aria-controls="offCanvasApp">
+								Download App <i class="text-danger bi bi-download"></i>
+							</div>
+							<div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasApp" aria-labelledby="offCanvasAppLabel">
+								<div class="offcanvas-header">
+									<h5 class="offcanvas-title" id="offCanvasAppLabel">Download Mobile App</h5>
+									<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+								</div>
+								<div class="offcanvas-body">
+									<?= $andriodAppBadgeUrl ?>
+								</div>
+							</div>
+						<?php
+						}
+						?>
+					</div>
+					<div>
+						<?php
+						if ($showLocationOptions) {
+						?>
+							<div class="px-3 py-2" role="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasLocation" aria-controls="offCanvasLocation">
+								<i class="bi bi-geo-alt-fill text-danger"></i> <?= $siteLocations[$subdomain]['title'] ?>
+							</div>
+							<div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasLocation" aria-labelledby="offCanvasLocationLabel">
+								<div class="offcanvas-header">
+									<h5 class="offcanvas-title" id="offCanvasLocationLabel">Select Location</h5>
+									<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+								</div>
+								<div class="offcanvas-body">
+									<div>We currently serve in the following areas. Choose your location of interest.</div>
+
+									<div class="list-group  list-group-flush mt-3">
+										<?php
+										foreach ($siteLocations as $id => $row) {
+										?>
+											<a href="//<?= $row['url'] ?>" class="list-group-item list-group-item-action py-3">
+												<i class="bi bi-geo-alt-fill text-danger"></i> <?= $row['title'] ?>
+											</a>
+										<?php
+										} ?>
+									</div>
+								</div>
+							</div>
+						<?php
+						}
+						?>
+
+					</div>
+				</div>
+			<?php
+			}
+			?>
 		</footer>
 	</div>
 
