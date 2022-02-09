@@ -242,7 +242,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 				<?php
 				if ($this->App->isSellerForThisSite()) {
 				?>
-					<li class="nav-item pt-1 d-none">
+					<li class="nav-item pt-1">
 						<div id="deliveryHearbeat" class="mt-2"></div>
 					</li>
 				<?php
@@ -318,9 +318,12 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 				if ($isMobileApp) {
 				?>
 					<div class="small d-flex justify-content-between bg-light">
-						<a class="nav-link px-2" href="/" title="Show all products">
-							<i class="bi bi-house-door"></i> Home
-						</a>
+						<?php
+						if ($this->App->isSellerForThisSite()) {
+						?>
+							<a class="nav-link px-2 <?= $hightlightLink ?> highlight-link" href="/users/setView/seller"><i class="bi bi-tools"></i> Manage Store</a>
+						<?php
+						} ?>
 
 						<?php if (!$this->Session->check('User.id')) : ?>
 							<a class="nav-link px-2" href="/users/customerRegistration">Register</a>
