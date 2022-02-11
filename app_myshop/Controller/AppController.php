@@ -16,13 +16,6 @@ class AppController extends Controller
 	{
 		parent::beforeFilter();
 
-		if ($this->request->domain() == 'eatmukka.com') {
-			if ($this->checkSplash()) {
-				$this->layout = 'splash';
-				return;
-			}
-		}
-
 		$this->checkDomain();
 		$this->setDomainConfiguration();
 		$this->setMobileAppConfiguration();
@@ -30,6 +23,11 @@ class AppController extends Controller
 		$this->parseURL();
 		$this->setCacheKeys();
 		$this->loadSiteConfiguration();
+
+		if ($this->setSplash()) {
+			return;
+		}
+
 		$this->setTheme();
 		$this->generateCategoryList();
 		// get featured products list
@@ -56,11 +54,16 @@ class AppController extends Controller
 		return true;
 	}
 
-	private function checkSplash()
+	private function setSplash()
 	{
 		$appSource = $this->request->query['s'] ?? null;
 
 		if ($appSource && $appSource === 'mobile') {
+			$this->layout = 'splash';
+			$splashInfo = $this->Session->check('splashInfo') ? $this->Session->read('splashInfo') : $this->loadSplashConfiguration();
+			$this->Session->write('splashInfo', $splashInfo);
+			$this->set('splashInfo', $splashInfo);
+
 			return true;
 		}
 
@@ -1455,6 +1458,21 @@ class AppController extends Controller
 		}
 
 		return true;
+	}
+
+	private function loadSplashConfiguration()
+	{
+		$siteInfo = null;
+		$siteSplashFile = 'splash.json';
+
+		if (file_exists($siteSplashFile)) {
+			$subdomain = $this->request->subdomains()[0];
+			$domain = $this->request->domain();
+			$sitesInfo = json_decode(file_get_contents($siteSplashFile), true);
+			$siteInfo = $sitesInfo[$domain][$subdomain] ?? ($sitesInfo[$domain]['default'] ?? null);
+		}
+
+		return $siteInfo;
 	}
 
 	/** Function to get Transaction Category info **/

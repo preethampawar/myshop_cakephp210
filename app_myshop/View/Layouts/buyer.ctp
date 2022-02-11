@@ -76,9 +76,9 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 
 	<meta name="theme-color" content="#317EFB" />
 	<?php
-	if ($this->request->domain() === 'eatmukka.com') {
+	if ($this->Session->check('siteConfiguration.manifestJsonUrl') && !empty($this->Session->read('siteConfiguration.manifestJsonUrl'))) {
 	?>
-		<link rel="manifest" href="/manifest.json" />
+		<link rel="manifest" href="<?= $this->Session->read('siteConfiguration.manifestJsonUrl') ?>" />
 	<?php
 	}
 	?>
