@@ -16,6 +16,13 @@ class AppController extends Controller
 	{
 		parent::beforeFilter();
 
+		if ($this->request->domain() !== 'eatmukka.com') {
+			if ($this->checkSplash()) {
+				$this->layout = 'splash';
+				return;
+			}
+		}
+
 		$this->checkDomain();
 		$this->setDomainConfiguration();
 		$this->setMobileAppConfiguration();
@@ -47,6 +54,17 @@ class AppController extends Controller
 		Configure::write('Security.salt', '');
 
 		return true;
+	}
+
+	private function checkSplash()
+	{
+		$appSource = $this->request->query['s'] ?? null;
+
+		if ($appSource && $appSource === 'mobile') {
+			return true;
+		}
+
+		return false;
 	}
 
 	private function setMobileAppConfiguration()
