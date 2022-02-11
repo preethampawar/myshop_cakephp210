@@ -952,18 +952,22 @@ var spinner = `<div class="text-center">
 					</div>`;
 
 var myShoppingCartElement = document.getElementById('myShoppingCart');
-var myShoppingCart = new bootstrap.Offcanvas(myShoppingCartElement);
+var myShoppingCart = myShoppingCartElement ? (new bootstrap.Offcanvas(myShoppingCartElement)) : '';
 var orderSummaryElement = document.getElementById('orderSummary');
-var orderSummary = new bootstrap.Offcanvas(orderSummaryElement);
+var orderSummary = orderSummaryElement ? (new bootstrap.Offcanvas(orderSummaryElement)) : '';
 var orderDeliveryDetailsElement = document.getElementById('orderDeliveryDetails');
-var orderDeliveryDetails = new bootstrap.Offcanvas(orderDeliveryDetailsElement);
+var orderDeliveryDetails = orderDeliveryDetailsElement ? (new bootstrap.Offcanvas(orderDeliveryDetailsElement)) : '';
 var orderPaymentDetailsElement = document.getElementById('orderPaymentDetails');
-var orderPaymentDetails = new bootstrap.Offcanvas(orderPaymentDetailsElement);
-var placeOrderLoginPopupModal = new bootstrap.Modal(document.getElementById('placeOrderLoginPopup'), {
+var orderPaymentDetails = orderPaymentDetailsElement ? (new bootstrap.Offcanvas(orderPaymentDetailsElement)) : '';
+
+const placeOrderLoginPopup = document.getElementById('placeOrderLoginPopup');
+var placeOrderLoginPopupModal = placeOrderLoginPopup ? (new bootstrap.Modal(placeOrderLoginPopup, {
 	keyboard: false
-});
-var alertModal = new bootstrap.Modal(document.getElementById('alertModal'), {
+})) : '';
+
+const alertModalEle = document.getElementById('alertModal');
+var alertModal = alertModalEle ? (new bootstrap.Modal(alertModalEle, {
 	keyboard: false
-});
+})) : '';
 
 

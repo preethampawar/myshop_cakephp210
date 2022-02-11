@@ -1,4 +1,8 @@
 <?php
+if ($this->layout == 'splash') {
+	return;
+}
+
 $buyerView = true;
 $deliveryView = false;
 
