@@ -16,7 +16,7 @@ class AppController extends Controller
 	{
 		parent::beforeFilter();
 
-		if ($this->request->domain() !== 'eatmukka.com') {
+		if ($this->request->domain() == 'eatmukka.com') {
 			if ($this->checkSplash()) {
 				$this->layout = 'splash';
 				return;
