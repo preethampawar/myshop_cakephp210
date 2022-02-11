@@ -91,7 +91,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 	?>
 
 	<link rel="stylesheet" href="/vendor/bootstrap-5.1.3-dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/site.css?v=1.2.8" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/css/site.css?v=1.2.9" media="print" onload="this.media='all'">
 	<?php if ($enableLightbox) { ?>
 		<link rel="stylesheet" href="/vendor/lightbox2-2.11.3/dist/css/lightbox.min.css" media="print" onload="this.media='all'">
 	<?php } ?>
