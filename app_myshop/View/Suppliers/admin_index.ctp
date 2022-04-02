@@ -1,9 +1,8 @@
+<?= $this->element('suppliers_menu') ?>
 <section>
-	<article>
-		<header><h1>Suppliers</h1></header>
-		<div class="text-end mt-3">
-			<a href="/admin/suppliers/add/" class="btn btn-primary btn-sm ms-2">+ Add New Supplier</a>
-		</div>
+	<article>		
+		<header><h1>Suppliers List</h1></header>
+		
 		<div class="table-responsive mt-3">
 			<?php
 			if (!empty($suppliers)) {

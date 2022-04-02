@@ -360,7 +360,7 @@ class OrdersController extends AppController
 						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
 
 						// send one notification msg to Karthik / Delivery person
-						$this->Sms->sendNewOrderSms('7331109133', '#'.$orderId, $this->Session->read('Site.title'));
+						$this->Sms->sendNewOrderSms('917331109133', '#'.$orderId, $this->Session->read('Site.title'));
 
 						// send new order sms to manager of the site
 						$adminPhone = $this->Session->read('Site.notifications_mobile_no');
@@ -940,6 +940,7 @@ class OrdersController extends AppController
 		$siteId = $this->Session->read('Site.id');
 		$start_date = $this->request->query['start_date'] ?? date('Y').'-01-01';
 		$end_date = $this->request->query['end_date'] ?? date('Y-m-d');
+		$selectedSupplier = $this->request->query['data']['supplier_id'] ?? '';
 
 		$sql = 'select
 					count(*) count, status
@@ -982,7 +983,19 @@ class OrdersController extends AppController
 		$conditions['Order.status NOT'] = Order::ORDER_STATUS_DRAFT;
 		$conditions['Order.archived'] = 0;
 
-		$this->Order->bindModel(['belongsTo' => ['User']]);
+		$orderProductConditions = [];
+		if ($selectedSupplier > 0) {
+			$orderProductConditions['OrderProduct.supplier_id'] = $selectedSupplier;
+		}
+
+		$this->Order->bindModel([
+			'belongsTo' => ['User'],
+			'hasMany' => [
+				'OrderProduct' => [
+					'conditions' => $orderProductConditions
+				]
+			],
+		]);
 		// $this->Order->unbindModel(['hasMany' => ['OrderProduct']]);
 
 
@@ -992,6 +1005,14 @@ class OrdersController extends AppController
 				'Order.created' => 'ASC'
 			],
 		]);
+		if (!empty($orders)) {
+			foreach($orders as $index => $row) {
+				if (empty($row['OrderProduct'])) {
+					unset($orders[$index]);
+				}
+			}
+		}
+
 
 		App::import('Model', 'User');
 		$userModel = new User();
@@ -1010,6 +1031,125 @@ class OrdersController extends AppController
 
 		$suppliers = $supplierModel->find('list', ['conditions' => $conditions]);
 
+		// get supplier product paper rates
+		$sql = "
+SELECT 
+	s.id supplier_id, s.name supplier_name
+	, p.id product_id, p.name p_name, p.group_id
+	, g.name g_name, g.default_paper_rate
+	, sp.price_relation, sp.relative_base_price, sp.price_relation2, sp.relative_base_price2
+	, gpr.date paper_rate_date, gpr.rate paper_rate
+FROM suppliers s
+	JOIN `supplier_products` sp ON sp.supplier_id = s.id
+	JOIN `products` p ON p.id = sp.product_id
+	JOIN `groups` g ON g.id = p.group_id
+	LEFT JOIN `group_paper_rates` gpr ON gpr.group_id = g.id
+		AND gpr.date BETWEEN '$start_date' AND '$end_date'
+
+WHERE s.site_id = $siteId 
+	AND sp.active = 1
+	
+ORDER BY supplier_name, p_name, paper_rate_date
+		";
+		$supplierProductsPaperRates = $supplierModel->query($sql);
+
+		$tmp = [];
+		if ($supplierProductsPaperRates) {			
+			foreach($supplierProductsPaperRates as $row) {
+				$supplierId = $row['s']['supplier_id'] ?? null;
+				$supplierName = $row['s']['supplier_name'] ?? null;
+
+				$productId = $row['p']['product_id'] ?? null;
+				$productName = $row['p']['p_name'] ?? null;
+				$group_id = $row['p']['group_id'] ?? null;
+				
+				$group_name = $row['g']['g_name'] ?? null;
+				$group_default_paper_rate = $row['g']['default_paper_rate'] ?? null;
+
+				$supplierProductPriceRelation1 = $row['sp']['price_relation'] ?? null;
+				$supplierProductRelativePrice1 = $row['sp']['relative_base_price'] ?? null;
+				$supplierProductPriceRelation2 = $row['sp']['price_relation2'] ?? null;
+				$supplierProductRelativePrice2 = $row['sp']['relative_base_price2'] ?? null;
+
+				$paperRateDate = $row['gpr']['paper_rate_date'] ?? null;
+				$paperRate = $row['gpr']['paper_rate'] ?? null;
+
+				$supplierRate = 0;
+                
+				
+				try {
+					switch ($supplierProductPriceRelation1) {
+						case '+':
+							$supplierRate = (float)eval("return ($paperRate+($supplierProductRelativePrice1));");
+							break;
+						case '-':
+							$supplierRate = (float)eval("return ($paperRate-($supplierProductRelativePrice1));");
+							break;
+						case '*':
+							$supplierRate = (float)eval("return ($paperRate*$supplierProductRelativePrice1);");
+							break;
+					}
+
+					switch ($supplierProductPriceRelation2) {
+						case '+':
+							$supplierRate = (float)eval("return ($supplierRate+($supplierProductRelativePrice2));");
+							break;
+						case '-':
+							$supplierRate = (float)eval("return ($supplierRate-($supplierProductRelativePrice2));");
+							break;
+						case '*':
+							$supplierRate = (float)eval("return ($supplierRate*$supplierProductRelativePrice2);");
+							break;
+					}
+					
+				} catch (Throwable $e) {
+					//debug($e->getMessage());
+				}
+                
+
+                if (!empty($supplierId) && !empty($productId)) {
+                    if(!empty($paperRateDate)) {
+						$tmp[$supplierId][$productId][$paperRateDate] = [
+							'supplierId' => $supplierId,
+							'supplierName' => $supplierName,
+							'productId' => $productId,
+							'productName' => $productName,
+							'group_id' => $group_id,
+							'group_name' => $group_name,
+							'supplierProductPriceRelation1' => $supplierProductPriceRelation1,
+							'supplierProductRelativePrice1' => $supplierProductRelativePrice1,
+							'supplierProductPriceRelation2' => $supplierProductPriceRelation2,
+							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
+		
+							'paperRateDate' => $paperRateDate,
+							'paperRate' => $paperRate,
+							'supplierRate' => $supplierRate,
+						];
+                    } else {
+						$tmp[$supplierId][$productId]['default'] = [
+							'supplierId' => $supplierId,
+							'supplierName' => $supplierName,
+							'productId' => $productId,
+							'productName' => $productName,
+							'group_id' => $group_id,
+							'group_name' => $group_name,
+							'supplierProductPriceRelation1' => $supplierProductPriceRelation1,
+							'supplierProductRelativePrice1' => $supplierProductRelativePrice1,
+							'supplierProductPriceRelation2' => $supplierProductPriceRelation2,
+							'supplierProductRelativePrice2' => $supplierProductRelativePrice2,
+		
+							'paperRateDate' => $paperRateDate,
+							'paperRate' => $group_default_paper_rate,
+							'supplierRate' => $supplierRate,
+						];
+					}                
+				}				
+			}
+			
+		}
+		$supplierProductsPaperRates = $tmp;
+		unset($tmp);
+
 		$this->set('usersList', $usersList);
 		$this->set('orderType', $orderType);
 		$this->set('orders', $orders);
@@ -1017,7 +1157,10 @@ class OrdersController extends AppController
 		$this->set('archivedOrdersCount', $archivedOrdersCount);
 		$this->set('start_date', $start_date);
 		$this->set('end_date', $end_date);
-		$this->set('suppliers', $suppliers);
 		$this->set('download', $download);
+		$this->set('suppliers', $suppliers);
+		$this->set('selectedSupplier', $selectedSupplier);
+		$this->set('download', $download);
+		$this->set('supplierProductsPaperRates', $supplierProductsPaperRates);
 	}
 }

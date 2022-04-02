@@ -20,6 +20,9 @@ $q = '';
 if ($q_start_date && $q_end_date) {
 	$q = '?'.$q_start_date.'&'.$q_end_date;
 }
+if ($selectedSupplier > 0) {
+	$q .= '&data[supplier_id]='.$selectedSupplier;
+}
 
 $ordersData = [];
 if (!empty($orders)) {
@@ -45,7 +48,9 @@ if (!empty($orders)) {
 		$deliveryUserId = $row['Order']['delivery_user_id'];
 		$deliveryUserName = (string)($usersList && $deliveryUserId ? ($usersList[$deliveryUserId] ?? '') : '-');
 		$modifiedDate = date('d-m-Y h:i A', strtotime($row['Order']['modified']));
+		$modifiedRawDate = date('Y-m-d', strtotime($row['Order']['modified']));
 		$createdDate = null;
+		$createdRawDate = null;
 
 		$log = !empty($row['Order']['log']) ? json_decode($row['Order']['log'], true) : null;
 
@@ -53,14 +58,17 @@ if (!empty($orders)) {
 			foreach($log as $row2) {
 				if ($row2['orderStatus'] == Order::ORDER_STATUS_NEW) {
 					$createdDate = date('d-m-Y h:i A', $row2['date']);
+					$createdRawDate = date('Y-m-d', $row2['date']);
 					break;
 				}
 			}
 		}
 		$createdDate = (string)($createdDate ?: $modifiedDate);
+		$createdRawDate = (string)($createdRawDate ?: $modifiedRawDate);
 
 		if (!empty($row['OrderProduct'])) {
 			foreach($row['OrderProduct'] as $orderProduct) {
+				$productId = $orderProduct['product_id'];
 				$productName = $orderProduct['product_name'];
 				$categoryName = $orderProduct['category_name'];
 				$quantity = (int)$orderProduct['quantity'];
@@ -68,6 +76,20 @@ if (!empty($orders)) {
 				$discount = (float)$orderProduct['discount'];
 				$salePrice = (float)$orderProduct['sale_price'];
 				$supplierName = $suppliers && $orderProduct['supplier_id'] ? ($suppliers[$orderProduct['supplier_id']] ?? '') : '-';
+
+				$paperRate = (float)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId][$createdRawDate]['paperRate'] ?? 0);
+				$paperRateDate = (string)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId][$createdRawDate]['paperRateDate'] ?? '');
+				$supplierRate = (float)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId][$createdRawDate]['supplierRate'] ?? 0);
+				$supplierAmount = $supplierRate * $quantity;
+
+				if (empty($paperRateDate)) {
+					$paperRate = (float)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId]['default']['paperRate'] ?? 0);
+					$paperRateDate = (string)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId]['default']['paperRateDate'] ?? '');
+					$supplierRate = (float)($supplierProductsPaperRates[$orderProduct['supplier_id']][$productId]['default']['supplierRate'] ?? 0);
+					$supplierAmount = $supplierRate * $quantity;
+				}
+
+
 
 				$ordersData[$k]['SlNo'] = $i;
 				$ordersData[$k]['orderNo'] = $orderId;
@@ -95,6 +117,13 @@ if (!empty($orders)) {
 				$ordersData[$k]['discount'] = $discount;
 				$ordersData[$k]['salePrice'] = $salePrice;
 				$ordersData[$k]['supplierName'] = $supplierName;
+
+				$ordersData[$k]['paperRateDate'] = $paperRateDate;
+				$ordersData[$k]['paperRate'] = $paperRate ? $paperRate : '';				
+				$ordersData[$k]['supplierRate'] = $supplierRate ? $supplierRate : '';
+				$ordersData[$k]['supplierAmount'] = $supplierAmount ? $supplierAmount : '';
+
+
 
 				$k++;
 			}
@@ -130,6 +159,10 @@ if ($download) {
 			'Sale Price',
 			'Quantity',
 			'Supplier',
+			'Date',
+			'Paper Rate',			
+			'Supplier Rate',
+			'Supplier Amount',
 	];
 
 	$csvData[] = $csvHeader;
@@ -160,11 +193,15 @@ if ($download) {
 				$row['salePrice'],
 				$row['quantity'],
 				$row['supplierName'],
+				$row['paperRateDate'],
+				$row['paperRate'],
+				$row['supplierRate'],
+				$row['supplierAmount'],
 		];
 	}
 	$fileName = 'Orders_' . ($start_date ?? date('Y-m-d')) . ' to ' . ($end_date ?? date('Y-m-d')) . '.csv';
 
-	array_to_csv_download($csvData, $fileName);
+	array_to_csv_download($csvData, $fileName, ',');
 
 
 }
@@ -174,8 +211,8 @@ if ($download) {
 <h1>Orders Report</h1>
 
 <form method="get">
-	<div class="hstack gap-3 small mt-3">
-		<div>
+	<div class="row small mt-3">
+		<div class="col-md-3 mb-3">
 			<label for="StartDate">From <span class="text-danger small">(required)</span></label>
 			<input
 				type="date"
@@ -186,7 +223,7 @@ if ($download) {
 			>
 		</div>
 
-		<div>
+		<div class="col-md-3 mb-3">
 			<label for="EndDate">To <span class="text-danger small">(required)</span></label>
 			<input
 				type="date"
@@ -196,7 +233,16 @@ if ($download) {
 				class="form-control form-control-sm"
 			>
 		</div>
-		<div><button class="btn btn-sm btn-info mt-3" type="submit">Search</button></div>
+		
+		<div class="col-md-3 mb-3">
+			<label for="Suppliers">Supplier</label>
+			<?= $this->Form->select('supplier_id', $suppliers, ['class' => 'form-select form-select-sm', 'default' => $selectedSupplier ?? null, 'empty' => '- All -']) ?>
+		</div>
+
+		<div class="col-md-3">
+			<label for="Suppliers" class="d-none d-md-block">&nbsp;</label>
+			<button class="btn btn-sm btn-outline-primary w-100 d-block" type="submit">Search</button>
+		</div>
 	</div>
 </form>
 <hr>
@@ -270,6 +316,10 @@ $orderType = !empty($orderType) ? $orderType : 'All';
 					<th>Sale Price</th>
 					<th>Quantity</th>
 					<th>Supplier</th>
+					<!-- <th>Date</th> -->
+					<th>Paper Rate</th>
+					<th>Supplier Rate</th>
+					<th>Supplier Amount</th>					
 				</tr>
 				</thead>
 				<tbody>
@@ -302,6 +352,11 @@ $orderType = !empty($orderType) ? $orderType : 'All';
 							<td><?= $row['salePrice'] ?></td>
 							<td><?= $row['quantity'] ?></td>
 							<td><?= $row['supplierName'] ?></td>
+
+							<!-- <td><?= $row['paperRateDate'] ?></td> -->
+							<td><?= $row['paperRate'] ?></td>
+							<td><?= $row['supplierRate'] ?></td>
+							<td><?= $row['supplierAmount'] ?></td>
 						</tr>
 						<?php
 					}
