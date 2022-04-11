@@ -56,12 +56,12 @@ if ($categories and !empty($categories)) {
 						$imageUrl = $assetDomainUrl . $image->imagePath;
 					}
 
-					if ($imageUrl) {						
+					if ($imageUrl) {
 				?>
 
 						<div id="categoryCard<?= $categoryId ?>" class="mb-2">
-							<div class="text-center" id="category<?php echo $categoryId; ?> " style="width: 9rem;">
-								<a href='<?= $categoryProductsUrl ?>' class="text-decoration-none d-block">
+							<div class="text-center" id="category<?php echo $categoryId; ?>">
+								<a href='<?= $categoryProductsUrl ?>' class="text-decoration-none d-block m-auto" style="width: 5rem;">
 									<img src="<?php echo $imageUrl; ?>" class="img-fluid rounded-circle" role="button" alt="<?php echo $categoryName; ?>" width="300" height="300" <?= $imgCount > 3 ? 'loading="lazy"' : '' ?> />
 								</a>
 

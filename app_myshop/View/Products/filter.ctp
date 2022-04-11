@@ -43,7 +43,13 @@ switch ($filter['startValue']) {
 $this->set('title_for_layout', $title);
 ?>
 
-<?= $this->element('homepage_tabmenu', ['homepage' => null]) ?>
+<?php 
+$catListCacheKey = $this->Session->read('CacheKeys.catList');
+$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
+
+echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]); 
+echo $this->element('homepage_tabmenu', ['homepage' => null]);
+?>
 
 <section id="ProductInfo">
 	<article>

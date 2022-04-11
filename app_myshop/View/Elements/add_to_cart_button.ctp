@@ -5,7 +5,7 @@ $uniqueId = $categoryID . '-' . $productID;
 
 if ($categoryID &&  $productID) {
 ?>
-	<div class="input-group input-group-sm mt-1 flex-nowrap">
+	<div class="input-group input-group-md px-3 mt-1 flex-nowrap">
 		<select class="form-select pe-4" id="productCardInputGroupSelect<?= $uniqueId ?>" aria-label="Product Quantity">
 			<option value="1" selected>1</option>
 			<option value="2">2</option>

@@ -1,7 +1,16 @@
 <?php
 $this->set('title_for_layout', $categoryInfo['Category']['name']);
 ?>
-<nav aria-label="breadcrumb" class="mb-4">
+
+<?php 
+$catListCacheKey = $this->Session->read('CacheKeys.catList');
+$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
+
+echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]); 
+echo $this->element('homepage_tabmenu', ['homepage' => null]);
+?>
+
+<nav aria-label="breadcrumb" class="mb-4 d-none">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a href="/">Home</a></li>
 		<li class="breadcrumb-item" aria-current="page">
@@ -15,7 +24,7 @@ $this->set('title_for_layout', $categoryInfo['Category']['name']);
 
 <section id="ProductInfo">
 	<article>
-		<header>
+		<header class="mt-4">
 			<h1><?php echo ucwords($categoryInfo['Category']['name']); ?></h1>
 			<p class="text-muted mb-4"><?= $categoryInfo['Category']['description'] ?></p>
 		</header>

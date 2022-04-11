@@ -7,10 +7,16 @@ $productModel = new Product();
 $allCategories = $productModel->getAllProducts($this->Session->read('Site.id'), true, $limit);
 ?>
 
+<?php
+$catListCacheKey = $this->Session->read('CacheKeys.catList');
+$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
+
+echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
+echo $this->element('homepage_tabmenu', ['homepage' => null]);
+?>
+
 <section id="ProductsInfo">
 	<article>
-		<?= $this->element('homepage_tabmenu', ['homepage' => $homepage]) ?>
-
 		<header>
 			<div class="alert alert-danger p-2 mt-2 shadow-sm" role="button">
 				<a class="nav-link text-nowrap" aria-current="page" href="/products/filter/price/0/99/asc">

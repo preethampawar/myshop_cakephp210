@@ -259,7 +259,7 @@ $locationQueryParam = $isMobileApp ? '?s=mobile' : '';
 			</ul>
 			<div style="height: 12px;" class="bg-light">
 				<div class="progress rounded-0 d-none small" id="topNavProgressBar" style="height: 12px;">
-					<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange small" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading...</div>
+					<div class="progress-bar progress-bar-striped progress-bar-animated bg-orange small" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
 				</div>
 			</div>
 		</div>
