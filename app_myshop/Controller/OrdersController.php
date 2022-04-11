@@ -360,6 +360,9 @@ class OrdersController extends AppController
 					if((bool)$this->Session->read('Site.sms_notifications') === true) {
 						$this->Sms->sendNewOrderSms($customerPhone, '#'.$orderId, $this->Session->read('Site.title'));
 
+						// send new order sms msg to Delivery person
+						$this->Sms->sendNewOrderSms('918985304040', '#'.$orderId, $this->Session->read('Site.title'));
+
 						// send new order sms to manager of the site
 						$adminPhone = $this->Session->read('Site.notifications_mobile_no');
 
