@@ -66,7 +66,7 @@ if ($categories and !empty($categories)) {
 								</a>
 
 								<div class="card-body p-1">
-									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none">
+									<a href='/products/show/<?= $categoryId ?>/<?= $categoryNameSlug ?>' class="text-decoration-none text-nowrap">
 										<h6 class="small"><?= $categoryName ?></h6>
 									</a>
 									<div class="small">
