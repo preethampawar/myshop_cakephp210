@@ -40,7 +40,7 @@ if ($buyerView) {
 	$catListCacheKey = $this->Session->read('CacheKeys.catList');
 	$categoryListMenu = Cache::read($catListCacheKey, 'verylong');
 
-	echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
+	//echo $this->element('homepage_categories', ['categoryListMenu' => $categoryListMenu]);
 ?>
 	
 <?php
